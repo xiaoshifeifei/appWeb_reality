@@ -2,11 +2,8 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <el-form-item label="ID">
-          <el-input v-model="searchInfo.id" placeholder="ID" />
-        </el-form-item>
-        <el-form-item label="任务名">
-          <el-input v-model="searchInfo.key" placeholder="任务名" />
+        <el-form-item label="key">
+          <el-input v-model="searchInfo.key" placeholder="请输入" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
@@ -29,31 +26,20 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="60" />
-        <el-table-column align="center" min-width="90" label="id" prop="id">
-          <template #default="scope">
-            <el-link type="primary" @click="clickBetDetail(scope.row.id)">{{
-              scope.row.id
-            }}</el-link>
-          </template>
-        </el-table-column>
-
+        <el-table-column align="center" label="id" min-width="150" prop="id" />
         <el-table-column
           align="center"
-          label="desc"
+          label="code"
           min-width="150"
-          prop="desc"
+          prop="code"
+        />
+        <el-table-column
+          align="center"
+          label="间隔"
+          min-width="150"
+          prop="interval"
         />
 
-        <el-table-column
-          align="center"
-          label="模版"
-          min-width="170"
-          prop="complete"
-        >
-          <template #default="scope">
-            <div>{{ scope.row.complete }}</div>
-          </template>
-        </el-table-column>
         <el-table-column
           align="center"
           label="奖励"
@@ -66,25 +52,15 @@
         </el-table-column>
         <el-table-column
           align="center"
-          label="unlock"
+          label="max"
           min-width="150"
-          prop="unlock"
-        >
-          <template #default="scope">
-            <div>{{ scope.row.unlock }}</div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          label="标签"
-          min-width="150"
-          prop="tag"
+          prop="max"
         />
         <el-table-column
           align="center"
-          label="before"
+          label="desc"
           min-width="150"
-          prop="before"
+          prop="desc"
         />
         <el-table-column align="center" fixed="right" label="操作" width="200">
           <template #default="scope">
@@ -146,7 +122,7 @@
       >
         <el-row class="w-full">
           <el-col :span="12">
-            <el-form-item label="ID" prop="id">
+            <el-form-item label="id" prop="id">
               <el-input-number
                 :disabled="type === 'edit'"
                 :min="0"
@@ -156,162 +132,83 @@
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row class="w-full">
           <el-col :span="12">
-            <el-form-item label="before" prop="before">
+            <el-form-item label="code" prop="code">
+              <el-input v-model="form.code" autocomplete="off" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row class="w-full">
+          <el-col :span="12">
+            <el-form-item label="间隔" prop="interval">
               <el-input-number
                 :min="0"
-                v-model="form.before"
+                v-model="form.interval"
                 autocomplete="off"
               />
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="desc" prop="desc">
-          <el-input v-model="form.desc" autocomplete="off" />
-        </el-form-item>
-        <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
-          模版
-        </div>
-        <template v-for="(item, index) in form.complete" :key="index">
-          <el-row class="w-full">
-            <el-col :span="12" v-if="item.type || type !== null">
-              <el-form-item
-                label="type"
-                :prop="`complete.${index}.type`"
-                :rules="rules['complete.type']"
-              >
-                <el-input-number
-                  :min="0"
-                  v-model="item.type"
-                  autocomplete="off"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12" v-if="item.value || type !== null">
-              <el-form-item label="value">
-                <el-input-number
-                  :min="0"
-                  v-model="item.value"
-                  autocomplete="off"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12" v-if="item.code || type !== null">
-              <el-form-item label="code">
-                <el-input v-model="item.code" autocomplete="off" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12" v-if="item.game">
-              <el-form-item label="game">
-                <el-input v-model="item.game" autocomplete="off" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12" v-if="item.mode || type !== null">
-              <el-form-item label="mode">
-                <el-input v-model="item.mode" autocomplete="off" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12" v-if="item.limit || type !== null">
-              <el-form-item label="limit">
-                <el-input-number
-                  :min="0"
-                  v-model="item.limit"
-                  autocomplete="off"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12" v-if="item.initialize || type !== null">
-              <el-form-item label="initialize">
-                <el-input v-model="item.initialize" autocomplete="off" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12" v-if="item.value2 || type !== null">
-              <el-form-item label="value2">
-                <el-input-number
-                  :min="0"
-                  v-model="item.value2"
-                  autocomplete="off"
-                />
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </template>
+        <el-row class="w-full">
+          <el-col :span="12">
+            <el-form-item label="max" prop="max">
+              <el-input-number :min="0" v-model="form.max" autocomplete="off" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row class="w-full">
+          <el-col :span="12">
+            <el-form-item label="desc" prop="desc">
+              <el-input v-model="form.desc" autocomplete="off" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
         <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
           奖励
         </div>
         <template v-for="(item, index) in form.award" :key="index">
           <el-row class="w-full">
-            <el-col :span="12" v-if="item.type || type !== null">
+            <el-col :span="6" v-if="item.weight || type !== null">
+              <el-form-item label="weight">
+                <el-input-number
+                  class="inputN"
+                  :min="0"
+                  v-model="item.weight"
+                  autocomplete="off"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="5" v-if="item.code || type !== null">
               <el-form-item
-                label="type"
-                :prop="`award.${index}.type`"
-                :rules="rules['award.type']"
+                label="code"
+                :prop="`award.${index}.code`"
+                :rules="rules['award.code']"
               >
-                <el-input-number
-                  :min="0"
-                  v-model="item.type"
-                  autocomplete="off"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12" v-if="item.id || type !== null">
-              <el-form-item label="id">
-                <el-input-number
-                  :min="0"
-                  v-model="item.id"
-                  autocomplete="off"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12" v-if="item.code || type !== null">
-              <el-form-item label="code">
                 <el-input :min="0" v-model="item.code" autocomplete="off" />
               </el-form-item>
             </el-col>
-            <el-col :span="12" v-if="item.num || type !== null">
+            <el-col :span="10" v-if="item.num || type !== null">
               <el-form-item label="num">
                 <el-input-number
                   :min="0"
                   v-model="item.num"
                   autocomplete="off"
                 />
+                <el-button
+                  style="margin-left: 20px"
+                  type="delete"
+                  @click="delItem(index)"
+                >
+                  删除
+                </el-button>
               </el-form-item>
             </el-col>
           </el-row>
         </template>
-        <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
-          解锁
-        </div>
-        <template v-for="(item, index) in form.unlock" :key="index">
-          <el-row class="w-full">
-            <el-col :span="12" v-if="item.type || type !== null">
-              <el-form-item
-                label="type"
-                :prop="`unlock.${index}.type`"
-                :rules="rules['unlock.type']"
-              >
-                <el-input-number
-                  :min="0"
-                  v-model="item.type"
-                  autocomplete="off"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12" v-if="item.level || type !== null">
-              <el-form-item label="level" prop="unlock">
-                <el-input-number
-                  :min="0"
-                  v-model="item.level"
-                  autocomplete="off"
-                />
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </template>
-        <el-form-item label="标签" prop="tag">
-          <el-input v-model="form.tag" autocomplete="off" />
+        <el-form-item>
+          <el-button type="primary" @click="addItem()"> 新增 </el-button>
         </el-form-item>
       </el-form>
     </el-drawer>
@@ -319,60 +216,41 @@
 </template>
 
 <script setup>
-import { getTackList, deleteTack, updateTack, createTack } from "@/api/tack";
+import {
+  timedRewardGetList,
+  timedRewardDel,
+  timedRewardEdit,
+  timedRewardAdd,
+} from "@/api/tack";
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
 const router = useRouter();
 
 defineOptions({
-  name: "tack",
+  name: "day7Sign",
 });
 
 const apis = ref([]);
 const form = ref({
   id: null,
-  before: null,
-  desc: "",
-  complete: [
-    {
-      type: null,
-      value: null,
-      code: "",
-      game: "",
-      mode: "",
-      limit: null,
-      initialize: "",
-      value2: null,
-    },
-  ],
+  code: "",
+  interval: null,
   award: [
     {
-      type: null,
-      id: null,
+      weight: null,
       code: "",
       num: null,
     },
   ],
-  unlock: [
-    {
-      type: null,
-      level: null,
-    },
-  ],
-  tag: "",
+  desc: "",
+  max: null,
 });
 
 const type = ref("");
 const rules = ref({
-  id: [{ required: true, message: "请输入id", trigger: "blur" }],
-  "complete.type": [
-    { required: true, message: "请输入模板类型", trigger: "blur" },
-  ],
-  "award.type": [
-    { required: true, message: "请输入奖励类型", trigger: "blur" },
-  ],
-  "unlock.type": [{ required: true, message: "请输入类型", trigger: "blur" }],
+  day: [{ required: true, message: "请输入天数", trigger: "blur" }],
+  "award.code": [{ required: true, message: "请选择类型", trigger: "blur" }],
 });
 
 const page = ref(1);
@@ -382,9 +260,9 @@ const tableData = ref([]);
 const searchInfo = ref({});
 
 const clickBetDetail = (id) => {
-  let query = {};
-  query["id"] = id;
-  router.push({ name: "taskDetails", query });
+  // let query = {};
+  // query["id"] = id;
+  // router.push({ name: "taskDetails", query });
 };
 
 const onReset = () => {
@@ -411,7 +289,7 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async () => {
-  const table = await getTackList({
+  const table = await timedRewardGetList({
     page: page.value,
     pageSize: pageSize.value,
     ...searchInfo.value,
@@ -436,36 +314,30 @@ const initForm = () => {
   apiForm.value.resetFields();
   form.value = {
     id: null,
-    before: null,
-    desc: "",
-    complete: [
-      {
-        type: null,
-        value: null,
-        code: "",
-        game: "",
-        mode: "",
-        limit: null,
-        initialize: "",
-        value2: null,
-      },
-    ],
+    code: "",
+    interval: null,
     award: [
       {
-        type: null,
-        id: null,
+        weight: null,
         code: "",
         num: null,
       },
     ],
-    unlock: [
-      {
-        type: null,
-        level: null,
-      },
-    ],
-    tag: "",
+    desc: "",
+    max: null,
   };
+};
+
+const addItem = () => {
+  form.value.award.push({
+    weight: null,
+    code: "",
+    num: null,
+  });
+};
+
+const delItem = (index) => {
+  form.value.award.splice(index, 1);
 };
 
 const dialogTitle = ref("新增");
@@ -501,7 +373,7 @@ const enterDialog = async () => {
       switch (type.value) {
         case "add":
           {
-            const res = await createTack(form.value);
+            const res = await timedRewardAdd(form.value);
             if (res.code === 0) {
               ElMessage({
                 type: "success",
@@ -515,7 +387,7 @@ const enterDialog = async () => {
           break;
         case "edit":
           {
-            const res = await updateTack(form.value);
+            const res = await timedRewardEdit(form.value);
             if (res.code === 0) {
               ElMessage({
                 type: "success",
@@ -547,7 +419,7 @@ const deleteTackFunc = async (row) => {
     cancelButtonText: "取消",
     type: "warning",
   }).then(async () => {
-    const res = await deleteTack({ id: row.id });
+    const res = await timedRewardDel({ id: row.id });
     if (res.code === 0) {
       ElMessage({
         type: "success",
@@ -565,5 +437,10 @@ const deleteTackFunc = async (row) => {
 }
 .el-input-number {
   width: 50%;
+}
+.w-full {
+  .inputN {
+    width: 100%;
+  }
 }
 </style>

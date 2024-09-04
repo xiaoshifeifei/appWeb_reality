@@ -2,9 +2,12 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <el-form-item label="ID">
+        <!-- <el-form-item label="ID">
           <el-input v-model="searchInfo.id" placeholder="ID" />
         </el-form-item>
+        <el-form-item label="任务名">
+          <el-input v-model="searchInfo.key" placeholder="任务名" />
+        </el-form-item> -->
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             查询
@@ -14,11 +17,11 @@
       </el-form>
     </div>
     <div class="gva-table-box">
-      <div class="gva-btn-list">
-        <!-- <el-button type="primary" icon="plus" @click="openDialog('add')">
+      <!-- <div class="gva-btn-list">
+        <el-button type="primary" icon="plus" @click="openDialog('add')">
           新增
-        </el-button> -->
-      </div>
+        </el-button>
+      </div> -->
       <el-table
         border
         :data="tableData"
@@ -28,31 +31,48 @@
         <el-table-column type="selection" width="60" />
         <el-table-column
           align="center"
-          label="游戏名"
+          min-width="90"
+          label="id"
+          prop="accountId"
+        >
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          label="用户名"
           min-width="150"
-          prop="desc"
+          prop="username"
         />
 
         <el-table-column
           align="center"
-          label="游戏类型"
+          label="手机号"
           min-width="170"
-          prop="before"
+          prop="phone"
         >
         </el-table-column>
         <el-table-column
           align="center"
-          label="钻石奖励"
+          label="邮箱"
           min-width="200"
-          prop="before"
+          prop="email"
         >
         </el-table-column>
-        <el-table-column
-          align="center"
-          label="金币奖励"
-          min-width="150"
-          prop="before"
-        >
+
+        <el-table-column align="center" label="启用" min-width="150">
+          <template #default="scope">
+            <el-switch
+              v-model="scope.row.status"
+              inline-prompt
+              :active-value="0"
+              :inactive-value="1"
+              @change="
+                () => {
+                  switchStatus(scope.row);
+                }
+              "
+            />
+          </template>
         </el-table-column>
 
         <el-table-column align="center" fixed="right" label="操作" width="200">
@@ -116,13 +136,9 @@
         <el-form-item label="ID" prop="id">
           <el-input v-model="form.id" autocomplete="off" />
         </el-form-item>
-        <el-row class="w-full">
-          <el-col :span="12">
-            <el-form-item label="before" prop="before">
-              <el-input-number v-model="form.before" autocomplete="off" />
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <el-form-item label="before" prop="before">
+          <el-input-number v-model="form.before" autocomplete="off" />
+        </el-form-item>
         <el-form-item label="desc" prop="desc">
           <el-input v-model="form.desc" autocomplete="off" />
         </el-form-item>
@@ -130,7 +146,7 @@
           模版
         </div>
         <el-row class="w-full">
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="type" prop="complete">
               <el-select
                 v-model="form.complete.type"
@@ -146,31 +162,19 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="value">
-              <el-input-number
-                :min="0"
-                v-model="form.complete.value"
-                autocomplete="off"
-              />
+              <el-input v-model="form.complete.value" autocomplete="off" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="value2">
-              <el-input-number
-                :min="0"
-                v-model="form.complete.value2"
-                autocomplete="off"
-              />
+              <el-input v-model="form.complete.value2" autocomplete="off" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="limit">
-              <el-input-number
-                :min="0"
-                v-model="form.complete.limit"
-                autocomplete="off"
-              />
+              <el-input v-model="form.complete.limit" autocomplete="off" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -180,7 +184,7 @@
         </div>
 
         <el-row class="w-full">
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="type" prop="complete">
               <el-select
                 v-model="form.award.type"
@@ -196,26 +200,19 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="code">
-              <el-input :min="0" v-model="form.award.code" autocomplete="off" />
+              <el-input v-model="form.award.code" autocomplete="off" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="num">
-              <el-input-number
-                :min="0"
-                v-model="form.award.num"
-                autocomplete="off"
-              />
+              <el-input v-model="form.award.num" autocomplete="off" />
             </el-form-item>
           </el-col>
         </el-row>
-        <div style="padding-left: 80px; color: red; font-size: 12px">
-          提示(复制)： [{type:109,value:12138,value2:1000}]
-        </div>
         <el-form-item label="解锁" prop="unlock">
-          <el-input v-model="form.unlock" autocomplete="off" />
+          <el-input v-model="form.unlock.value" autocomplete="off" />
         </el-form-item>
         <el-form-item label="标签" prop="tag">
           <el-input v-model="form.tag" autocomplete="off" />
@@ -224,22 +221,25 @@
     </el-drawer>
   </div>
 </template>
-
-<script setup>
+  
+  <script setup>
 import {
-  getTackList,
+  getUserList,
+  setUserInfo,
   deleteTack,
   updateTack,
   createTack,
   enterSyncApi,
-} from "@/api/tack";
-import { ref } from "vue";
+} from "@/api/userInfo";
+import { setUserAuthorities } from "@/api/user";
+import { ref, watch } from "vue";
+import { getAuthorityList } from "@/api/authority";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
 const router = useRouter();
 
 defineOptions({
-  name: "gameReport",
+  name: "userInfo",
 });
 
 const apis = ref([]);
@@ -305,10 +305,88 @@ const completeOptions = ref([
   { label: 107, value: 107 },
 ]);
 
-const closeSyncDialog = () => {
-  syncApiFlag.value = false;
+watch(
+  () => tableData.value,
+  () => {
+    setAuthorityIds();
+  }
+);
+const setAuthorityIds = () => {
+  tableData.value &&
+    tableData.value.forEach((user) => {
+      user.authorityIds =
+        user.authorities &&
+        user.authorities.map((i) => {
+          return i.authorityId;
+        });
+    });
 };
+const authOptions = ref([]);
+const setOptions = (authData) => {
+  authOptions.value = [];
+  setAuthorityOptions(authData, authOptions.value);
+};
+const tempAuth = {};
+const changeAuthority = async (row, flag, removeAuth) => {
+  if (flag) {
+    if (!removeAuth) {
+      tempAuth[row.ID] = [...row.authorityIds];
+    }
+    return;
+  }
+  await nextTick();
+  const res = await setUserAuthorities({
+    ID: row.ID,
+    authorityIds: row.authorityIds,
+  });
+  if (res.code === 0) {
+    ElMessage({ type: "success", message: "角色设置成功" });
+  } else {
+    if (!removeAuth) {
+      row.authorityIds = [...tempAuth[row.ID]];
+      delete tempAuth[row.ID];
+    } else {
+      row.authorityIds = [removeAuth, ...row.authorityIds];
+    }
+  }
+};
+// 初始化相关
+const setAuthorityOptions = (AuthorityData, optionsData) => {
+  AuthorityData &&
+    AuthorityData.forEach((item) => {
+      if (item.children && item.children.length) {
+        const option = {
+          authorityId: item.authorityId,
+          authorityName: item.authorityName,
+          children: [],
+        };
+        setAuthorityOptions(item.children, option.children);
+        optionsData.push(option);
+      } else {
+        const option = {
+          authorityId: item.authorityId,
+          authorityName: item.authorityName,
+        };
+        optionsData.push(option);
+      }
+    });
+};
+const switchStatus = async (row) => {
+  let myUserInfo = JSON.parse(JSON.stringify(row));
 
+  let params = {
+    accountId: myUserInfo.accountId,
+    status: myUserInfo.status,
+  };
+  const res = await setUserInfo(params);
+  if (res.code === 0) {
+    ElMessage({
+      type: "success",
+      message: `${params.status === 0 ? "禁用" : "启用"}成功`,
+    });
+    await getTableData();
+  }
+};
 const syncing = ref(false);
 
 const enterSyncDialog = async () => {
@@ -354,7 +432,7 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async () => {
-  const table = await getTackList({
+  const table = await getUserList({
     page: page.value,
     pageSize: pageSize.value,
     ...searchInfo.value,
@@ -366,8 +444,17 @@ const getTableData = async () => {
     pageSize.value = table.data.pageSize;
   }
 };
+const initPage = async () => {
+  getTableData();
+  const res = await getAuthorityList({
+    page: 1,
+    pageSize: 999,
+  });
+  setOptions(res.data.list);
+};
 
-getTableData();
+initPage();
+
 // 批量操作
 const handleSelectionChange = (val) => {
   apis.value = val;
@@ -440,34 +527,19 @@ const editTackFunc = async (row) => {
   if (isJSON(rows.award)) {
     rows.award = JSON.parse(rows.award)[0] ? JSON.parse(rows.award)[0] : {};
   }
-  // if (rows.unlock !== undefined || rows.unlock !== null) {
-  //   rows.unlock = JSON.parse(rows.unlock).toString()
-  //     ? JSON.parse(rows.unlock).toString()
-  //     : null;
-  // }
+  if (isJSON(rows.unlock)) {
+    rows.unlock = JSON.parse(rows.unlock)[0] ? JSON.parse(rows.unlock)[0] : {};
+  }
   form.value = rows;
   openDialog("edit");
 };
-function strToJson(str) {
-  var json = eval("(" + str + ")");
-  return json;
-}
 
 const enterDialog = async () => {
   apiForm.value.validate(async (valid) => {
     if (valid) {
       form.value.complete = JSON.stringify([form.value.complete]);
       form.value.award = JSON.stringify([form.value.award]);
-      if (
-        form.value.unlock === "" ||
-        form.value.unlock === null ||
-        form.value.unlock.length === 0
-      ) {
-        form.value.unlock = [];
-      } else {
-        form.value.unlock = strToJson(form.value.unlock);
-      }
-      form.value.unlock = JSON.stringify(form.value.unlock);
+      form.value.unlock = JSON.stringify([form.value.unlock]);
       switch (type.value) {
         case "add":
           {
@@ -530,12 +602,10 @@ const deleteTackFunc = async (row) => {
   });
 };
 </script>
-
-<style scoped lang="scss">
+  
+  <style scoped lang="scss">
 .warning {
   color: #dc143c;
 }
-.el-input-number {
-  width: 50%;
-}
 </style>
+  

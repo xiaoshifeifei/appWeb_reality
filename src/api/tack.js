@@ -127,108 +127,73 @@ export const mallProductDel = (data) => {
   });
 };
 
-// @Tags Api
-// @Summary 更新api
-// @Security ApiKeyAuth
-// @accept application/json
-// @Produce application/json
-// @Param data body api.CreateApiParams true "更新api"
-// @Success 200 {string} json "{"success":true,"data":{},"msg":"更新成功"}"
-// @Router /api/updateApi [post]
-export const updateApi = (data) => {
+// 7天签到列表
+export const day7SignGetList = (params) => {
   return service({
-    url: "/api/updateApi",
-    method: "post",
-    data,
-  });
-};
-
-// @Tags Api
-// @Summary 更新api
-// @Security ApiKeyAuth
-// @accept application/json
-// @Produce application/json
-// @Param data body api.CreateApiParams true "更新api"
-// @Success 200 {string} json "{"success":true,"data":{},"msg":"更新成功"}"
-// @Router /api/setAuthApi [post]
-export const setAuthApi = (data) => {
-  return service({
-    url: "/api/setAuthApi",
-    method: "post",
-    data,
-  });
-};
-
-// @Tags Api
-// @Summary 获取所有的Api 不分页
-// @Security ApiKeyAuth
-// @accept application/json
-// @Produce application/json
-// @Success 200 {string} json "{"success":true,"data":{},"msg":"获取成功"}"
-// @Router /api/getAllApis [post]
-export const getAllApis = (data) => {
-  return service({
-    url: "/api/getAllApis",
-    method: "post",
-    data,
-  });
-};
-
-// @Tags SysApi
-// @Summary 删除选中Api
-// @Security ApiKeyAuth
-// @accept application/json
-// @Produce application/json
-// @Param data body request.IdsReq true "ID"
-// @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
-// @Router /api/deleteApisByIds [delete]
-export const deleteApisByIds = (data) => {
-  return service({
-    url: "/api/deleteApisByIds",
-    method: "delete",
-    data,
-  });
-};
-
-// FreshCasbin
-// @Tags      SysApi
-// @Summary   刷新casbin缓存
-// @accept    application/json
-// @Produce   application/json
-// @Success   200   {object}  response.Response{msg=string}  "刷新成功"
-// @Router    /api/freshCasbin [get]
-export const freshCasbin = () => {
-  return service({
-    url: "/api/freshCasbin",
+    url: "/config/day7Sign/list",
     method: "get",
+    params,
   });
 };
 
-export const syncApi = () => {
+// 7天签到新增
+export const day7SignAdd = (data) => {
   return service({
-    url: "/api/syncApi",
-    method: "get",
-  });
-};
-
-export const getApiGroups = () => {
-  return service({
-    url: "/api/getApiGroups",
-    method: "get",
-  });
-};
-
-export const ignoreApi = (data) => {
-  return service({
-    url: "/api/ignoreApi",
+    url: "/config/day7Sign/add",
     method: "post",
     data,
   });
 };
 
-export const enterSyncApi = (data) => {
+// 7天签到修改
+export const day7SignEdit = (data) => {
   return service({
-    url: "/api/enterSyncApi",
+    url: "/config/day7Sign/edit",
+    method: "post",
+    data,
+  });
+};
+
+// 7天签到删除
+export const day7SignDel = (data) => {
+  return service({
+    url: "/config/day7Sign/del",
+    method: "post",
+    data,
+  });
+};
+
+// 定时签到列表
+export const timedRewardGetList = (params) => {
+  return service({
+    url: "/config/timedReward/list",
+    method: "get",
+    params,
+  });
+};
+
+// 定时签到新增
+export const timedRewardAdd = (data) => {
+  return service({
+    url: "/config/timedReward/add",
+    method: "post",
+    data,
+  });
+};
+
+// 定时签到修改
+export const timedRewardEdit = (data) => {
+  return service({
+    url: "/config/timedReward/edit",
+    method: "post",
+    data,
+  });
+};
+
+// 定时签到删除
+export const timedRewardDel = (data) => {
+  return service({
+    url: "/config/timedReward/del",
     method: "post",
     data,
   });

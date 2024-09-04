@@ -109,7 +109,6 @@
         />
       </div>
     </div>
-
     <el-drawer
       v-if="dialogFormVisible"
       v-model="dialogFormVisible"
@@ -137,7 +136,12 @@
         <el-row class="w-full">
           <el-col :span="12">
             <el-form-item label="ID" prop="id">
-              <el-input-number :min="0" v-model="form.id" autocomplete="off" />
+              <el-input-number
+                :disabled="type === 'edit'"
+                :min="0"
+                v-model="form.id"
+                autocomplete="off"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -159,136 +163,142 @@
         <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
           模版
         </div>
-        <el-row class="w-full">
-          <el-col :span="12" v-if="form.complete[0].type || type === 'add'">
-            <el-form-item label="type" prop="complete">
-              <el-input-number
-                :min="0"
-                v-model="form.complete[0].type"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="form.complete[0].value || type === 'add'">
-            <el-form-item label="value">
-              <el-input-number
-                :min="0"
-                v-model="form.complete[0].value"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="form.complete[0].code || type === 'add'">
-            <el-form-item label="code">
-              <el-input v-model="form.complete[0].code" autocomplete="off" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="form.complete[0].game">
-            <el-form-item label="game">
-              <el-input v-model="form.complete[0].game" autocomplete="off" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="form.complete[0].mode || type === 'add'">
-            <el-form-item label="mode">
-              <el-input v-model="form.complete[0].mode" autocomplete="off" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="form.complete[0].limit || type === 'add'">
-            <el-form-item label="limit">
-              <el-input-number
-                :min="0"
-                v-model="form.complete[0].limit"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :span="12"
-            v-if="form.complete[0].initialize || type === 'add'"
-          >
-            <el-form-item label="initialize">
-              <el-input
-                v-model="form.complete[0].initialize"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="form.complete[0].value2 || type === 'add'">
-            <el-form-item label="value2">
-              <el-input-number
-                :min="0"
-                v-model="form.complete[0].value2"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
+        <template v-for="(item, index) in form.complete" :key="index">
+          <el-row class="w-full">
+            <el-col :span="12" v-if="item.type || type !== null">
+              <el-form-item
+                label="type"
+                :prop="`complete.${index}.type`"
+                :rules="rules['complete.type']"
+              >
+                <el-input-number
+                  :min="0"
+                  v-model="item.type"
+                  autocomplete="off"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12" v-if="item.value || type !== null">
+              <el-form-item label="value">
+                <el-input-number
+                  :min="0"
+                  v-model="item.value"
+                  autocomplete="off"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12" v-if="item.code || type !== null">
+              <el-form-item label="code">
+                <el-input v-model="item.code" autocomplete="off" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12" v-if="item.game">
+              <el-form-item label="game">
+                <el-input v-model="item.game" autocomplete="off" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12" v-if="item.mode || type !== null">
+              <el-form-item label="mode">
+                <el-input v-model="item.mode" autocomplete="off" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12" v-if="item.limit || type !== null">
+              <el-form-item label="limit">
+                <el-input-number
+                  :min="0"
+                  v-model="item.limit"
+                  autocomplete="off"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12" v-if="item.initialize || type !== null">
+              <el-form-item label="initialize">
+                <el-input v-model="item.initialize" autocomplete="off" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12" v-if="item.value2 || type !== null">
+              <el-form-item label="value2">
+                <el-input-number
+                  :min="0"
+                  v-model="item.value2"
+                  autocomplete="off"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </template>
         <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
           奖励
         </div>
-        <el-row class="w-full">
-          <el-col :span="12" v-if="form.award[0].type || type === 'add'">
-            <el-form-item label="type" prop="award">
-              <el-input-number
-                :min="0"
-                v-model="form.award[0].type"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="form.award[0].id || type === 'add'">
-            <el-form-item label="id">
-              <el-input-number
-                :min="0"
-                v-model="form.award[0].id"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="form.award[0].code || type === 'add'">
-            <el-form-item label="code">
-              <el-input
-                :min="0"
-                v-model="form.award[0].code"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="form.award[0].num || type === 'add'">
-            <el-form-item label="num">
-              <el-input-number
-                :min="0"
-                v-model="form.award[0].num"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <template v-for="(item, index) in form.award" :key="index">
+          <el-row class="w-full">
+            <el-col :span="12" v-if="item.type || type !== null">
+              <el-form-item
+                label="type"
+                :prop="`award.${index}.type`"
+                :rules="rules['award.type']"
+              >
+                <el-input-number
+                  :min="0"
+                  v-model="item.type"
+                  autocomplete="off"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12" v-if="item.id || type !== null">
+              <el-form-item label="id">
+                <el-input-number
+                  :min="0"
+                  v-model="item.id"
+                  autocomplete="off"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12" v-if="item.code || type !== null">
+              <el-form-item label="code">
+                <el-input :min="0" v-model="item.code" autocomplete="off" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12" v-if="item.num || type !== null">
+              <el-form-item label="num">
+                <el-input-number
+                  :min="0"
+                  v-model="item.num"
+                  autocomplete="off"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </template>
         <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
           解锁
         </div>
-        <el-row class="w-full">
-          <el-col :span="12" v-if="form.unlock[0].type || type === 'add'">
-            <el-form-item label="type" prop="unlock">
-              <el-input-number
-                :min="0"
-                v-model="form.unlock[0].type"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="form.unlock[0].level || type === 'add'">
-            <el-form-item label="level" prop="unlock">
-              <el-input-number
-                :min="0"
-                v-model="form.unlock[0].level"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
+        <template v-for="(item, index) in form.unlock" :key="index">
+          <el-row class="w-full">
+            <el-col :span="12" v-if="item.type || type !== null">
+              <el-form-item
+                label="type"
+                :prop="`unlock.${index}.type`"
+                :rules="rules['unlock.type']"
+              >
+                <el-input-number
+                  :min="0"
+                  v-model="item.type"
+                  autocomplete="off"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12" v-if="item.level || type !== null">
+              <el-form-item label="level" prop="unlock">
+                <el-input-number
+                  :min="0"
+                  v-model="item.level"
+                  autocomplete="off"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </template>
         <el-form-item label="标签" prop="tag">
           <el-input v-model="form.tag" autocomplete="off" />
         </el-form-item>
@@ -310,33 +320,33 @@ defineOptions({
 
 const apis = ref([]);
 const form = ref({
-  id: 0,
-  before: 0,
+  id: null,
+  before: null,
   desc: "",
   complete: [
     {
-      type: 0,
-      value: 0,
+      type: null,
+      value: null,
       code: "",
       game: "",
       mode: "",
-      limit: 0,
+      limit: null,
       initialize: "",
-      value2: 0,
+      value2: null,
     },
   ],
   award: [
     {
-      type: 0,
-      id: 0,
+      type: null,
+      id: null,
       code: "",
-      num: 0,
+      num: null,
     },
   ],
   unlock: [
     {
-      type: 0,
-      level: 0,
+      type: null,
+      level: null,
     },
   ],
   tag: "",
@@ -345,9 +355,13 @@ const form = ref({
 const type = ref("");
 const rules = ref({
   id: [{ required: true, message: "请输入id", trigger: "blur" }],
-  desc: [{ required: true, message: "请输入desc", trigger: "blur" }],
-  complete: [{ required: true, message: "请选择请求方式", trigger: "blur" }],
-  award: [{ required: true, message: "请输入api介绍", trigger: "blur" }],
+  "complete.type": [
+    { required: true, message: "请输入模板类型", trigger: "blur" },
+  ],
+  "award.type": [
+    { required: true, message: "请输入奖励类型", trigger: "blur" },
+  ],
+  "unlock.type": [{ required: true, message: "请输入类型", trigger: "blur" }],
 });
 
 const page = ref(1);
@@ -421,33 +435,33 @@ const apiForm = ref(null);
 const initForm = () => {
   apiForm.value.resetFields();
   form.value = {
-    id: 0,
-    before: 0,
+    id: null,
+    before: null,
     desc: "",
     complete: [
       {
-        type: 0,
-        value: 0,
+        type: null,
+        value: null,
         code: "",
         game: "",
         mode: "",
-        limit: 0,
+        limit: null,
         initialize: "",
-        value2: 0,
+        value2: null,
       },
     ],
     award: [
       {
-        type: 0,
-        id: 0,
+        type: null,
+        id: null,
         code: "",
-        num: 0,
+        num: null,
       },
     ],
     unlock: [
       {
-        type: 0,
-        level: 0,
+        type: null,
+        level: null,
       },
     ],
     tag: "",

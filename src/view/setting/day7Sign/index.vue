@@ -3,7 +3,7 @@
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
         <el-form-item label="key">
-          <el-input v-model="searchInfo.key" placeholder="key" />
+          <el-input v-model="searchInfo.key" placeholder="请输入" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
@@ -25,64 +25,24 @@
         @sort-change="sortChange"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="60" />
-        <el-table-column align="center" label="id" min-width="150" prop="id" />
         <el-table-column
           align="center"
-          label="类型"
+          label="day"
           min-width="150"
-          prop="type"
+          prop="day"
         />
 
         <el-table-column
           align="center"
-          label="项目"
-          min-width="150"
-          prop="items"
+          label="奖励"
+          min-width="200"
+          prop="award"
         >
           <template #default="scope">
-            <div>{{ scope.row.items }}</div>
+            <div>{{ scope.row.award }}</div>
           </template>
         </el-table-column>
-        <el-table-column
-          align="center"
-          label="价格"
-          min-width="150"
-          prop="price"
-        />
-        <el-table-column
-          align="center"
-          label="折扣"
-          min-width="150"
-          prop="discount"
-        />
-        <el-table-column
-          align="center"
-          label="过期时间"
-          min-width="150"
-          prop="expired"
-        />
-        <el-table-column
-          align="center"
-          label="创建时间"
-          min-width="150"
-          prop="created"
-        />
-        <el-table-column align="center" label="启用" min-width="150">
-          <template #default="scope">
-            <el-switch
-              v-model="scope.row.status"
-              inline-prompt
-              :active-value="0"
-              :inactive-value="1"
-              @change="
-                () => {
-                  switchStatus(scope.row);
-                }
-              "
-            />
-          </template>
-        </el-table-column>
+
         <el-table-column align="center" fixed="right" label="操作" width="200">
           <template #default="scope">
             <el-button
@@ -143,11 +103,11 @@
       >
         <el-row class="w-full">
           <el-col :span="12">
-            <el-form-item label="ID" prop="id">
+            <el-form-item label="day" prop="day">
               <el-input-number
                 :disabled="type === 'edit'"
                 :min="0"
-                v-model="form.id"
+                v-model="form.day"
                 autocomplete="off"
               />
             </el-form-item>
@@ -155,71 +115,39 @@
         </el-row>
 
         <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
-          项目
+          奖励
         </div>
-        <el-row class="w-full">
-          <el-col :span="12" v-if="form.items[0].code || type !== null">
-            <el-form-item label="code" prop="code">
-              <el-input v-model="form.items[0].code" autocomplete="off" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="form.items[0].num || type !== null">
-            <el-form-item label="num" prop="num">
-              <el-input-number
-                :min="0"
-                v-model="form.items[0].num"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row class="w-full">
-          <el-col :span="12">
-            <el-form-item label="类型" prop="type">
-              <el-input-number
-                :min="0"
-                v-model="form.type"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-form-item label="启用" prop="status">
-          <el-switch
-            v-model="form.status"
-            inline-prompt
-            :active-value="0"
-            :inactive-value="1"
-          />
-        </el-form-item>
-        <el-row class="w-full">
-          <el-col :span="12">
-            <el-form-item label="价格" prop="price">
-              <el-input type="number" v-model="form.price" autocomplete="off" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row class="w-full">
-          <el-col :span="12">
-            <el-form-item label="折扣" prop="discount">
-              <el-input
-                type="number"
-                v-model="form.discount"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-form-item label="过期时间" prop="expired">
-          <el-date-picker
-            v-model="form.expired"
-            type="datetime"
-            placeholder="请选择过期时间"
-            @change="handleDateChange"
-          />
+        <template v-for="(item, index) in form.award" :key="index">
+          <el-row class="w-full">
+            <el-col :span="12" v-if="item.code || type !== null">
+              <el-form-item
+                label="code"
+                :prop="`award.${index}.code`"
+                :rules="rules['award.code']"
+              >
+                <el-input :min="0" v-model="item.code" autocomplete="off" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12" v-if="item.num || type !== null">
+              <el-form-item label="num">
+                <el-input-number
+                  :min="0"
+                  v-model="item.num"
+                  autocomplete="off"
+                />
+                <el-button
+                  style="margin-left: 20px"
+                  type="delete"
+                  @click="delItem(index)"
+                >
+                  删除
+                </el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </template>
+        <el-form-item>
+          <el-button type="primary" @click="addItem()"> 新增 </el-button>
         </el-form-item>
       </el-form>
     </el-drawer>
@@ -228,42 +156,35 @@
 
 <script setup>
 import {
-  mallProductGetList,
-  mallProductDel,
-  mallProductEdit,
-  mallProductAdd,
+  day7SignGetList,
+  day7SignDel,
+  day7SignEdit,
+  day7SignAdd,
 } from "@/api/tack";
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
-import dayjs from "dayjs";
 const router = useRouter();
 
 defineOptions({
-  name: "goodsConfiguration",
+  name: "day7Sign",
 });
 
 const apis = ref([]);
 const form = ref({
-  id: null,
-  items: [{ code: "", num: null }],
-  type: null,
-  status: null,
-  price: "",
-  discount: "",
-  expired: "",
+  day: null,
+  award: [
+    {
+      code: "",
+      num: null,
+    },
+  ],
 });
 
 const type = ref("");
 const rules = ref({
-  id: [{ required: true, message: "请输入id", trigger: "blur" }],
-  type: [{ required: true, message: "请输入type", trigger: "blur" }],
-  // price: [{ required: true, message: "请输入价格", trigger: "blur" }],
-  // discount: [{ required: true, message: "请输入折扣", trigger: "blur" }],
-  // code: [{ required: true, message: "请输入code", trigger: "blur" }],
-  // num: [{ required: true, message: "请输入num", trigger: "blur" }],
-  desc: [{ required: true, message: "请输入desc", trigger: "blur" }],
-  expired: [{ required: true, message: "请选择过期时间", trigger: "blur" }],
+  day: [{ required: true, message: "请输入天数", trigger: "blur" }],
+  "award.code": [{ required: true, message: "请选择类型", trigger: "blur" }],
 });
 
 const page = ref(1);
@@ -271,6 +192,12 @@ const total = ref(0);
 const pageSize = ref(10);
 const tableData = ref([]);
 const searchInfo = ref({});
+
+const clickBetDetail = (id) => {
+  // let query = {};
+  // query["id"] = id;
+  // router.push({ name: "taskDetails", query });
+};
 
 const onReset = () => {
   searchInfo.value = {};
@@ -296,7 +223,7 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async () => {
-  const table = await mallProductGetList({
+  const table = await day7SignGetList({
     page: page.value,
     pageSize: pageSize.value,
     ...searchInfo.value,
@@ -320,31 +247,25 @@ const apiForm = ref(null);
 const initForm = () => {
   apiForm.value.resetFields();
   form.value = {
-    id: null,
-    items: [{ code: "", num: null }],
-    type: null,
-    status: null,
-    price: "",
-    discount: "",
-    expired: "",
+    day: null,
+    award: [
+      {
+        code: "",
+        num: null,
+      },
+    ],
   };
 };
-const switchStatus = async (row) => {
-  let myUserInfo = JSON.parse(JSON.stringify(row));
 
-  const res = await mallProductEdit(myUserInfo);
-  if (res.code === 0) {
-    ElMessage({
-      type: "success",
-      message: `${myUserInfo.status === 0 ? "启用" : "禁用"}成功`,
-    });
-  }
+const addItem = () => {
+  form.value.award.push({
+    code: "",
+    num: null,
+  });
 };
-const handleDateChange = () => {
-  if (form.value.expired) {
-    const isoDate = dayjs(form.value.expired).format("YYYY-MM-DDTHH:mm:ssZ");
-    form.value.expired = isoDate;
-  }
+
+const delItem = (index) => {
+  form.value.award.splice(index, 1);
 };
 
 const dialogTitle = ref("新增");
@@ -380,7 +301,7 @@ const enterDialog = async () => {
       switch (type.value) {
         case "add":
           {
-            const res = await mallProductAdd(form.value);
+            const res = await day7SignAdd(form.value);
             if (res.code === 0) {
               ElMessage({
                 type: "success",
@@ -394,7 +315,7 @@ const enterDialog = async () => {
           break;
         case "edit":
           {
-            const res = await mallProductEdit(form.value);
+            const res = await day7SignEdit(form.value);
             if (res.code === 0) {
               ElMessage({
                 type: "success",
@@ -426,7 +347,7 @@ const deleteTackFunc = async (row) => {
     cancelButtonText: "取消",
     type: "warning",
   }).then(async () => {
-    const res = await mallProductDel({ id: row.id });
+    const res = await day7SignDel({ day: row.day });
     if (res.code === 0) {
       ElMessage({
         type: "success",

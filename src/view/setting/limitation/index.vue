@@ -104,7 +104,7 @@
   </div>
 </template>
       
-      <script setup>
+<script setup>
 import {
   getUserList,
   setUserAuthorities,
@@ -112,20 +112,14 @@ import {
   deleteUser,
 } from "@/api/user";
 
-import { getAuthorityList } from "@/api/authority";
-import CustomPic from "@/components/customPic/index.vue";
-import WarningBar from "@/components/warningBar/warningBar.vue";
 import { setUserInfo, resetPassword } from "@/api/user.js";
-
 import { nextTick, ref, watch } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import SelectImage from "@/components/selectImage/selectImage.vue";
 
 defineOptions({
   name: "limitation",
 });
 
-const path = ref(import.meta.env.VITE_BASE_API + "/");
 // 初始化相关
 const setAuthorityOptions = (AuthorityData, optionsData) => {
   AuthorityData &&
