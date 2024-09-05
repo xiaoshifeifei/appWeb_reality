@@ -1,18 +1,20 @@
 <template>
   <div
     class="relative h-full bg-white text-slate-700 dark:text-slate-300 dark:bg-slate-900 border-r shadow dark:shadow-gray-700"
-    :class="isCollapse ? '' : '  px-2'"
+    :class="isCollapse ? '' : ''"
     :style="{
       width: layoutSideWidth + 'px',
     }"
   >
     <el-scrollbar>
       <el-menu
+        active-text-color="#ffd04b"
+        background-color="#304156"
+        text-color="#bfcbd9"
         :collapse="isCollapse"
         :collapse-transition="false"
         :default-active="active"
         class="border-r-0 w-full"
-        unique-opened
         @select="selectMenuItem"
       >
         <template v-for="item in routerStore.asyncRouters[0].children">
@@ -102,4 +104,14 @@ const toggleCollapse = () => {
 };
 </script>
 
-  <style lang="scss"></style>
+  <style scoped lang="scss">
+:deep(.el-scrollbar__wrap--hidden-default) {
+  background-color: #304156;
+}
+:deep(.el-sub-menu .el-menu) {
+  background-color: #1f2d3d !important;
+}
+:deep(.el-sub-menu .el-menu-item:hover) {
+  background-color: #001528;
+}
+</style>

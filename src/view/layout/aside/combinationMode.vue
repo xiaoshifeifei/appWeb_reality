@@ -1,12 +1,15 @@
 <template>
   <div class="h-full">
-    <div v-if="mode==='head'" class="bg-white h-[calc(100%-4px)]  text-slate-700 dark:text-slate-300 mx-2 dark:bg-slate-900 flex items-center w-[calc(100vw-600px)] overflow-auto">
+    <div
+      v-if="mode === 'head'"
+      class="bg-white h-[calc(100%-4px)] text-slate-700 dark:text-slate-300 mx-2 dark:bg-slate-900 flex items-center w-[calc(100vw-600px)] overflow-auto"
+    >
       <el-menu
         :default-active="routerStore.topActive"
         mode="horizontal"
-        class="border-r-0 border-b-0  w-full flex gap-1 items-center box-border h-[calc(100%-1px)]"
+        class="border-r-0 border-b-0 w-full flex gap-1 items-center box-border h-[calc(100%-1px)]"
         unique-opened
-        @select="(index, _, ele)=>selectMenuItem(index, _, ele,true)"
+        @select="(index, _, ele) => selectMenuItem(index, _, ele, true)"
       >
         <template v-for="item in routerStore.topMenu">
           <aside-component
@@ -19,7 +22,7 @@
       </el-menu>
     </div>
     <div
-      v-if="mode==='normal'"
+      v-if="mode === 'normal'"
       class="relative h-full bg-white text-slate-700 dark:text-slate-300 dark:bg-slate-900 border-r shadow dark:shadow-gray-700"
       :class="isCollapse ? '' : '  px-2'"
       :style="{
@@ -33,7 +36,7 @@
           :default-active="active"
           class="border-r-0 w-full"
           unique-opened
-          @select="(index, _, ele)=>selectMenuItem(index, _, ele,false)"
+          @select="(index, _, ele) => selectMenuItem(index, _, ele, false)"
         >
           <template v-for="item in routerStore.leftMenu">
             <aside-component
@@ -74,11 +77,11 @@ defineOptions({
 });
 
 defineProps({
-  mode:{
+  mode: {
     type: String,
     default: "normal",
   },
-})
+});
 
 const route = useRoute();
 const router = useRouter();
@@ -107,26 +110,26 @@ watchEffect(() => {
 
 provide("isCollapse", isCollapse);
 
-const selectMenuItem = (index, _, ele,top) => {
+const selectMenuItem = (index, _, ele, top) => {
   const query = {};
   const params = {};
   routerStore.routeMap[index]?.parameters &&
-  routerStore.routeMap[index]?.parameters.forEach((item) => {
-    if (item.type === "query") {
-      query[item.key] = item.value;
-    } else {
-      params[item.key] = item.value;
-    }
-  });
+    routerStore.routeMap[index]?.parameters.forEach((item) => {
+      if (item.type === "query") {
+        query[item.key] = item.value;
+      } else {
+        params[item.key] = item.value;
+      }
+    });
   if (index === route.name) return;
   if (index.indexOf("http://") > -1 || index.indexOf("https://") > -1) {
     window.open(index);
   } else {
-    if(!top){
+    if (!top) {
       router.push({ name: index, query, params });
-      return
+      return;
     }
-    if (!routerStore.setLeftMenu(index)){
+    if (!routerStore.setLeftMenu(index)) {
       router.push({ name: index, query, params });
     }
   }
