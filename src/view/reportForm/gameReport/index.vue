@@ -75,20 +75,23 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" fixed="right" label="操作" width="200">
+        <el-table-column
+          align="center"
+          fixed="right"
+          label="操作"
+          min-width="200"
+        >
           <!-- <template #default="scope">
             <el-button
-              icon="edit"
               type="primary"
-              link
+              size="small"
               @click="editTackFunc(scope.row)"
             >
               编辑
             </el-button>
             <el-button
-              icon="delete"
-              type="primary"
-              link
+              type="danger"
+              size="small"
               @click="deleteTackFunc(scope.row)"
             >
               删除

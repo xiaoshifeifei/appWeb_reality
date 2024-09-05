@@ -49,6 +49,14 @@ export const deleteTack = (data) => {
   });
 };
 
+export const sendMailGo = (data) => {
+  return service({
+    url: "/app/inbox/send",
+    method: "post",
+    data,
+  });
+};
+
 // 获取日常/周常列表
 export const dailyOrWeeklyGet = (params) => {
   return service({

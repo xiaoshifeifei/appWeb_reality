@@ -22,8 +22,14 @@
           新增
         </el-button>
       </div> -->
+      <div class="gva-btn-list">
+        <el-button type="primary" icon="Message" @click="sendMail()">
+          发送邮件
+        </el-button>
+      </div>
       <el-table
         border
+        ref="multipleTable"
         :data="tableData"
         @sort-change="sortChange"
         @selection-change="handleSelectionChange"
@@ -34,6 +40,7 @@
         }"
         :row-class-name="tableRowClassName"
       >
+        <el-table-column type="selection" width="60" />
         <el-table-column
           align="center"
           min-width="90"
@@ -80,25 +87,31 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" fixed="right" label="操作" width="200">
-          <!-- <template #default="scope">
-            <el-button
-              icon="edit"
+        <el-table-column
+          align="center"
+          fixed="right"
+          label="操作"
+          min-width="200"
+        >
+          <template #default="scope">
+            <!-- <el-button
               type="primary"
-              link
+              size="small"
               @click="editTackFunc(scope.row)"
             >
               编辑
             </el-button>
             <el-button
-              icon="delete"
-              type="primary"
-              link
+              type="danger"
+              size="small"
               @click="deleteTackFunc(scope.row)"
             >
               删除
+            </el-button> -->
+            <el-button type="success" size="small" @click="sendMail(scope.row)">
+              发送邮件
             </el-button>
-          </template> -->
+          </template>
         </el-table-column>
       </el-table>
       <div class="gva-pagination">
@@ -224,6 +237,132 @@
         </el-form-item>
       </el-form>
     </el-drawer>
+
+    <el-drawer
+      v-if="sendMailVisible"
+      v-model="sendMailVisible"
+      size="50%"
+      :before-close="closeMail"
+      :show-close="false"
+    >
+      <template #header>
+        <div class="flex justify-between items-center">
+          <span class="text-lg">{{ dialogTitle }}</span>
+          <div>
+            <el-button @click="closeMail"> 取 消 </el-button>
+            <el-button type="primary" @click="enterMail"> 确 定 </el-button>
+          </div>
+        </div>
+      </template>
+
+      <el-form
+        class="myForm"
+        ref="mailForm"
+        :model="formMail"
+        :rules="rulesMail"
+        label-width="80px"
+      >
+        <el-row class="w-full">
+          <el-col :span="15">
+            <el-form-item label="type" prop="complete">
+              <el-select
+                multiple
+                collapse-tags
+                v-model="formMail.receivers"
+                style="width: 100%"
+                placeholder="请选择"
+                :disabled="oneSend"
+              >
+                <el-option
+                  v-for="item in tableData"
+                  :key="item.accountId"
+                  :label="item.username"
+                  :value="item.accountId"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
+          奖励
+        </div>
+        <template v-for="(item, index) in formMail.items" :key="index">
+          <el-row class="w-full">
+            <el-col :span="6">
+              <el-form-item
+                label="code"
+                :prop="`items.${index}.code`"
+                :rules="rules['items.code']"
+              >
+                <el-input :min="0" v-model="item.code" autocomplete="off" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="num">
+                <el-input-number
+                  :min="0"
+                  v-model="item.num"
+                  autocomplete="off"
+                />
+                <el-button
+                  style="margin-left: 20px"
+                  type="delete"
+                  @click="delItem(index)"
+                >
+                  删除
+                </el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </template>
+        <el-form-item>
+          <el-button type="primary" @click="addItem()"> 新增 </el-button>
+        </el-form-item>
+
+        <template v-for="(item, index) in formMail.content" :key="index">
+          <el-row class="w-full">
+            <el-col :span="15">
+              <el-form-item
+                label="lang"
+                :prop="`content.${index}.lang`"
+                :rules="rules['content.lang']"
+              >
+                <el-select
+                  v-model="item.lang"
+                  style="width: 100%"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in completeOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="15">
+              <el-form-item
+                label="title"
+                :prop="`content.${index}.title`"
+                :rules="rules['content.title']"
+              >
+                <el-input :min="0" v-model="item.title" autocomplete="off" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="15">
+              <el-form-item
+                label="message"
+                :prop="`content.${index}.message`"
+                :rules="rules['content.message']"
+              >
+                <el-input :min="0" v-model="item.message" autocomplete="off" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </template>
+      </el-form>
+    </el-drawer>
   </div>
 </template>
   
@@ -235,6 +374,7 @@ import {
   updateTack,
   createTack,
   enterSyncApi,
+  sendMailGo,
 } from "@/api/userInfo";
 import { setUserAuthorities } from "@/api/user";
 import { ref, watch } from "vue";
@@ -264,28 +404,6 @@ const form = ref({
   unlock: "",
   tag: "",
 });
-const methodOptions = ref([
-  {
-    value: "POST",
-    label: "创建",
-    type: "success",
-  },
-  {
-    value: "GET",
-    label: "查看",
-    type: "",
-  },
-  {
-    value: "PUT",
-    label: "更新",
-    type: "warning",
-  },
-  {
-    value: "DELETE",
-    label: "删除",
-    type: "danger",
-  },
-]);
 
 const type = ref("");
 const rules = ref({
@@ -295,19 +413,43 @@ const rules = ref({
   award: [{ required: true, message: "请选择类型", trigger: "blur" }],
 });
 
+const formMail = ref({
+  receivers: [],
+  items: [
+    {
+      code: "",
+      num: null,
+    },
+  ],
+  content: [
+    {
+      lang: "",
+      title: "",
+      message: "",
+    },
+  ],
+});
+
+const rulerulesMails = ref({
+  id: [{ required: true, message: "请输入id", trigger: "blur" }],
+});
+
 const page = ref(1);
 const total = ref(0);
 const pageSize = ref(10);
 const tableData = ref([]);
 const searchInfo = ref({});
 const completeOptions = ref([
-  { label: 101, value: 101 },
-  { label: 102, value: 102 },
-  { label: 103, value: 103 },
-  { label: 104, value: 104 },
-  { label: 105, value: 105 },
-  { label: 106, value: 106 },
-  { label: 107, value: 107 },
+  { label: "EN", value: "en" },
+  { label: "ID", value: "id" },
+  { label: "JA", value: "ja" },
+  { label: "KM", value: "km" },
+  { label: "KO", value: "ko" },
+  { label: "MS", value: "ms" },
+  { label: "MY", value: "my" },
+  { label: "PT", value: "pt" },
+  { label: "TH", value: "th" },
+  { label: "VI", value: "vi" },
 ]);
 
 watch(
@@ -407,10 +549,14 @@ const enterSyncDialog = async () => {
     getTableData();
   }
 };
-const clickBetDetail = (id) => {
-  let query = {};
-  query["id"] = id;
-  router.push({ name: "taskDetails", query });
+const addItem = () => {
+  formMail.value.items.push({
+    code: "",
+    num: null,
+  });
+};
+const delItem = (index) => {
+  formMail.value.items.splice(index, 1);
 };
 
 const onReset = () => {
@@ -462,8 +608,16 @@ initPage();
 
 // 批量操作
 const handleSelectionChange = (val) => {
-  apis.value = val;
+  if (val.length > 0) {
+    let arr = [];
+    val.forEach((item) => {
+      arr.push(item.accountId);
+    });
+    formMail.value.receivers = arr;
+  }
+  // apis.value = val;
 };
+const multipleTable = ref(null);
 
 const syncApiData = ref({
   newApis: [],
@@ -494,9 +648,31 @@ const initForm = () => {
     tag: "",
   };
 };
+// 弹窗相关
+const mailForm = ref(null);
+const initMailForm = () => {
+  mailForm.value.resetFields();
+  formMail.value = {
+    receivers: [],
+    items: [
+      {
+        code: "",
+        num: null,
+      },
+    ],
+    content: [
+      {
+        lang: "",
+        title: "",
+        message: "",
+      },
+    ],
+  };
+};
 
 const dialogTitle = ref("新增");
 const dialogFormVisible = ref(false);
+const sendMailVisible = ref(false);
 const openDialog = (key) => {
   switch (key) {
     case "add":
@@ -515,6 +691,24 @@ const closeDialog = () => {
   initForm();
   dialogFormVisible.value = false;
 };
+const oneSend = ref(false);
+const sendMail = (key) => {
+  if (key !== undefined) {
+    oneSend.value = true;
+    formMail.value.receivers = [];
+    formMail.value.receivers.push(key.accountId);
+  } else {
+    oneSend.value = false;
+  }
+  sendMailVisible.value = true;
+};
+
+const closeMail = () => {
+  initMailForm();
+  multipleTable.value.clearSelection();
+  sendMailVisible.value = false;
+};
+
 function isJSON(str) {
   if (typeof str !== "string") {
     return false;
@@ -589,7 +783,21 @@ const enterDialog = async () => {
     }
   });
 };
-
+const enterMail = async () => {
+  mailForm.value.validate(async (valid) => {
+    if (valid) {
+      const res = await sendMailGo(formMail.value);
+      if (res.code === 0) {
+        ElMessage({
+          type: "success",
+          message: "发送成功",
+          showClose: true,
+        });
+      }
+      closeMail();
+    }
+  });
+};
 const deleteTackFunc = async (row) => {
   ElMessageBox.confirm("此操作将永久删除任务, 是否继续?", "提示", {
     confirmButtonText: "确定",
