@@ -15,12 +15,12 @@
       >
         <el-table-column label="角色ID" min-width="180" prop="authorityId" />
         <el-table-column
-          align="left"
+          align="center"
           label="角色名称"
           min-width="180"
           prop="authorityName"
         />
-        <el-table-column align="left" label="操作" width="460">
+        <el-table-column align="center" label="操作" width="460">
           <template #default="scope">
             <el-button
               icon="setting"
@@ -405,7 +405,8 @@ const editAuthority = (row) => {
 };
 </script>
 
-<style lang="scss">
+
+<style scoped lang="scss">
 .authority {
   .el-input-number {
     margin-left: 15px;

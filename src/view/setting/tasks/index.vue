@@ -27,6 +27,12 @@
         :data="tableData"
         @sort-change="sortChange"
         @selection-change="handleSelectionChange"
+        highlight-current-row
+        :header-cell-style="{
+          backgroundColor: '#217E8C',
+          Color: '#FFF',
+        }"
+        :row-class-name="tableRowClassName"
       >
         <el-table-column type="selection" width="60" />
         <el-table-column align="center" min-width="90" label="id" prop="id">
@@ -381,12 +387,6 @@ const pageSize = ref(10);
 const tableData = ref([]);
 const searchInfo = ref({});
 
-const clickBetDetail = (id) => {
-  let query = {};
-  query["id"] = id;
-  router.push({ name: "taskDetails", query });
-};
-
 const onReset = () => {
   searchInfo.value = {};
 };
@@ -422,6 +422,11 @@ const getTableData = async () => {
     page.value = table.data.page;
     pageSize.value = table.data.pageSize;
   }
+};
+const clickBetDetail = (id) => {
+  let query = {};
+  query["id"] = id;
+  router.push({ name: "taskDetails", query });
 };
 
 getTableData();
@@ -557,7 +562,33 @@ const deleteTackFunc = async (row) => {
     }
   });
 };
+
+const tableRowClassName = ({ row, rowIndex }) => {
+  if (rowIndex % 2 == 0) {
+    return "";
+  } else {
+    return "warnBg";
+  }
+};
 </script>
+<style scoped lang="scss">
+:deep(.el-table td.el-table__cell div) {
+  color: #000;
+}
+:deep(.el-table tr th .cell) {
+  color: #fff !important;
+}
+:deep(.el-table .warnBg) {
+  background-color: #c7e4ea;
+  color: #000;
+}
+:deep(.el-table__body tr:hover > td) {
+  background-color: #6dc58b !important;
+}
+:deep(.el-table__body tr.current-row > td) {
+  background-color: #6dc58b !important;
+}
+</style>
 
 <style scoped lang="scss">
 .warning {
@@ -567,3 +598,6 @@ const deleteTackFunc = async (row) => {
   width: 50%;
 }
 </style>
+
+
+

@@ -7,7 +7,16 @@
           >新增用户</el-button
         >
       </div>
-      <el-table :data="tableData" row-key="ID">
+      <el-table
+        :data="tableData"
+        row-key="ID"
+        highlight-current-row
+        :header-cell-style="{
+          backgroundColor: '#217E8C',
+          Color: '#FFF',
+        }"
+        :row-class-name="tableRowClassName"
+      >
         <el-table-column align="left" label="头像" min-width="75">
           <template #default="scope">
             <CustomPic style="margin-top: 8px" :pic-src="scope.row.headerImg" />
@@ -476,8 +485,32 @@ const switchEnable = async (row) => {
     userInfo.value.authorityIds = [];
   }
 };
+const tableRowClassName = ({ row, rowIndex }) => {
+  if (rowIndex % 2 == 0) {
+    return "";
+  } else {
+    return "warnBg";
+  }
+};
 </script>
-
+<style scoped lang="scss">
+:deep(.el-table td.el-table__cell div) {
+  color: #000;
+}
+:deep(.el-table tr th .cell) {
+  color: #fff !important;
+}
+:deep(.el-table .warnBg) {
+  background-color: #c7e4ea;
+  color: #000;
+}
+:deep(.el-table__body tr:hover > td) {
+  background-color: #6dc58b !important;
+}
+:deep(.el-table__body tr.current-row > td) {
+  background-color: #6dc58b !important;
+}
+</style>
 <style lang="scss">
 .header-img-box {
   @apply w-52 h-52 border border-solid border-gray-300 rounded-xl flex justify-center items-center cursor-pointer;

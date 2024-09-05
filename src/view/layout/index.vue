@@ -12,15 +12,24 @@
     />
     <gva-header />
     <div class="flex flex-row w-full gva-container pt-16 box-border h-full">
-        <gva-aside v-if="config.side_mode === 'normal' || (device === 'mobile' && config.side_mode == 'head' ) || (device === 'mobile' && config.side_mode == 'combination' )" />
-        <gva-aside v-if="config.side_mode === 'combination' && device !== 'mobile'" mode="normal"/>
+      <gva-aside
+        v-if="
+          config.side_mode === 'normal' ||
+          (device === 'mobile' && config.side_mode == 'head') ||
+          (device === 'mobile' && config.side_mode == 'combination')
+        "
+      />
+      <gva-aside
+        v-if="config.side_mode === 'combination' && device !== 'mobile'"
+        mode="normal"
+      />
       <div class="flex-1 p-2 w-0 h-full">
         <gva-tabs v-if="config.showTabs" />
         <div
           class="overflow-auto"
           :class="config.showTabs ? 'gva-container2' : 'gva-container pt-1'"
         >
-          <router-view v-if="reloadFlag" v-slot="{ Component,route }">
+          <router-view v-if="reloadFlag" v-slot="{ Component, route }">
             <div
               id="gva-base-load-dom"
               class="gva-body-h bg-gray-50 dark:bg-slate-800"
