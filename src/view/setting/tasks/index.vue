@@ -5,9 +5,9 @@
         <el-form-item label="ID">
           <el-input v-model="searchInfo.id" placeholder="ID" />
         </el-form-item>
-        <el-form-item label="任务名">
+        <!-- <el-form-item label="任务名">
           <el-input v-model="searchInfo.key" placeholder="任务名" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             查询

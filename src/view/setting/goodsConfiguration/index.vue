@@ -2,9 +2,9 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <el-form-item label="code">
+        <!-- <el-form-item label="code">
           <el-input v-model="searchInfo.key" placeholder="code" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             查询
