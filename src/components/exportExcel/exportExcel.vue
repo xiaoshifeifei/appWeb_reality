@@ -3,7 +3,7 @@
     type="primary"
     icon="download"
     @click="exportExcelFunc"
-  >导出</el-button>
+  >{{ t('components.exportExcel.exportExcel.export') }}</el-button>
 </template>
 
 <script setup>
@@ -31,10 +31,13 @@ const props = defineProps({
 })
 
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n' // added by mohamed hassan to support multilanguage
+
+const { t } = useI18n() // added by mohamed hassan to support multilanguage
 
 const exportExcelFunc = async() => {
   if (props.templateId === '') {
-    ElMessage.error('组件未设置模板ID')
+    ElMessage.error(t('components.exportExcel.exportExcel.templateIdErr'))
     return
   }
   const baseUrl = import.meta.env.VITE_BASE_API

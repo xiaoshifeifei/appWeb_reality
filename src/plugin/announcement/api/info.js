@@ -1,4 +1,4 @@
-import service from "@/utils/request";
+import service from '@/utils/request'
 
 // @Tags Info
 // @Summary 创建公告
@@ -10,11 +10,11 @@ import service from "@/utils/request";
 // @Router /info/createInfo [post]
 export const createInfo = (data) => {
   return service({
-    url: "/info/createInfo",
-    method: "post",
-    data,
-  });
-};
+    url: '/info/createInfo',
+    method: 'post',
+    data
+  })
+}
 
 // @Tags Info
 // @Summary 删除公告
@@ -26,11 +26,11 @@ export const createInfo = (data) => {
 // @Router /info/deleteInfo [delete]
 export const deleteInfo = (params) => {
   return service({
-    url: "/info/deleteInfo",
-    method: "delete",
-    params,
-  });
-};
+    url: '/info/deleteInfo',
+    method: 'delete',
+    params
+  })
+}
 
 // @Tags Info
 // @Summary 批量删除公告
@@ -42,11 +42,11 @@ export const deleteInfo = (params) => {
 // @Router /info/deleteInfo [delete]
 export const deleteInfoByIds = (params) => {
   return service({
-    url: "/info/deleteInfoByIds",
-    method: "delete",
-    params,
-  });
-};
+    url: '/info/deleteInfoByIds',
+    method: 'delete',
+    params
+  })
+}
 
 // @Tags Info
 // @Summary 更新公告
@@ -58,11 +58,11 @@ export const deleteInfoByIds = (params) => {
 // @Router /info/updateInfo [put]
 export const updateInfo = (data) => {
   return service({
-    url: "/info/updateInfo",
-    method: "put",
-    data,
-  });
-};
+    url: '/info/updateInfo',
+    method: 'put',
+    data
+  })
+}
 
 // @Tags Info
 // @Summary 用id查询公告
@@ -74,11 +74,11 @@ export const updateInfo = (data) => {
 // @Router /info/findInfo [get]
 export const findInfo = (params) => {
   return service({
-    url: "/info/findInfo",
-    method: "get",
-    params,
-  });
-};
+    url: '/info/findInfo',
+    method: 'get',
+    params
+  })
+}
 
 // @Tags Info
 // @Summary 分页获取公告列表
@@ -90,11 +90,11 @@ export const findInfo = (params) => {
 // @Router /info/getInfoList [get]
 export const getInfoList = (params) => {
   return service({
-    url: "/api/info/getInfoList",
-    method: "get",
-    params,
-  });
-};
+    url: '/info/getInfoList',
+    method: 'get',
+    params
+  })
+}
 // @Tags Info
 // @Summary 获取数据源
 // @Security ApiKeyAuth
@@ -104,7 +104,7 @@ export const getInfoList = (params) => {
 // @Router /info/findInfoDataSource [get]
 export const getInfoDataSource = () => {
   return service({
-    url: "/api/info/getInfoDataSource",
-    method: "get",
-  });
-};
+    url: '/info/getInfoDataSource',
+    method: 'get',
+  })
+}

@@ -71,10 +71,9 @@
               <div v-for="(item, index) in members" :key="index" :span="8">
                 <a :href="item.html_url" class="flex items-center">
                   <img class="w-8 h-8 rounded-full" :src="item.avatar_url" />
-                  <a
+                  <span
                     class="text-blue-700 ml-2 text-xl font-bold font-sans"
-                    style=""
-                    >{{ item.login }}</a
+                    >{{ item.login }}</span
                   >
                 </a>
               </div>

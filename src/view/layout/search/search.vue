@@ -24,6 +24,8 @@ import Screenfull from '@/view/layout/screenfull/index.vue'
 import { emitter } from '@/utils/bus.js'
 import  { Sunny, Moon } from '@element-plus/icons-vue'
 import { ref, watchEffect } from 'vue'
+import { useI18n } from 'vue-i18n' // added by mohamed hassan to support multilanguage
+const { t } = useI18n() // added by mohamed hassan to support multilanguage
 
 defineOptions({
   name: 'BtnBox',

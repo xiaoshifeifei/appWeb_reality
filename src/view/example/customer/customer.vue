@@ -7,7 +7,7 @@
           type="primary"
           icon="plus"
           @click="openDrawer"
-        >新增</el-button>
+        >{{ t('general.add') }}</el-button>
       </div>
       <el-table
         ref="multipleTable"
@@ -49,7 +49,7 @@
         />
         <el-table-column
           align="left"
-          label="操作"
+          :label="t('general.operations')"
           min-width="160"
         >
           <template #default="scope">
@@ -58,13 +58,13 @@
               link
               icon="edit"
               @click="updateCustomer(scope.row)"
-            >变更</el-button>
+            >{{ t('general.change') }}</el-button>
             <el-button
               type="primary"
               link
               icon="delete"
               @click="deleteCustomer(scope.row)"
-            >删除</el-button>
+            >{{ t('general.delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -131,6 +131,9 @@ import WarningBar from '@/components/warningBar/warningBar.vue'
 import { ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { formatDate } from '@/utils/format'
+import { useI18n } from 'vue-i18n' // added by mohamed hassan to support multilanguage
+
+const { t } = useI18n() // added by mohamed hassan to support multilanguage
 
 defineOptions({
   name: 'Customer'
@@ -197,7 +200,7 @@ const deleteCustomer = async(row) => {
     if (res.code === 0) {
       ElMessage({
         type: 'success',
-        message: '删除成功'
+        message: t('general.deleteSuccess')
       })
       if (tableData.value.length === 1 && page.value > 1) {
         page.value--

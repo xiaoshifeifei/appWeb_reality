@@ -1,20 +1,20 @@
-import service from "@/utils/request";
+import service from '@/utils/request'
 
 export const preview = (data) => {
   return service({
-    url: "/autoCode/preview",
-    method: "post",
-    data,
-  });
-};
+    url: '/autoCode/preview',
+    method: 'post',
+    data
+  })
+}
 
 export const createTemp = (data) => {
   return service({
-    url: "/autoCode/createTemp",
-    method: "post",
-    data,
-  });
-};
+    url: '/autoCode/createTemp',
+    method: 'post',
+    data
+  })
+}
 
 // @Tags SysApi
 // @Summary 获取当前所有数据库
@@ -25,11 +25,11 @@ export const createTemp = (data) => {
 // @Router /autoCode/getDatabase [get]
 export const getDB = (params) => {
   return service({
-    url: "/autoCode/getDB",
-    method: "get",
-    params,
-  });
-};
+    url: '/autoCode/getDB',
+    method: 'get',
+    params
+  })
+}
 
 // @Tags SysApi
 // @Summary 获取当前数据库所有表
@@ -40,11 +40,11 @@ export const getDB = (params) => {
 // @Router /autoCode/getTables [get]
 export const getTable = (params) => {
   return service({
-    url: "/autoCode/getTables",
-    method: "get",
-    params,
-  });
-};
+    url: '/autoCode/getTables',
+    method: 'get',
+    params
+  })
+}
 
 // @Tags SysApi
 // @Summary 获取当前数据库所有表
@@ -55,128 +55,114 @@ export const getTable = (params) => {
 // @Router /autoCode/getColumn [get]
 export const getColumn = (params) => {
   return service({
-    url: "/autoCode/getColumn",
-    method: "get",
-    params,
-  });
-};
+    url: '/autoCode/getColumn',
+    method: 'get',
+    params
+  })
+}
 
 export const getSysHistory = (data) => {
   return service({
-    url: "/autoCode/getSysHistory",
-    method: "post",
-    data,
-  });
-};
+    url: '/autoCode/getSysHistory',
+    method: 'post',
+    data
+  })
+}
 
 export const rollback = (data) => {
   return service({
-    url: "/autoCode/rollback",
-    method: "post",
-    data,
-  });
-};
+    url: '/autoCode/rollback',
+    method: 'post',
+    data
+  })
+}
 
 export const getMeta = (data) => {
   return service({
-    url: "/autoCode/getMeta",
-    method: "post",
-    data,
-  });
-};
+    url: '/autoCode/getMeta',
+    method: 'post',
+    data
+  })
+}
 
 export const delSysHistory = (data) => {
   return service({
-    url: "/autoCode/delSysHistory",
-    method: "post",
-    data,
-  });
-};
+    url: '/autoCode/delSysHistory',
+    method: 'post',
+    data
+  })
+}
 
 export const createPackageApi = (data) => {
   return service({
-    url: "/autoCode/createPackage",
-    method: "post",
-    data,
-  });
-};
+    url: '/autoCode/createPackage',
+    method: 'post',
+    data
+  })
+}
 
 export const getPackageApi = () => {
   return service({
-    url: "/autoCode/getPackage",
-    method: "post",
-  });
-};
+    url: '/autoCode/getPackage',
+    method: 'post'
+  })
+}
 
 export const deletePackageApi = (data) => {
   return service({
-    url: "/autoCode/delPackage",
-    method: "post",
-    data,
-  });
-};
+    url: '/autoCode/delPackage',
+    method: 'post',
+    data
+  })
+}
 
 export const getTemplatesApi = () => {
   return service({
-    url: "/autoCode/getTemplates",
-    method: "get",
-  });
-};
+    url: '/autoCode/getTemplates',
+    method: 'get'
+  })
+}
 
 export const installPlug = (data) => {
   return service({
-    url: "/autoCode/installPlug",
-    method: "post",
-    data,
-  });
-};
+    url: '/autoCode/installPlug',
+    method: 'post',
+    data
+  })
+}
 
 export const pubPlug = (params) => {
   return service({
-    url: "/autoCode/pubPlug",
-    method: "post",
-    params,
-  });
-};
+    url: '/autoCode/pubPlug',
+    method: 'post',
+    params
+  })
+}
+
 
 export const llmAuto = (params) => {
   let modeName = {
-    xiaoqi: "小奇",
-    xiaomiao: "小淼",
-  };
+    "xiaoqi": "小奇",
+    "xiaomiao": "小淼",
+  }
   return service({
-    url: "/autoCode/llmAuto",
-    method: "post",
+    url: '/autoCode/llmAuto',
+    method: 'post',
     params,
     timeout: 1000 * 60 * 10,
-    loadingOption: {
+    loadingOption:{
       lock: true,
-      fullscreen: true,
+      fullscreen:true,
       text: `${modeName[params.mode]}正在思考，请稍候...`,
-    },
-  });
-};
+    }
+  })
+}
+
 
 export const addFunc = (data) => {
   return service({
-    url: "/autoCode/addFunc",
-    method: "post",
-    data,
-  });
-};
-
-export const initMenu = (data) => {
-  return service({
-    url: "/autoCode/initMenu",
-    method: "post",
-    data,
-  });
-};
-
-export const initAPI = (data) => {
-  return service({
-    url: "/autoCode/initAPI",
-    method: "post",
-    data,
-  });
-};
+    url: '/autoCode/addFunc',
+    method: 'post',
+    data
+  })
+}

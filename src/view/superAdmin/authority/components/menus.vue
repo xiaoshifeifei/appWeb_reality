@@ -4,13 +4,13 @@
       <el-input
         v-model="filterText"
         class="w-3/5"
-        placeholder="筛选"
+        :placeholder="t('general.filter')"
       />
       <el-button
         class="float-right"
         type="primary"
         @click="relation"
-      >确 定</el-button>
+      >{{ t('general.confirm') }}</el-button>
     </div>
     <div class="tree-content clear-both">
       <el-scrollbar>
@@ -36,7 +36,7 @@
                   :style="{color:row.defaultRouter === data.name?'#E6A23C':'#85ce61'}"
                   @click="() => setDefault(data)"
                 >
-                  {{ row.defaultRouter === data.name?"首页":"设为首页" }}
+                  {{ row.defaultRouter === data.name? t('menus.home') : t('menus.setAsHome') }}
                 </el-button>
               </span>
               <span v-if="data.menuBtn.length">
@@ -45,7 +45,7 @@
                   link
                   @click="() => OpenBtn(data)"
                 >
-                  分配按钮
+                {{ t('menus.assignButton') }}
                 </el-button>
               </span>
             </span>
@@ -55,7 +55,7 @@
     </div>
     <el-dialog
       v-model="btnVisible"
-      title="分配按钮"
+      :title="t('menus.assignButton')"
       destroy-on-close
     >
       <el-table
@@ -79,11 +79,11 @@
       </el-table>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="closeDialog">取 消</el-button>
+          <el-button @click="closeDialog">{{ t('general.close') }}</el-button>
           <el-button
             type="primary"
             @click="enterDialog"
-          >确 定</el-button>
+          >{{ t('general.confirm') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -98,6 +98,9 @@ import {
 import { getAuthorityBtnApi, setAuthorityBtnApi } from '@/api/authorityBtn'
 import { nextTick, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n' // added by mohamed hassan to support multilanguage
+
+const { t } = useI18n() // added by mohamed hassan to support multilanguage
 
 defineOptions({
   name: 'Menus'
@@ -117,6 +120,7 @@ const filterText = ref('')
 const menuTreeData = ref([])
 const menuTreeIds = ref([])
 const needConfirm = ref(false)
+
 const menuDefaultProps = ref({
   children: 'children',
   label: function(data) {
@@ -149,7 +153,7 @@ init()
 const setDefault = async(data) => {
   const res = await updateAuthority({ authorityId: props.row.authorityId, AuthorityName: props.row.authorityName, parentId: props.row.parentId, defaultRouter: data.name })
   if (res.code === 0) {
-    ElMessage({ type: 'success', message: '设置成功' })
+    ElMessage({ type: 'success', message: t('general.setupSuccess') })
     emit('changeRow', 'defaultRouter', res.data.authority.defaultRouter)
   }
 }
@@ -171,7 +175,7 @@ const relation = async() => {
   if (res.code === 0) {
     ElMessage({
       type: 'success',
-      message: '菜单设置成功!'
+      message: t('menus.menuSetupSuccess')
     })
   }
 }
@@ -222,7 +226,7 @@ const enterDialog = async() => {
     authorityId: props.row.authorityId
   })
   if (res.code === 0) {
-    ElMessage({ type: 'success', message: '设置成功' })
+    ElMessage({ type: 'success', message: t('general.setupSuccess') })
     btnVisible.value = false
   }
 }

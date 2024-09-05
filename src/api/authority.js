@@ -1,12 +1,12 @@
-import service from "@/utils/request";
+import service from '@/utils/request'
 // @Router /authority/getAuthorityList [post]
 export const getAuthorityList = (data) => {
   return service({
-    url: "/authority/getAuthorityList",
-    method: "post",
-    data,
-  });
-};
+    url: '/authority/getAuthorityList',
+    method: 'post',
+    data
+  })
+}
 
 // @Summary 删除角色
 // @Security ApiKeyAuth
@@ -17,11 +17,11 @@ export const getAuthorityList = (data) => {
 // @Router /authority/deleteAuthority [post]
 export const deleteAuthority = (data) => {
   return service({
-    url: "/authority/deleteAuthority",
-    method: "post",
-    data,
-  });
-};
+    url: '/authority/deleteAuthority',
+    method: 'post',
+    data
+  })
+}
 
 // @Summary 创建角色
 // @Security ApiKeyAuth
@@ -32,11 +32,11 @@ export const deleteAuthority = (data) => {
 // @Router /authority/createAuthority [post]
 export const createAuthority = (data) => {
   return service({
-    url: "/authority/createAuthority",
-    method: "post",
-    data,
-  });
-};
+    url: '/authority/createAuthority',
+    method: 'post',
+    data
+  })
+}
 
 // @Tags authority
 // @Summary 拷贝角色
@@ -48,11 +48,11 @@ export const createAuthority = (data) => {
 // @Router /authority/copyAuthority [post]
 export const copyAuthority = (data) => {
   return service({
-    url: "/authority/copyAuthority",
-    method: "post",
-    data,
-  });
-};
+    url: '/authority/copyAuthority',
+    method: 'post',
+    data
+  })
+}
 
 // @Summary 设置角色资源权限
 // @Security ApiKeyAuth
@@ -63,11 +63,11 @@ export const copyAuthority = (data) => {
 // @Router /authority/setDataAuthority [post]
 export const setDataAuthority = (data) => {
   return service({
-    url: "/authority/setDataAuthority",
-    method: "post",
-    data,
-  });
-};
+    url: '/authority/setDataAuthority',
+    method: 'post',
+    data
+  })
+}
 
 // @Summary 修改角色
 // @Security ApiKeyAuth
@@ -78,8 +78,8 @@ export const setDataAuthority = (data) => {
 // @Router /authority/setDataAuthority [post]
 export const updateAuthority = (data) => {
   return service({
-    url: "/authority/updateAuthority",
-    method: "put",
-    data,
-  });
-};
+    url: '/authority/updateAuthority',
+    method: 'put',
+    data
+  })
+}

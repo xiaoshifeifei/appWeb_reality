@@ -2,12 +2,12 @@
   <div>
     <warning-bar
       href="https://www.bilibili.com/video/BV1kv4y1g7nT?p=3"
-      title="此功能为开发环境使用，不建议发布到生产，具体使用效果请点我观看。"
+      :title="t('view.systemTools.autoCode.autoCodeNote')"
     />
     <div class="gva-search-box">
-      <div class="text-lg mb-2 text-gray-600">使用AI创建</div>
+      <div class="text-lg mb-2 text-gray-600">{{ t('view.systemTools.autoCode.createdByAI') }}</div>
       <div class="relative">
-        <el-input v-model="prompt" type="textarea" :rows="5" :maxlength="100" :placeholder="`【Beta】试试描述你的表，让AI帮你完成。\n目前正在测试阶段，遇到问题请及时反馈。\n此功能需要到插件市场个人中心获取自己的AI-Path，把AI-Path填入config.yaml下的autocode-->ai-path，重启项目即可使用。`" resize="none" />
+        <el-input v-model="prompt" type="textarea" :rows="5" :maxlength="100" :placeholder="t('view.systemTools.autoCode.aiCodeNote')" resize="none" />
         <div class="flex absolute right-2 bottom-2">
           <el-tooltip
             content="小奇存在失败概率，面向所有用户开放使用（失败了重新生成一下就好）。"
@@ -79,7 +79,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item
-              label="数据库名"
+            :label="t('view.systemTools.autoCode.dbName')"
               prop="structName"
               class="w-full"
             >
@@ -87,7 +87,7 @@
                 v-model="dbform.dbName"
                 clearable
                 filterable
-                placeholder="请选择数据库"
+                :placeholder="t('view.systemTools.autoCode.selectDB')"
                 class="w-full"
                 @change="getTableFunc"
               >
@@ -102,7 +102,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item
-              label="表名"
+            :label="t('view.systemTools.autoCode.tableName')"
               prop="structName"
               class="w-full"
             >
@@ -111,7 +111,7 @@
                 :disabled="!dbform.dbName"
                 class="w-full"
                 filterable
-                placeholder="请选择表"
+                :placeholder="t('view.systemTools.autoCode.selectTable')"
               >
                 <el-option
                   v-for="item in tableOptions"
@@ -184,13 +184,13 @@
           </el-col>
           <el-col :span="6">
             <el-form-item
-                label="中文名称"
+                label="结构简介"
                 prop="description"
                 class="w-full"
             >
               <el-input
                   v-model="form.description"
-                  placeholder="中文描述作为自动api描述"
+                  :placeholder="t('view.systemTools.autoCode.structChineseNameNote')"
               />
             </el-form-item>
           </el-col>
@@ -202,7 +202,7 @@
             >
               <el-input
                 v-model="form.tableName"
-                placeholder="指定表名（非必填）"
+                :placeholder="t('view.systemTools.autoCode.tableNameNote')"
               />
             </el-form-item>
           </el-col>
@@ -215,11 +215,11 @@
             >
               <template #label>
                 <el-tooltip
-                  content="生成文件的默认名称(建议为驼峰格式,首字母小写,如sysXxxXxxx)"
+                  :content="t('view.systemTools.autoCode.fileNameNote')"
                   placement="bottom"
                   effect="light"
                 >
-                  <div> 文件名称 <el-icon><QuestionFilled /></el-icon> </div>
+                  <div> {{ t('view.systemTools.autoCode.fileName') }} <el-icon><QuestionFilled /></el-icon> </div>
                 </el-tooltip>
               </template>
               <el-input
@@ -508,15 +508,6 @@
             </template>
           </el-table-column>
           <el-table-column
-              align="left"
-              prop="excel"
-              label="导入/导出"
-          >
-            <template #default="{row}">
-              <el-checkbox v-model="row.excel" />
-            </template>
-          </el-table-column>
-          <el-table-column
             align="left"
             prop="fieldJson"
             width="160px"
@@ -687,13 +678,13 @@
           type="primary"
           @click="enterForm(true)"
         >
-          预览代码
+        {{ t('view.systemTools.autoCode.codePreview') }}
         </el-button>
         <el-button
           type="primary"
           @click="enterForm(false)"
         >
-          生成代码
+        {{ t('view.systemTools.autoCode.generateCode') }}
         </el-button>
       </div>
     </div>
@@ -743,13 +734,13 @@
               type="primary"
               @click="selectText"
             >
-              全选
+            {{ t('general.selectAll') }}
             </el-button>
             <el-button
               type="primary"
               @click="copy"
             >
-              复制
+            {{ t('view.systemTools.autoCode.copy') }}
             </el-button>
           </div>
         </div>
@@ -763,8 +754,14 @@
   </div>
 </template>
 
-<script setup>
+<script>
 
+export default {
+  name: 'AutoCode'
+}
+</script>
+
+<script setup>
 import FieldDialog from '@/view/systemTools/autoCode/component/fieldDialog.vue'
 import PreviewCodeDialog from '@/view/systemTools/autoCode/component/previewCodeDialg.vue'
 import { toUpperCase, toHump, toSQLLine, toLowerCase } from '@/utils/stringFun'
@@ -775,6 +772,9 @@ import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import WarningBar from '@/components/warningBar/warningBar.vue'
 import Sortable from 'sortablejs'
+import { useI18n } from 'vue-i18n' // added by mohamed hassan to support multilanguage
+
+const { t } = useI18n() // added by mohamed hassan to support multilanguage
 
 const getOnlyNumber = () => {
   let randomNumber = '';
@@ -817,7 +817,6 @@ const llmAutoFunc = async (mode) =>{
               form: true,
               desc: true,
               table: true,
-              excel: false,
               dataSource: {
                 association:1,
                 table: '',
@@ -974,7 +973,6 @@ const fieldTemplate = {
   form: true,
   desc: true,
   table: true,
-  excel: false,
   errorText: '',
   primaryKey: false,
   clearable: true,
@@ -1017,18 +1015,18 @@ const form = ref({
 })
 const rules = ref({
   structName: [
-    { required: true, message: '请输入结构体名称', trigger: 'blur' }
+    { required: true, message: t('view.systemTools.autoCode.entStructName'), trigger: 'blur' }
   ],
   abbreviation: [
-    { required: true, message: '请输入结构体简称', trigger: 'blur' }
+    { required: true, message: t('view.systemTools.autoCode.entStructAbbreviation'), trigger: 'blur' }
   ],
   description: [
-    { required: true, message: '请输入结构体描述', trigger: 'blur' }
+    { required: true, message: t('view.systemTools.autoCode.entStructDesc'), trigger: 'blur' }
   ],
   packageName: [
     {
       required: true,
-      message: '文件名称：sysXxxxXxxx',
+      message: t('view.systemTools.autoCode.entFileName'),
       trigger: 'blur'
     }
   ],
@@ -1036,6 +1034,7 @@ const rules = ref({
     { required: true, message: '请选择package', trigger: 'blur' }
   ]
 })
+
 const dialogMiddle = ref({})
 const bk = ref({})
 const dialogFlag = ref(false)
@@ -1064,13 +1063,17 @@ const useGva = (e) => {
 const toLowerCaseFunc = (form, key) => {
   form[key] = toLowerCase(form[key])
 }
+
 const previewNode = ref(null)
+
 const selectText = () => {
   previewNode.value.selectText()
 }
+
 const copy = () => {
   previewNode.value.copy()
 }
+
 const editAndAddField = (item) => {
   dialogFlag.value = true
   if (item) {
@@ -1114,6 +1117,7 @@ const closeDialog = () => {
   }
   dialogFlag.value = false
 }
+
 const deleteField = (index) => {
   ElMessageBox.confirm('确定要删除吗?', '提示', {
     confirmButtonText: '确定',
@@ -1123,12 +1127,14 @@ const deleteField = (index) => {
     form.value.fields.splice(index, 1)
   })
 }
+
 const autoCodeForm = ref(null)
+
 const enterForm = async(isPreview) => {
   if (form.value.fields.length <= 0) {
     ElMessage({
       type: 'error',
-      message: '请填写至少一个field'
+      message: t('view.systemTools.autoCode.errNoFields')
     })
     return false
   }
@@ -1146,7 +1152,7 @@ const enterForm = async(isPreview) => {
   ) {
     ElMessage({
       type: 'error',
-      message: '存在与结构体同名的字段'
+      message: t('view.systemTools.autoCode.errSameFiledName')
     })
     return false
   }
@@ -1183,7 +1189,7 @@ const enterForm = async(isPreview) => {
       if (form.value.structName === form.value.abbreviation) {
         ElMessage({
           type: 'error',
-          message: 'structName和struct简称不能相同'
+          message: t('view.systemTools.autoCode.errSameStructDescAbbr')
         })
         return false
       }
@@ -1200,7 +1206,7 @@ const enterForm = async(isPreview) => {
         }
           ElMessage({
             type: 'success',
-            message: '自动化代码创建成功，自动移动成功'
+            message: t('view.systemTools.autoCode.codeGenMoveSuccess')
           })
         clearCatch()
       }
@@ -1243,7 +1249,7 @@ const getColumnFunc = async() => {
     form.value.tableName = dbform.value.tableName
     form.value.packageName = tbHump
     form.value.abbreviation = tbHump
-    form.value.description = tbHump + '表'
+    form.value.description = tbHump + t('view.systemTools.autoCode.table')
     form.value.autoCreateApiToSql = true
     form.value.fields = []
     res.data.columns &&
@@ -1253,7 +1259,7 @@ const getColumnFunc = async() => {
               form.value.fields.push({
                 onlyNumber: getOnlyNumber(),
                 fieldName: toUpperCase(fbHump),
-                fieldDesc: item.columnComment || fbHump + '字段',
+                fieldDesc: item.columnComment || fbHump + t('view.systemTools.autoCode.field'),
                 fieldType: fdMap.value[item.dataType],
                 dataType: item.dataType,
                 fieldJson: fbHump,
@@ -1269,7 +1275,6 @@ const getColumnFunc = async() => {
                 dictType: '',
                 form: true,
                 table: true,
-                excel: false,
                 desc: true,
                 dataSource: {
                   association:1,

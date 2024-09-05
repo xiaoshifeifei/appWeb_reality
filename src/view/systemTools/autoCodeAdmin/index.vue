@@ -3,13 +3,13 @@
     <div class="gva-table-box">
       <div class="gva-btn-list">
         <el-button type="primary" icon="plus" @click="goAutoCode(null)">
-          新增
+          {{ t("general.add") }}
         </el-button>
       </div>
       <el-table :data="tableData">
         <el-table-column type="selection" width="55" />
         <el-table-column align="left" label="id" width="60" prop="ID" />
-        <el-table-column align="left" label="日期" width="180">
+        <el-table-column align="left" :label="t('general.createdAt')" width="180">
           <template #default="scope">
             {{
               formatDate(scope.row.CreatedAt)
@@ -18,38 +18,38 @@
         </el-table-column>
         <el-table-column
           align="left"
-          label="结构体名"
+          :label="t('autoCode.structName')"
           min-width="150"
           prop="structName"
         />
         <el-table-column
           align="left"
-          label="结构体描述"
+          :label="t('autoCode.structChineseName')"
           min-width="150"
           prop="structCNName"
         />
         <el-table-column
           align="left"
-          label="表名称"
+          :label="t('autoCode.tableName')"
           min-width="150"
           prop="tableName"
         />
         <el-table-column
           align="left"
-          label="回滚标记"
+          :label="t('autoCodeAdmin.rollBackMark')"
           min-width="150"
           prop="flag"
         >
           <template #default="scope">
             <el-tag v-if="scope.row.flag" type="danger" effect="dark">
-              已回滚
+              {{ t("autoCodeAdmin.rolledBack") }}
             </el-tag>
             <el-tag v-else type="success" effect="dark">
-              未回滚
+              {{ t("autoCodeAdmin.notRolledBack") }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column align="left" label="操作" min-width="240">
+        <el-table-column align="left" :lable="t('general.operations')" min-width="240">
           <template #default="scope">
             <div>
               <el-button
@@ -66,13 +66,13 @@
                 :disabled="scope.row.flag === 1"
                 @click="openDialog(scope.row)"
               >
-                回滚
+              {{ t("autoCodeAdmin.rollBack") }}
               </el-button>
               <el-button type="primary" link @click="goAutoCode(scope.row)">
-                复用
+                {{ t("autoCodeAdmin.reuse") }}
               </el-button>
               <el-button type="primary" link @click="deleteRow(scope.row)">
-                删除
+                {{ t("general.delete") }}
               </el-button>
             </div>
           </template>
@@ -206,7 +206,9 @@ import { useRouter } from "vue-router";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { ref } from "vue";
 import { formatDate } from "@/utils/format";
-import { toUpperCase } from "@/utils/stringFun"
+import { useI18n } from 'vue-i18n'; // added by mohamed hassan to support multilanguage
+
+const { t } = useI18n() // added by mohamed hassan to support multilanguage
 
 defineOptions({
   name: "AutoCodeAdmin",
@@ -262,9 +264,6 @@ const closeFunc = () => {
 };
 
 const runFunc = async () =>{
-  // 首字母自动转换为大写
-  autoFunc.value.funcName = toUpperCase(autoFunc.value.funcName)
-
   const res = await addFunc(autoFunc.value)
   if (res.code === 0) {
     ElMessage.success("增加方法成功");
@@ -299,16 +298,16 @@ const getTableData = async () => {
 
 getTableData();
 
-const deleteRow = async (row) => {
-  ElMessageBox.confirm("此操作将删除本历史, 是否继续?", "提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
-  }).then(async () => {
-    const res = await delSysHistory({ id: Number(row.ID) });
+const deleteRow = async(row) => {
+  ElMessageBox.confirm(t('autoCodeAdmin.deleteHistoryConfirm'), t('general.hint'), {
+    confirmButtonText: t('general.confirm'),
+    cancelButtonText: t('general.cancel'),
+    type: 'warning'
+  }).then(async() => {
+    const res = await delSysHistory({ id: Number(row.ID) })
     if (res.code === 0) {
-      ElMessage.success("删除成功");
-      getTableData();
+      ElMessage.success(t('general.deleteSuccess'))
+      getTableData()
     }
   });
 };
@@ -340,8 +339,8 @@ const deleteTableCheck = (flag) => {
       {
         closeOnClickModal: false,
         distinguishCancelAndClose: true,
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+        confirmButtonText: t('general.confirm'),
+      cancelButtonText: t('general.cancel'),
         type: "warning",
       }
     )

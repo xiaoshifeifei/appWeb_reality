@@ -60,7 +60,7 @@
           <el-dropdown-menu>
             <el-dropdown-item>
               <span class="font-bold">
-                当前角色：{{
+                {{ t('layout.header.currentRole') }}{{
                   userStore.userInfo.authority.authorityName
                 }}
               </span>
@@ -76,18 +76,18 @@
                 @click="changeUserAuth(item.authorityId)"
               >
                 <span>
-                  切换为：{{ item.authorityName }}
+                  {{ t('layout.header.switchTo') }}{{ item.authorityName }}
                 </span>
               </el-dropdown-item>
             </template>
             <el-dropdown-item icon="avatar" @click="toPerson">
-              个人信息
+              {{ t('layout.header.personalInfo') }}
             </el-dropdown-item>
             <el-dropdown-item
               icon="reading-lamp"
               @click="userStore.LoginOut"
             >
-              登 出
+              {{ t('layout.header.logout') }}
             </el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -107,6 +107,9 @@ import { computed, } from 'vue'
 import { setUserAuthority } from '@/api/user'
 import { fmtTitle } from "@/utils/fmtRouterTitle";
 import gvaAside from "@/view/layout/aside/index.vue"
+import { useI18n } from 'vue-i18n' // added by mohamed hassan to support multilanguage
+
+const { t } = useI18n() // added by mohamed hassan to support multilanguage
 const userStore = useUserStore();
 const router = useRouter()
 const route = useRoute()

@@ -8,7 +8,7 @@
     <el-tooltip
         class=""
         effect="dark"
-        content="视频教程"
+        :content="t('layout.tools.videoTutorial')"
         placement="bottom"
     >
       <el-dropdown @command="toDoc">
@@ -27,10 +27,10 @@
     <el-tooltip
       class=""
       effect="dark"
-      content="搜索"
+      :content="t('layout.tools.search')"
       placement="bottom"
     >
-      <el-icon @click="handleCommand" class="w-8 h-8 shadow rounded-full border border-gray-200 dark:border-gray-600 cursor-pointer border-solid">
+      <el-icon class="w-8 h-8 shadow rounded-full border border-gray-200 dark:border-gray-600 cursor-pointer border-solid" @click="handleCommand">
         <Search />
       </el-icon>
     </el-tooltip>
@@ -38,7 +38,7 @@
     <el-tooltip
       class=""
       effect="dark"
-      content="系统设置"
+      :content="t('layout.tools.systemSettings')"
       placement="bottom"
     >
       <el-icon class="w-8 h-8 shadow rounded-full border border-gray-200 dark:border-gray-600 cursor-pointer border-solid" @click="toggleSetting">
@@ -49,7 +49,7 @@
     <el-tooltip
       class=""
       effect="dark"
-      content="刷新"
+      :content="t('layout.tools.refresh')"
       placement="bottom"
     >
       <el-icon
@@ -63,7 +63,7 @@
     <el-tooltip
       class=""
       effect="dark"
-      content="切换主题"
+      :content="t('layout.tools.switchTheme')"
       placement="bottom"
       :disabled="appStore.theme === 'auto'"
     >
@@ -75,7 +75,21 @@
       </el-icon>
     </el-tooltip>
 
-    <gva-setting v-model:drawer="showSettingDrawer"></gva-setting>
+    <el-tooltip
+      class=""
+      effect="dark"
+      :content="t('layout.tools.changeLanguage')"
+      placement="bottom"
+      :disabled="appStore.theme === 'auto'"
+    >
+      <SelectLang @success="changeSuccess">
+          <el-icon class="w-8 h-8 shadow rounded-full border border-gray-200 cursor-pointer border-solid" @click="appStore.toggleLang">
+            <language />
+          </el-icon>
+      </SelectLang>
+    </el-tooltip>
+
+    <gva-setting v-model:drawer="showSettingDrawer" />
     <command-menu ref="command" />
   </div>
 </template>
@@ -87,7 +101,10 @@ import GvaSetting from "@/view/layout/setting/index.vue"
 import { ref } from "vue"
 import { emitter } from "@/utils/bus.js";
 import CommandMenu from "@/components/commandMenu/index.vue";
-import {toDoc} from "@/utils/doc";
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n() // added by mohamed hassan to support multilanguage
+
+import SelectLang from '@/components/i18n/selectLanguage.vue'
 
 const appStore = useAppStore()
 const showSettingDrawer = ref(false)
@@ -129,7 +146,12 @@ const initPage = () => {
   window.addEventListener("keydown", handleKeyDown);
 };
 
+
 initPage();
+
+const changeSuccess = () => {
+  window.location.reload();
+}
 
 
 const videoList = [

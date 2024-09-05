@@ -3,6 +3,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { useUserStore } from '@/pinia/modules/user'
 import router from '@/router/index'
 import { ElLoading } from 'element-plus'
+import i18n from '@/i18n' // added by mohamed hassan to multilangauge
 
 const service = axios.create({
   baseURL: import.meta.env.VITE_BASE_API,
@@ -45,6 +46,7 @@ service.interceptors.request.use(
       'Content-Type': 'application/json',
       'x-token': userStore.token,
       'x-user-id': userStore.userInfo.ID,
+      'Accept-Language': userStore.language, // added by mohame hassan to allow store selected language for multilanguage support.
       ...config.headers
     }
     return config
@@ -103,7 +105,6 @@ service.interceptors.response.use(
       })
       return
     }
-
     switch (error.response.status) {
       case 500:
         ElMessageBox.confirm(`
@@ -112,8 +113,8 @@ service.interceptors.response.use(
         `, '接口报错', {
           dangerouslyUseHTMLString: true,
           distinguishCancelAndClose: true,
-          confirmButtonText: '清理缓存',
-          cancelButtonText: '取消'
+          confirmButtonText: i18n.global.t('general.confirm'),
+          cancelButtonText: i18n.global.t('general.cancel')
         })
           .then(() => {
             const userStore = useUserStore()
@@ -128,8 +129,8 @@ service.interceptors.response.use(
           `, '接口报错', {
           dangerouslyUseHTMLString: true,
           distinguishCancelAndClose: true,
-          confirmButtonText: '我知道了',
-          cancelButtonText: '取消'
+          confirmButtonText: i18n.global.t('general.confirm'),
+          cancelButtonText: i18n.global.t('general.cancel')
         })
         break
       case 401:

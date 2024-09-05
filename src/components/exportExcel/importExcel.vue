@@ -10,13 +10,16 @@
       icon="upload"
       class="ml-3"
     >
-      导入
+      {{ t('components.exportExcel.importExcel.import') }}
     </el-button>
   </el-upload>
 </template>
 
 <script setup>
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n' // added by mohamed hassan to support multilanguage
+
+const { t } = useI18n() // added by mohamed hassan to support multilanguage
 
 const baseUrl = import.meta.env.VITE_BASE_API
 
@@ -33,7 +36,7 @@ const url = `${baseUrl}/sysExportTemplate/importExcel?templateID=${props.templat
 
 const handleSuccess = (res) => {
   if (res.code === 0) {
-    ElMessage.success('导入成功')
+    ElMessage.success(t('components.exportExcel.importExcel.importSuccess'))
     emit('on-success')
   } else {
     ElMessage.error(res.msg)
