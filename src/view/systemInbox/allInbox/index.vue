@@ -175,20 +175,6 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <!-- <el-form-item label="num">
-                <el-input-number
-                  :min="0"
-                  v-model="item.num"
-                  autocomplete="off"
-                />
-                <el-button
-                  style="margin-left: 20px"
-                  type="delete"
-                  @click="delItem(index)"
-                >
-                  删除
-                </el-button>
-              </el-form-item> -->
               <el-form-item
                 label="num"
                 :prop="`items.${index}.num`"
@@ -224,7 +210,7 @@
                 :rules="rules['content.lang']"
               >
                 <el-select
-                  v-model="formKey"
+                  v-model="item.lang"
                   style="width: 100%"
                   placeholder="请选择"
                 >
@@ -246,6 +232,13 @@
                 <el-input :min="0" v-model="item.title" autocomplete="off" />
               </el-form-item>
             </el-col>
+            <el-button
+              style="margin-left: 20px"
+              type="delete"
+              @click="delContent(item.lang)"
+            >
+              删除
+            </el-button>
             <el-col :span="15">
               <el-form-item
                 label="message"
@@ -255,8 +248,12 @@
                 <el-input :min="0" v-model="item.message" autocomplete="off" />
               </el-form-item>
             </el-col>
+            <div style="width: 100%; height: 20px"></div>
           </el-row>
         </template>
+        <el-form-item>
+          <el-button type="primary" @click="addContent()"> 新增 </el-button>
+        </el-form-item>
         <el-form-item label="启用" prop="status">
           <el-switch
             v-model="formMail.status"
@@ -307,6 +304,14 @@ const type = ref("");
 const rules = ref({
   code: [{ required: true, message: "请输入code", trigger: "blur" }],
   desc: [{ required: true, message: "请输入desc", trigger: "blur" }],
+  "items.code": [{ required: true, message: "请输入code", trigger: "blur" }],
+  "items.num": [{ required: true, message: "请输入数量", trigger: "blur" }],
+  "content.lang": [{ required: true, message: "请选择语言", trigger: "blur" }],
+  "content.title": [{ required: true, message: "请输入标题", trigger: "blur" }],
+  "content.message": [
+    { required: true, message: "请输入内容", trigger: "blur" },
+  ],
+  expired: [{ required: true, message: "请选择过期时间", trigger: "blur" }],
 });
 const sendMailVisible = ref(false);
 const page = ref(1);
@@ -354,6 +359,23 @@ const dataGet = (dateStr) => {
     date.getSeconds().toString().padStart(2, "0");
   return formattedDate;
 };
+const delContent = (index) => {
+  delete formMail.value.content[index];
+};
+
+let addSz = 0;
+const addContent = () => {
+  addSz++;
+  let obj = {
+    lang: "en",
+    title: "",
+    message: "",
+  };
+  objectPush(formMail.value.content, "en" + addSz, obj);
+};
+function objectPush(obj, key, value) {
+  obj[key] = value;
+}
 
 const handleDateChange = () => {
   if (formMail.value.expired) {
@@ -378,6 +400,7 @@ const closeMail = () => {
 };
 const rulesMail = ref({
   id: [{ required: true, message: "请输入id", trigger: "blur" }],
+  expired: [{ required: true, message: "请选择过期时间", trigger: "blur" }],
 });
 const handleChange = (number, index, params, params2) => {
   if (params == "v4") {
@@ -411,17 +434,14 @@ const handleChange = (number, index, params, params2) => {
 const enterMail = async () => {
   mailForm.value.validate(async (valid) => {
     if (valid) {
+      let arrObj = {};
       for (const key in formMail.value.content) {
-        formMail.value.content[formKey.value] = {
-          ...formMail.value.content[key],
+        arrObj[formMail.value.content[key].lang] = {
+          title: formMail.value.content[key].title,
+          message: formMail.value.content[key].message,
         };
-
-        if (Object.keys(formMail.value.content).length === 2) {
-          const keysToFilter = [key];
-          const filteredObj = filterKeys(formMail.value.content, keysToFilter);
-          formMail.value.content = filteredObj;
-        }
       }
+      formMail.value.content = arrObj;
       if (formMail.value.items != null && formMail.value.items.length) {
         formMail.value.items.map((item, index) => {
           item.num = item.num + "";
@@ -600,12 +620,14 @@ const formKey = ref("");
 const editTackFunc = async (row) => {
   let rows = JSON.parse(JSON.stringify(row));
   for (const key in rows.content) {
-    formKey.value = key;
+    rows.content[key] = {
+      lang: key,
+      ...rows.content[key],
+    };
   }
   formMail.value = rows;
   sendMailVisible.value = true;
 
-  console.log(123456798, formMail.value);
   type.value = "edit";
 };
 

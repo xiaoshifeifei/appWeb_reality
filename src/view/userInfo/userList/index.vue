@@ -304,20 +304,6 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <!-- <el-form-item label="num">
-                <el-input-number
-                  :min="0"
-                  v-model="item.num"
-                  autocomplete="off"
-                />
-                <el-button
-                  style="margin-left: 20px"
-                  type="delete"
-                  @click="delItem(index)"
-                >
-                  删除
-                </el-button>
-              </el-form-item> -->
               <el-form-item
                 label="num"
                 :prop="`items.${index}.num`"
@@ -376,6 +362,13 @@
                 <el-input :min="0" v-model="item.title" autocomplete="off" />
               </el-form-item>
             </el-col>
+            <el-button
+              style="margin-left: 20px"
+              type="delete"
+              @click="delContent(item.lang)"
+            >
+              删除
+            </el-button>
             <el-col :span="15">
               <el-form-item
                 label="message"
@@ -387,6 +380,9 @@
             </el-col>
           </el-row>
         </template>
+        <el-form-item>
+          <el-button type="primary" @click="addContent()"> 新增 </el-button>
+        </el-form-item>
         <el-form-item label="启用" prop="status">
           <el-switch
             v-model="formMail.status"
@@ -455,6 +451,14 @@ const rules = ref({
   desc: [{ required: true, message: "请输入desc", trigger: "blur" }],
   complete: [{ required: true, message: "请选择类型", trigger: "blur" }],
   award: [{ required: true, message: "请选择类型", trigger: "blur" }],
+  expired: [{ required: true, message: "请选择过期时间", trigger: "blur" }],
+  "items.code": [{ required: true, message: "请输入code", trigger: "blur" }],
+  "items.num": [{ required: true, message: "请输入数量", trigger: "blur" }],
+  "content.lang": [{ required: true, message: "请选择语言", trigger: "blur" }],
+  "content.title": [{ required: true, message: "请输入标题", trigger: "blur" }],
+  "content.message": [
+    { required: true, message: "请输入内容", trigger: "blur" },
+  ],
 });
 
 const formMail = ref({
@@ -468,7 +472,7 @@ const formMail = ref({
   ],
   content: [
     {
-      lang: "",
+      lang: "en",
       title: "",
       message: "",
     },
@@ -478,6 +482,14 @@ const formMail = ref({
 
 const rulesMail = ref({
   id: [{ required: true, message: "请输入id", trigger: "blur" }],
+  "content.lang": [{ required: true, message: "请选择语言", trigger: "blur" }],
+  "content.title": [
+    { required: true, message: "请选输入标题", trigger: "blur" },
+  ],
+  "content.message": [
+    { required: true, message: "请选输入内容", trigger: "blur" },
+  ],
+  expired: [{ required: true, message: "请选择过期时间", trigger: "blur" }],
 });
 
 const page = ref(1);
@@ -579,6 +591,16 @@ const handleChange = (number, index, params, params2) => {
       }
     }
   }
+};
+const delContent = (index) => {
+  delete formMail.value.content[index];
+};
+const addContent = () => {
+  formMail.value.content.push({
+    lang: "en",
+    title: "",
+    message: "",
+  });
 };
 
 // 初始化相关
@@ -748,7 +770,7 @@ const initMailForm = () => {
     ],
     content: [
       {
-        lang: "",
+        lang: "en",
         title: "",
         message: "",
       },
