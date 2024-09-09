@@ -151,16 +151,49 @@
         <el-row class="w-full">
           <el-col :span="15">
             <el-form-item label="id" prop="id">
-              <el-input-number
+              <el-input
                 :disabled="type === 'edit'"
-                :min="0"
                 v-model="formMail.id"
                 autocomplete="off"
               />
             </el-form-item>
           </el-col>
+          <el-col :span="15">
+            <el-form-item label="type" prop="type">
+              <el-input
+                :disabled="type === 'edit'"
+                v-model="formMail.type"
+                autocomplete="off"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="15">
+            <el-form-item label="accountId" prop="accountId">
+              <el-input
+                :disabled="type === 'edit'"
+                v-model="formMail.accountId"
+                autocomplete="off"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="15">
+            <el-form-item label="sender" prop="sender">
+              <el-input
+                :disabled="type === 'edit'"
+                v-model="formMail.sender"
+                autocomplete="off"
+              />
+            </el-form-item>
+          </el-col>
         </el-row>
-        <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
+        <div
+          style="
+            padding: 0 0 20px 40px;
+            color: black;
+            font-size: 16px;
+            font-weight: 700;
+          "
+        >
           奖励
         </div>
         <template v-for="(item, index) in formMail.items" :key="index">
@@ -175,20 +208,6 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <!-- <el-form-item label="num">
-                <el-input-number
-                  :min="0"
-                  v-model="item.num"
-                  autocomplete="off"
-                />
-                <el-button
-                  style="margin-left: 20px"
-                  type="delete"
-                  @click="delItem(index)"
-                >
-                  删除
-                </el-button>
-              </el-form-item> -->
               <el-form-item
                 label="num"
                 :prop="`items.${index}.num`"
@@ -215,14 +234,20 @@
         <el-form-item>
           <el-button type="primary" @click="addItem()"> 新增 </el-button>
         </el-form-item>
-        <template v-for="(item, index) in formMail.content" :key="index">
+        <div
+          style="
+            padding: 0 0 20px 40px;
+            color: black;
+            font-size: 16px;
+            font-weight: 700;
+          "
+        >
+          内容
+        </div>
+        <template v-for="(item, key, index) in formMail.content" :key="index">
           <el-row class="w-full">
             <el-col :span="15">
-              <el-form-item
-                label="lang"
-                :prop="`content.${index}.lang`"
-                :rules="rules['content.lang']"
-              >
+              <el-form-item label="lang">
                 <el-select
                   v-model="formKey"
                   style="width: 100%"
@@ -279,12 +304,7 @@
 </template>
 
 <script setup>
-import {
-  systemInboxGetList,
-  systemInboxDel,
-  systemInboxEdit,
-  virtualItemAdd,
-} from "@/api/tack";
+import { InboxGetList, InboxDel, InboxEdit, virtualItemAdd } from "@/api/tack";
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
@@ -439,7 +459,7 @@ const enterMail = async () => {
           }
         });
       }
-      const res = await systemInboxEdit(formMail.value);
+      const res = await InboxEdit(formMail.value);
       if (res.code === 0) {
         ElMessage({
           type: "success",
@@ -482,7 +502,6 @@ const handleSizeChange = (val) => {
 const switchStatus = async (row) => {
   let myUserInfo = JSON.parse(JSON.stringify(row));
   myUserInfo.items.map((item) => {
-    // item.num = Number(item.num);
     item.num = item.num + "";
     if (item.num.indexOf("B") !== -1) {
       const newStr = item.num.replace("B", "");
@@ -498,7 +517,7 @@ const switchStatus = async (row) => {
     }
   });
 
-  const res = await systemInboxEdit(myUserInfo);
+  const res = await InboxEdit(myUserInfo);
   if (res.code === 0) {
     ElMessage({
       type: "success",
@@ -534,7 +553,7 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async () => {
-  const table = await systemInboxGetList({
+  const table = await InboxGetList({
     page: page.value,
     pageSize: pageSize.value,
     ...searchInfo.value,
@@ -630,7 +649,7 @@ const enterDialog = async () => {
           break;
         case "edit":
           {
-            const res = await systemInboxEdit(form.value);
+            const res = await InboxEdit(form.value);
             if (res.code === 0) {
               ElMessage({
                 type: "success",
@@ -662,7 +681,7 @@ const deleteTackFunc = async (row) => {
     cancelButtonText: "取消",
     type: "warning",
   }).then(async () => {
-    const res = await systemInboxDel({ id: row.id });
+    const res = await InboxDel({ id: row.id });
     if (res.code === 0) {
       ElMessage({
         type: "success",

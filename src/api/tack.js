@@ -199,7 +199,7 @@ export const timedRewardDel = (data) => {
   });
 };
 
-// 邮件列表
+// 群发邮件列表
 export const systemInboxGetList = (params) => {
   return service({
     url: "/app/inbox/systemInboxList",
@@ -208,7 +208,7 @@ export const systemInboxGetList = (params) => {
   });
 };
 
-// 邮件修改
+// 群发邮件修改
 export const systemInboxEdit = (data) => {
   return service({
     url: "/app/inbox/systemInboxEdit",
@@ -217,10 +217,37 @@ export const systemInboxEdit = (data) => {
   });
 };
 
-// 邮件删除
+// 群发邮件删除
 export const systemInboxDel = (data) => {
   return service({
     url: "/app/inbox/systemInboxDel",
+    method: "post",
+    data,
+  });
+};
+
+// 个人邮件列表
+export const InboxGetList = (params) => {
+  return service({
+    url: "/app/inbox/list",
+    method: "get",
+    params,
+  });
+};
+
+// 个人邮件修改
+export const InboxEdit = (data) => {
+  return service({
+    url: "/app/inbox/edit",
+    method: "post",
+    data,
+  });
+};
+
+// 个人邮件删除
+export const InboxDel = (data) => {
+  return service({
+    url: "/app/inbox/del",
     method: "post",
     data,
   });
