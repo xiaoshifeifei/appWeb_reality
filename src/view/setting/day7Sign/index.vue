@@ -126,6 +126,9 @@
         <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
           奖励
         </div>
+        <div style="padding: 0 0 20px 40px; color: red; font-size: 12px">
+          提示：分别填写物品配置的名称 / 数量
+        </div>
         <template v-for="(item, index) in form.award" :key="index">
           <el-row class="w-full">
             <el-col :span="12" v-if="item.code || type !== null">
@@ -138,11 +141,31 @@
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.num || type !== null">
-              <el-form-item label="num">
+              <!-- <el-form-item label="num">
                 <el-input-number
                   :min="0"
                   v-model="item.num"
                   autocomplete="off"
+                />
+                <el-button
+                  style="margin-left: 20px"
+                  type="delete"
+                  @click="delItem(index)"
+                >
+                  删除
+                </el-button>
+              </el-form-item> -->
+              <el-form-item
+                label="num"
+                :prop="`award.${index}.num`"
+                :rules="rules['award.num']"
+              >
+                <el-input
+                  style="width: 55%"
+                  v-model="item.num"
+                  autocomplete="off"
+                  @input="item.num = item.num.replace(/[^\d|\.]/g, '')"
+                  @change="handleChange(item.num, index, 'v4')"
                 />
                 <el-button
                   style="margin-left: 20px"
@@ -193,7 +216,8 @@ const form = ref({
 const type = ref("");
 const rules = ref({
   day: [{ required: true, message: "请输入天数", trigger: "blur" }],
-  "award.code": [{ required: true, message: "请选择类型", trigger: "blur" }],
+  "award.code": [{ required: true, message: "请输入code", trigger: "blur" }],
+  "award.num": [{ required: true, message: "请选输入数量", trigger: "blur" }],
 });
 
 const page = ref(1);
@@ -210,6 +234,36 @@ const clickBetDetail = (id) => {
 
 const onReset = () => {
   searchInfo.value = {};
+};
+
+const handleChange = (number, index, params, params2) => {
+  if (params == "v4") {
+    if (number >= 1000000000) {
+      if (params2) {
+        return number / 1000000000 + "B";
+      } else {
+        return (form.value.award[index].num = number / 1000000000 + "B");
+      }
+    } else if (number >= 1000000) {
+      if (params2) {
+        return number / 1000000 + "M";
+      } else {
+        return (form.value.award[index].num = number / 1000000 + "M");
+      }
+    } else if (number >= 1000) {
+      if (params2) {
+        return number / 1000 + "K";
+      } else {
+        return (form.value.award[index].num = number / 1000 + "K");
+      }
+    } else {
+      if (params2) {
+        return number.toString();
+      } else {
+        return (form.value.award[index].num = number.toString());
+      }
+    }
+  }
 };
 // 搜索
 
@@ -238,6 +292,13 @@ const getTableData = async () => {
     ...searchInfo.value,
   });
   if (table.code === 0) {
+    table.data.list.map((item, index) => {
+      if (item.award != null && item.award.length > 0) {
+        item.award.map((item2, index2) => {
+          item2.num = handleChange(item2.num, index2, "v4", true);
+        });
+      }
+    });
     tableData.value = table.data.list;
     total.value = table.data.total;
     page.value = table.data.page;
@@ -307,6 +368,23 @@ const editTackFunc = async (row) => {
 const enterDialog = async () => {
   apiForm.value.validate(async (valid) => {
     if (valid) {
+      if (form.value.award != null && form.value.award.length) {
+        form.value.award.map((item, index) => {
+          item.num = item.num + "";
+          if (item.num.indexOf("B") !== -1) {
+            const newStr = item.num.replace("B", "");
+            item.num = Number(newStr) * 1000000000;
+          } else if (item.num.indexOf("M") !== -1) {
+            const newStr = item.num.replace("M", "");
+            item.num = Number(newStr) * 1000000;
+          } else if (item.num.indexOf("K") !== -1) {
+            const newStr = item.num.replace("K", "");
+            item.num = Number(newStr) * 1000;
+          } else {
+            item.num = Number(item.num);
+          }
+        });
+      }
       switch (type.value) {
         case "add":
           {

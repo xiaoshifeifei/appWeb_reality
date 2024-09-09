@@ -31,7 +31,7 @@
         }"
         :row-class-name="tableRowClassName"
       >
-        <el-table-column type="selection" width="60" />
+        <el-table-column type="selection" align="center" width="60" />
         <el-table-column align="center" label="id" min-width="150" prop="id" />
         <el-table-column
           align="center"
@@ -161,8 +161,16 @@
         </el-row>
         <el-row class="w-full">
           <el-col :span="12">
-            <el-form-item label="max" prop="max">
+            <!-- <el-form-item label="max" prop="max">
               <el-input-number :min="0" v-model="form.max" autocomplete="off" />
+            </el-form-item> -->
+            <el-form-item label="max" prop="max">
+              <el-input
+                v-model="form.max"
+                autocomplete="off"
+                @input="form.max = form.max.replace(/[^\d|\.]/g, '')"
+                @change="handleChange(form.max, index, 'v4')"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -176,6 +184,9 @@
 
         <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
           奖励
+        </div>
+        <div style="padding: 0 0 20px 40px; color: red; font-size: 12px">
+          提示：分别填写物品配置的重量 / 名称 / 数量
         </div>
         <template v-for="(item, index) in form.award" :key="index">
           <el-row class="w-full">
@@ -198,12 +209,32 @@
                 <el-input :min="0" v-model="item.code" autocomplete="off" />
               </el-form-item>
             </el-col>
-            <el-col :span="10" v-if="item.num || type !== null">
-              <el-form-item label="num">
+            <el-col :span="12" v-if="item.num || type !== null">
+              <!-- <el-form-item label="num">
                 <el-input-number
                   :min="0"
                   v-model="item.num"
                   autocomplete="off"
+                />
+                <el-button
+                  style="margin-left: 20px"
+                  type="delete"
+                  @click="delItem(index)"
+                >
+                  删除
+                </el-button>
+              </el-form-item> -->
+              <el-form-item
+                label="num"
+                :prop="`award.${index}.num`"
+                :rules="rules['award.num']"
+              >
+                <el-input
+                  style="width: 55%"
+                  v-model="item.num"
+                  autocomplete="off"
+                  @input="item.num = item.num.replace(/[^\d|\.]/g, '')"
+                  @change="handleChange(item.num, index, 'v2')"
                 />
                 <el-button
                   style="margin-left: 20px"
@@ -259,7 +290,9 @@ const form = ref({
 const type = ref("");
 const rules = ref({
   day: [{ required: true, message: "请输入天数", trigger: "blur" }],
+  max: [{ required: true, message: "请输入最大数", trigger: "blur" }],
   "award.code": [{ required: true, message: "请选择类型", trigger: "blur" }],
+  "award.num": [{ required: true, message: "请选输入数量", trigger: "blur" }],
 });
 
 const page = ref(1);
@@ -268,14 +301,67 @@ const pageSize = ref(10);
 const tableData = ref([]);
 const searchInfo = ref({});
 
-const clickBetDetail = (id) => {
-  // let query = {};
-  // query["id"] = id;
-  // router.push({ name: "taskDetails", query });
-};
-
 const onReset = () => {
   searchInfo.value = {};
+};
+
+const handleChange = (number, index, params, params2) => {
+  if (params === "v2") {
+    if (number >= 1000000000) {
+      if (params2) {
+        return number / 1000000000 + "B";
+      } else {
+        return (form.value.award[index].num = number / 1000000000 + "B");
+      }
+    } else if (number >= 1000000) {
+      if (params2) {
+        return number / 1000000 + "M";
+      } else {
+        return (form.value.award[index].num = number / 1000000 + "M");
+      }
+    } else if (number >= 1000) {
+      if (params2) {
+        return number / 1000 + "K";
+      } else {
+        return (form.value.award[index].num = number / 1000 + "K");
+      }
+    } else {
+      if (params2) {
+        return number.toString();
+      } else {
+        return (form.value.award[index].num = number.toString());
+      }
+    }
+  } else if (params == "v4") {
+    if (number >= 1000000000) {
+      if (params2) {
+        return number / 1000000000 + "B";
+      } else {
+        return (form.value.max = number / 1000000000 + "B");
+      }
+    } else if (number >= 1000000) {
+      if (params2) {
+        return number / 1000000 + "M";
+      } else {
+        return (form.value.max = number / 1000000 + "M");
+      }
+    } else if (number >= 1000) {
+      if (params2) {
+        return number / 1000 + "K";
+      } else {
+        return (form.value.max = number / 1000 + "K");
+      }
+    } else {
+      if (params2) {
+        return number.toString();
+      } else {
+        return (form.value.max = number.toString());
+      }
+    }
+  }
+};
+const delItem = (index) => {
+  form.value.award.splice(index, 1);
 };
 // 搜索
 
@@ -304,6 +390,14 @@ const getTableData = async () => {
     ...searchInfo.value,
   });
   if (table.code === 0) {
+    table.data.list.map((item, index) => {
+      item.max = handleChange(item.max, index, "v4", true);
+      if (item.award != null && item.award.length > 0) {
+        item.award.map((item2, index2) => {
+          item2.num = handleChange(item2.num, index2, "v2", true);
+        });
+      }
+    });
     tableData.value = table.data.list;
     total.value = table.data.total;
     page.value = table.data.page;
@@ -345,10 +439,6 @@ const addItem = () => {
   });
 };
 
-const delItem = (index) => {
-  form.value.award.splice(index, 1);
-};
-
 const dialogTitle = ref("新增");
 const dialogFormVisible = ref(false);
 const openDialog = (key) => {
@@ -373,12 +463,50 @@ const closeDialog = () => {
 const editTackFunc = async (row) => {
   let rows = JSON.parse(JSON.stringify(row));
   form.value = rows;
+  // if (form.value.award != null && form.value.award.length > 0) {
+  //   form.value.award.map((item, index) => {
+  //     console.log("item", item);
+  //   });
+  // }
+  handleChange(form.value.max, 0, "v4");
   openDialog("edit");
 };
 
 const enterDialog = async () => {
   apiForm.value.validate(async (valid) => {
     if (valid) {
+      if (form.value.award != null && form.value.award.length) {
+        form.value.award.map((item, index) => {
+          item.num = item.num + "";
+          if (item.num.indexOf("B") !== -1) {
+            const newStr = item.num.replace("B", "");
+            item.num = Number(newStr) * 1000000000;
+          } else if (item.num.indexOf("M") !== -1) {
+            const newStr = item.num.replace("M", "");
+            item.num = Number(newStr) * 1000000;
+          } else if (item.num.indexOf("K") !== -1) {
+            const newStr = item.num.replace("K", "");
+            item.num = Number(newStr) * 1000;
+          } else {
+            item.num = Number(item.num);
+          }
+        });
+      }
+      if (form.value.max) {
+        form.value.max = form.value.max + "";
+        if (form.value.max.indexOf("B") !== -1) {
+          const newStr = form.value.max.replace("B", "");
+          form.value.max = Number(newStr) * 1000000000;
+        } else if (form.value.max.indexOf("M") !== -1) {
+          const newStr = form.value.max.replace("M", "");
+          form.value.max = Number(newStr) * 1000000;
+        } else if (form.value.max.indexOf("K") !== -1) {
+          const newStr = form.value.max.replace("K", "");
+          form.value.max = Number(newStr) * 1000;
+        } else {
+          form.value.max = Number(form.value.max);
+        }
+      }
       switch (type.value) {
         case "add":
           {

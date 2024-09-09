@@ -31,7 +31,7 @@
         }"
         :row-class-name="tableRowClassName"
       >
-        <el-table-column type="selection" width="60" />
+        <el-table-column type="selection" align="center" width="60" />
         <el-table-column align="center" label="id" min-width="150" prop="id" />
         <el-table-column
           align="center"
@@ -67,20 +67,28 @@
           label="过期时间"
           min-width="150"
           prop="expired"
-        />
+        >
+          <template #default="scope">
+            <div>{{ dataGet(scope.row.expired) }}</div>
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
           label="创建时间"
           min-width="150"
           prop="created"
-        />
+        >
+          <template #default="scope">
+            <div>{{ dataGet(scope.row.created) }}</div>
+          </template>
+        </el-table-column>
         <el-table-column align="center" label="启用" min-width="150">
           <template #default="scope">
             <el-switch
               v-model="scope.row.status"
               inline-prompt
-              :active-value="0"
-              :inactive-value="1"
+              :active-value="1"
+              :inactive-value="0"
               @change="
                 () => {
                   switchStatus(scope.row);
@@ -166,22 +174,37 @@
         <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
           项目
         </div>
-        <el-row class="w-full">
-          <el-col :span="12" v-if="form.items[0].code || type !== null">
-            <el-form-item label="code" prop="code">
-              <el-input v-model="form.items[0].code" autocomplete="off" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="form.items[0].num || type !== null">
-            <el-form-item label="num" prop="num">
-              <el-input-number
-                :min="0"
-                v-model="form.items[0].num"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <template v-for="(item, index) in form.items" :key="index">
+          <el-row class="w-full">
+            <el-col :span="12" v-if="item.code || type !== null">
+              <el-form-item label="code" prop="code">
+                <el-input v-model="item.code" autocomplete="off" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12" v-if="item.num || type !== null">
+              <!-- <el-form-item label="num" prop="num">
+                <el-input-number
+                  :min="0"
+                  v-model="item.num"
+                  autocomplete="off"
+                />
+              </el-form-item> -->
+              <el-form-item
+                label="num"
+                :prop="`items.${index}.num`"
+                :rules="rules['items.num']"
+              >
+                <el-input
+                  style="width: 55%"
+                  v-model="item.num"
+                  autocomplete="off"
+                  @input="item.num = item.num.replace(/[^\d|\.]/g, '')"
+                  @change="handleChange(item.num, index, 'v4')"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </template>
 
         <el-row class="w-full">
           <el-col :span="12">
@@ -199,8 +222,8 @@
           <el-switch
             v-model="form.status"
             inline-prompt
-            :active-value="0"
-            :inactive-value="1"
+            :active-value="1"
+            :inactive-value="0"
           />
         </el-form-item>
         <el-row class="w-full">
@@ -230,6 +253,16 @@
             @change="handleDateChange"
           />
         </el-form-item>
+        <div style="padding: 0 0 20px 40px; color: red; font-size: 12px">
+          类型提示：
+          <div style="margin: 5px 0">0 //占位</div>
+          <div style="margin: 5px 0">1 //金币</div>
+          <div style="margin: 5px 0">2 //钻石</div>
+          <div style="margin: 5px 0">3 //小猪金币存钱罐1</div>
+          <div style="margin: 5px 0">4 //小猪金币存钱罐1</div>
+          <div style="margin: 5px 0">5 //小猪钻石存钱罐1</div>
+          <div style="margin: 5px 0">6 //小猪钻石存钱罐1<</div>
+        </div>
       </el-form>
     </el-drawer>
   </div>
@@ -267,12 +300,9 @@ const type = ref("");
 const rules = ref({
   id: [{ required: true, message: "请输入id", trigger: "blur" }],
   type: [{ required: true, message: "请输入type", trigger: "blur" }],
-  // price: [{ required: true, message: "请输入价格", trigger: "blur" }],
-  // discount: [{ required: true, message: "请输入折扣", trigger: "blur" }],
-  // code: [{ required: true, message: "请输入code", trigger: "blur" }],
-  // num: [{ required: true, message: "请输入num", trigger: "blur" }],
   desc: [{ required: true, message: "请输入desc", trigger: "blur" }],
   expired: [{ required: true, message: "请选择过期时间", trigger: "blur" }],
+  "items.num": [{ required: true, message: "请选输入数量", trigger: "blur" }],
 });
 
 const page = ref(1);
@@ -297,6 +327,22 @@ const handleSizeChange = (val) => {
   pageSize.value = val;
   getTableData();
 };
+const dataGet = (dateStr) => {
+  let date = new Date(dateStr);
+  let formattedDate =
+    date.getFullYear() +
+    "-" +
+    (date.getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    date.getDate().toString().padStart(2, "0") +
+    " " +
+    date.getHours().toString().padStart(2, "0") +
+    ":" +
+    date.getMinutes().toString().padStart(2, "0") +
+    ":" +
+    date.getSeconds().toString().padStart(2, "0");
+  return formattedDate;
+};
 
 const handleCurrentChange = (val) => {
   page.value = val;
@@ -311,13 +357,48 @@ const getTableData = async () => {
     ...searchInfo.value,
   });
   if (table.code === 0) {
+    table.data.list.map((item, index) => {
+      if (item.items != null && item.items.length > 0) {
+        item.items.map((item2, index2) => {
+          item2.num = handleChange(item2.num, index2, "v4", true);
+        });
+      }
+    });
     tableData.value = table.data.list;
     total.value = table.data.total;
     page.value = table.data.page;
     pageSize.value = table.data.pageSize;
   }
 };
-
+const handleChange = (number, index, params, params2) => {
+  if (params === "v4") {
+    if (number >= 1000000000) {
+      if (params2) {
+        return number / 1000000000 + "B";
+      } else {
+        return (form.value.items[index].num = number / 1000000000 + "B");
+      }
+    } else if (number >= 1000000) {
+      if (params2) {
+        return number / 1000000 + "M";
+      } else {
+        return (form.value.items[index].num = number / 1000000 + "M");
+      }
+    } else if (number >= 1000) {
+      if (params2) {
+        return number / 1000 + "K";
+      } else {
+        return (form.value.items[index].num = number / 1000 + "K");
+      }
+    } else {
+      if (params2) {
+        return number.toString();
+      } else {
+        return (form.value.items[index].num = number.toString());
+      }
+    }
+  }
+};
 getTableData();
 // 批量操作
 const handleSelectionChange = (val) => {
@@ -345,7 +426,7 @@ const switchStatus = async (row) => {
   if (res.code === 0) {
     ElMessage({
       type: "success",
-      message: `${myUserInfo.status === 0 ? "启用" : "禁用"}成功`,
+      message: `${myUserInfo.status === 1 ? "启用" : "禁用"}成功`,
     });
   }
 };
@@ -386,6 +467,23 @@ const editTackFunc = async (row) => {
 const enterDialog = async () => {
   apiForm.value.validate(async (valid) => {
     if (valid) {
+      if (form.value.items != null && form.value.items.length) {
+        form.value.items.map((item, index) => {
+          item.num = item.num + "";
+          if (item.num.indexOf("B") !== -1) {
+            const newStr = item.num.replace("B", "");
+            item.num = Number(newStr) * 1000000000;
+          } else if (item.num.indexOf("M") !== -1) {
+            const newStr = item.num.replace("M", "");
+            item.num = Number(newStr) * 1000000;
+          } else if (item.num.indexOf("K") !== -1) {
+            const newStr = item.num.replace("K", "");
+            item.num = Number(newStr) * 1000;
+          } else {
+            item.num = Number(item.num);
+          }
+        });
+      }
       switch (type.value) {
         case "add":
           {

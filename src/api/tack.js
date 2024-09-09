@@ -198,3 +198,30 @@ export const timedRewardDel = (data) => {
     data,
   });
 };
+
+// 邮件列表
+export const systemInboxGetList = (params) => {
+  return service({
+    url: "/app/inbox/systemInboxList",
+    method: "get",
+    params,
+  });
+};
+
+// 邮件修改
+export const systemInboxEdit = (data) => {
+  return service({
+    url: "/app/inbox/systemInboxEdit",
+    method: "post",
+    data,
+  });
+};
+
+// 邮件删除
+export const systemInboxDel = (data) => {
+  return service({
+    url: "/app/inbox/systemInboxDel",
+    method: "post",
+    data,
+  });
+};

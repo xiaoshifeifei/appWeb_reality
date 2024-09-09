@@ -31,7 +31,7 @@
         }"
         :row-class-name="tableRowClassName"
       >
-        <el-table-column type="selection" width="60" />
+        <el-table-column type="selection" align="center" width="60" />
         <el-table-column align="center" min-width="90" label="id" prop="id" />
         <el-table-column
           align="center"
@@ -169,8 +169,15 @@
         <el-form-item label="desc" prop="desc">
           <el-input v-model="form.desc" autocomplete="off" />
         </el-form-item>
-        <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
-          模版
+        <div
+          style="
+            padding: 0 0 20px 40px;
+            color: black;
+            font-size: 16px;
+            font-weight: 700;
+          "
+        >
+          complete
         </div>
         <template v-for="(item, index) in form.complete" :key="index">
           <el-row class="w-full">
@@ -187,11 +194,12 @@
                 />
               </el-form-item>
             </el-col>
-            <el-col :span="12" v-if="item.value || type !== null">
-              <el-form-item label="value">
+
+            <el-col :span="12" v-if="item.limit || type !== null">
+              <el-form-item label="limit">
                 <el-input-number
                   :min="0"
-                  v-model="item.value"
+                  v-model="item.limit"
                   autocomplete="off"
                 />
               </el-form-item>
@@ -201,6 +209,7 @@
                 <el-input v-model="item.code" autocomplete="off" />
               </el-form-item>
             </el-col>
+
             <el-col :span="12" v-if="item.game">
               <el-form-item label="game">
                 <el-input v-model="item.game" autocomplete="off" />
@@ -211,12 +220,25 @@
                 <el-input v-model="item.mode" autocomplete="off" />
               </el-form-item>
             </el-col>
-            <el-col :span="12" v-if="item.limit || type !== null">
-              <el-form-item label="limit">
+
+            <el-col :span="12" v-if="item.value || type !== null">
+              <!-- <el-form-item label="value">
                 <el-input-number
                   :min="0"
-                  v-model="item.limit"
+                  v-model="item.value"
                   autocomplete="off"
+                />
+              </el-form-item> -->
+              <el-form-item
+                label="value"
+                :prop="`complete.${index}.value`"
+                :rules="rules['complete.value']"
+              >
+                <el-input
+                  v-model="item.value"
+                  autocomplete="off"
+                  @input="item.value = item.value.replace(/[^\d|\.]/g, '')"
+                  @change="handleChange(item.value, index, 'v1')"
                 />
               </el-form-item>
             </el-col>
@@ -226,18 +248,37 @@
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.value2 || type !== null">
-              <el-form-item label="value2">
+              <!-- <el-form-item label="value2">
                 <el-input-number
                   :min="0"
                   v-model="item.value2"
                   autocomplete="off"
                 />
+              </el-form-item> -->
+              <el-form-item
+                label="value2"
+                :prop="`complete.${index}.value2`"
+                :rules="rules['complete.value2']"
+              >
+                <el-input
+                  v-model="item.value2"
+                  autocomplete="off"
+                  @input="item.value2 = item.value2.replace(/[^\d|\.]/g, '')"
+                  @change="handleChange(item.value2, index, 'v2')"
+                />
               </el-form-item>
             </el-col>
           </el-row>
         </template>
-        <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
-          奖励
+        <div
+          style="
+            padding: 0 0 20px 40px;
+            color: black;
+            font-size: 16px;
+            font-weight: 700;
+          "
+        >
+          award
         </div>
         <template v-for="(item, index) in form.award" :key="index">
           <el-row class="w-full">
@@ -264,23 +305,48 @@
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.code || type !== null">
+              <div style="padding: 0 0 5px 80px; color: red; font-size: 12px">
+                提示：输入物品配置的物品名称
+              </div>
               <el-form-item label="code">
                 <el-input :min="0" v-model="item.code" autocomplete="off" />
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.num || type !== null">
-              <el-form-item label="num">
+              <div style="padding: 0 0 5px 80px; color: red; font-size: 12px">
+                提示：输入物品配置的物品数量
+              </div>
+              <!-- <el-form-item label="num">
                 <el-input-number
                   :min="0"
                   v-model="item.num"
                   autocomplete="off"
                 />
+              </el-form-item> -->
+              <el-form-item
+                label="num"
+                :prop="`award.${index}.num`"
+                :rules="rules['award.num']"
+              >
+                <el-input
+                  v-model="item.num"
+                  autocomplete="off"
+                  @input="item.num = item.num.replace(/[^\d|\.]/g, '')"
+                  @change="handleChange(item.num, index, 'v3')"
+                />
               </el-form-item>
             </el-col>
           </el-row>
         </template>
-        <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
-          解锁
+        <div
+          style="
+            padding: 0 0 20px 40px;
+            color: black;
+            font-size: 16px;
+            font-weight: 700;
+          "
+        >
+          unlock
         </div>
         <template v-for="(item, index) in form.unlock" :key="index">
           <el-row class="w-full">
@@ -311,6 +377,17 @@
         <el-form-item label="标签" prop="tag">
           <el-input v-model="form.tag" autocomplete="off" />
         </el-form-item>
+        <div style="padding: 0 0 20px 40px; color: red; font-size: 12px">
+          type提示：
+          <div style="margin: 5px 0">101 //下注多少完成</div>
+          <div style="margin: 5px 0">102 //赢多少完成</div>
+          <div style="margin: 5px 0">103 //下注多少次完成</div>
+          <div style="margin: 5px 0">104 //mega win多少次完成</div>
+          <div style="margin: 5px 0">105 //big win多少次外完成</div>
+          <div style="margin: 5px 0">106 //单次赢多少完成</div>
+          <div style="margin: 5px 0">107 //触发free次数</div>
+          <div style="margin: 5px 0">108 //下注多少次内要赢奖多少</div>
+        </div>
       </el-form>
     </el-drawer>
   </div>
@@ -370,9 +447,23 @@ const rules = ref({
   "award.type": [
     { required: true, message: "请输入奖励类型", trigger: "blur" },
   ],
+  "award.num": [{ required: true, message: "请输入数量", trigger: "blur" }],
   "unlock.type": [{ required: true, message: "请输入类型", trigger: "blur" }],
+  "complete.value": [
+    {
+      required: true,
+      message: "请输入value",
+      trigger: "blur",
+    },
+  ],
+  "complete.value2": [
+    {
+      required: true,
+      message: "请输入value2",
+      trigger: "blur",
+    },
+  ],
 });
-
 const page = ref(1);
 const total = ref(0);
 const pageSize = ref(10);
@@ -382,6 +473,88 @@ const searchInfo = ref({});
 const onReset = () => {
   searchInfo.value = {};
 };
+const handleChange = (number, index, params, params2) => {
+  if (params === "v1") {
+    if (number >= 1000000000) {
+      if (params2) {
+        return number / 1000000000 + "B";
+      } else {
+        return (form.value.complete[index].value = number / 1000000000 + "B");
+      }
+    } else if (number >= 1000000) {
+      if (params2) {
+        return number / 1000000 + "M";
+      } else {
+        return (form.value.complete[index].value = number / 1000000 + "M");
+      }
+    } else if (number >= 1000) {
+      if (params2) {
+        return number / 1000 + "K";
+      } else {
+        return (form.value.complete[index].value = number / 1000 + "K");
+      }
+    } else {
+      if (params2) {
+        return number.toString();
+      } else {
+        return (form.value.complete[index].value = number.toString());
+      }
+    }
+  } else if (params === "v2") {
+    if (number >= 1000000000) {
+      if (params2) {
+        return number / 1000000000 + "B";
+      } else {
+        return (form.value.complete[index].value2 = number / 1000000000 + "B");
+      }
+    } else if (number >= 1000000) {
+      if (params2) {
+        return number / 1000000 + "M";
+      } else {
+        return (form.value.complete[index].value2 = number / 1000000 + "M");
+      }
+    } else if (number >= 1000) {
+      if (params2) {
+        return number / 1000 + "K";
+      } else {
+        return (form.value.complete[index].value2 = number / 1000 + "K");
+      }
+    } else {
+      if (params2) {
+        return number.toString();
+      } else {
+        return (form.value.complete[index].value2 = number.toString());
+      }
+    }
+  } else if (params === "v3") {
+    if (number >= 1000000000) {
+      if (params2) {
+        return number / 1000000000 + "B";
+      } else {
+        return (form.value.award[index].num = number / 1000000000 + "B");
+      }
+    } else if (number >= 1000000) {
+      if (params2) {
+        return number / 1000000 + "M";
+      } else {
+        return (form.value.award[index].num = number / 1000000 + "M");
+      }
+    } else if (number >= 1000) {
+      if (params2) {
+        return number / 1000 + "K";
+      } else {
+        return (form.value.award[index].num = number / 1000 + "K");
+      }
+    } else {
+      if (params2) {
+        return number.toString();
+      } else {
+        return (form.value.award[index].num = number.toString());
+      }
+    }
+  }
+};
+
 // 搜索
 
 const onSubmit = () => {
@@ -411,6 +584,28 @@ const init = async () => {
       ...searchInfo.value,
     });
     if (table.code === 0) {
+      table.data.list.map((item, index) => {
+        console.log(99999);
+        if (item.complete[0].value) {
+          item.complete[0].value = handleChange(
+            item.complete[0].value,
+            0,
+            "v1",
+            true
+          );
+        }
+        if (item.complete[0].value2) {
+          item.complete[0].value2 = handleChange(
+            item.complete[0].value2,
+            0,
+            "v2",
+            true
+          );
+        }
+        if (item.award[0].num) {
+          item.award[0].num = handleChange(item.award[0].num, 0, "v3", true);
+        }
+      });
       tableData.value = table.data.list;
       total.value = table.data.total;
       page.value = table.data.page;
@@ -427,6 +622,28 @@ const getTableData = async () => {
     ...searchInfo.value,
   });
   if (table.code === 0) {
+    table.data.list.map((item, index) => {
+      console.log(99999);
+      if (item.complete[0].value) {
+        item.complete[0].value = handleChange(
+          item.complete[0].value,
+          0,
+          "v1",
+          true
+        );
+      }
+      if (item.complete[0].value2) {
+        item.complete[0].value2 = handleChange(
+          item.complete[0].value2,
+          0,
+          "v2",
+          true
+        );
+      }
+      if (item.award[0].num) {
+        item.award[0].num = handleChange(item.award[0].num, 0, "v3", true);
+      }
+    });
     tableData.value = table.data.list;
     total.value = table.data.total;
     page.value = table.data.page;
@@ -507,16 +724,60 @@ function isJSON(str) {
 const editTackFunc = async (row) => {
   let rows = JSON.parse(JSON.stringify(row));
   form.value = rows;
+  handleChange(form.value.complete[0].value, 0, "v1");
+  handleChange(form.value.complete[0].value2, 0, "v2");
+  handleChange(form.value.award[0].num, 0, "v3");
   openDialog("edit");
 };
-function strToJson(str) {
-  var json = eval("(" + str + ")");
-  return json;
-}
 
 const enterDialog = async () => {
   apiForm.value.validate(async (valid) => {
     if (valid) {
+      if (form.value.complete[0].value) {
+        form.value.complete[0].value = form.value.complete[0].value + "";
+        if (form.value.complete[0].value.indexOf("M") !== -1) {
+          const newStr = form.value.complete[0].value.replace("W", "");
+          form.value.complete[0].value = Number(newStr) * 1000000000;
+        } else if (form.value.complete[0].value.indexOf("W") !== -1) {
+          const newStr = form.value.complete[0].value.replace("W", "");
+          form.value.complete[0].value = Number(newStr) * 10000;
+        } else if (form.value.complete[0].value.indexOf("K") !== -1) {
+          const newStr = form.value.complete[0].value.replace("K", "");
+          form.value.complete[0].value = Number(newStr) * 1000;
+        } else {
+          form.value.complete[0].value = Number(form.value.complete[0].value);
+        }
+      }
+      if (form.value.complete[0].value2) {
+        form.value.complete[0].value2 = form.value.complete[0].value2 + "";
+        if (form.value.complete[0].value2.indexOf("M") !== -1) {
+          const newStr = form.value.complete[0].value2.replace("W", "");
+          form.value.complete[0].value2 = Number(newStr) * 1000000000;
+        } else if (form.value.complete[0].value2.indexOf("W") !== -1) {
+          const newStr = form.value.complete[0].value2.replace("W", "");
+          form.value.complete[0].value2 = Number(newStr) * 10000;
+        } else if (form.value.complete[0].value2.indexOf("K") !== -1) {
+          const newStr = form.value.complete[0].value2.replace("K", "");
+          form.value.complete[0].value2 = Number(newStr) * 1000;
+        } else {
+          form.value.complete[0].value2 = Number(form.value.complete[0].value2);
+        }
+      }
+      if (form.value.award[0].num) {
+        form.value.award[0].num = form.value.award[0].num + "";
+        if (form.value.award[0].num.indexOf("M") !== -1) {
+          const newStr = form.value.award[0].num.replace("W", "");
+          form.value.award[0].num = Number(newStr) * 1000000000;
+        } else if (form.value.award[0].num.indexOf("W") !== -1) {
+          const newStr = form.value.award[0].num.replace("W", "");
+          form.value.award[0].num = Number(newStr) * 10000;
+        } else if (form.value.award[0].num.indexOf("K") !== -1) {
+          const newStr = form.value.award[0].num.replace("K", "");
+          form.value.award[0].num = Number(newStr) * 1000;
+        } else {
+          form.value.award[0].num = Number(form.value.award[0].num);
+        }
+      }
       switch (type.value) {
         case "add":
           {

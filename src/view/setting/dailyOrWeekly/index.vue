@@ -39,7 +39,7 @@
         }"
         :row-class-name="tableRowClassName"
       >
-        <el-table-column type="selection" width="60" />
+        <el-table-column type="selection" align="center" width="60" />
         <el-table-column align="center" min-width="90" label="id" prop="id">
           <template #default="scope">
             <el-link type="primary" @click="clickBetDetail(scope.row.id)">{{
@@ -242,10 +242,116 @@ const getTableData = async () => {
     ...searchInfo.value,
   });
   if (table.code === 0) {
+    table.data.map((item, index) => {
+      if (item.complete && item.complete.length > 0 && item.complete[0].value) {
+        item.complete[0].value = handleChange(
+          item.complete[0].value,
+          0,
+          "v1",
+          true
+        );
+      }
+      if (
+        item.complete &&
+        item.complete.length > 0 &&
+        item.complete[0].value2
+      ) {
+        item.complete[0].value2 = handleChange(
+          item.complete[0].value2,
+          0,
+          "v2",
+          true
+        );
+      }
+      if (item.award && item.award.length > 0 && item.award[0].num) {
+        item.award[0].num = handleChange(item.award[0].num, 0, "v3", true);
+      }
+    });
     tableData.value = table.data;
     total.value = table.data.total;
     page.value = table.data.page;
     pageSize.value = table.data.pageSize;
+  }
+};
+const handleChange = (number, index, params, params2) => {
+  if (params === "v1") {
+    if (number >= 1000000000) {
+      if (params2) {
+        return number / 1000000000 + "B";
+      } else {
+        return (form.value.complete[index].value = number / 1000000000 + "B");
+      }
+    } else if (number >= 1000000) {
+      if (params2) {
+        return number / 1000000 + "M";
+      } else {
+        return (form.value.complete[index].value = number / 1000000 + "M");
+      }
+    } else if (number >= 1000) {
+      if (params2) {
+        return number / 1000 + "K";
+      } else {
+        return (form.value.complete[index].value = number / 1000 + "K");
+      }
+    } else {
+      if (params2) {
+        return number.toString();
+      } else {
+        return (form.value.complete[index].value = number.toString());
+      }
+    }
+  } else if (params === "v2") {
+    if (number >= 1000000000) {
+      if (params2) {
+        return number / 1000000000 + "B";
+      } else {
+        return (form.value.complete[index].value2 = number / 1000000000 + "B");
+      }
+    } else if (number >= 1000000) {
+      if (params2) {
+        return number / 1000000 + "M";
+      } else {
+        return (form.value.complete[index].value2 = number / 1000000 + "M");
+      }
+    } else if (number >= 1000) {
+      if (params2) {
+        return number / 1000 + "K";
+      } else {
+        return (form.value.complete[index].value2 = number / 1000 + "K");
+      }
+    } else {
+      if (params2) {
+        return number.toString();
+      } else {
+        return (form.value.complete[index].value2 = number.toString());
+      }
+    }
+  } else if (params === "v3") {
+    if (number >= 1000000000) {
+      if (params2) {
+        return number / 1000000000 + "B";
+      } else {
+        return (form.value.award[index].num = number / 1000000000 + "B");
+      }
+    } else if (number >= 1000000) {
+      if (params2) {
+        return number / 1000000 + "M";
+      } else {
+        return (form.value.award[index].num = number / 1000000 + "M");
+      }
+    } else if (number >= 1000) {
+      if (params2) {
+        return number / 1000 + "K";
+      } else {
+        return (form.value.award[index].num = number / 1000 + "K");
+      }
+    } else {
+      if (params2) {
+        return number.toString();
+      } else {
+        return (form.value.award[index].num = number.toString());
+      }
+    }
   }
 };
 

@@ -28,7 +28,7 @@
         @sort-change="sortChange"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="60" />
+        <el-table-column type="selection" align="center" width="60" />
         <el-table-column
           align="center"
           min-width="90"

@@ -31,7 +31,7 @@
         }"
         :row-class-name="tableRowClassName"
       >
-        <el-table-column type="selection" width="60" />
+        <el-table-column type="selection" align="center" width="60" />
         <el-table-column
           align="center"
           label="code"
@@ -51,6 +51,9 @@
           min-width="200"
           prop="created"
         >
+          <template #default="scope">
+            <div>{{ dataGet(scope.row.created) }}</div>
+          </template>
         </el-table-column>
 
         <el-table-column
@@ -178,6 +181,23 @@ const onSubmit = () => {
 const handleSizeChange = (val) => {
   pageSize.value = val;
   getTableData();
+};
+
+const dataGet = (dateStr) => {
+  let date = new Date(dateStr);
+  let formattedDate =
+    date.getFullYear() +
+    "-" +
+    (date.getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    date.getDate().toString().padStart(2, "0") +
+    " " +
+    date.getHours().toString().padStart(2, "0") +
+    ":" +
+    date.getMinutes().toString().padStart(2, "0") +
+    ":" +
+    date.getSeconds().toString().padStart(2, "0");
+  return formattedDate;
 };
 
 const handleCurrentChange = (val) => {
