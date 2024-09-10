@@ -218,6 +218,22 @@
                 />
               </el-form-item>
             </el-col>
+            <el-col :span="12" v-if="item.roomCode || type !== null">
+              <el-form-item label="roomCode">
+                <el-select
+                  v-model="item.roomCode"
+                  style="width: 100%"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item1 in completeOptions"
+                    :key="item1.value"
+                    :label="item1.label"
+                    :value="item1.value"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
             <el-col :span="12" v-if="item.code || type !== null">
               <el-form-item label="code">
                 <el-input v-model="item.code" autocomplete="off" />
@@ -236,13 +252,6 @@
             </el-col>
 
             <el-col :span="12" v-if="item.value || type !== null">
-              <!-- <el-form-item label="value">
-                <el-input-number
-                  :min="0"
-                  v-model="item.value"
-                  autocomplete="off"
-                />
-              </el-form-item> -->
               <el-form-item
                 label="value"
                 :prop="`complete.${index}.value`"
@@ -262,13 +271,6 @@
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.value2 || type !== null">
-              <!-- <el-form-item label="value2">
-                <el-input-number
-                  :min="0"
-                  v-model="item.value2"
-                  autocomplete="off"
-                />
-              </el-form-item> -->
               <el-form-item
                 label="value2"
                 :prop="`complete.${index}.value2`"
@@ -330,13 +332,6 @@
               <div style="padding: 0 0 5px 80px; color: red; font-size: 12px">
                 提示：输入物品配置的物品数量
               </div>
-              <!-- <el-form-item label="num">
-                <el-input-number
-                  :min="0"
-                  v-model="item.num"
-                  autocomplete="off"
-                />
-              </el-form-item> -->
               <el-form-item
                 label="num"
                 :prop="`award.${index}.num`"
@@ -430,6 +425,7 @@ const form = ref({
       type: null,
       value: null,
       code: "",
+      roomCode: "",
       game: "",
       mode: "",
       limit: null,
@@ -486,6 +482,11 @@ const total = ref(0);
 const pageSize = ref(10);
 const tableData = ref([]);
 const searchInfo = ref({});
+const completeOptions = ref([
+  { label: "HIGH", value: "HIGH" },
+  { label: "LOW", value: "LOW" },
+  { label: "MIDDLE", value: "MIDDLE" },
+]);
 
 const onReset = () => {
   searchInfo.value = {};
@@ -660,6 +661,7 @@ const initForm = () => {
         type: null,
         value: null,
         code: "",
+        roomCode: "",
         game: "",
         mode: "",
         limit: null,
