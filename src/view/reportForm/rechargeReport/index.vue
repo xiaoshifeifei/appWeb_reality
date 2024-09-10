@@ -394,7 +394,11 @@ const switchStatus = async (row) => {
   if (res.code === 0) {
     ElMessage({
       type: "success",
-      message: `${params.status === 0 ? "禁用" : "启用"}成功`,
+      message: `${
+        params.status === 0
+          ? t("user.enabledSuccessfully")
+          : t("user.disabledSuccessfully")
+      }`,
     });
     await getTableData();
   }

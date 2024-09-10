@@ -429,13 +429,35 @@ const initForm = () => {
 };
 const switchStatus = async (row) => {
   let myUserInfo = JSON.parse(JSON.stringify(row));
-
+  myUserInfo.items.map((item) => {
+    // item.num = Number(item.num);
+    item.num = item.num + "";
+    if (item.num.indexOf("B") !== -1) {
+      const newStr = item.num.replace("B", "");
+      item.num = Number(newStr) * 1000000000;
+    } else if (item.num.indexOf("M") !== -1) {
+      const newStr = item.num.replace("M", "");
+      item.num = Number(newStr) * 1000000;
+    } else if (item.num.indexOf("K") !== -1) {
+      const newStr = item.num.replace("K", "");
+      item.num = Number(newStr) * 1000;
+    } else {
+      item.num = Number(item.num);
+    }
+  });
   const res = await mallProductEdit(myUserInfo);
   if (res.code === 0) {
     ElMessage({
       type: "success",
-      message: `${myUserInfo.status === 1 ? "启用" : "禁用"}成功`,
+      message: `${
+        myUserInfo.status === 1
+          ? t("user.enabledSuccessfully")
+          : t("user.disabledSuccessfully")
+      }`,
     });
+    getTableData();
+  } else {
+    getTableData();
   }
 };
 const handleDateChange = () => {

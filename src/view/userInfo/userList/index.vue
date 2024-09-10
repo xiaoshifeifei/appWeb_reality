@@ -377,7 +377,7 @@
               style="margin-left: 20px"
               type="delete"
               icon="delete"
-              @click="delContent(item.lang)"
+              @click="delContent(index)"
             >
               {{ t("general.delete") }}
             </el-button>
@@ -510,7 +510,7 @@ const rulesMail = ref({
 
 const page = ref(1);
 const total = ref(0);
-const pageSize = ref(999999);
+const pageSize = ref(10);
 const tableData = ref([]);
 const searchInfo = ref({});
 const completeOptions = ref([
@@ -609,7 +609,7 @@ const handleChange = (number, index, params, params2) => {
   }
 };
 const delContent = (index) => {
-  delete formMail.value.content[index];
+  formMail.value.content.splice(index, 1);
 };
 const addContent = () => {
   formMail.value.content.push({
@@ -651,7 +651,11 @@ const switchStatus = async (row) => {
   if (res.code === 0) {
     ElMessage({
       type: "success",
-      message: `${params.status === 0 ? "禁用" : "启用"}成功`,
+      message: `${
+        params.status === 0
+          ? t("user.enabledSuccessfully")
+          : t("user.disabledSuccessfully")
+      }`,
     });
     await getTableData();
   }

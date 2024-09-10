@@ -243,7 +243,7 @@
               style="margin-left: 20px"
               type="delete"
               icon="delete"
-              @click="delContent(item.lang)"
+              @click="delContent(index)"
             >
               {{ t("general.delete") }}
             </el-button>
@@ -375,15 +375,16 @@ const delContent = (index) => {
   delete formMail.value.content[index];
 };
 
-let addSz = 0;
+let addSz = ref(0);
 const addContent = () => {
-  addSz++;
+  addSz.value++;
   let obj = {
     lang: "en",
     title: "",
     message: "",
   };
-  objectPush(formMail.value.content, "en" + addSz, obj);
+  objectPush(formMail.value.content, "en" + addSz.value, obj);
+  console.log("formMail.value.content", formMail.value.content);
 };
 function objectPush(obj, key, value) {
   obj[key] = value;
@@ -533,7 +534,11 @@ const switchStatus = async (row) => {
   if (res.code === 0) {
     ElMessage({
       type: "success",
-      message: `${myUserInfo.status === 0 ? "启用" : "禁用"}成功`,
+      message: `${
+        myUserInfo.status === 0
+          ? t("user.enabledSuccessfully")
+          : t("user.disabledSuccessfully")
+      }`,
     });
     getTableData();
   } else {

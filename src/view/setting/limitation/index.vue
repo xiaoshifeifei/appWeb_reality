@@ -359,7 +359,11 @@ const switchEnable = async (row) => {
   if (res.code === 0) {
     ElMessage({
       type: "success",
-      message: `${req.enable === 2 ? "禁用" : "启用"}成功`,
+      message: `${
+        myUserInfo.status === 0
+          ? t("user.enabledSuccessfully")
+          : t("user.disabledSuccessfully")
+      }`,
     });
     await getTableData();
     userInfo.value.headerImg = "";

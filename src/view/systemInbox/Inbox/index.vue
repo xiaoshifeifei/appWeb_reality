@@ -286,7 +286,7 @@
               style="margin-left: 20px"
               type="delete"
               icon="delete"
-              @click="delContent(item.lang)"
+              @click="delContent(index)"
             >
               {{ t("general.delete") }}
             </el-button>
@@ -573,7 +573,11 @@ const switchStatus = async (row) => {
   if (res.code === 0) {
     ElMessage({
       type: "success",
-      message: `${myUserInfo.status === 0 ? "启用" : "禁用"}成功`,
+      message: `${
+        myUserInfo.status === 0
+          ? t("user.enabledSuccessfully")
+          : t("user.disabledSuccessfully")
+      }`,
     });
     getTableData();
   } else {
