@@ -7,16 +7,18 @@
         </el-form-item> -->
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
-            查询
+            {{ t("general.search") }}
           </el-button>
-          <el-button icon="refresh" @click="onReset"> 重置 </el-button>
+          <el-button icon="refresh" @click="onReset">
+            {{ t("general.reset") }}
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="gva-table-box">
       <!-- <div class="gva-btn-list">
         <el-button type="primary" icon="plus" @click="openDialog('add')">
-          新增
+             {{ t("general.add") }}
         </el-button>
       </div> -->
       <el-table
@@ -73,7 +75,7 @@
             <div>{{ dataGet(scope.row.expired) }}</div>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="启用" min-width="150">
+        <el-table-column align="center" label="状态" min-width="150">
           <template #default="scope">
             <el-switch
               v-model="scope.row.status"
@@ -100,14 +102,14 @@
               size="small"
               @click="editTackFunc(scope.row)"
             >
-              编辑
+              {{ t("general.edit") }}
             </el-button>
             <el-button
               type="danger"
               size="small"
               @click="deleteTackFunc(scope.row)"
             >
-              删除
+              {{ t("general.delete") }}
             </el-button>
           </template>
         </el-table-column>
@@ -135,8 +137,10 @@
         <div class="flex justify-between items-center">
           <span class="text-lg">{{ dialogTitle }}</span>
           <div>
-            <el-button @click="closeMail"> 取 消 </el-button>
-            <el-button type="primary" @click="enterMail"> 确 定 </el-button>
+            <el-button @click="closeMail"> {{ t("general.close") }}</el-button>
+            <el-button type="primary" @click="enterMail">
+              {{ t("general.confirm") }}
+            </el-button>
           </div>
         </div>
       </template>
@@ -223,16 +227,19 @@
                 <el-button
                   style="margin-left: 20px"
                   type="delete"
+                  icon="delete"
                   @click="delItem(index)"
                 >
-                  删除
+                  {{ t("general.delete") }}
                 </el-button>
               </el-form-item>
             </el-col>
           </el-row>
         </template>
         <el-form-item>
-          <el-button type="primary" @click="addItem()"> 新增 </el-button>
+          <el-button type="primary" icon="plus" @click="addItem()">
+            {{ t("general.add") }}
+          </el-button>
         </el-form-item>
         <div
           style="
@@ -278,9 +285,10 @@
             <el-button
               style="margin-left: 20px"
               type="delete"
+              icon="delete"
               @click="delContent(item.lang)"
             >
-              删除
+              {{ t("general.delete") }}
             </el-button>
             <el-col :span="15">
               <el-form-item
@@ -295,9 +303,11 @@
           </el-row>
         </template>
         <el-form-item>
-          <el-button type="primary" @click="addContent()"> 新增 </el-button>
+          <el-button type="primary" icon="plus" @click="addContent()">
+            {{ t("general.add") }}
+          </el-button>
         </el-form-item>
-        <el-form-item label="启用" prop="status">
+        <el-form-item label="状态" prop="status">
           <el-switch
             v-model="formMail.status"
             inline-prompt
@@ -323,6 +333,8 @@ import { InboxGetList, InboxDel, InboxEdit, virtualItemAdd } from "@/api/tack";
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
+const { t } = useI18n(); // added by mohamed hassan to support multilanguage
 const router = useRouter();
 
 defineOptions({

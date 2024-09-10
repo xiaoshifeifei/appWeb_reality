@@ -10,9 +10,11 @@
         </el-form-item> -->
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
-            查询
+            {{ t("general.search") }}
           </el-button>
-          <el-button icon="refresh" @click="onReset"> 重置 </el-button>
+          <el-button icon="refresh" @click="onReset">
+            {{ t("general.reset") }}
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -59,7 +61,7 @@
         >
         </el-table-column>
 
-        <el-table-column align="center" label="启用" min-width="150">
+        <el-table-column align="center" label="状态" min-width="150">
           <template #default="scope">
             <el-switch
               v-model="scope.row.status"
@@ -87,14 +89,14 @@
               size="small"
               @click="editTackFunc(scope.row)"
             >
-              编辑
+               {{ t("general.edit") }}
             </el-button>
             <el-button
               type="danger"
               size="small"
               @click="deleteTackFunc(scope.row)"
             >
-              删除
+              {{ t("general.delete") }}
             </el-button>
           </template> -->
         </el-table-column>
@@ -123,8 +125,12 @@
         <div class="flex justify-between items-center">
           <span class="text-lg">{{ dialogTitle }}</span>
           <div>
-            <el-button @click="closeDialog"> 取 消 </el-button>
-            <el-button type="primary" @click="enterDialog"> 确 定 </el-button>
+            <el-button @click="closeDialog">
+              {{ t("general.close") }}
+            </el-button>
+            <el-button type="primary" @click="enterDialog">
+              {{ t("general.confirm") }}
+            </el-button>
           </div>
         </div>
       </template>
@@ -240,6 +246,9 @@ import { getAuthorityList } from "@/api/authority";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
 const router = useRouter();
+import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
+
+const { t } = useI18n(); // added by mohamed hassan to support multilanguage
 
 defineOptions({
   name: "userInfo",

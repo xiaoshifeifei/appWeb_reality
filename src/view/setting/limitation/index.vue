@@ -115,6 +115,8 @@ import {
 import { setUserInfo, resetPassword } from "@/api/user.js";
 import { nextTick, ref, watch } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
+import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
+const { t } = useI18n(); // added by mohamed hassan to support multilanguage
 
 defineOptions({
   name: "limitation",

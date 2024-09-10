@@ -10,9 +10,11 @@
         </el-form-item> -->
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
-            查询
+            {{ t("general.search") }}
           </el-button>
-          <el-button icon="refresh" @click="onReset"> 重置 </el-button>
+          <el-button icon="refresh" @click="onReset">
+            {{ t("general.reset") }}
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -71,7 +73,7 @@
         >
         </el-table-column>
 
-        <el-table-column align="center" label="启用" min-width="150">
+        <el-table-column align="center" label="状态" min-width="150">
           <template #default="scope">
             <el-switch
               v-model="scope.row.status"
@@ -99,14 +101,14 @@
               size="small"
               @click="editTackFunc(scope.row)"
             >
-              编辑
+              {{ t("general.edit") }}
             </el-button>
             <el-button
               type="danger"
               size="small"
               @click="deleteTackFunc(scope.row)"
             >
-              删除
+              {{ t("general.delete") }}
             </el-button> -->
             <el-button type="success" size="small" @click="sendMail(scope.row)">
               发送邮件
@@ -138,8 +140,12 @@
         <div class="flex justify-between items-center">
           <span class="text-lg">{{ dialogTitle }}</span>
           <div>
-            <el-button @click="closeDialog"> 取 消 </el-button>
-            <el-button type="primary" @click="enterDialog"> 确 定 </el-button>
+            <el-button @click="closeDialog">
+              {{ t("general.close") }}
+            </el-button>
+            <el-button type="primary" @click="enterDialog">
+              {{ t("general.confirm") }}
+            </el-button>
           </div>
         </div>
       </template>
@@ -249,8 +255,10 @@
         <div class="flex justify-between items-center">
           <span class="text-lg">{{ dialogTitle }}</span>
           <div>
-            <el-button @click="closeMail"> 取 消 </el-button>
-            <el-button type="primary" @click="enterMail"> 确 定 </el-button>
+            <el-button @click="closeMail"> {{ t("general.close") }} </el-button>
+            <el-button type="primary" @click="enterMail">
+              {{ t("general.confirm") }}
+            </el-button>
           </div>
         </div>
       </template>
@@ -319,16 +327,19 @@
                 <el-button
                   style="margin-left: 20px"
                   type="delete"
+                  icon="delete"
                   @click="delItem(index)"
                 >
-                  删除
+                  {{ t("general.delete") }}
                 </el-button>
               </el-form-item>
             </el-col>
           </el-row>
         </template>
         <el-form-item>
-          <el-button type="primary" @click="addItem()"> 新增 </el-button>
+          <el-button type="primary" icon="plus" @click="addItem()">
+            {{ t("general.add") }}
+          </el-button>
         </el-form-item>
 
         <template v-for="(item, index) in formMail.content" :key="index">
@@ -365,9 +376,10 @@
             <el-button
               style="margin-left: 20px"
               type="delete"
+              icon="delete"
               @click="delContent(item.lang)"
             >
-              删除
+              {{ t("general.delete") }}
             </el-button>
             <el-col :span="15">
               <el-form-item
@@ -381,9 +393,11 @@
           </el-row>
         </template>
         <el-form-item>
-          <el-button type="primary" @click="addContent()"> 新增 </el-button>
+          <el-button type="primary" icon="plus" @click="addContent()">
+            {{ t("general.add") }}
+          </el-button>
         </el-form-item>
-        <el-form-item label="启用" prop="status">
+        <el-form-item label="状态" prop="status">
           <el-switch
             v-model="formMail.status"
             :disabled="oneSend"
@@ -421,6 +435,8 @@ import { getAuthorityList } from "@/api/authority";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
 import dayjs from "dayjs";
+import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
+const { t } = useI18n(); // added by mohamed hassan to support multilanguage
 const router = useRouter();
 
 defineOptions({
