@@ -34,23 +34,28 @@
         :row-class-name="tableRowClassName"
       >
         <el-table-column type="selection" align="center" width="60" />
-        <el-table-column align="center" label="id" min-width="150" prop="id" />
         <el-table-column
           align="center"
-          label="code"
+          :label="t('tableColumn.id')"
+          min-width="150"
+          prop="id"
+        />
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.code')"
           min-width="150"
           prop="code"
         />
         <el-table-column
           align="center"
-          label="间隔"
+          :label="t('tableColumn.interval')"
           min-width="150"
           prop="interval"
         />
 
         <el-table-column
           align="center"
-          label="奖励"
+          :label="t('tableColumn.award')"
           min-width="400"
           prop="award"
         >
@@ -60,20 +65,20 @@
         </el-table-column>
         <el-table-column
           align="center"
-          label="max"
+          :label="t('tableColumn.max')"
           min-width="150"
           prop="max"
         />
         <el-table-column
           align="center"
-          label="desc"
+          :label="t('tableColumn.desc')"
           min-width="150"
           prop="desc"
         />
         <el-table-column
           align="center"
           fixed="right"
-          label="操作"
+          :label="t('general.operations')"
           min-width="200"
         >
           <template #default="scope">

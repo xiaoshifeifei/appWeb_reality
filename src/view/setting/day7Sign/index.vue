@@ -35,14 +35,14 @@
       >
         <el-table-column
           align="center"
-          label="day"
+          :label="t('tableColumn.day')"
           min-width="150"
           prop="day"
         />
 
         <el-table-column
           align="center"
-          label="奖励"
+          :label="t('tableColumn.award')"
           min-width="200"
           prop="award"
         >
@@ -54,12 +54,13 @@
         <el-table-column
           align="center"
           fixed="right"
-          label="操作"
+          :label="t('general.operations')"
           min-width="200"
         >
           <template #default="scope">
             <el-button
               type="primary"
+              icon="edit"
               size="small"
               @click="editTackFunc(scope.row)"
             >
@@ -67,6 +68,7 @@
             </el-button>
             <el-button
               type="danger"
+              icon="delete"
               size="small"
               @click="deleteTackFunc(scope.row)"
             >

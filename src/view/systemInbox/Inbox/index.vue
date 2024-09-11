@@ -34,10 +34,15 @@
         :row-class-name="tableRowClassName"
       >
         <el-table-column type="selection" align="center" width="60" />
-        <el-table-column align="center" label="id" min-width="150" prop="id" />
         <el-table-column
           align="center"
-          label="项目"
+          :label="t('tableColumn.id')"
+          min-width="150"
+          prop="id"
+        />
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.items')"
           min-width="150"
           prop="items"
         >
@@ -47,7 +52,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          label="内容"
+          :label="t('tableColumn.content')"
           min-width="150"
           prop="content"
         >
@@ -57,7 +62,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          label="创建时间"
+          :label="t('tableColumn.created')"
           min-width="200"
           prop="created"
         >
@@ -67,7 +72,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          label="过期时间"
+          :label="t('tableColumn.expired')"
           min-width="200"
           prop="expired"
         >
@@ -75,7 +80,12 @@
             <div>{{ dataGet(scope.row.expired) }}</div>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="状态" min-width="150">
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.status')"
+          min-width="150"
+          prop="status"
+        >
           <template #default="scope">
             <el-switch
               v-model="scope.row.status"
@@ -93,13 +103,14 @@
         <el-table-column
           align="center"
           fixed="right"
-          label="操作"
+          :label="t('general.operations')"
           min-width="200"
         >
           <template #default="scope">
             <el-button
               type="primary"
               size="small"
+              icon="edit"
               @click="editTackFunc(scope.row)"
             >
               {{ t("general.edit") }}
@@ -107,6 +118,7 @@
             <el-button
               type="danger"
               size="small"
+              icon="delete"
               @click="deleteTackFunc(scope.row)"
             >
               {{ t("general.delete") }}

@@ -36,20 +36,20 @@
         <el-table-column type="selection" align="center" width="60" />
         <el-table-column
           align="center"
-          label="code"
+          :label="t('tableColumn.code')"
           min-width="150"
           prop="code"
         />
         <el-table-column
           align="center"
-          label="desc"
+          :label="t('tableColumn.desc')"
           min-width="170"
           prop="desc"
         >
         </el-table-column>
         <el-table-column
           align="center"
-          label="创建时间"
+          :label="t('tableColumn.created')"
           min-width="200"
           prop="created"
         >
@@ -61,13 +61,14 @@
         <el-table-column
           align="center"
           fixed="right"
-          label="操作"
+          :label="t('general.operations')"
           min-width="200"
         >
           <template #default="scope">
             <el-button
               type="primary"
               size="small"
+              icon="edit"
               @click="editTackFunc(scope.row)"
             >
               {{ t("general.edit") }}
@@ -75,6 +76,7 @@
             <el-button
               type="danger"
               size="small"
+              icon="delete"
               @click="deleteTackFunc(scope.row)"
             >
               {{ t("general.delete") }}

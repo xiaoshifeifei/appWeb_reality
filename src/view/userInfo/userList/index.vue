@@ -25,8 +25,8 @@
         </el-button>
       </div> -->
       <div class="gva-btn-list">
-        <el-button type="primary" icon="Message" @click="sendMail()">
-          发送邮件
+        <el-button type="primary" icon="plus" @click="sendMail()">
+          {{ t("tableColumn.sendAnEmail") }}
         </el-button>
       </div>
       <el-table
@@ -46,34 +46,39 @@
         <el-table-column
           align="center"
           min-width="90"
-          label="id"
+          :label="t('tableColumn.accountId')"
           prop="accountId"
         >
         </el-table-column>
 
         <el-table-column
           align="center"
-          label="用户名"
+          :label="t('tableColumn.username')"
           min-width="150"
           prop="username"
         />
 
         <el-table-column
           align="center"
-          label="手机号"
+          :label="t('tableColumn.phone')"
           min-width="170"
           prop="phone"
         >
         </el-table-column>
         <el-table-column
           align="center"
-          label="邮箱"
+          :label="t('tableColumn.email')"
           min-width="200"
           prop="email"
         >
         </el-table-column>
 
-        <el-table-column align="center" label="状态" min-width="150">
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.status')"
+          min-width="150"
+          prop="status"
+        >
           <template #default="scope">
             <el-switch
               v-model="scope.row.status"
@@ -92,7 +97,7 @@
         <el-table-column
           align="center"
           fixed="right"
-          label="操作"
+          :label="t('general.operations')"
           min-width="200"
         >
           <template #default="scope">
@@ -110,8 +115,13 @@
             >
               {{ t("general.delete") }}
             </el-button> -->
-            <el-button type="success" size="small" @click="sendMail(scope.row)">
-              发送邮件
+            <el-button
+              type="success"
+              icon="plus"
+              size="small"
+              @click="sendMail(scope.row)"
+            >
+              {{ t("tableColumn.sendAnEmail") }}
             </el-button>
           </template>
         </el-table-column>

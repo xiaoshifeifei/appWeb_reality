@@ -34,7 +34,12 @@
         :row-class-name="tableRowClassName"
       >
         <el-table-column type="selection" align="center" width="60" />
-        <el-table-column align="center" min-width="90" label="id" prop="id">
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.id')"
+          prop="id"
+        >
           <template #default="scope">
             <el-link type="primary" @click="clickBetDetail(scope.row.id)">{{
               scope.row.id
@@ -44,14 +49,14 @@
 
         <el-table-column
           align="center"
-          label="desc"
+          :label="t('tableColumn.desc')"
           min-width="150"
           prop="desc"
         />
 
         <el-table-column
           align="center"
-          label="模版"
+          :label="t('tableColumn.complete')"
           min-width="170"
           prop="complete"
         >
@@ -61,7 +66,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          label="奖励"
+          :label="t('tableColumn.award')"
           min-width="200"
           prop="award"
         >
@@ -71,7 +76,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          label="unlock"
+          :label="t('tableColumn.unlock')"
           min-width="150"
           prop="unlock"
         >
@@ -81,25 +86,26 @@
         </el-table-column>
         <el-table-column
           align="center"
-          label="标签"
+          :label="t('tableColumn.tag')"
           min-width="150"
           prop="tag"
         />
         <el-table-column
           align="center"
-          label="before"
+          :label="t('tableColumn.before')"
           min-width="150"
           prop="before"
         />
         <el-table-column
           align="center"
           fixed="right"
-          label="操作"
+          :label="t('general.operations')"
           min-width="200"
         >
           <template #default="scope">
             <el-button
               type="primary"
+              icon="edit"
               size="small"
               @click="editTackFunc(scope.row)"
             >
@@ -107,6 +113,7 @@
             </el-button>
             <el-button
               type="danger"
+              icon="delete"
               size="small"
               @click="deleteTackFunc(scope.row)"
             >
