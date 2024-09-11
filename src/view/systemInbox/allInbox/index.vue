@@ -178,7 +178,7 @@
                 <el-input :min="0" v-model="item.code" autocomplete="off" />
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="15">
               <el-form-item
                 label="num"
                 :prop="`items.${index}.num`"
