@@ -105,7 +105,6 @@
               {{ t("general.edit") }}
             </el-button>
             <el-button
-              type="danger"
               size="small"
               icon="delete"
               @click="deleteTackFunc(scope.row)"

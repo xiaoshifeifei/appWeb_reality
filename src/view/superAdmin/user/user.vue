@@ -103,25 +103,24 @@
         >
           <template #default="scope">
             <el-button
-              type="primary"
-              link
-              icon="delete"
-              @click="deleteUserFunc(scope.row)"
-              >{{ t("general.delete") }}</el-button
+              type="success"
+              size="small"
+              icon="magic-stick"
+              @click="resetPasswordFunc(scope.row)"
+              >{{ t("user.resetPassword") }}</el-button
             >
             <el-button
               type="primary"
-              link
+              size="small"
               icon="edit"
               @click="openEdit(scope.row)"
               >{{ t("general.edit") }}</el-button
             >
             <el-button
-              type="primary"
-              link
-              icon="magic-stick"
-              @click="resetPasswordFunc(scope.row)"
-              >{{ t("user.resetPassword") }}</el-button
+              size="small"
+              icon="delete"
+              @click="deleteUserFunc(scope.row)"
+              >{{ t("general.delete") }}</el-button
             >
           </template>
         </el-table-column>

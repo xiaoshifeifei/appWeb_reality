@@ -78,15 +78,14 @@
           <template #default="scope">
             <el-button
               type="primary"
-              link
+              size="small"
               icon="edit"
               @click="updateSysDictionaryDetailFunc(scope.row)"
             >
               {{ t("general.change") }}
             </el-button>
             <el-button
-              type="primary"
-              link
+              size="small"
               icon="delete"
               @click="deleteSysDictionaryDetailFunc(scope.row)"
             >

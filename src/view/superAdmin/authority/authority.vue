@@ -26,42 +26,41 @@
         />
         <el-table-column
           align="left"
-          :lable="t('general.operations')"
+          :label="t('general.operations')"
           width="460"
         >
           <template #default="scope">
             <el-button
+              size="small"
               icon="setting"
-              type="primary"
-              link
+              type="info"
               @click="openDrawer(scope.row)"
               >{{ t("authority.setPermissions") }}</el-button
             >
             <el-button
               icon="plus"
               type="primary"
-              link
+              size="small"
               @click="addAuthority(scope.row.authorityId)"
               >{{ t("general.add") }}</el-button
             >
             <el-button
               icon="copy-document"
-              type="primary"
-              link
+              type="success"
+              size="small"
               @click="copyAuthorityFunc(scope.row)"
               >{{ t("general.copy") }}</el-button
             >
             <el-button
               icon="edit"
               type="primary"
-              link
+              size="small"
               @click="editAuthority(scope.row)"
               >{{ t("general.edit") }}</el-button
             >
             <el-button
               icon="delete"
-              type="primary"
-              link
+              size="small"
               @click="deleteAuth(scope.row)"
               >{{ t("general.delete") }}</el-button
             >

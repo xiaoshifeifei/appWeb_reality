@@ -170,8 +170,7 @@
           <template #default="scope">
             <el-button
               icon="delete"
-              type="primary"
-              link
+              size="small"
               @click="deleteSysOperationRecordFunc(scope.row)"
               >{{ t("general.delete") }}</el-button
             >

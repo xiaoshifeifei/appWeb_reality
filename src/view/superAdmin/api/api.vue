@@ -132,17 +132,16 @@
         >
           <template #default="scope">
             <el-button
+              size="small"
               icon="edit"
               type="primary"
-              link
               @click="editApiFunc(scope.row)"
             >
               {{ t("general.edit") }}
             </el-button>
             <el-button
+              size="small"
               icon="delete"
-              type="primary"
-              link
               @click="deleteApiFunc(scope.row)"
             >
               {{ t("general.delete") }}
