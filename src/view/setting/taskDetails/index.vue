@@ -239,7 +239,7 @@
               </el-form-item>
             </el-col>
 
-            <el-col :span="12" v-if="item.game">
+            <el-col :span="12" v-if="item.game || type !== null">
               <el-form-item :label="t('tableColumn.game')">
                 <el-input v-model="item.game" autocomplete="off" />
               </el-form-item>
