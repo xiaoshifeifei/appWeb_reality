@@ -692,6 +692,18 @@
     "sender": "sender",
     "accountId": "accountId",
     "desc": "desc",
+    "limit": "limit",
+    "roomCode": "roomCode",
+    "mode": "mode",
+    "initialize": "initialize",
+    "weight": "weight",
+    "game": "game",
+    "num": "num",
+    "lang": "lang",
+    "title": "title",
+    "message": "message",
+    "level": "level",
+    "user": "user",
     "sendAnEmail": "sendAnEmail"
   }
 }

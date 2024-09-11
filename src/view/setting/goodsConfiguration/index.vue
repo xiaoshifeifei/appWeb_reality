@@ -125,14 +125,14 @@
         :rules="rules"
         label-width="80px"
       >
-        <el-form-item label="code" prop="code">
+        <el-form-item :label="t('tableColumn.code')" prop="code">
           <el-input
             v-model="form.code"
             :disabled="type === 'edit'"
             autocomplete="off"
           />
         </el-form-item>
-        <el-form-item label="desc" prop="desc">
+        <el-form-item :label="t('tableColumn.desc')" prop="desc">
           <el-input v-model="form.desc" autocomplete="off" />
         </el-form-item>
       </el-form>

@@ -142,7 +142,7 @@
       >
         <el-row class="w-full">
           <el-col :span="12">
-            <el-form-item label="id" prop="id">
+            <el-form-item :label="t('tableColumn.id')" prop="id">
               <el-input-number
                 :disabled="type === 'edit'"
                 :min="0"
@@ -154,14 +154,14 @@
         </el-row>
         <el-row class="w-full">
           <el-col :span="12">
-            <el-form-item label="code" prop="code">
+            <el-form-item :label="t('tableColumn.code')" prop="code">
               <el-input v-model="form.code" autocomplete="off" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row class="w-full">
           <el-col :span="12">
-            <el-form-item label="间隔" prop="interval">
+            <el-form-item :label="t('tableColumn.interval')" prop="interval">
               <el-input-number
                 :min="0"
                 v-model="form.interval"
@@ -172,10 +172,7 @@
         </el-row>
         <el-row class="w-full">
           <el-col :span="12">
-            <!-- <el-form-item label="max" prop="max">
-              <el-input-number :min="0" v-model="form.max" autocomplete="off" />
-            </el-form-item> -->
-            <el-form-item label="max" prop="max">
+            <el-form-item :label="t('tableColumn.max')" prop="max">
               <el-input
                 v-model="form.max"
                 autocomplete="off"
@@ -187,14 +184,14 @@
         </el-row>
         <el-row class="w-full">
           <el-col :span="12">
-            <el-form-item label="desc" prop="desc">
+            <el-form-item :label="t('tableColumn.desc')" prop="desc">
               <el-input v-model="form.desc" autocomplete="off" />
             </el-form-item>
           </el-col>
         </el-row>
 
         <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
-          奖励
+          {{ t("tableColumn.award") }}
         </div>
         <div style="padding: 0 0 20px 40px; color: red; font-size: 12px">
           提示：分别填写物品配置的重量 / 名称 / 数量
@@ -202,7 +199,7 @@
         <template v-for="(item, index) in form.award" :key="index">
           <el-row class="w-full">
             <el-col :span="6" v-if="item.weight || type !== null">
-              <el-form-item label="weight">
+              <el-form-item :label="t('tableColumn.weight')">
                 <el-input-number
                   class="inputN"
                   :min="0"
@@ -213,7 +210,7 @@
             </el-col>
             <el-col :span="5" v-if="item.code || type !== null">
               <el-form-item
-                label="code"
+                :label="t('tableColumn.code')"
                 :prop="`award.${index}.code`"
                 :rules="rules['award.code']"
               >
@@ -236,7 +233,7 @@
                 </el-button>
               </el-form-item> -->
               <el-form-item
-                label="num"
+                :label="t('tableColumn.num')"
                 :prop="`award.${index}.num`"
                 :rules="rules['award.num']"
               >

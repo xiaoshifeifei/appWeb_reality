@@ -120,7 +120,7 @@
       >
         <el-row class="w-full">
           <el-col :span="12">
-            <el-form-item label="day" prop="day">
+            <el-form-item :label="t('tableColumn.day')" prop="day">
               <el-input-number
                 :disabled="type === 'edit'"
                 :min="0"
@@ -131,8 +131,15 @@
           </el-col>
         </el-row>
 
-        <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
-          奖励
+        <div
+          style="
+            padding: 0 0 20px 40px;
+            color: black;
+            font-size: 16px;
+            font-weight: 700;
+          "
+        >
+          {{ t("tableColumn.award") }}
         </div>
         <div style="padding: 0 0 20px 40px; color: red; font-size: 12px">
           提示：分别填写物品配置的名称 / 数量
@@ -141,7 +148,7 @@
           <el-row class="w-full">
             <el-col :span="12" v-if="item.code || type !== null">
               <el-form-item
-                label="code"
+                :label="t('tableColumn.code')"
                 :prop="`award.${index}.code`"
                 :rules="rules['award.code']"
               >
@@ -164,7 +171,7 @@
                 </el-button>
               </el-form-item> -->
               <el-form-item
-                label="num"
+                :label="t('tableColumn.num')"
                 :prop="`award.${index}.num`"
                 :rules="rules['award.num']"
               >

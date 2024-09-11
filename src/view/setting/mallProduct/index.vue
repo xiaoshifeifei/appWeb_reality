@@ -178,7 +178,7 @@
       >
         <el-row class="w-full">
           <el-col :span="12">
-            <el-form-item label="ID" prop="id">
+            <el-form-item :label="t('tableColumn.id')" prop="id">
               <el-input-number
                 :disabled="type === 'edit'"
                 :min="0"
@@ -190,12 +190,12 @@
         </el-row>
 
         <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
-          项目
+          {{ t("tableColumn.items") }}
         </div>
         <template v-for="(item, index) in form.items" :key="index">
           <el-row class="w-full">
             <el-col :span="12" v-if="item.code || type !== null">
-              <el-form-item label="code" prop="code">
+              <el-form-item :label="t('tableColumn.code')" prop="code">
                 <el-input v-model="item.code" autocomplete="off" />
               </el-form-item>
             </el-col>
@@ -208,7 +208,7 @@
                 />
               </el-form-item> -->
               <el-form-item
-                label="num"
+                :label="t('tableColumn.num')"
                 :prop="`items.${index}.num`"
                 :rules="rules['items.num']"
               >
@@ -226,7 +226,7 @@
 
         <el-row class="w-full">
           <el-col :span="12">
-            <el-form-item label="类型" prop="type">
+            <el-form-item :label="t('tableColumn.type')" prop="type">
               <el-input-number
                 :min="0"
                 v-model="form.type"
@@ -236,7 +236,7 @@
           </el-col>
         </el-row>
 
-        <el-form-item label="状态" prop="status">
+        <el-form-item :label="t('tableColumn.status')" prop="status">
           <el-switch
             v-model="form.status"
             inline-prompt
@@ -246,14 +246,14 @@
         </el-form-item>
         <el-row class="w-full">
           <el-col :span="12">
-            <el-form-item label="价格" prop="price">
+            <el-form-item :label="t('tableColumn.price')" prop="price">
               <el-input type="number" v-model="form.price" autocomplete="off" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row class="w-full">
           <el-col :span="12">
-            <el-form-item label="折扣" prop="discount">
+            <el-form-item :label="t('tableColumn.discount')" prop="discount">
               <el-input
                 type="number"
                 v-model="form.discount"
@@ -263,7 +263,7 @@
           </el-col>
         </el-row>
 
-        <el-form-item label="过期时间" prop="expired">
+        <el-form-item :label="t('tableColumn.expired')" prop="expired">
           <el-date-picker
             v-model="form.expired"
             type="datetime"

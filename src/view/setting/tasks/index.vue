@@ -165,7 +165,7 @@
       >
         <el-row class="w-full">
           <el-col :span="12">
-            <el-form-item label="ID" prop="id">
+            <el-form-item :label="t('tableColumn.id')" prop="id">
               <el-input-number
                 :disabled="type === 'edit'"
                 :min="0"
@@ -178,7 +178,7 @@
 
         <el-row class="w-full">
           <el-col :span="12">
-            <el-form-item label="before" prop="before">
+            <el-form-item :label="t('tableColumn.before')" prop="before">
               <el-input-number
                 :min="0"
                 v-model="form.before"
@@ -187,7 +187,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="desc" prop="desc">
+        <el-form-item :label="t('tableColumn.desc')" prop="desc">
           <el-input v-model="form.desc" autocomplete="off" />
         </el-form-item>
         <div
@@ -198,13 +198,13 @@
             font-weight: 700;
           "
         >
-          complete
+          {{ t("tableColumn.complete") }}
         </div>
         <template v-for="(item, index) in form.complete" :key="index">
           <el-row class="w-full">
             <el-col :span="12" v-if="item.type || type !== null">
               <el-form-item
-                label="type"
+                :label="t('tableColumn.type')"
                 :prop="`complete.${index}.type`"
                 :rules="rules['complete.type']"
               >
@@ -217,7 +217,7 @@
             </el-col>
 
             <el-col :span="12" v-if="item.limit || type !== null">
-              <el-form-item label="limit">
+              <el-form-item :label="t('tableColumn.limit')">
                 <el-input-number
                   :min="0"
                   v-model="item.limit"
@@ -226,7 +226,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.roomCode || type !== null">
-              <el-form-item label="roomCode">
+              <el-form-item :label="t('tableColumn.roomCode')">
                 <el-select
                   v-model="item.roomCode"
                   style="width: 100%"
@@ -242,18 +242,18 @@
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.code || type !== null">
-              <el-form-item label="code">
+              <el-form-item :label="t('tableColumn.code')">
                 <el-input v-model="item.code" autocomplete="off" />
               </el-form-item>
             </el-col>
 
             <el-col :span="12" v-if="item.game">
-              <el-form-item label="game">
+              <el-form-item :label="t('tableColumn.game')">
                 <el-input v-model="item.game" autocomplete="off" />
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.mode || type !== null">
-              <el-form-item label="mode">
+              <el-form-item :label="t('tableColumn.mode')">
                 <el-input v-model="item.mode" autocomplete="off" />
               </el-form-item>
             </el-col>
@@ -273,7 +273,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.initialize || type !== null">
-              <el-form-item label="initialize">
+              <el-form-item :label="t('tableColumn.initialize')">
                 <el-input v-model="item.initialize" autocomplete="off" />
               </el-form-item>
             </el-col>
@@ -301,13 +301,13 @@
             font-weight: 700;
           "
         >
-          award
+          {{ t("tableColumn.award") }}
         </div>
         <template v-for="(item, index) in form.award" :key="index">
           <el-row class="w-full">
             <el-col :span="12" v-if="item.type || type !== null">
               <el-form-item
-                label="type"
+                :label="t('tableColumn.type')"
                 :prop="`award.${index}.type`"
                 :rules="rules['award.type']"
               >
@@ -319,7 +319,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.id || type !== null">
-              <el-form-item label="id">
+              <el-form-item :label="t('tableColumn.id')">
                 <el-input-number
                   :min="0"
                   v-model="item.id"
@@ -340,7 +340,7 @@
                 提示：输入物品配置的物品数量
               </div>
               <el-form-item
-                label="num"
+                :label="t('tableColumn.num')"
                 :prop="`award.${index}.num`"
                 :rules="rules['award.num']"
               >
@@ -362,13 +362,13 @@
             font-weight: 700;
           "
         >
-          unlock
+          {{ t("tableColumn.unlock") }}
         </div>
         <template v-for="(item, index) in form.unlock" :key="index">
           <el-row class="w-full">
             <el-col :span="12" v-if="item.type || type !== null">
               <el-form-item
-                label="type"
+                :label="t('tableColumn.type')"
                 :prop="`unlock.${index}.type`"
                 :rules="rules['unlock.type']"
               >
@@ -380,7 +380,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.level || type !== null">
-              <el-form-item label="level" prop="unlock">
+              <el-form-item :label="t('tableColumn.level')" prop="level">
                 <el-input-number
                   :min="0"
                   v-model="item.level"
@@ -390,7 +390,7 @@
             </el-col>
           </el-row>
         </template>
-        <el-form-item label="标签" prop="tag">
+        <el-form-item :label="t('tableColumn.tag')" prop="tag">
           <el-input v-model="form.tag" autocomplete="off" />
         </el-form-item>
         <div style="padding: 0 0 20px 40px; color: red; font-size: 12px">

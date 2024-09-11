@@ -167,21 +167,21 @@
         :rules="rules"
         label-width="80px"
       >
-        <el-form-item label="ID" prop="id">
+        <el-form-item :label="t('tableColumn.id')" prop="id">
           <el-input v-model="form.id" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="before" prop="before">
+        <el-form-item :label="t('tableColumn.before')" prop="before">
           <el-input-number v-model="form.before" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="desc" prop="desc">
+        <el-form-item :label="t('tableColumn.desc')" prop="desc">
           <el-input v-model="form.desc" autocomplete="off" />
         </el-form-item>
         <div style="padding-left: 40px; color: black; font-size: 16px">
-          模版
+          {{ t("tableColumn.complete") }}
         </div>
         <el-row class="w-full">
           <el-col :span="8">
-            <el-form-item label="type" prop="complete">
+            <el-form-item :label="t('tableColumn.type')" prop="type">
               <el-select
                 v-model="form.complete.type"
                 style="width: 100%"
@@ -207,19 +207,19 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="limit">
+            <el-form-item :label="t('tableColumn.limit')">
               <el-input v-model="form.complete.limit" autocomplete="off" />
             </el-form-item>
           </el-col>
         </el-row>
 
         <div style="padding-left: 40px; color: black; font-size: 16px">
-          奖励
+          {{ t("tableColumn.award") }}
         </div>
 
         <el-row class="w-full">
           <el-col :span="8">
-            <el-form-item label="type" prop="complete">
+            <el-form-item :label="t('tableColumn.complete')" prop="complete">
               <el-select
                 v-model="form.award.type"
                 style="width: 100%"
@@ -235,20 +235,20 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="code">
+            <el-form-item :label="t('tableColumn.code')">
               <el-input v-model="form.award.code" autocomplete="off" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="num">
+            <el-form-item :label="t('tableColumn.num')">
               <el-input v-model="form.award.num" autocomplete="off" />
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="解锁" prop="unlock">
+        <el-form-item :label="t('tableColumn.unlock')" prop="unlock">
           <el-input v-model="form.unlock.value" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="标签" prop="tag">
+        <el-form-item :label="t('tableColumn.tag')" prop="tag">
           <el-input v-model="form.tag" autocomplete="off" />
         </el-form-item>
       </el-form>
@@ -282,7 +282,11 @@
       >
         <el-row class="w-full">
           <el-col :span="15">
-            <el-form-item label="用户" prop="complete" v-if="oneSend">
+            <el-form-item
+              :label="t('tableColumn.user')"
+              prop="complete"
+              v-if="oneSend"
+            >
               <!-- <el-select
                 virtual-scroll
                 multiple
@@ -308,13 +312,13 @@
           </el-col>
         </el-row>
         <div style="padding: 0 0 20px 40px; color: black; font-size: 16px">
-          奖励
+          {{ t("tableColumn.award") }}
         </div>
         <template v-for="(item, index) in formMail.items" :key="index">
           <el-row class="w-full">
             <el-col :span="6">
               <el-form-item
-                label="code"
+                :label="t('tableColumn.code')"
                 :prop="`items.${index}.code`"
                 :rules="rules['items.code']"
               >
@@ -323,7 +327,7 @@
             </el-col>
             <el-col :span="15">
               <el-form-item
-                label="num"
+                :label="t('tableColumn.num')"
                 :prop="`items.${index}.num`"
                 :rules="rules['items.num']"
               >
@@ -356,7 +360,7 @@
           <el-row class="w-full">
             <el-col :span="15">
               <el-form-item
-                label="lang"
+                :label="t('tableColumn.lang')"
                 :prop="`content.${index}.lang`"
                 :rules="rules['content.lang']"
               >
@@ -376,7 +380,7 @@
             </el-col>
             <el-col :span="15">
               <el-form-item
-                label="title"
+                :label="t('tableColumn.title')"
                 :prop="`content.${index}.title`"
                 :rules="rules['content.title']"
               >
@@ -393,7 +397,7 @@
             </el-button>
             <el-col :span="15">
               <el-form-item
-                label="message"
+                :label="t('tableColumn.message')"
                 :prop="`content.${index}.message`"
                 :rules="rules['content.message']"
               >
@@ -407,7 +411,7 @@
             {{ t("general.add") }}
           </el-button>
         </el-form-item>
-        <el-form-item label="状态" prop="status">
+        <el-form-item :label="t('tableColumn.status')" prop="status">
           <el-switch
             v-model="formMail.status"
             :disabled="oneSend"
@@ -416,7 +420,7 @@
             :inactive-value="1"
           />
         </el-form-item>
-        <el-form-item label="过期时间" prop="expired">
+        <el-form-item :label="t('tableColumn.expired')" prop="expired">
           <el-date-picker
             v-model="formMail.expired"
             type="datetime"

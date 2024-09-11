@@ -166,7 +166,7 @@
       >
         <el-row class="w-full">
           <el-col :span="15">
-            <el-form-item label="id" prop="id">
+            <el-form-item :label="t('tableColumn.id')" prop="id">
               <el-input
                 :disabled="type === 'edit'"
                 v-model="formMail.id"
@@ -175,7 +175,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="15">
-            <el-form-item label="type" prop="type">
+            <el-form-item :label="t('tableColumn.type')" prop="type">
               <el-input
                 :disabled="type === 'edit'"
                 v-model="formMail.type"
@@ -184,7 +184,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="15">
-            <el-form-item label="accountId" prop="accountId">
+            <el-form-item :label="t('tableColumn.accountId')" prop="accountId">
               <el-input
                 :disabled="type === 'edit'"
                 v-model="formMail.accountId"
@@ -193,7 +193,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="15">
-            <el-form-item label="sender" prop="sender">
+            <el-form-item :label="t('tableColumn.sender')" prop="sender">
               <el-input
                 :disabled="type === 'edit'"
                 v-model="formMail.sender"
@@ -210,13 +210,13 @@
             font-weight: 700;
           "
         >
-          奖励
+          {{ t("tableColumn.award") }}
         </div>
         <template v-for="(item, index) in formMail.items" :key="index">
           <el-row class="w-full">
             <el-col :span="6">
               <el-form-item
-                label="code"
+                :label="t('tableColumn.code')"
                 :prop="`items.${index}.code`"
                 :rules="rules['items.code']"
               >
@@ -225,7 +225,7 @@
             </el-col>
             <el-col :span="15">
               <el-form-item
-                label="num"
+                :label="t('tableColumn.num')"
                 :prop="`items.${index}.num`"
                 :rules="rules['items.num']"
               >
@@ -261,13 +261,13 @@
             font-weight: 700;
           "
         >
-          内容
+          {{ t("tableColumn.content") }}
         </div>
         <template v-for="(item, index) in formMail.content" :key="index">
           <el-row class="w-full">
             <el-col :span="15">
               <el-form-item
-                label="lang"
+                :label="t('tableColumn.lang')"
                 :prop="`content.${index}.lang`"
                 :rules="rules['content.lang']"
               >
@@ -287,7 +287,7 @@
             </el-col>
             <el-col :span="15">
               <el-form-item
-                label="title"
+                :label="t('tableColumn.title')"
                 :prop="`content.${index}.title`"
                 :rules="rules['content.title']"
               >
@@ -304,7 +304,7 @@
             </el-button>
             <el-col :span="15">
               <el-form-item
-                label="message"
+                :label="t('tableColumn.message')"
                 :prop="`content.${index}.message`"
                 :rules="rules['content.message']"
               >
@@ -319,7 +319,7 @@
             {{ t("general.add") }}
           </el-button>
         </el-form-item>
-        <el-form-item label="状态" prop="status">
+        <el-form-item :label="t('tableColumn.status')" prop="status">
           <el-switch
             v-model="formMail.status"
             inline-prompt
@@ -327,7 +327,7 @@
             :inactive-value="1"
           />
         </el-form-item>
-        <el-form-item label="过期时间" prop="expired">
+        <el-form-item :label="t('tableColumn.expired')" prop="expired">
           <el-date-picker
             v-model="formMail.expired"
             type="datetime"

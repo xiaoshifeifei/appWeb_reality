@@ -692,6 +692,18 @@
     "sender": "发送人",
     "accountId": "账户ID",
     "desc": "描述",
+    "limit": "限制",
+    "roomCode": "房间号",
+    "mode": "模式",
+    "initialize": "初始值",
+    "weight": "重量",
+    "game": "游戏",
+    "num": "数量",
+    "lang": "语言",
+    "title": "标题",
+    "message": "消息内容",
+    "level": "平均次数",
+    "user": "用户",
     "sendAnEmail": "发送邮件"
   }
 }

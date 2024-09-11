@@ -169,7 +169,7 @@
         :rules="rules"
         label-width="80px"
       >
-        <el-form-item label="ID" prop="id">
+        <el-form-item :label="t('tableColumn.id')" prop="id">
           <el-input v-model="form.id" autocomplete="off" />
         </el-form-item>
       </el-form>
