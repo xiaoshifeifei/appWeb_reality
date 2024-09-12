@@ -662,6 +662,8 @@
     "维护": "维护",
     "黑名单": "黑名单",
     "封禁": "封禁",
+    "订单": "订单",
+    "商城订单": "商城订单",
     "商城配置": "商城配置"
   },
   "tableColumn": {
@@ -724,6 +726,12 @@
     "siteId": "站点Id",
     "vip": "会员",
     "subAgentId": "子代理Id",
+    "orderNo": "订单号",
+    "productId": "产品Id",
+    "origin": "来源",
+    "paid": "付费",
+    "payMethod": "支付方式",
+    "finished": "完成时间",
     "sendAnEmail": "发送邮件"
   }
 }

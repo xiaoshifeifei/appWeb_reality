@@ -662,6 +662,8 @@
     "维护": "Maintenance",
     "黑名单": "Blacklist",
     "封禁": "Ban",
+    "订单": "order",
+    "商城订单": "mallOrder",
     "商城配置": "Mall Configuration"
   },
   "tableColumn": {
@@ -724,6 +726,12 @@
     "siteId": "siteId",
     "vip": "vip",
     "subAgentId": "subAgentId",
+    "orderNo": "orderNo",
+    "productId": "productId",
+    "origin": "origin",
+    "paid": "paid",
+    "payMethod": "payMethod",
+    "finished": "finished",
     "sendAnEmail": "sendAnEmail"
   }
 }

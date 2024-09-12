@@ -252,3 +252,12 @@ export const InboxDel = (data) => {
     data,
   });
 };
+
+// 获取商城订单列表
+export const getMallOrderList = (params) => {
+  return service({
+    url: "/app/mallOrder/list",
+    method: "get",
+    params,
+  });
+};

@@ -3,7 +3,7 @@
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
         <el-form-item label="key">
-          <el-input v-model="searchInfo.Key" placeholder="key" />
+          <el-input v-model="searchInfo.key" placeholder="key" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
@@ -16,11 +16,11 @@
       </el-form>
     </div>
     <div class="gva-table-box">
-      <div class="gva-btn-list">
+      <!-- <div class="gva-btn-list">
         <el-button type="primary" icon="plus" @click="openDialog('add')">
           {{ t("general.add") }}
         </el-button>
-      </div>
+      </div> -->
       <el-table
         border
         :data="tableData"
@@ -36,33 +36,34 @@
         <el-table-column type="selection" align="center" width="60" />
         <el-table-column
           align="center"
-          :label="t('tableColumn.id')"
+          :label="t('tableColumn.orderNo')"
           min-width="150"
-          prop="id"
-        />
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.type')"
-          min-width="150"
-          prop="type"
-        />
-
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.items')"
-          min-width="150"
-          prop="items"
+          prop="orderNo"
         >
           <template #default="scope">
-            <div>{{ scope.row.items }}</div>
+            <div>{{ scope.row.orderNo }}</div>
           </template>
         </el-table-column>
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.accountId')"
+          min-width="150"
+          prop="accountId"
+        />
         <el-table-column
           align="center"
           :label="t('tableColumn.price')"
           min-width="150"
           prop="price"
-        />
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.productId')"
+          min-width="150"
+          prop="productId"
+        >
+        </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.discount')"
@@ -71,13 +72,28 @@
         />
         <el-table-column
           align="center"
-          :label="t('tableColumn.expired')"
+          :label="t('tableColumn.status')"
           min-width="150"
-          prop="expired"
+          prop="status"
+        />
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.origin')"
+          min-width="150"
+          prop="origin"
+        />
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.paid')"
+          min-width="150"
+          prop="paid"
+        />
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.payMethod')"
+          min-width="150"
+          prop="payMethod"
         >
-          <template #default="scope">
-            <div>{{ dataGet(scope.row.expired) }}</div>
-          </template>
         </el-table-column>
         <el-table-column
           align="center"
@@ -91,22 +107,32 @@
         </el-table-column>
         <el-table-column
           align="center"
-          :label="t('tableColumn.status')"
+          :label="t('tableColumn.expired')"
           min-width="150"
-          prop="status"
+          prop="expired"
         >
           <template #default="scope">
-            <el-switch
-              v-model="scope.row.status"
-              inline-prompt
-              :active-value="1"
-              :inactive-value="0"
-              @change="
-                () => {
-                  switchStatus(scope.row);
-                }
-              "
-            />
+            <div>{{ dataGet(scope.row.expired) }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.finished')"
+          min-width="150"
+          prop="finished"
+        >
+          <template #default="scope">
+            <div>{{ dataGet(scope.row.finished) }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.updated')"
+          min-width="150"
+          prop="updated"
+        >
+          <template #default="scope">
+            <div>{{ dataGet(scope.row.updated) }}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -115,7 +141,7 @@
           :label="t('general.operations')"
           min-width="200"
         >
-          <template #default="scope">
+          <!-- <template #default="scope">
             <el-button
               type="primary"
               size="small"
@@ -131,7 +157,7 @@
             >
               {{ t("general.delete") }}
             </el-button>
-          </template>
+          </template> -->
         </el-table-column>
       </el-table>
       <div class="gva-pagination">
@@ -200,12 +226,12 @@
             </el-col>
             <el-col :span="12" v-if="item.num || type !== null">
               <!-- <el-form-item label="num" prop="num">
-                <el-input-number
-                  :min="0"
-                  v-model="item.num"
-                  autocomplete="off"
-                />
-              </el-form-item> -->
+                  <el-input-number
+                    :min="0"
+                    v-model="item.num"
+                    autocomplete="off"
+                  />
+                </el-form-item> -->
               <el-form-item
                 :label="t('tableColumn.num')"
                 :prop="`items.${index}.num`"
@@ -270,24 +296,14 @@
             @change="handleDateChange"
           />
         </el-form-item>
-        <div style="padding: 0 0 20px 40px; color: red; font-size: 12px">
-          类型提示：
-          <div style="margin: 5px 0">0 //占位</div>
-          <div style="margin: 5px 0">1 //金币</div>
-          <div style="margin: 5px 0">2 //钻石</div>
-          <div style="margin: 5px 0">3 //小猪金币存钱罐1</div>
-          <div style="margin: 5px 0">4 //小猪金币存钱罐1</div>
-          <div style="margin: 5px 0">5 //小猪钻石存钱罐1</div>
-          <div style="margin: 5px 0">6 //小猪钻石存钱罐1</div>
-        </div>
       </el-form>
     </el-drawer>
   </div>
 </template>
-
-<script setup>
+  
+  <script setup>
 import {
-  mallProductGetList,
+  getMallOrderList,
   mallProductDel,
   mallProductEdit,
   mallProductAdd,
@@ -370,7 +386,7 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async () => {
-  const table = await mallProductGetList({
+  const table = await getMallOrderList({
     page: page.value,
     pageSize: pageSize.value,
     ...searchInfo.value,
@@ -592,7 +608,7 @@ const tableRowClassName = ({ row, rowIndex }) => {
   }
 };
 </script>
-<style scoped lang="scss">
+  <style scoped lang="scss">
 // :deep(.el-table td.el-table__cell div) {
 //   color: #000;
 // }
@@ -610,7 +626,7 @@ const tableRowClassName = ({ row, rowIndex }) => {
   background-color: #6dc58b !important;
 }
 </style>
-<style scoped lang="scss">
+  <style scoped lang="scss">
 .warning {
   color: #dc143c;
 }
@@ -618,3 +634,4 @@ const tableRowClassName = ({ row, rowIndex }) => {
   width: 50%;
 }
 </style>
+  
