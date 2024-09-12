@@ -872,9 +872,6 @@ const tableRowClassName = ({ row, rowIndex }) => {
 };
 </script>
 <style scoped lang="scss">
-// :deep(.el-table td.el-table__cell div) {
-//   color: #000;
-// }
 :deep(.el-table tr th .cell) {
   color: #fff !important;
 }

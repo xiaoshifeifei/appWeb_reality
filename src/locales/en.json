@@ -751,6 +751,17 @@
     "pigDiamonds1": "Little Pig Diamond Savings Bank 1",
     "pigDiamonds2": "Little Pig Diamond Savings Bank 2",
     "signature": "signature",
+    "EN": "English",
+    "CN": "China",
+    "ID": "Indonesia",
+    "JA": "Japanese",
+    "KM": "Italian",
+    "KO": "Korean",
+    "MS": "Malay",
+    "MY": "Malaysia",
+    "PT": "Portugal",
+    "TH": "Thailand",
+    "VI": "Vietnamese",
     "sendAnEmail": "sendAnEmail"
   }
 }

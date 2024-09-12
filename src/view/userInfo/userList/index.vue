@@ -116,6 +116,35 @@
           :label="t('tableColumn.country')"
           prop="country"
         >
+          <template #default="scope">
+            <div>
+              {{
+                scope.row.country === "EN"
+                  ? t("tableColumn.EN")
+                  : scope.row.country === "CN"
+                  ? t("tableColumn.CN")
+                  : scope.row.country === "ID"
+                  ? t("tableColumn.ID")
+                  : scope.row.country === "JA"
+                  ? t("tableColumn.JA")
+                  : scope.row.country === "KM"
+                  ? t("tableColumn.KM")
+                  : scope.row.country === "KO"
+                  ? t("tableColumn.KO")
+                  : scope.row.country === "MS"
+                  ? t("tableColumn.MS")
+                  : scope.row.country === "MY"
+                  ? t("tableColumn.MY")
+                  : scope.row.country === "PT"
+                  ? t("tableColumn.PT")
+                  : scope.row.country === "TH"
+                  ? t("tableColumn.TH")
+                  : scope.row.country === "VI"
+                  ? t("tableColumn.VI")
+                  : scope.row.country
+              }}
+            </div>
+          </template>
         </el-table-column>
 
         <el-table-column
@@ -1038,7 +1067,6 @@ const handleSelectionChange = (val) => {
     });
     formMail.value.receivers = arr;
   }
-  // apis.value = val;
 };
 const multipleTable = ref(null);
 
@@ -1268,9 +1296,6 @@ const tableRowClassName = ({ row, rowIndex }) => {
 };
 </script>
 <style scoped lang="scss">
-// :deep(.el-table td.el-table__cell div) {
-//   color: #000;
-// }
 :deep(.el-table tr th .cell) {
   color: #fff !important;
 }
