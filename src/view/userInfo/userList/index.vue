@@ -96,7 +96,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          min-width="90"
+          min-width="150"
           :label="t('tableColumn.clientId')"
           prop="clientId"
         >
@@ -149,10 +149,15 @@
 
         <el-table-column
           align="center"
-          min-width="90"
+          min-width="180"
           :label="t('tableColumn.createAt')"
           prop="createAt"
         >
+          <template #default="scope">
+            <div>
+              {{ dataGet(scope.row.createAt) }}
+            </div>
+          </template>
         </el-table-column>
 
         <el-table-column
@@ -903,6 +908,22 @@ const changeAuthority = async (row, flag, removeAuth) => {
       row.authorityIds = [removeAuth, ...row.authorityIds];
     }
   }
+};
+const dataGet = (dateStr) => {
+  let date = new Date(dateStr);
+  let formattedDate =
+    date.getFullYear() +
+    "-" +
+    (date.getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    date.getDate().toString().padStart(2, "0") +
+    " " +
+    date.getHours().toString().padStart(2, "0") +
+    ":" +
+    date.getMinutes().toString().padStart(2, "0") +
+    ":" +
+    date.getSeconds().toString().padStart(2, "0");
+  return formattedDate;
 };
 
 const handleChange = (number, index, params, params2) => {
