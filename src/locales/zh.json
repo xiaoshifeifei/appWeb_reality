@@ -112,6 +112,8 @@
     "description": "描述",
     "request": "请求",
     "order": "排序标记",
+    "preservation": "确定",
+    "eliminate": "清除",
     "filter": "筛选"
   },
   "historyComponent": {

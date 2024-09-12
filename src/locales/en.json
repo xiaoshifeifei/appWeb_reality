@@ -112,6 +112,8 @@
     "description": "Description",
     "request": "Request",
     "order": "Order",
+    "preservation": "preservation",
+    "eliminate": "eliminate",
     "filter": "Filter"
   },
   "historyComponent": {

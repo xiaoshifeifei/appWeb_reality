@@ -2,16 +2,20 @@
   <div class="signature-pad">
     <canvas ref="canvas" class="canvas"></canvas>
     <div class="button">
-      <el-button style="margin-left: 10px" type="primary" @click="save"
-        >保存</el-button
-      >
-      <el-button @click="clear">清除</el-button>
+      <el-button style="margin-left: 10px" type="primary" @click="save">
+        {{ t("general.preservation") }}
+      </el-button>
+      <el-button @click="clear">
+        {{ t("general.eliminate") }}
+      </el-button>
     </div>
   </div>
 </template>
   
   <script setup>
 import { ref, onMounted } from "vue";
+import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
+const { t } = useI18n(); // added by mohamed hassan to support multilanguage
 
 const canvas = ref(null);
 const context = ref(null);
