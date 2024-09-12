@@ -708,6 +708,22 @@
     "message": "message",
     "level": "level",
     "user": "user",
+    "accountType": "accountType",
+    "clientId": "clientId",
+    "avatarId": "clientId",
+    "country": "country",
+    "createAt": "createAt",
+    "diamond": "diamond",
+    "experience": "experience",
+    "followOnlineNotify": "followOnlineNotify",
+    "gender": "gender",
+    "invitationCode": "invitationCode",
+    "ipaddr": "ipaddr",
+    "like": "like",
+    "providerId": "providerId",
+    "siteId": "siteId",
+    "vip": "vip",
+    "subAgentId": "subAgentId",
     "sendAnEmail": "sendAnEmail"
   }
 }

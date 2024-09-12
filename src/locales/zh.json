@@ -708,6 +708,22 @@
     "message": "消息内容",
     "level": "平均次数",
     "user": "用户",
+    "accountType": "账户类型",
+    "clientId": "客户端ID",
+    "avatarId": "头像ID",
+    "country": "国家",
+    "createAt": "创建时间",
+    "diamond": "钻石",
+    "experience": "经验",
+    "followOnlineNotify": "关注在线通知",
+    "gender": "性别",
+    "invitationCode": "邀请码",
+    "ipaddr": "ip地址",
+    "like": "喜好",
+    "providerId": "提供者ID",
+    "siteId": "站点Id",
+    "vip": "会员",
+    "subAgentId": "子代理Id",
     "sendAnEmail": "发送邮件"
   }
 }

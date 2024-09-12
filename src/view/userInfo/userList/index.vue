@@ -50,23 +50,157 @@
         <el-table-column type="selection" align="center" width="60" />
         <el-table-column
           align="center"
+          :label="t('user.avatar')"
+          min-width="75"
+        >
+          <template #default="scope">
+            <CustomPic style="margin-top: 8px" :pic-src="scope.row.headerImg" />
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
           min-width="90"
           :label="t('tableColumn.accountId')"
           prop="accountId"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.invitationCode')"
+          prop="invitationCode"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.accountType')"
+          prop="accountType"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.clientId')"
+          prop="clientId"
+        >
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.avatarId')"
+          prop="avatarId"
+        >
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.country')"
+          prop="country"
+        >
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.createAt')"
+          prop="createAt"
+        >
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.diamond')"
+          prop="diamond"
+        >
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.experience')"
+          prop="experience"
+        >
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.followOnlineNotify')"
+          prop="followOnlineNotify"
+        >
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.gender')"
+          prop="gender"
+        >
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.ipaddr')"
+          prop="ipaddr"
+        >
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.like')"
+          prop="like"
+        >
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.providerId')"
+          prop="providerId"
+        >
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.siteId')"
+          prop="siteId"
+        >
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.vip')"
+          prop="vip"
+        >
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.subAgentId')"
+          prop="subAgentId"
         >
         </el-table-column>
 
         <el-table-column
           align="center"
           :label="t('tableColumn.username')"
-          min-width="150"
+          min-width="90"
           prop="username"
         />
 
         <el-table-column
           align="center"
           :label="t('tableColumn.phone')"
-          min-width="170"
+          min-width="90"
           prop="phone"
         >
         </el-table-column>
@@ -106,21 +240,11 @@
           min-width="200"
         >
           <template #default="scope">
-            <!-- <el-button
+            <el-button
               type="primary"
               size="small"
               @click="editTackFunc(scope.row)"
             >
-              {{ t("general.edit") }}
-            </el-button>
-            <el-button
-              type="danger"
-              size="small"
-              @click="deleteTackFunc(scope.row)"
-            >
-              {{ t("general.delete") }}
-            </el-button> -->
-            <el-button type="primary" size="small">
               {{ t("general.edit") }}
             </el-button>
             <el-button type="success" size="small" @click="sendMail(scope.row)">
@@ -174,91 +298,229 @@
         ref="apiForm"
         :model="form"
         :rules="rules"
-        label-width="80px"
+        label-width="120px"
       >
-        <el-form-item :label="t('tableColumn.id')" prop="id">
-          <el-input v-model="form.id" autocomplete="off" />
-        </el-form-item>
-        <el-form-item :label="t('tableColumn.before')" prop="before">
-          <el-input-number v-model="form.before" autocomplete="off" />
-        </el-form-item>
-        <el-form-item :label="t('tableColumn.desc')" prop="desc">
-          <el-input v-model="form.desc" autocomplete="off" />
-        </el-form-item>
-        <div style="padding-left: 40px; color: black; font-size: 16px">
-          {{ t("tableColumn.complete") }}
-        </div>
         <el-row class="w-full">
-          <el-col :span="8">
-            <el-form-item :label="t('tableColumn.type')" prop="type">
-              <el-select
-                v-model="form.complete.type"
-                style="width: 100%"
-                placeholder="type"
-              >
-                <el-option
-                  v-for="item in completeOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
+          <el-col :span="12">
+            <el-form-item :label="t('tableColumn.accountId')" prop="accountId">
+              <el-input v-model="form.accountId" disabled autocomplete="off" />
             </el-form-item>
           </el-col>
-          <el-col :span="8">
-            <el-form-item label="value">
-              <el-input v-model="form.complete.value" autocomplete="off" />
+          <el-col :span="12">
+            <el-form-item
+              :label="t('tableColumn.invitationCode')"
+              prop="invitationCode"
+            >
+              <el-input
+                disabled
+                v-model="form.invitationCode"
+                autocomplete="off"
+              />
             </el-form-item>
           </el-col>
-          <el-col :span="8">
-            <el-form-item label="value2">
-              <el-input v-model="form.complete.value2" autocomplete="off" />
+          <el-col :span="12">
+            <el-form-item :label="t('tableColumn.nickname')" prop="nickname">
+              <el-input disabled v-model="form.nickname" autocomplete="off" />
             </el-form-item>
           </el-col>
-          <el-col :span="8">
-            <el-form-item :label="t('tableColumn.limit')">
-              <el-input v-model="form.complete.limit" autocomplete="off" />
+          <el-col :span="12">
+            <el-form-item :label="t('tableColumn.vip')" prop="vip">
+              <el-input disabled v-model="form.vip" autocomplete="off" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item
+              :label="t('tableColumn.accountType')"
+              prop="accountId"
+            >
+              <el-input-number
+                :min="0"
+                v-model="form.accountType"
+                autocomplete="off"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item
+              :label="t('tableColumn.providerId')"
+              prop="providerId"
+            >
+              <el-input-number
+                :min="0"
+                v-model="form.providerId"
+                autocomplete="off"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="t('tableColumn.siteId')" prop="siteId">
+              <el-input-number
+                :min="0"
+                v-model="form.siteId"
+                autocomplete="off"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="t('tableColumn.username')" prop="username">
+              <el-input-number v-model="form.username" autocomplete="off" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="t('tableColumn.createAt')" prop="createAt">
+              <el-date-picker
+                v-model="form.createAt"
+                type="datetime"
+                disabled
+                placeholder="请选择登出时间"
+                @change="handleDateChange"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="t('tableColumn.updated')" prop="updated">
+              <el-date-picker
+                v-model="form.updated"
+                disabled
+                type="datetime"
+                placeholder="请选择更新时间"
+                @change="handleDateChange"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="t('tableColumn.login')" prop="login">
+              <el-date-picker
+                v-model="form.login"
+                type="datetime"
+                disabled
+                placeholder="请选择登录时间"
+                @change="handleDateChange"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="t('tableColumn.logout')" prop="logout">
+              <el-date-picker
+                v-model="form.logout"
+                type="datetime"
+                disabled
+                placeholder="请选择登出时间"
+                @change="handleDateChange"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item
+              :label="t('tableColumn.lastUpdate')"
+              prop="lastUpdate"
+            >
+              <el-date-picker
+                v-model="form.lastUpdate"
+                type="datetime"
+                disabled
+                placeholder="请选择登出时间"
+                @change="handleDateChange"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="t('tableColumn.clientId')" prop="clientId">
+              <el-input-number
+                disabled
+                :min="0"
+                v-model="form.clientId"
+                autocomplete="off"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="t('tableColumn.avatarId')" prop="avatarId">
+              <el-input-number
+                disabled
+                :min="0"
+                v-model="form.avatarId"
+                autocomplete="off"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item
+              :label="t('tableColumn.subAgentId')"
+              prop="subAgentId"
+            >
+              <el-input-number
+                disabled
+                :min="0"
+                v-model="form.subAgentId"
+                autocomplete="off"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12"
+            ><el-form-item :label="t('tableColumn.email')" prop="email">
+              <el-input v-model="form.email" autocomplete="off" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="t('tableColumn.country')" prop="country">
+              <el-input v-model="form.country" autocomplete="off" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="t('tableColumn.diamond')" prop="diamond">
+              <el-input v-model="form.diamond" autocomplete="off" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item
+              :label="t('tableColumn.experience')"
+              prop="experience"
+            >
+              <el-input v-model="form.experience" autocomplete="off" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item
+              :label="t('tableColumn.followOnlineNotify')"
+              prop="followOnlineNotify"
+            >
+              <el-input v-model="form.followOnlineNotify" autocomplete="off" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="t('tableColumn.gender')" prop="gender">
+              <el-input v-model="form.gender" autocomplete="off" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12"
+            ><el-form-item :label="t('tableColumn.ipaddr')" prop="ipaddr">
+              <el-input disabled v-model="form.ipaddr" autocomplete="off" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="t('tableColumn.like')" prop="like">
+              <el-input disabled v-model="form.like" autocomplete="off" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="t('tableColumn.level')" prop="level">
+              <el-input disabled v-model="form.level" autocomplete="off" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="t('tableColumn.phone')" prop="phone">
+              <el-input disabled v-model="form.phone" autocomplete="off" />
             </el-form-item>
           </el-col>
         </el-row>
-
-        <div style="padding-left: 40px; color: black; font-size: 16px">
-          {{ t("tableColumn.award") }}
-        </div>
-
-        <el-row class="w-full">
-          <el-col :span="8">
-            <el-form-item :label="t('tableColumn.complete')" prop="complete">
-              <el-select
-                v-model="form.award.type"
-                style="width: 100%"
-                placeholder="type"
-              >
-                <el-option
-                  v-for="item in completeOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item :label="t('tableColumn.code')">
-              <el-input v-model="form.award.code" autocomplete="off" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item :label="t('tableColumn.num')">
-              <el-input v-model="form.award.num" autocomplete="off" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-form-item :label="t('tableColumn.unlock')" prop="unlock">
-          <el-input v-model="form.unlock.value" autocomplete="off" />
-        </el-form-item>
-        <el-form-item :label="t('tableColumn.tag')" prop="tag">
-          <el-input v-model="form.tag" autocomplete="off" />
+        <el-form-item :label="t('tableColumn.status')" prop="status">
+          <el-switch
+            v-model="form.status"
+            inline-prompt
+            :active-value="0"
+            :inactive-value="1"
+          />
         </el-form-item>
       </el-form>
     </el-drawer>
@@ -296,22 +558,6 @@
               prop="complete"
               v-if="oneSend"
             >
-              <!-- <el-select
-                virtual-scroll
-                multiple
-                collapse-tags
-                v-model="formMail.receivers"
-                style="width: 100%"
-                placeholder="请选择"
-                :disabled="oneSend"
-              >
-                <el-option
-                  v-for="item in tableData"
-                  :key="item.accountId"
-                  :label="item.username"
-                  :value="item.accountId"
-                />
-              </el-select> -->
               <el-input
                 v-model="formMail.receivers"
                 disabled
@@ -453,6 +699,7 @@ import {
   sendMailGo,
 } from "@/api/userInfo";
 import { setUserAuthorities } from "@/api/user";
+import CustomPic from "@/components/customPic/index.vue";
 import { ref, watch } from "vue";
 import { getAuthorityList } from "@/api/authority";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -468,20 +715,33 @@ defineOptions({
 
 const apis = ref([]);
 const form = ref({
-  id: "",
-  before: 0,
-  desc: "",
-  complete: {
-    value: 0,
-    value2: 0,
-    limit: 0,
-  },
-  award: {
-    code: "",
-    num: 0,
-  },
-  unlock: "",
-  tag: "",
+  status: "",
+  email: "",
+  nickname: "",
+  username: "",
+  updated: "",
+  logout: "",
+  login: "",
+  lastUpdate: 0,
+  accountId: "",
+  accountType: "",
+  clientId: "",
+  avatarId: "",
+  country: "",
+  createAt: "",
+  diamond: "",
+  experience: "",
+  followOnlineNotify: "",
+  gender: "",
+  invitationCode: "",
+  ipaddr: "",
+  like: "",
+  level: "",
+  phone: "",
+  providerId: "",
+  siteId: "",
+  vip: "",
+  subAgentId: "",
 });
 
 const type = ref("");
@@ -781,20 +1041,33 @@ const apiForm = ref(null);
 const initForm = () => {
   apiForm.value.resetFields();
   form.value = {
-    id: "",
-    before: 0,
-    desc: "",
-    complete: {
-      value: 0,
-      value2: 0,
-      limit: 0,
-    },
-    award: {
-      code: "",
-      num: 0,
-    },
-    unlock: "",
-    tag: "",
+    status: "",
+    email: "",
+    nickname: "",
+    username: "",
+    updated: "",
+    logout: "",
+    login: "",
+    lastUpdate: 0,
+    accountId: "",
+    accountType: "",
+    clientId: "",
+    avatarId: "",
+    country: "",
+    createAt: "",
+    diamond: "",
+    experience: "",
+    followOnlineNotify: "",
+    gender: "",
+    invitationCode: "",
+    ipaddr: "",
+    like: "",
+    level: "",
+    phone: "",
+    providerId: "",
+    siteId: "",
+    vip: "",
+    subAgentId: "",
   };
 };
 // 弹窗相关
@@ -870,17 +1143,6 @@ function isJSON(str) {
 }
 const editTackFunc = async (row) => {
   let rows = JSON.parse(JSON.stringify(row));
-  if (isJSON(rows.complete)) {
-    rows.complete = JSON.parse(rows.complete)[0]
-      ? JSON.parse(rows.complete)[0]
-      : {};
-  }
-  if (isJSON(rows.award)) {
-    rows.award = JSON.parse(rows.award)[0] ? JSON.parse(rows.award)[0] : {};
-  }
-  if (isJSON(rows.unlock)) {
-    rows.unlock = JSON.parse(rows.unlock)[0] ? JSON.parse(rows.unlock)[0] : {};
-  }
   form.value = rows;
   openDialog("edit");
 };
