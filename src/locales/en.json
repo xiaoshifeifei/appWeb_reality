@@ -658,6 +658,10 @@
     "报表": "Reports",
     "游戏报表": "Game Reports",
     "充值报表": "Recharge Reports",
+    "用户历史登录": "User History Login",
+    "维护": "Maintenance",
+    "黑名单": "Blacklist",
+    "封禁": "Ban",
     "商城配置": "Mall Configuration"
   },
   "tableColumn": {
