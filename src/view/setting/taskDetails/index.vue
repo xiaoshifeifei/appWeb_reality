@@ -82,7 +82,11 @@
           :label="t('tableColumn.tag')"
           min-width="150"
           prop="tag"
-        />
+        >
+          <template #default="scope">
+            <div>{{ scope.row.tag }}</div>
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.before')"
@@ -381,9 +385,28 @@
             </el-col>
           </el-row>
         </template>
-        <el-form-item :label="t('tableColumn.tag')" prop="tag">
-          <el-input v-model="form.tag" autocomplete="off" />
-        </el-form-item>
+        <div
+          style="
+            padding: 0 0 20px 40px;
+            color: black;
+            font-size: 16px;
+            font-weight: 700;
+          "
+        >
+          {{ t("tableColumn.tag") }} (配置长期任务)
+        </div>
+        <el-row class="w-full">
+          <el-col :span="12" v-if="form.tag.game || type !== null">
+            <el-form-item :label="t('tableColumn.game')" prop="tag">
+              <el-input v-model="form.tag.game" autocomplete="off" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="form.tag.roomCode || type !== null">
+            <el-form-item :label="t('tableColumn.roomCode')" prop="roomCode">
+              <el-input v-model="form.tag.roomCode" autocomplete="off" />
+            </el-form-item>
+          </el-col>
+        </el-row>
         <div style="padding: 0 0 20px 40px; color: red; font-size: 12px">
           type提示：
           <div style="margin: 5px 0">101 //下注多少完成</div>
@@ -445,7 +468,10 @@ const form = ref({
       level: null,
     },
   ],
-  tag: "",
+  tag: {
+    roomCode: "",
+    game: "",
+  },
 });
 
 const type = ref("");
@@ -706,7 +732,10 @@ const initForm = () => {
         level: null,
       },
     ],
-    tag: "",
+    tag: {
+      roomCode: "",
+      game: "",
+    },
   };
 };
 
