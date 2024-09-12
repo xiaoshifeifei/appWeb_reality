@@ -38,7 +38,6 @@
         border
         ref="multipleTable"
         :data="tableData"
-        @sort-change="sortChange"
         @selection-change="handleSelectionChange"
         highlight-current-row
         :header-cell-style="{
@@ -64,6 +63,12 @@
           prop="accountId"
         >
         </el-table-column>
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.username')"
+          min-width="90"
+          prop="username"
+        />
         <el-table-column
           align="center"
           min-width="90"
@@ -203,13 +208,6 @@
 
         <el-table-column
           align="center"
-          :label="t('tableColumn.username')"
-          min-width="90"
-          prop="username"
-        />
-
-        <el-table-column
-          align="center"
           :label="t('tableColumn.phone')"
           min-width="90"
           prop="phone"
@@ -287,6 +285,7 @@
       v-if="dialogFormVisible"
       v-model="dialogFormVisible"
       size="60%"
+      append-to-body
       :before-close="closeDialog"
       :show-close="false"
     >
@@ -533,6 +532,9 @@
             :inactive-value="1"
           />
         </el-form-item>
+        <el-form-item :label="t('tableColumn.signature')" prop="status">
+          <SignaturePad />
+        </el-form-item>
       </el-form>
     </el-drawer>
 
@@ -711,6 +713,7 @@ import {
 } from "@/api/userInfo";
 import { setUserAuthorities } from "@/api/user";
 import CustomPic from "@/components/customPic/index.vue";
+import SignaturePad from "@/components/preview/index.vue";
 import { ref, watch } from "vue";
 import { getAuthorityList } from "@/api/authority";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -1286,6 +1289,9 @@ const tableRowClassName = ({ row, rowIndex }) => {
   <style scoped lang="scss">
 .warning {
   color: #dc143c;
+}
+.myForm {
+  padding-bottom: 50px;
 }
 </style>
   
