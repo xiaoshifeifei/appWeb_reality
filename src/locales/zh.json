@@ -732,6 +732,22 @@
     "paid": "付费",
     "payMethod": "支付方式",
     "finished": "完成时间",
+    "googlePay": "谷歌支付",
+    "status0": "待支付",
+    "status1": "已取消",
+    "status2": "已支付",
+    "status3": "已兑换",
+    "status4": "已完成",
+    "android": "安卓",
+    "normal": "正常",
+    "visitor": "游客",
+    "seizeASeat": "占位",
+    "goldCoins": "金币",
+    "diamonds": "钻石",
+    "pigCoins1": "小猪金币存钱罐1",
+    "pigCoins2": "小猪金币存钱罐2",
+    "pigDiamonds1": "小猪钻石存钱罐1",
+    "pigDiamonds2": "小猪钻石存钱罐2",
     "sendAnEmail": "发送邮件"
   }
 }

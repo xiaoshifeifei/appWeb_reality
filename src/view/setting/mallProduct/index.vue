@@ -45,7 +45,29 @@
           :label="t('tableColumn.type')"
           min-width="150"
           prop="type"
-        />
+        >
+          <template #default="scope">
+            <div>
+              {{
+                scope.row.type === 0
+                  ? t("tableColumn.seizeASeat")
+                  : scope.row.type === 1
+                  ? t("tableColumn.goldCoins")
+                  : scope.row.type === 2
+                  ? t("tableColumn.diamonds")
+                  : scope.row.type === 3
+                  ? t("tableColumn.pigCoins1")
+                  : scope.row.type === 4
+                  ? t("tableColumn.pigCoins2")
+                  : scope.row.type === 5
+                  ? t("tableColumn.pigDiamonds1")
+                  : scope.row.type === 6
+                  ? t("tableColumn.pigDiamonds2")
+                  : scope.row.type
+              }}
+            </div>
+          </template>
+        </el-table-column>
 
         <el-table-column
           align="center"

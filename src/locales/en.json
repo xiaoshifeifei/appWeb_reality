@@ -732,6 +732,22 @@
     "paid": "paid",
     "payMethod": "payMethod",
     "finished": "finished",
+    "googlePay": "google pay",
+    "status0": "Pending Payment",
+    "status1": "Cancelled",
+    "status2": "Paid",
+    "status3": "Redeemed",
+    "status4": "Completed",
+    "android": "android",
+    "normal": "normal",
+    "visitor": "visitor",
+    "seizeASeat": "seize a seat",
+    "goldCoins": "gold coins",
+    "diamonds": "diamonds",
+    "pigCoins1": "Piggy Coin Savings Bank 1",
+    "pigCoins2": "Piggy Coin Savings Bank 2",
+    "pigDiamonds1": "Little Pig Diamond Savings Bank 1",
+    "pigDiamonds2": "Little Pig Diamond Savings Bank 2",
     "sendAnEmail": "sendAnEmail"
   }
 }

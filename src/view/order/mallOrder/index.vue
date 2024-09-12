@@ -75,13 +75,41 @@
           :label="t('tableColumn.status')"
           min-width="150"
           prop="status"
-        />
+        >
+          <template #default="scope">
+            <div>
+              {{
+                scope.row.status === 0
+                  ? t("tableColumn.status0")
+                  : scope.row.status === 1
+                  ? t("tableColumn.status1")
+                  : scope.row.status === 2
+                  ? t("tableColumn.status2")
+                  : scope.row.status === 3
+                  ? t("tableColumn.status3")
+                  : scope.row.status === 4
+                  ? t("tableColumn.status4")
+                  : scope.row.status
+              }}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.origin')"
           min-width="150"
           prop="origin"
-        />
+        >
+          <template #default="scope">
+            <div>
+              {{
+                scope.row.origin === 1
+                  ? t("tableColumn.android")
+                  : scope.row.origin
+              }}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.paid')"
@@ -94,6 +122,15 @@
           min-width="150"
           prop="payMethod"
         >
+          <template #default="scope">
+            <div>
+              {{
+                scope.row.payMethod === 1
+                  ? t("tableColumn.googlePay")
+                  : scope.row.payMethod
+              }}
+            </div>
+          </template>
         </el-table-column>
         <el-table-column
           align="center"

@@ -77,6 +77,17 @@
           :label="t('tableColumn.accountType')"
           prop="accountType"
         >
+          <template #default="scope">
+            <div>
+              {{
+                scope.row.accountType === 1
+                  ? t("tableColumn.normal")
+                  : scope.row.accountType === 2
+                  ? t("tableColumn.visitor")
+                  : scope.row.accountType
+              }}
+            </div>
+          </template>
         </el-table-column>
         <el-table-column
           align="center"
