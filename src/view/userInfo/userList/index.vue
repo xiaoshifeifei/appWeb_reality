@@ -377,11 +377,18 @@
               :label="t('tableColumn.accountType')"
               prop="accountId"
             >
-              <el-input-number
-                :min="0"
+              <el-select
                 v-model="form.accountType"
-                autocomplete="off"
-              />
+                style="width: 100%"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in accountTypeOption"
+                  :key="item.value"
+                  :label="t(`tableColumn.${item.label}`)"
+                  :value="item.value"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -507,8 +514,19 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="t('tableColumn.country')" prop="country">
-              <el-input v-model="form.country" autocomplete="off" />
+            <el-form-item :label="t('tableColumn.country')">
+              <el-select
+                v-model="form.country"
+                style="width: 100%"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in completeOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -772,7 +790,7 @@ const form = ref({
   login: "",
   lastUpdate: 0,
   accountId: "",
-  accountType: "",
+  accountType: null,
   clientId: "",
   avatarId: "",
   country: "",
@@ -856,6 +874,10 @@ const completeOptions = ref([
   { label: "PT", value: "pt" },
   { label: "TH", value: "th" },
   { label: "VI", value: "vi" },
+]);
+const accountTypeOption = ref([
+  { label: "normal", value: 1 },
+  { label: "visitor", value: 2 },
 ]);
 const handleDateChange = () => {
   if (formMail.value.expired) {
@@ -1114,7 +1136,7 @@ const initForm = () => {
     login: "",
     lastUpdate: 0,
     accountId: "",
-    accountType: "",
+    accountType: null,
     clientId: "",
     avatarId: "",
     country: "",
@@ -1214,38 +1236,36 @@ const editTackFunc = async (row) => {
 const enterDialog = async () => {
   apiForm.value.validate(async (valid) => {
     if (valid) {
-      form.value.complete = JSON.stringify([form.value.complete]);
-      form.value.award = JSON.stringify([form.value.award]);
-      form.value.unlock = JSON.stringify([form.value.unlock]);
       switch (type.value) {
         case "add":
           {
-            form.value.id = Number(form.value.id);
-            const res = await createTack(form.value);
-            if (res.code === 0) {
-              ElMessage({
-                type: "success",
-                message: "添加成功",
-                showClose: true,
-              });
-            }
-            getTableData();
-            closeDialog();
+            // form.value.id = Number(form.value.id);
+            // const res = await createTack(form.value);
+            // if (res.code === 0) {
+            //   ElMessage({
+            //     type: "success",
+            //     message: "添加成功",
+            //     showClose: true,
+            //   });
+            // }
+            // getTableData();
+            // closeDialog();
           }
 
           break;
         case "edit":
           {
-            const res = await updateTack(form.value);
-            if (res.code === 0) {
-              ElMessage({
-                type: "success",
-                message: "编辑成功",
-                showClose: true,
-              });
-            }
-            getTableData();
-            closeDialog();
+            console.log("form.value", form.value);
+            // const res = await updateTack(form.value);
+            // if (res.code === 0) {
+            //   ElMessage({
+            //     type: "success",
+            //     message: "编辑成功",
+            //     showClose: true,
+            //   });
+            // }
+            // getTableData();
+            // closeDialog();
           }
           break;
         default:
