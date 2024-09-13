@@ -46,6 +46,13 @@
         </el-table-column>
         <el-table-column
           align="center"
+          :label="t('tableColumn.productId')"
+          min-width="150"
+          prop="productId"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
           :label="t('tableColumn.accountId')"
           min-width="150"
           prop="accountId"
@@ -57,13 +64,7 @@
           prop="price"
         >
         </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.productId')"
-          min-width="150"
-          prop="productId"
-        >
-        </el-table-column>
+
         <el-table-column
           align="center"
           :label="t('tableColumn.discount')"
@@ -262,13 +263,6 @@
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.num || type !== null">
-              <!-- <el-form-item label="num" prop="num">
-                  <el-input-number
-                    :min="0"
-                    v-model="item.num"
-                    autocomplete="off"
-                  />
-                </el-form-item> -->
               <el-form-item
                 :label="t('tableColumn.num')"
                 :prop="`items.${index}.num`"
