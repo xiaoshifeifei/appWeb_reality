@@ -207,7 +207,7 @@
         <template v-for="(item, index) in form.complete" :key="index">
           <el-row class="w-full">
             <el-col :span="12" v-if="item.type || type !== null">
-              <el-form-item
+              <!-- <el-form-item
                 :label="t('tableColumn.type')"
                 :prop="`complete.${index}.type`"
                 :rules="rules['complete.type']"
@@ -217,6 +217,24 @@
                   v-model="item.type"
                   autocomplete="off"
                 />
+              </el-form-item> -->
+              <el-form-item
+                :label="t('tableColumn.type')"
+                :prop="`complete.${index}.type`"
+                :rules="rules['complete.type']"
+              >
+                <el-select
+                  v-model="item.type"
+                  style="width: 100%"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item1 in typeOptions"
+                    :key="item1.value"
+                    :label="item1.label"
+                    :value="item1.value"
+                  />
+                </el-select>
               </el-form-item>
             </el-col>
 
@@ -310,7 +328,7 @@
         <template v-for="(item, index) in form.award" :key="index">
           <el-row class="w-full">
             <el-col :span="12" v-if="item.type || type !== null">
-              <el-form-item
+              <!-- <el-form-item
                 :label="t('tableColumn.type')"
                 :prop="`award.${index}.type`"
                 :rules="rules['award.type']"
@@ -320,6 +338,24 @@
                   v-model="item.type"
                   autocomplete="off"
                 />
+              </el-form-item> -->
+              <el-form-item
+                :label="t('tableColumn.type')"
+                :prop="`award.${index}.type`"
+                :rules="rules['award.type']"
+              >
+                <el-select
+                  v-model="item.type"
+                  style="width: 100%"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item1 in typeOptions"
+                    :key="item1.value"
+                    :label="item1.label"
+                    :value="item1.value"
+                  />
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.id || type !== null">
@@ -365,13 +401,14 @@
             font-size: 16px;
             font-weight: 700;
           "
+          v-if="form.unlock && form.unlock.length"
         >
           {{ t("tableColumn.unlock") }}
         </div>
         <template v-for="(item, index) in form.unlock" :key="index">
           <el-row class="w-full">
             <el-col :span="12" v-if="item.type || type !== null">
-              <el-form-item
+              <!-- <el-form-item
                 :label="t('tableColumn.type')"
                 :prop="`unlock.${index}.type`"
                 :rules="rules['unlock.type']"
@@ -381,6 +418,24 @@
                   v-model="item.type"
                   autocomplete="off"
                 />
+              </el-form-item> -->
+              <el-form-item
+                :label="t('tableColumn.type')"
+                :prop="`unlock.${index}.type`"
+                :rules="rules['unlock.type']"
+              >
+                <el-select
+                  v-model="item.type"
+                  style="width: 100%"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item1 in typeOptions"
+                    :key="item1.value"
+                    :label="item1.label"
+                    :value="item1.value"
+                  />
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.level || type !== null">
@@ -520,6 +575,16 @@ const completeOptions = ref([
   { label: "HIGH", value: "HIGH" },
   { label: "LOW", value: "LOW" },
   { label: "MIDDLE", value: "MIDDLE" },
+]);
+const typeOptions = ref([
+  { label: "下注多少完成(101)", value: 101 },
+  { label: "赢多少完成(102)", value: 102 },
+  { label: "下注多少次完成(103)", value: 103 },
+  { label: "mega win多少次完成(104)", value: 104 },
+  { label: "big win多少次外完成(105)", value: 105 },
+  { label: "单次赢多少完成(106)", value: 106 },
+  { label: "触发free次数(107)", value: 107 },
+  { label: "下注多少次内要赢奖多少(108)", value: 108 },
 ]);
 
 const onReset = () => {

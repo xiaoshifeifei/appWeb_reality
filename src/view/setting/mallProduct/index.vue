@@ -267,9 +267,6 @@
         </el-form-item>
         <el-row class="w-full">
           <el-col :span="12">
-            <!-- <el-form-item :label="t('tableColumn.price')" prop="price">
-              <el-input type="number" v-model="form.price" autocomplete="off" />
-            </el-form-item> -->
             <el-form-item :label="t('tableColumn.price')" prop="price">
               <el-input
                 v-model="form.price"
