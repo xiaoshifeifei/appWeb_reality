@@ -846,6 +846,7 @@ const tableData = ref([]);
 const searchInfo = ref({});
 const completeOptions = ref([
   { label: "EN", value: "en" },
+  { label: "CN", value: "cn" },
   { label: "ID", value: "id" },
   { label: "JA", value: "ja" },
   { label: "KM", value: "km" },
