@@ -221,13 +221,6 @@
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.num || type !== null">
-              <!-- <el-form-item label="num" prop="num">
-                <el-input-number
-                  :min="0"
-                  v-model="item.num"
-                  autocomplete="off"
-                />
-              </el-form-item> -->
               <el-form-item
                 :label="t('tableColumn.num')"
                 :prop="`items.${index}.num`"
@@ -247,12 +240,19 @@
 
         <el-row class="w-full">
           <el-col :span="12">
-            <el-form-item :label="t('tableColumn.type')" prop="type">
-              <el-input-number
-                :min="0"
+            <el-form-item :label="t('tableColumn.type')">
+              <el-select
                 v-model="form.type"
-                autocomplete="off"
-              />
+                style="width: 100%"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in completeOptions"
+                  :key="item.value"
+                  :label="t(`tableColumn.${item.label}`)"
+                  :value="item.value"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -267,8 +267,16 @@
         </el-form-item>
         <el-row class="w-full">
           <el-col :span="12">
-            <el-form-item :label="t('tableColumn.price')" prop="price">
+            <!-- <el-form-item :label="t('tableColumn.price')" prop="price">
               <el-input type="number" v-model="form.price" autocomplete="off" />
+            </el-form-item> -->
+            <el-form-item :label="t('tableColumn.price')" prop="price">
+              <el-input
+                v-model="form.price"
+                autocomplete="off"
+                @input="form.price = form.price.replace(/[^\d|\.]/g, '')"
+                @change="handleChange(form.price, 0, 'v1')"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -351,7 +359,15 @@ const total = ref(0);
 const pageSize = ref(10);
 const tableData = ref([]);
 const searchInfo = ref({});
-
+const completeOptions = ref([
+  { label: "seizeASeat", value: 0 },
+  { label: "goldCoins", value: 1 },
+  { label: "diamonds", value: 2 },
+  { label: "pigCoins1", value: 3 },
+  { label: "pigCoins2", value: 4 },
+  { label: "pigDiamonds1", value: 5 },
+  { label: "pigDiamonds2", value: 6 },
+]);
 const onReset = () => {
   searchInfo.value = {};
 };
@@ -404,6 +420,9 @@ const getTableData = async () => {
           item2.num = handleChange(item2.num, index2, "v4", true);
         });
       }
+      if (item.price != null && item.price.length > 0) {
+        item.price = handleChange(item.price, index, "v1", true);
+      }
     });
     tableData.value = table.data.list;
     total.value = table.data.total;
@@ -436,6 +455,32 @@ const handleChange = (number, index, params, params2) => {
         return number.toString();
       } else {
         return (form.value.items[index].num = number.toString());
+      }
+    }
+  } else if (params === "v1") {
+    if (number >= 1000000000) {
+      if (params2) {
+        return number / 1000000000 + "B";
+      } else {
+        return (form.value.price = number / 1000000000 + "B");
+      }
+    } else if (number >= 1000000) {
+      if (params2) {
+        return number / 1000000 + "M";
+      } else {
+        return (form.value.price = number / 1000000 + "M");
+      }
+    } else if (number >= 1000) {
+      if (params2) {
+        return number / 1000 + "K";
+      } else {
+        return (form.value.price = number / 1000 + "K");
+      }
+    } else {
+      if (params2) {
+        return number.toString();
+      } else {
+        return (form.value.price = number.toString());
       }
     }
   }
@@ -478,6 +523,19 @@ const switchStatus = async (row) => {
       item.num = Number(item.num);
     }
   });
+  myUserInfo.price = myUserInfo.price + "";
+  if (myUserInfo.price.indexOf("B") !== -1) {
+    const newStr = myUserInfo.price.replace("B", "");
+    myUserInfo.price = Number(newStr) * 1000000000;
+  } else if (myUserInfo.price.indexOf("M") !== -1) {
+    const newStr = myUserInfo.price.replace("M", "");
+    myUserInfo.price = Number(newStr) * 1000000;
+  } else if (myUserInfo.price.indexOf("K") !== -1) {
+    const newStr = myUserInfo.price.replace("K", "");
+    myUserInfo.price = Number(newStr) * 1000;
+  } else {
+    myUserInfo.price = Number(myUserInfo.price);
+  }
   const res = await mallProductEdit(myUserInfo);
   if (res.code === 0) {
     ElMessage({
@@ -546,6 +604,21 @@ const enterDialog = async () => {
             item.num = Number(item.num);
           }
         });
+      }
+      if (form.value.price != null && form.value.price.length) {
+        form.value.price = form.value.price + "";
+        if (form.value.price.indexOf("B") !== -1) {
+          const newStr = form.value.price.replace("B", "");
+          form.value.price = Number(newStr) * 1000000000;
+        } else if (form.value.price.indexOf("M") !== -1) {
+          const newStr = form.value.price.replace("M", "");
+          form.value.price = Number(newStr) * 1000000;
+        } else if (form.value.price.indexOf("K") !== -1) {
+          const newStr = form.value.price.replace("K", "");
+          form.value.price = Number(newStr) * 1000;
+        } else {
+          form.value.price = Number(form.value.price);
+        }
       }
       switch (type.value) {
         case "add":
