@@ -303,9 +303,9 @@
           <div style="margin: 5px 0">1 //金币</div>
           <div style="margin: 5px 0">2 //钻石</div>
           <div style="margin: 5px 0">3 //小猪金币存钱罐1</div>
-          <div style="margin: 5px 0">4 //小猪金币存钱罐1</div>
+          <div style="margin: 5px 0">4 //小猪金币存钱罐2</div>
           <div style="margin: 5px 0">5 //小猪钻石存钱罐1</div>
-          <div style="margin: 5px 0">6 //小猪钻石存钱罐1</div>
+          <div style="margin: 5px 0">6 //小猪钻石存钱罐2</div>
         </div>
       </el-form>
     </el-drawer>
