@@ -23,8 +23,6 @@
   "/src/view/maintain/block/index.vue": "userInfo",
   "/src/view/order/mallOrder/index.vue": "goodsConfiguration",
   "/src/view/person/person.vue": "Person",
-  "/src/view/reportForm/gameReport/index.vue": "userInfo",
-  "/src/view/reportForm/rechargeReport/index.vue": "userInfo",
   "/src/view/routerHolder.vue": "RouterHolder",
   "/src/view/setting/dailyOrWeekly/index.vue": "dailyOrWeekly",
   "/src/view/setting/day7Sign/index.vue": "day7Sign",
