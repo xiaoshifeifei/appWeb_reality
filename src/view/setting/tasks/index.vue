@@ -467,7 +467,19 @@
           </el-col>
           <el-col :span="12" v-if="form.tag.roomCode || type !== null">
             <el-form-item :label="t('tableColumn.roomCode')" prop="roomCode">
-              <el-input v-model="form.tag.roomCode" autocomplete="off" />
+              <!-- <el-input v-model="form.tag.roomCode" autocomplete="off" /> -->
+              <el-select
+                v-model="form.tag.roomCode"
+                style="width: 100%"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item1 in completeOptions"
+                  :key="item1.value"
+                  :label="item1.label"
+                  :value="item1.value"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>

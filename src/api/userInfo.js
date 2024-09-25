@@ -7,6 +7,7 @@ export const getUserList = (params) => {
     params,
   });
 };
+
 // 用户设置
 export const setUserInfo = (data) => {
   return service({
@@ -79,6 +80,24 @@ export const dailyOrWeeklyDel = (data) => {
     url: "/config/mission/dailyOrWeeklyDel",
     method: "post",
     data,
+  });
+};
+
+//用户物品统计
+export const getUserItemInOut = (params) => {
+  return service({
+    url: "/app/statistics/userItemInOut",
+    method: "get",
+    params,
+  });
+};
+
+//物品来源消耗统计
+export const getItemOriginInOut = (params) => {
+  return service({
+    url: "/app/statistics/itemOriginInOut",
+    method: "get",
+    params,
   });
 };
 

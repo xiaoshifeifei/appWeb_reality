@@ -62,6 +62,13 @@
           :label="t('tableColumn.accountId')"
           prop="accountId"
         >
+          <template #default="scope">
+            <el-link
+              type="primary"
+              @click="clickBetDetail(scope.row.accountId)"
+              >{{ scope.row.accountId }}</el-link
+            >
+          </template>
         </el-table-column>
         <el-table-column
           align="center"
@@ -931,6 +938,12 @@ const changeAuthority = async (row, flag, removeAuth) => {
       row.authorityIds = [removeAuth, ...row.authorityIds];
     }
   }
+};
+
+const clickBetDetail = (id) => {
+  let query = {};
+  query["id"] = id;
+  router.push({ name: "userItemInOut", query });
 };
 const dataGet = (dateStr) => {
   let date = new Date(dateStr);
