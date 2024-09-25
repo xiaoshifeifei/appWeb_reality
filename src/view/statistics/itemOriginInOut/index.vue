@@ -436,7 +436,7 @@ const tableRowClassName = ({ row, rowIndex }) => {
   color: #999;
   font-weight: 600;
   font-size: 14px;
-  margin: 10px 0;
+  // margin: 10px 0;
 }
 .temple {
   display: flex;
