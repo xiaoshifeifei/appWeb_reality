@@ -2,7 +2,7 @@ import service from "@/utils/request";
 // 获取用户列表
 export const getUserList = (params) => {
   return service({
-    url: "/user/list",
+    url: "/app/user/list",
     method: "get",
     params,
   });
@@ -96,6 +96,15 @@ export const getUserItemInOut = (params) => {
 export const getItemOriginInOut = (params) => {
   return service({
     url: "/app/statistics/itemOriginInOut",
+    method: "get",
+    params,
+  });
+};
+
+//用户留存
+export const getAccountRetained = (params) => {
+  return service({
+    url: "/app/user/retained",
     method: "get",
     params,
   });

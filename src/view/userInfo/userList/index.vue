@@ -2,12 +2,9 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <!-- <el-form-item label="ID">
-          <el-input v-model="searchInfo.id" placeholder="ID" />
+        <el-form-item :label="t('tableColumn.accountId')">
+          <el-input clearable v-model="searchInfo.accountId" placeholder="ID" />
         </el-form-item>
-        <el-form-item label="任务名">
-          <el-input v-model="searchInfo.key" placeholder="任务名" />
-        </el-form-item> -->
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -17,10 +14,10 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <div style="padding-left: 40px; color: red; font-size: 20px">
+      <!-- <div style="padding-left: 40px; color: red; font-size: 20px">
         增加修改 可修改用户基本资料（昵称，头像，个性签名登）<br />
         增加封禁 、删除 、加入黑名单 操作功能
-      </div>
+      </div> -->
     </div>
 
     <div class="gva-table-box">
@@ -888,6 +885,7 @@ const accountTypeOption = ref([
 ]);
 const handleDateChange = () => {
   if (formMail.value.expired) {
+    console.log("formMail.value.expired", formMail.value.expired);
     const isoDate = dayjs(formMail.value.expired).format(
       "YYYY-MM-DDTHH:mm:ssZ"
     );

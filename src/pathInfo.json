@@ -57,6 +57,7 @@
   "/src/view/systemTools/formCreate/index.vue": "FormGenerator",
   "/src/view/systemTools/index.vue": "System",
   "/src/view/systemTools/system/system.vue": "Config",
+  "/src/view/userInfo/accountRetained/index.vue": "userInfo",
   "/src/view/userInfo/userHistoryLogin/index.vue": "goodsConfiguration",
   "/src/view/userInfo/userList/index.vue": "userInfo",
   "/src/plugin/announcement/form/info.vue": "InfoForm",
