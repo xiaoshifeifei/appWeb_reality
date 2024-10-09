@@ -182,6 +182,9 @@
 
         <el-row class="w-full">
           <el-col :span="12">
+            <div style="padding: 0 0 5px 80px; color: red; font-size: 12px">
+              提示：前置任务ID
+            </div>
             <el-form-item :label="t('tableColumn.before')" prop="before">
               <el-input-number
                 :min="0"
@@ -205,46 +208,30 @@
           {{ t("tableColumn.complete") }}
         </div>
         <template v-for="(item, index) in form.complete" :key="index">
+          <el-col :span="12" v-if="item.type || type !== null">
+            <el-form-item
+              :label="t('tableColumn.type')"
+              :prop="`complete.${index}.type`"
+              :rules="rules['complete.type']"
+            >
+              <el-select
+                v-model="item.type"
+                style="width: 100%"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item1 in typeOptions"
+                  :key="item1.value"
+                  :label="item1.label"
+                  :value="item1.value"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
           <el-row class="w-full">
-            <el-col :span="12" v-if="item.type || type !== null">
-              <!-- <el-form-item
-                :label="t('tableColumn.type')"
-                :prop="`complete.${index}.type`"
-                :rules="rules['complete.type']"
-              >
-                <el-input-number
-                  :min="0"
-                  v-model="item.type"
-                  autocomplete="off"
-                />
-              </el-form-item> -->
-              <el-form-item
-                :label="t('tableColumn.type')"
-                :prop="`complete.${index}.type`"
-                :rules="rules['complete.type']"
-              >
-                <el-select
-                  v-model="item.type"
-                  style="width: 100%"
-                  placeholder="请选择"
-                >
-                  <el-option
-                    v-for="item1 in typeOptions"
-                    :key="item1.value"
-                    :label="item1.label"
-                    :value="item1.value"
-                  />
-                </el-select>
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="12" v-if="item.limit || type !== null">
-              <el-form-item :label="t('tableColumn.limit')">
-                <el-input-number
-                  :min="0"
-                  v-model="item.limit"
-                  autocomplete="off"
-                />
+            <el-col :span="12" v-if="item.game || type !== null">
+              <el-form-item :label="t('tableColumn.game')">
+                <el-input v-model="item.game" autocomplete="off" />
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.roomCode || type !== null">
@@ -263,24 +250,11 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="12" v-if="item.code || type !== null">
-              <el-form-item :label="t('tableColumn.code')">
-                <el-input v-model="item.code" autocomplete="off" />
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="12" v-if="item.game || type !== null">
-              <el-form-item :label="t('tableColumn.game')">
-                <el-input v-model="item.game" autocomplete="off" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12" v-if="item.mode || type !== null">
-              <el-form-item :label="t('tableColumn.mode')">
-                <el-input v-model="item.mode" autocomplete="off" />
-              </el-form-item>
-            </el-col>
 
             <el-col :span="12" v-if="item.value || type !== null">
+              <div style="padding: 0 0 5px 80px; color: red; font-size: 12px">
+                提示：值为次数 或 金额
+              </div>
               <el-form-item
                 label="value"
                 :prop="`complete.${index}.value`"
@@ -294,12 +268,11 @@
                 />
               </el-form-item>
             </el-col>
-            <el-col :span="12" v-if="item.initialize || type !== null">
-              <el-form-item :label="t('tableColumn.initialize')">
-                <el-input v-model="item.initialize" autocomplete="off" />
-              </el-form-item>
-            </el-col>
+
             <el-col :span="12" v-if="item.value2 || type !== null">
+              <div style="padding: 0 0 5px 80px; color: red; font-size: 12px">
+                提示：type = 108 时为下注次数，其他类型输入0
+              </div>
               <el-form-item
                 label="value2"
                 :prop="`complete.${index}.value2`"
@@ -311,6 +284,47 @@
                   @input="item.value2 = item.value2.replace(/[^\d|\.]/g, '')"
                   @change="handleChange(item.value2, index, 'v2')"
                 />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row class="w-full">
+            <el-col :span="12" v-if="item.code || type !== null">
+              <div style="padding: 0 0 5px 80px; color: red; font-size: 12px">
+                提示：用做物品收集的任务（暂无这类任务）
+              </div>
+              <el-form-item :label="t('tableColumn.code')">
+                <el-input v-model="item.code" autocomplete="off" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12" v-if="item.mode || type !== null">
+              <div style="padding: 0 0 5px 80px; color: red; font-size: 12px">
+                提示：用于限制值在哪个游戏模式才进行累加
+              </div>
+              <el-form-item :label="t('tableColumn.mode')">
+                <el-input v-model="item.mode" autocomplete="off" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row class="w-full">
+            <el-col :span="12" v-if="item.limit || type !== null">
+              <div style="padding: 0 0 5px 80px; color: red; font-size: 12px">
+                提示：限制单次值的限制 比如说单次下注达到100才将这次的值进行累积
+              </div>
+              <el-form-item :label="t('tableColumn.limit')">
+                <el-input-number
+                  :min="0"
+                  v-model="item.limit"
+                  autocomplete="off"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12" v-if="item.initialize || type !== null">
+              <div style="padding: 0 0 5px 80px; color: red; font-size: 12px">
+                提示：用于进度值的初始化 空字符串默认为now now: 接任务开始统计
+                day:日统计 week:周统计
+              </div>
+              <el-form-item :label="t('tableColumn.initialize')">
+                <el-input v-model="item.initialize" autocomplete="off" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -328,17 +342,6 @@
         <template v-for="(item, index) in form.award" :key="index">
           <el-row class="w-full">
             <el-col :span="12" v-if="item.type || type !== null">
-              <!-- <el-form-item
-                :label="t('tableColumn.type')"
-                :prop="`award.${index}.type`"
-                :rules="rules['award.type']"
-              >
-                <el-input-number
-                  :min="0"
-                  v-model="item.type"
-                  autocomplete="off"
-                />
-              </el-form-item> -->
               <el-form-item
                 :label="t('tableColumn.type')"
                 :prop="`award.${index}.type`"
@@ -358,7 +361,8 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="12" v-if="item.id || type !== null">
+          </el-row>
+          <!-- <el-col :span="12" v-if="item.id || type !== null">
               <el-form-item :label="t('tableColumn.id')">
                 <el-input-number
                   :min="0"
@@ -366,7 +370,8 @@
                   autocomplete="off"
                 />
               </el-form-item>
-            </el-col>
+            </el-col> -->
+          <el-row class="w-full">
             <el-col :span="12" v-if="item.code || type !== null">
               <div style="padding: 0 0 5px 80px; color: red; font-size: 12px">
                 提示：输入物品配置的物品名称
@@ -408,17 +413,6 @@
         <template v-for="(item, index) in form.unlock" :key="index">
           <el-row class="w-full">
             <el-col :span="12" v-if="item.type || type !== null">
-              <!-- <el-form-item
-                :label="t('tableColumn.type')"
-                :prop="`unlock.${index}.type`"
-                :rules="rules['unlock.type']"
-              >
-                <el-input-number
-                  :min="0"
-                  v-model="item.type"
-                  autocomplete="off"
-                />
-              </el-form-item> -->
               <el-form-item
                 :label="t('tableColumn.type')"
                 :prop="`unlock.${index}.type`"
@@ -494,6 +488,9 @@
           <div style="margin: 5px 0">106 //单次赢多少完成</div>
           <div style="margin: 5px 0">107 //触发free次数</div>
           <div style="margin: 5px 0">108 //下注多少次内要赢奖多少</div>
+          <div style="margin: 5px 0">109 //游戏主线完成</div>
+          <div style="margin: 5px 0">110 //bonus触发次数完成</div>
+          <div style="margin: 5px 0">111 //cash explosion次数完成</div>
         </div>
       </el-form>
     </el-drawer>
@@ -597,6 +594,9 @@ const typeOptions = ref([
   { label: "单次赢多少完成(106)", value: 106 },
   { label: "触发free次数(107)", value: 107 },
   { label: "下注多少次内要赢奖多少(108)", value: 108 },
+  { label: "游戏主线完成(109)", value: 109 },
+  { label: "bonus触发次数完成(110)", value: 110 },
+  { label: "cash explosion次数完成(111)", value: 111 },
 ]);
 
 const onReset = () => {
