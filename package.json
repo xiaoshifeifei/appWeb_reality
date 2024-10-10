@@ -36,12 +36,14 @@
     "vite-auto-import-svg": "^1.0.0",
     "vue": "^3.4.21",
     "vue-echarts": "^6.7.2",
+    "vue-i18n": "^9.4.1",
     "vue-router": "^4.3.2",
-    "vuedraggable": "^4.1.0",
-    "vue-i18n": "^9.4.1"
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.22.9",
+    "@intlify/unplugin-vue-i18n": "^1.2.0",
+    "@intlify/vue-i18n-loader": "^4.2.0",
     "@vitejs/plugin-legacy": "^4.1.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vue/cli-plugin-babel": "~5.0.8",
@@ -61,9 +63,8 @@
     "unplugin-vue-components": "^0.25.1",
     "vite": "^4.4.6",
     "vite-plugin-banner": "^0.7.0",
+    "vite-plugin-compression": "^0.5.1",
     "vite-plugin-importer": "^0.2.5",
-    "vite-plugin-vue-devtools": "^7.3.7",
-    "@intlify/unplugin-vue-i18n": "^1.2.0",
-    "@intlify/vue-i18n-loader": "^4.2.0"
+    "vite-plugin-vue-devtools": "^7.3.7"
   }
 }

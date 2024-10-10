@@ -1,7 +1,10 @@
 import legacyPlugin from "@vitejs/plugin-legacy";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
-import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
+import {
+  AntDesignVueResolver,
+  ElementPlusResolver,
+} from "unplugin-vue-components/resolvers";
 import { viteLogo } from "./src/core/config";
 import Banner from "vite-plugin-banner";
 import * as path from "path";
@@ -13,6 +16,7 @@ import fullImportPlugin from "./vitePlugin/fullImport/fullImport.js";
 import VueFilePathPlugin from "./vitePlugin/componentName/index.js";
 import { svgBuilder } from "vite-auto-import-svg";
 import { AddSecret } from "./vitePlugin/secret";
+import viteCompression from "vite-plugin-compression";
 // @see https://cn.vitejs.dev/config/
 export default ({ command, mode }) => {
   AddSecret("");
@@ -40,6 +44,15 @@ export default ({ command, mode }) => {
 
   const rollupOptions = {
     output: {
+      manualChunks(id) {
+        if (id.includes("node_modules")) {
+          return id
+            .toString()
+            .split("node_modules/")[1]
+            .split("/")[0]
+            .toString();
+        }
+      },
       entryFileNames: "assets/087AC4D233B64EB0[name].[hash].js",
       chunkFileNames: "assets/087AC4D233B64EB0[name].[hash].js",
       assetFileNames: "assets/087AC4D233B64EB0[name].[hash].[ext]",
@@ -77,6 +90,13 @@ export default ({ command, mode }) => {
       sourcemap: false, // 是否产出sourcemap.json
       outDir: "dist", // 产出目录
       rollupOptions,
+      // terserOptions: {
+      //   // 清除console和debugger
+      //   compress: {
+      //     drop_console: true,
+      //     drop_debugger: true,
+      //   },
+      // },
     },
     esbuild,
     optimizeDeps,
@@ -112,7 +132,7 @@ export default ({ command, mode }) => {
   } else {
     config.plugins.push(
       AutoImport({
-        resolvers: [ElementPlusResolver()],
+        resolvers: [AntDesignVueResolver(), ElementPlusResolver()],
       }),
       Components({
         resolvers: [
