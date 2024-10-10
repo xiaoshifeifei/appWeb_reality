@@ -731,7 +731,7 @@
     "ipaddr": "ip地址",
     "like": "喜好",
     "providerId": "提供者ID",
-    "siteId": "站点Id",
+    "siteId": "站点ID",
     "vip": "会员",
     "subAgentId": "子代理Id",
     "orderNo": "订单号",
@@ -789,6 +789,13 @@
     "timedReward": "定时奖励",
     "wheelOfFortune": "转盘",
     "levels": "等级",
+    "SiteId": "站点ID",
+    "oneDay": "一日在线人数",
+    "oneDayRatio": "次留率（%）",
+    "threeDay": "三日在线人数",
+    "threeDayRatio": "三日留存率（%）",
+    "sevenDay": "七日在线人数",
+    "sevenDayRatio": "七日留存率（%）",
     "sendAnEmail": "发送邮件"
   }
 }

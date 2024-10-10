@@ -275,11 +275,9 @@ const seeFunc = async (row) => {
   dialogFormVisible.value = true;
 };
 const handleDateChange = () => {
-  console.log("searchInfo.value.day", searchInfo.value.day);
   if (searchInfo.value.day) {
     const stamp = new Date(searchInfo.value.day).getTime();
     const beijingTime = new Date(stamp).toISOString();
-    // const isoDate = dayjs(searchInfo.value.day).format("YYYY-MM-DDTHH:mm:ssZ");
     searchInfo.value.day = beijingTime;
   }
 };
@@ -337,11 +335,14 @@ const getTableData = async () => {
   }
 };
 const init = async () => {
-  // + 8 * 60 * 60 * 1000
-  const stamp = new Date().getTime();
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1; // 月份从0开始，需要加1
+  const day = currentDate.getDate();
+  const dataSrc = year + "-" + month + "-" + day + " 00:00:00";
+  const stamp = new Date(dataSrc).getTime();
   const beijingTime = new Date(stamp).toISOString();
   searchInfo.value.day = beijingTime;
-
   getTableData();
 };
 init();
