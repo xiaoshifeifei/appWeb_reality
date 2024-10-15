@@ -13,7 +13,6 @@
             placeholder="请选择时间"
             @change="handleDateChange"
             :shortcuts="shortcuts"
-            :size="size"
           />
         </el-form-item>
         <el-form-item>

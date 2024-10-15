@@ -24,7 +24,6 @@
       <el-table
         border
         :data="tableData"
-        @sort-change="sortChange"
         @selection-change="handleSelectionChange"
         highlight-current-row
         :header-cell-style="{
@@ -106,7 +105,7 @@
           :page-size="pageSize"
           :page-sizes="[10, 30, 50, 100]"
           :total="total"
-          layout="total, sizes, prev, pager, next, jumper"
+          layout="prev, pager, next"
           @current-change="handleCurrentChange"
           @size-change="handleSizeChange"
         />
@@ -219,20 +218,6 @@
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.num || type !== null">
-              <!-- <el-form-item label="num">
-                <el-input-number
-                  :min="0"
-                  v-model="item.num"
-                  autocomplete="off"
-                />
-                <el-button
-                  style="margin-left: 20px"
-                  type="delete"
-                  @click="delItem(index)"
-                >
-                  删除
-                </el-button>
-              </el-form-item> -->
               <el-form-item
                 :label="t('tableColumn.num')"
                 :prop="`award.${index}.num`"

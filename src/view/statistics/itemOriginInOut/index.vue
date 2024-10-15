@@ -14,7 +14,6 @@
             start-placeholder="Start date"
             end-placeholder="End date"
             :shortcuts="shortcuts"
-            :size="size"
           />
         </el-form-item>
         <el-form-item>

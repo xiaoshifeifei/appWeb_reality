@@ -72,7 +72,6 @@
       </div>
       <el-table
         :data="tableData"
-        @sort-change="sortChange"
         @selection-change="handleSelectionChange"
         highlight-current-row
         :header-cell-style="{
