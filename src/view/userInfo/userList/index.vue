@@ -5,6 +5,33 @@
         <el-form-item :label="t('tableColumn.accountId')">
           <el-input clearable v-model="searchInfo.accountId" placeholder="ID" />
         </el-form-item>
+        <el-form-item :label="t('tableColumn.accountType')">
+          <el-select
+            v-model="searchInfo.accountType"
+            :placeholder="t('tableColumn.placeholder')"
+          >
+            <el-option
+              v-for="item in accountTypeOption"
+              :key="item.value"
+              :label="t(`tableColumn.${item.label}`)"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          :label="t('tableColumn.placeholder') + t('tableColumn.time')"
+        >
+          <el-date-picker
+            :style="{ width: '300px' }"
+            v-model="value2"
+            type="daterange"
+            unlink-panels
+            range-separator="To"
+            start-placeholder="Start date"
+            end-placeholder="End date"
+            :shortcuts="shortcuts"
+          />
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -516,7 +543,7 @@
                 placeholder="请选择"
               >
                 <el-option
-                  v-for="item in completeOptions"
+                  v-for="item in searchOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -771,7 +798,7 @@ const router = useRouter();
 defineOptions({
   name: "userInfo",
 });
-
+const value2 = ref("");
 const apis = ref([]);
 const form = ref({
   status: "",
@@ -874,7 +901,7 @@ const accountTypeOption = ref([
 ]);
 const handleDateChange = () => {
   if (formMail.value.expired) {
-    console.log("formMail.value.expired", formMail.value.expired);
+    // console.log("formMail.value.expired", formMail.value.expired);
     const isoDate = dayjs(formMail.value.expired).format(
       "YYYY-MM-DDTHH:mm:ssZ"
     );
@@ -887,6 +914,31 @@ watch(
     setAuthorityIds();
   }
 );
+const handleDateChangeSearch = (params, index) => {
+  if (index === 0) {
+    const isoDate = dayjs(params).format("YYYY-MM-DDTHH:mm:ssZ");
+    searchInfo.value.start = isoDate;
+  } else if (index === 1) {
+    let date = new Date(params);
+    let formattedDate =
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0") +
+      " " +
+      "23" +
+      ":" +
+      "59" +
+      ":" +
+      "59";
+    const dataTime = new Date(formattedDate).getTime();
+    const myTime = new Date(dataTime);
+
+    const isoDate = dayjs(myTime).format("YYYY-MM-DDTHH:mm:ssZ");
+    searchInfo.value.end = isoDate;
+  }
+};
 const setAuthorityIds = () => {
   tableData.value &&
     tableData.value.forEach((user) => {
@@ -1057,6 +1109,7 @@ const delItem = (index) => {
 
 const onReset = () => {
   searchInfo.value = {};
+  value2.value = "";
 };
 // 搜索
 
@@ -1079,6 +1132,14 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async () => {
+  if (value2.value && value2.value.length) {
+    value2.value.forEach((item, index) => {
+      handleDateChangeSearch(item, index);
+    });
+  } else {
+    searchInfo.value.start = null;
+    searchInfo.value.end = null;
+  }
   const table = await getUserList({
     page: page.value,
     pageSize: pageSize.value,

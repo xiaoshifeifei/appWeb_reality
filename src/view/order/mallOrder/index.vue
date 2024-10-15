@@ -2,8 +2,33 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <el-form-item label="key">
-          <el-input v-model="searchInfo.key" placeholder="key" />
+        <el-form-item :label="t('tableColumn.orderNo')">
+          <el-input
+            clearable
+            v-model="searchInfo.orderNo"
+            :placeholder="t('tableColumn.orderNo')"
+          />
+        </el-form-item>
+        <el-form-item :label="t('tableColumn.accountId')">
+          <el-input
+            clearable
+            v-model="searchInfo.accountId"
+            :placeholder="t('tableColumn.accountId')"
+          />
+        </el-form-item>
+        <el-form-item
+          :label="t('tableColumn.placeholder') + t('tableColumn.time')"
+        >
+          <el-date-picker
+            :style="{ width: '300px' }"
+            v-model="value2"
+            type="daterange"
+            unlink-panels
+            range-separator="To"
+            start-placeholder="Start date"
+            end-placeholder="End date"
+            :shortcuts="shortcuts"
+          />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
@@ -318,14 +343,14 @@
           </el-col>
         </el-row>
 
-        <el-form-item :label="t('tableColumn.expired')" prop="expired">
+        <!-- <el-form-item :label="t('tableColumn.expired')" prop="expired">
           <el-date-picker
             v-model="form.expired"
             type="datetime"
             placeholder="请选择过期时间"
             @change="handleDateChange"
           />
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
     </el-drawer>
   </div>
@@ -360,6 +385,7 @@ const form = ref({
   discount: "",
   expired: "",
 });
+const value2 = ref("");
 
 const type = ref("");
 const rules = ref({
@@ -378,6 +404,7 @@ const searchInfo = ref({});
 
 const onReset = () => {
   searchInfo.value = {};
+  value2.value = "";
 };
 // 搜索
 
@@ -408,6 +435,54 @@ const dataGet = (dateStr) => {
     date.getSeconds().toString().padStart(2, "0");
   return formattedDate;
 };
+const shortcuts = [
+  {
+    text: "Today",
+    value: () => {
+      const end = new Date();
+      const start = new Date();
+      return [start, end];
+    },
+  },
+  {
+    text: "Yesterday",
+    value: () => {
+      const end = new Date();
+      const start = new Date();
+      start.setTime(start.getTime() - 3600 * 1000 * 24);
+      end.setTime(end.getTime() - 3600 * 1000 * 24);
+      return [start, end];
+    },
+  },
+
+  {
+    text: "Last week",
+    value: () => {
+      const end = new Date();
+      const start = new Date();
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+      return [start, end];
+    },
+  },
+  {
+    text: "Last month",
+    value: () => {
+      const end = new Date();
+      const start = new Date();
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+      return [start, end];
+    },
+  },
+  {
+    text: "Last 3 months",
+    value: () => {
+      const end = new Date();
+      const start = new Date();
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+      return [start, end];
+    },
+  },
+];
 
 const handleCurrentChange = (val) => {
   page.value = val;
@@ -416,6 +491,14 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async () => {
+  if (value2.value && value2.value.length) {
+    value2.value.forEach((item, index) => {
+      handleDateChange(item, index);
+    });
+  } else {
+    searchInfo.value.start = null;
+    searchInfo.value.end = null;
+  }
   const table = await getMallOrderList({
     page: page.value,
     pageSize: pageSize.value,
@@ -464,7 +547,16 @@ const handleChange = (number, index, params, params2) => {
     }
   }
 };
-getTableData();
+const initPage = async () => {
+  // const end = new Date();
+  // const start = new Date();
+  // start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+  // value2.value = [start, end];
+  getTableData();
+};
+
+initPage();
+
 // 批量操作
 const handleSelectionChange = (val) => {
   apis.value = val;
@@ -517,10 +609,29 @@ const switchStatus = async (row) => {
     getTableData();
   }
 };
-const handleDateChange = () => {
-  if (form.value.expired) {
-    const isoDate = dayjs(form.value.expired).format("YYYY-MM-DDTHH:mm:ssZ");
-    form.value.expired = isoDate;
+const handleDateChange = (params, index) => {
+  if (index === 0) {
+    const isoDate = dayjs(params).format("YYYY-MM-DDTHH:mm:ssZ");
+    searchInfo.value.start = isoDate;
+  } else if (index === 1) {
+    let date = new Date(params);
+    let formattedDate =
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0") +
+      " " +
+      "23" +
+      ":" +
+      "59" +
+      ":" +
+      "59";
+    const dataTime = new Date(formattedDate).getTime();
+    const myTime = new Date(dataTime);
+
+    const isoDate = dayjs(myTime).format("YYYY-MM-DDTHH:mm:ssZ");
+    searchInfo.value.end = isoDate;
   }
 };
 

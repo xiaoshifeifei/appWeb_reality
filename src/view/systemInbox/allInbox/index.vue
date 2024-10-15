@@ -2,9 +2,20 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <!-- <el-form-item label="code">
-          <el-input v-model="searchInfo.key" placeholder="code" />
-        </el-form-item> -->
+        <el-form-item
+          :label="t('tableColumn.placeholder') + t('tableColumn.time')"
+        >
+          <el-date-picker
+            :style="{ width: '300px' }"
+            v-model="value2"
+            type="daterange"
+            unlink-panels
+            range-separator="To"
+            start-placeholder="Start date"
+            end-placeholder="End date"
+            :shortcuts="shortcuts"
+          />
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -303,6 +314,7 @@ import {
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
+import dayjs from "dayjs";
 import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
 const { t } = useI18n(); // added by mohamed hassan to support multilanguage
 const router = useRouter();
@@ -310,7 +322,7 @@ const router = useRouter();
 defineOptions({
   name: "goodsConfiguration",
 });
-
+const value2 = ref("");
 const apis = ref([]);
 const form = ref({
   id: null,
@@ -397,13 +409,37 @@ const addContent = () => {
 function objectPush(obj, key, value) {
   obj[key] = value;
 }
-
 const handleDateChange = () => {
   if (formMail.value.expired) {
     const isoDate = dayjs(formMail.value.expired).format(
       "YYYY-MM-DDTHH:mm:ssZ"
     );
     formMail.value.expired = isoDate;
+  }
+};
+const handleDateChangeSearch = (params, index) => {
+  if (index === 0) {
+    const isoDate = dayjs(params).format("YYYY-MM-DDTHH:mm:ssZ");
+    searchInfo.value.start = isoDate;
+  } else if (index === 1) {
+    let date = new Date(params);
+    let formattedDate =
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0") +
+      " " +
+      "23" +
+      ":" +
+      "59" +
+      ":" +
+      "59";
+    const dataTime = new Date(formattedDate).getTime();
+    const myTime = new Date(dataTime);
+
+    const isoDate = dayjs(myTime).format("YYYY-MM-DDTHH:mm:ssZ");
+    searchInfo.value.end = isoDate;
   }
 };
 const addItem = () => {
@@ -505,6 +541,7 @@ const filterKeys = (obj, keysToFilter) => {
 
 const onReset = () => {
   searchInfo.value = {};
+  value2.value = "";
 };
 
 // 搜索
@@ -578,6 +615,14 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async () => {
+  if (value2.value && value2.value.length) {
+    value2.value.forEach((item, index) => {
+      handleDateChangeSearch(item, index);
+    });
+  } else {
+    searchInfo.value.start = null;
+    searchInfo.value.end = null;
+  }
   const table = await systemInboxGetList({
     page: page.value,
     pageSize: pageSize.value,
