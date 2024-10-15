@@ -394,7 +394,6 @@ const handleSizeChange = (val) => {
 };
 const dataGet = (dateStr) => {
   let date = new Date(dateStr);
-  console.log(111, dateStr, date);
   let formattedDate =
     date.getFullYear() +
     "-" +

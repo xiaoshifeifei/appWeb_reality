@@ -128,7 +128,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="gva-pagination">
+      <!-- <div class="gva-pagination">
         <el-pagination
           :current-page="page"
           :page-size="pageSize"
@@ -138,7 +138,7 @@
           @current-change="handleCurrentChange"
           @size-change="handleSizeChange"
         />
-      </div>
+      </div> -->
     </div>
 
     <el-drawer

@@ -400,11 +400,7 @@
               :label="t('tableColumn.providerId')"
               prop="providerId"
             >
-              <el-input-number
-                :min="0"
-                v-model="form.providerId"
-                autocomplete="off"
-              />
+              <el-input v-model="form.providerId" autocomplete="off" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -418,7 +414,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item :label="t('tableColumn.username')" prop="username">
-              <el-input-number v-model="form.username" autocomplete="off" />
+              <el-input v-model="form.username" autocomplete="off" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -481,12 +477,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item :label="t('tableColumn.clientId')" prop="clientId">
-              <el-input-number
-                disabled
-                :min="0"
-                v-model="form.clientId"
-                autocomplete="off"
-              />
+              <el-input disabled v-model="form.clientId" autocomplete="off" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -513,7 +504,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12"
-            ><el-form-item :label="t('tableColumn.email')" prop="email">
+            ><el-form-item :label="t('tableColumn.email')">
               <el-input v-model="form.email" autocomplete="off" />
             </el-form-item>
           </el-col>
@@ -664,7 +655,6 @@
                 />
                 <el-button
                   style="margin-left: 20px"
-                  type="delete"
                   icon="delete"
                   @click="delItem(index)"
                 >
@@ -713,7 +703,6 @@
             </el-col>
             <el-button
               style="margin-left: 20px"
-              type="delete"
               icon="delete"
               @click="delContent(index)"
             >

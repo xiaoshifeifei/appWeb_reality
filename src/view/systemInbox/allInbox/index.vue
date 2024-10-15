@@ -203,7 +203,6 @@
                 />
                 <el-button
                   style="margin-left: 20px"
-                  type="delete"
                   icon="delete"
                   @click="delItem(index)"
                 >
@@ -251,7 +250,6 @@
             </el-col>
             <el-button
               style="margin-left: 20px"
-              type="delete"
               icon="delete"
               @click="delContent(index)"
             >

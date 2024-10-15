@@ -103,7 +103,7 @@
         </el-table-column>
       </el-table>
       <div class="gva-pagination">
-        <el-pagination
+        <!-- <el-pagination
           :current-page="page"
           :page-size="pageSize"
           :page-sizes="[10, 30, 50, 100]"
@@ -111,7 +111,7 @@
           layout="total, sizes, prev, pager, next, jumper"
           @current-change="handleCurrentChange"
           @size-change="handleSizeChange"
-        />
+        /> -->
       </div>
     </div>
     <el-drawer
