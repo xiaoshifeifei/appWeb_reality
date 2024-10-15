@@ -32,6 +32,7 @@
   "/src/view/setting/taskDetails/index.vue": "taskDetails",
   "/src/view/setting/tasks/index.vue": "tack",
   "/src/view/setting/timedReward/index.vue": "day7Sign",
+  "/src/view/statistics/itemOriginInOut/index copy.vue": "userInfo",
   "/src/view/statistics/itemOriginInOut/index.vue": "userInfo",
   "/src/view/statistics/userItemInOut/index.vue": "userInfo",
   "/src/view/superAdmin/api/api.vue": "Api",
