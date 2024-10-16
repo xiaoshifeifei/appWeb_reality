@@ -7,6 +7,7 @@
         </el-form-item>
         <el-form-item :label="t('tableColumn.accountType')">
           <el-select
+            clearable
             v-model="searchInfo.accountType"
             :placeholder="t('tableColumn.placeholder')"
           >

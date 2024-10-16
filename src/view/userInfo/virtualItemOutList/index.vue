@@ -11,6 +11,7 @@
         </el-form-item>
         <el-form-item :label="t('tableColumn.origin')">
           <el-select
+            clearable
             v-model="searchInfo.origin"
             :placeholder="t('tableColumn.placeholder')"
           >
@@ -24,6 +25,7 @@
         </el-form-item>
         <el-form-item :label="t('tableColumn.code')">
           <el-select
+            clearable
             v-model="searchInfo.code"
             :placeholder="t('tableColumn.placeholder')"
           >
@@ -227,7 +229,22 @@ const shortcuts = [
 
 const handleDateChange = (params, index) => {
   if (index === 0) {
-    const isoDate = dayjs(params).format("YYYY-MM-DDTHH:mm:ssZ");
+    let date = new Date(params);
+    let formattedDate =
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0") +
+      " " +
+      "00" +
+      ":" +
+      "00" +
+      ":" +
+      "00";
+    const dataTime = new Date(formattedDate).getTime();
+    const myTime = new Date(dataTime);
+    const isoDate = dayjs(myTime).format("YYYY-MM-DDTHH:mm:ssZ");
     searchInfo.value.start = isoDate;
   } else if (index === 1) {
     let date = new Date(params);
@@ -276,9 +293,9 @@ const handleCurrentChange = (val) => {
 // 查询
 const getTableData = async () => {
   if (!searchInfo.value.code || searchInfo.value.code === null) {
-    return ElMessage.warning(
-      t("tableColumn.placeholder") + t("tableColumn.code")
-    );
+    // return ElMessage.warning(
+    //   t("tableColumn.placeholder") + t("tableColumn.code")
+    // );
   }
 
   if (value2.value && value2.value.length) {
@@ -288,9 +305,9 @@ const getTableData = async () => {
   } else {
     searchInfo.value.start = null;
     searchInfo.value.end = null;
-    return ElMessage.warning(
-      t("tableColumn.placeholder") + t("tableColumn.time")
-    );
+    // return ElMessage.warning(
+    //   t("tableColumn.placeholder") + t("tableColumn.time")
+    // );
   }
 
   const table = await getVirtualItemOutList({

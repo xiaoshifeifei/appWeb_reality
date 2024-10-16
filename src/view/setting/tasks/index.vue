@@ -3,7 +3,7 @@
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
         <el-form-item label="ID">
-          <el-input v-model="searchInfo.id" placeholder="ID" />
+          <el-input clearable v-model="searchInfo.id" placeholder="ID" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
