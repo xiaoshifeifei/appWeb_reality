@@ -341,6 +341,7 @@ const initPage = async () => {
     });
     originOptions.value = data;
   }
+  getTableData();
 };
 
 initPage();

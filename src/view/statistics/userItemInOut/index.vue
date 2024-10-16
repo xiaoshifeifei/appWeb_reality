@@ -23,23 +23,6 @@
             />
           </el-select>
         </el-form-item>
-        <!-- <el-form-item :label="t('tableColumn.start')">
-          <el-date-picker
-            v-model="searchInfo.start"
-            type="datetime"
-            placeholder="start"
-            @change="handleDateChange('start')"
-          />
-        </el-form-item>
-        <el-form-item :label="t('tableColumn.end')">
-          <el-date-picker
-            v-model="searchInfo.end"
-            type="datetime"
-            placeholder="end"
-            @change="handleDateChange('end')"
-          />
-        </el-form-item> -->
-
         <el-form-item
           :label="t('tableColumn.placeholder') + t('tableColumn.time')"
         >
@@ -326,7 +309,11 @@ const initPage = async () => {
   });
   if (itemData.code === 0) {
     completeOptions.value = itemData.data.list;
+    if (completeOptions.value.length) {
+      searchInfo.value.code = completeOptions.value[0].code;
+    }
   }
+  getTableData();
 };
 
 initPage();
