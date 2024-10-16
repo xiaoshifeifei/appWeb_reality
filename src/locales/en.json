@@ -798,6 +798,7 @@
     "threeDayRatio": "ThreeDayRatio",
     "sevenDay": "SevenDay",
     "sevenDayRatio": "SevenDayRatio",
+    "bindThirdPartyAccount": "bindThirdPartyAccount",
     "sendAnEmail": "SendAnEmail"
   }
 }

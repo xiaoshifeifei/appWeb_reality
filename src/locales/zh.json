@@ -798,6 +798,7 @@
     "threeDayRatio": "三日留存率（%）",
     "sevenDay": "七日在线人数",
     "sevenDayRatio": "七日留存率（%）",
+    "bindThirdPartyAccount": "绑定第三方账号",
     "sendAnEmail": "发送邮件"
   }
 }

@@ -223,7 +223,22 @@ const handleDateChange = (params, index) => {
     const isoDate = dayjs(params).format("YYYY-MM-DDTHH:mm:ssZ");
     searchInfo.value.start = isoDate;
   } else if (index === 1) {
-    const isoDate = dayjs(params).format("YYYY-MM-DDTHH:mm:ssZ");
+    let date = new Date(params);
+    let formattedDate =
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0") +
+      " " +
+      "23" +
+      ":" +
+      "59" +
+      ":" +
+      "59";
+    const dataTime = new Date(formattedDate).getTime();
+    const myTime = new Date(dataTime);
+    const isoDate = dayjs(myTime).format("YYYY-MM-DDTHH:mm:ssZ");
     searchInfo.value.end = isoDate;
   }
 };

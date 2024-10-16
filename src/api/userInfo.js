@@ -126,6 +126,14 @@ export const getVirtualItemOutList = (params) => {
     params,
   });
 };
+// 获取来源列表
+export const getVirtualItemOriginList = (params) => {
+  return service({
+    url: "/app/common/virtualItemOriginList",
+    method: "get",
+    params,
+  });
+};
 
 // @Tags Api
 // @Summary 更新api

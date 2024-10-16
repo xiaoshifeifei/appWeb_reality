@@ -15,10 +15,10 @@
             :placeholder="t('tableColumn.placeholder')"
           >
             <el-option
-              v-for="item in completeOptions"
-              :key="item.code"
-              :label="item.desc"
-              :value="item.code"
+              v-for="item in originOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
             />
           </el-select>
         </el-form-item>
@@ -148,7 +148,10 @@
 </template>
   
   <script setup>
-import { getVirtualItemOutList } from "@/api/userInfo";
+import {
+  getVirtualItemOutList,
+  getVirtualItemOriginList,
+} from "@/api/userInfo";
 import { ElMessage } from "element-plus";
 import { virtualItemGetList } from "@/api/tack";
 import { ref } from "vue";
@@ -169,6 +172,7 @@ const pageSize = ref(10);
 const tableData = ref([]);
 const searchInfo = ref({});
 const completeOptions = ref([]);
+const originOptions = ref([]);
 
 const value2 = ref("");
 
@@ -226,7 +230,22 @@ const handleDateChange = (params, index) => {
     const isoDate = dayjs(params).format("YYYY-MM-DDTHH:mm:ssZ");
     searchInfo.value.start = isoDate;
   } else if (index === 1) {
-    const isoDate = dayjs(params).format("YYYY-MM-DDTHH:mm:ssZ");
+    let date = new Date(params);
+    let formattedDate =
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      date.getDate().toString().padStart(2, "0") +
+      " " +
+      "23" +
+      ":" +
+      "59" +
+      ":" +
+      "59";
+    const dataTime = new Date(formattedDate).getTime();
+    const myTime = new Date(dataTime);
+    const isoDate = dayjs(myTime).format("YYYY-MM-DDTHH:mm:ssZ");
     searchInfo.value.end = isoDate;
   }
 };
@@ -298,6 +317,16 @@ const initPage = async () => {
   });
   if (itemData.code === 0) {
     completeOptions.value = itemData.data.list;
+  }
+  const origin = await getVirtualItemOriginList({
+    page: page.value,
+    pageSize: 9999,
+  });
+  if (origin.code === 0) {
+    const data = origin.data.inOrigins.map((item) => {
+      return { label: t(`tableColumn.${item}`), value: item };
+    });
+    originOptions.value = data;
   }
 };
 
