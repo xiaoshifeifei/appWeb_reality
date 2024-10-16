@@ -110,6 +110,23 @@ export const getAccountRetained = (params) => {
   });
 };
 
+// 获取用户物品获得记录列表
+export const getVirtualItemInList = (params) => {
+  return service({
+    url: "/app/user/virtualItemInList",
+    method: "get",
+    params,
+  });
+};
+// 获取用户物品获得记录列表
+export const getVirtualItemOutList = (params) => {
+  return service({
+    url: "/app/user/virtualItemOutList",
+    method: "get",
+    params,
+  });
+};
+
 // @Tags Api
 // @Summary 更新api
 // @Security ApiKeyAuth
