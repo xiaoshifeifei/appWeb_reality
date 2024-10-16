@@ -703,7 +703,7 @@
     "nickname": "昵称",
     "lastUpdate": "最后更新时间",
     "content": "内容",
-    "sender": "发件人",
+    "sender": "发件人ID",
     "accountId": "账户ID",
     "desc": "描述",
     "limit": "限制",

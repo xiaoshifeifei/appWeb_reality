@@ -197,13 +197,13 @@
             <div>{{ dataGet(scope.row.updated) }}</div>
           </template>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           align="center"
           fixed="right"
           :label="t('general.operations')"
           min-width="200"
         >
-          <!-- <template #default="scope">
+          <template #default="scope">
             <el-button
               type="primary"
               size="small"
@@ -219,8 +219,8 @@
             >
               {{ t("general.delete") }}
             </el-button>
-          </template> -->
-        </el-table-column>
+          </template>
+        </el-table-column> -->
       </el-table>
       <div class="gva-pagination">
         <el-pagination

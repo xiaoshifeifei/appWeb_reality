@@ -301,7 +301,12 @@ const onSubmit = () => {
   page.value = 1;
   pageSize.value = 10;
   if (!searchInfo.value.day) {
-    const stamp = new Date().getTime();
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth() + 1; // 月份从0开始，需要加1
+    const day = currentDate.getDate();
+    const dataSrc = year + "-" + month + "-" + day + " 00:00:00";
+    const stamp = new Date(dataSrc).getTime();
     const beijingTime = new Date(stamp).toISOString();
     searchInfo.value.day = beijingTime;
   }

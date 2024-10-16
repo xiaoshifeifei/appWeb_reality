@@ -186,15 +186,34 @@
           <div class="origin">
             <div v-for="(item1, key1, index1) in item" :key="index1">
               <div v-if="key1 === 'origins'">
-                <div class="nameKey1 pose">
+                <!-- <div class="nameKey1 pose">
                   {{ t(`tableColumn.${key1}`) }}：
-                </div>
-                <!-- <el-table :data="tableDataS" style="width: 100%">
-                  <el-table-column prop="date" label="Date" width="180" />
-                  <el-table-column prop="name" label="Name" width="180" />
-                  <el-table-column prop="address" label="Address" />
-                </el-table> -->
-                <div v-for="(item2, key2, index2) in item[key1]" :key="index2">
+                </div> -->
+                <el-table
+                  :data="item[key1]"
+                  border
+                  style="width: 600px; margin-top: 20px"
+                >
+                  <el-table-column
+                    prop="name"
+                    align="center"
+                    :label="t(`tableColumn.${key1}`)"
+                    width="200"
+                  />
+                  <el-table-column
+                    prop="in"
+                    align="center"
+                    :label="t(`tableColumn.in`)"
+                    width="200"
+                  />
+                  <el-table-column
+                    prop="out"
+                    align="center"
+                    :label="t(`tableColumn.out`)"
+                    width="200"
+                  />
+                </el-table>
+                <!-- <div v-for="(item2, key2, index2) in item[key1]" :key="index2">
                   <div class="nameKey1" v-if="key2 === 'level'">
                     {{ t(`tableColumn.levels`) }}：
                   </div>
@@ -217,7 +236,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -247,6 +266,7 @@ const total = ref(0);
 const pageSize = ref(10);
 const tableData = ref([]);
 const searchInfo = ref({});
+const dialogTitle = ref("详情");
 const form = ref({});
 const dialogFormVisible = ref(false);
 
@@ -299,28 +319,6 @@ const shortcuts = [
     },
   },
 ];
-const tableDataS = [
-  {
-    date: "2016-05-03",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    date: "2016-05-02",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    date: "2016-05-04",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    date: "2016-05-01",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-];
 
 const handleDateChange = (params, index) => {
   if (index === 0) {
@@ -361,6 +359,20 @@ const dataGet = (dateStr) => {
 const seeFunc = async (row) => {
   let rows = JSON.parse(JSON.stringify(row));
   rows.day = dataGet(rows.day);
+  for (let key in rows.items) {
+    for (let key1 in rows.items[key]) {
+      if (typeof rows.items[key][key1] === "object") {
+        const obj1 = Object.keys(rows.items[key][key1]);
+        const obj2 = Object.values(rows.items[key][key1]);
+        const obj3 = obj1.map((item, index) => {
+          obj2[index].name = t(`tableColumn.${item}`);
+          return obj2[index];
+        });
+        rows.items[key][key1] = obj3;
+      }
+    }
+  }
+
   form.value = rows;
   dialogFormVisible.value = true;
 };
@@ -450,18 +462,20 @@ const tableRowClassName = ({ row, rowIndex }) => {
 };
 </script>
 <style scoped lang="scss">
-:deep(.el-table tr th .cell) {
-  color: #fff !important;
-}
-:deep(.el-table .warnBg) {
-  background-color: #c7e4ea;
-  color: #000;
-}
-:deep(.el-table__body tr:hover > td) {
-  background-color: #6dc58b !important;
-}
-:deep(.el-table__body tr.current-row > td) {
-  background-color: #6dc58b !important;
+.gva-table-box {
+  :deep(.el-table tr th .cell) {
+    color: #fff !important;
+  }
+  :deep(.el-table .warnBg) {
+    background-color: #c7e4ea;
+    color: #000;
+  }
+  :deep(.el-table__body tr:hover > td) {
+    background-color: #6dc58b !important;
+  }
+  :deep(.el-table__body tr.current-row > td) {
+    background-color: #6dc58b !important;
+  }
 }
 </style>
   
