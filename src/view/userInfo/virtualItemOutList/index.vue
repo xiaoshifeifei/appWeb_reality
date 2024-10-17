@@ -323,10 +323,10 @@ const getTableData = async () => {
   }
 };
 const initPage = async () => {
-  const end = new Date();
-  const start = new Date();
-  start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-  value2.value = [start, end];
+  //const end = new Date();
+  // const start = new Date();
+  // start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+  // value2.value = [start, end];
   searchInfo.value.accountId = route.query.id;
   const itemData = await virtualItemGetList({
     page: page.value,
