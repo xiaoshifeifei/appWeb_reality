@@ -180,28 +180,6 @@ watch(
   }
 );
 
-const resetPasswordFunc = (row) => {
-  ElMessageBox.confirm("是否将此用户密码重置为123456?", "警告", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
-  }).then(async () => {
-    const res = await resetPassword({
-      ID: row.ID,
-    });
-    if (res.code === 0) {
-      ElMessage({
-        type: "success",
-        message: res.msg,
-      });
-    } else {
-      ElMessage({
-        type: "error",
-        message: res.msg,
-      });
-    }
-  });
-};
 const setAuthorityIds = () => {
   tableData.value &&
     tableData.value.forEach((user) => {
@@ -225,9 +203,9 @@ const setOptions = (authData) => {
 };
 
 const deleteUserFunc = async (row) => {
-  ElMessageBox.confirm("确定要删除吗?", "提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
+  ElMessageBox.confirm(t("general.deleteConfirm"), t("general.hint"), {
+    confirmButtonText: t("general.confirm"),
+    cancelButtonText: t("general.cancel"),
     type: "warning",
   }).then(async () => {
     const res = await deleteUser({ id: row.ID });
