@@ -837,9 +837,9 @@ const enterDialog = async () => {
                 message: t("user.userAddedNote"),
                 showClose: true,
               });
+              getTableData();
+              closeDialog();
             }
-            getTableData();
-            closeDialog();
           }
           break;
         case "edit":
@@ -851,9 +851,9 @@ const enterDialog = async () => {
                 message: t("user.userEditedNote"),
                 showClose: true,
               });
+              getTableData();
+              closeDialog();
             }
-            getTableData();
-            closeDialog();
           }
           break;
         default:

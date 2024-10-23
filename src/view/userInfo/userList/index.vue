@@ -902,7 +902,6 @@ const accountTypeOption = ref([
 ]);
 const handleDateChange = () => {
   if (formMail.value.expired) {
-    // console.log("formMail.value.expired", formMail.value.expired);
     const isoDate = dayjs(formMail.value.expired).format(
       "YYYY-MM-DDTHH:mm:ssZ"
     );
@@ -1370,8 +1369,8 @@ const enterMail = async () => {
           message: t(`tableColumn.sentSuccessfully`),
           showClose: true,
         });
+        closeMail();
       }
-      closeMail();
     }
   });
 };

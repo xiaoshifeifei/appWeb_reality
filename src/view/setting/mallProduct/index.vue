@@ -215,7 +215,11 @@
         <template v-for="(item, index) in form.items" :key="index">
           <el-row class="w-full">
             <el-col :span="12" v-if="item.code || type !== null">
-              <el-form-item :label="t('tableColumn.code')" prop="code">
+              <el-form-item
+                :label="t('tableColumn.code')"
+                :prop="`items.${index}.code`"
+                :rules="rules['items.code']"
+              >
                 <el-input v-model="item.code" autocomplete="off" />
               </el-form-item>
             </el-col>
@@ -239,7 +243,7 @@
 
         <el-row class="w-full">
           <el-col :span="12">
-            <el-form-item :label="t('tableColumn.type')">
+            <el-form-item :label="t('tableColumn.type')" prop="type">
               <el-select
                 v-model="form.type"
                 style="width: 100%"
@@ -344,10 +348,13 @@ const form = ref({
 const type = ref("");
 const rules = ref({
   id: [{ required: true, message: "请输入id", trigger: "blur" }],
-  type: [{ required: true, message: "请输入type", trigger: "blur" }],
+  type: [{ required: true, message: "请选择类型", trigger: "blur" }],
   desc: [{ required: true, message: "请输入desc", trigger: "blur" }],
+  price: [{ required: true, message: "请输入价格", trigger: "blur" }],
+  discount: [{ required: true, message: "请输入折扣", trigger: "blur" }],
   expired: [{ required: true, message: "请选择过期时间", trigger: "blur" }],
   "items.num": [{ required: true, message: "请选输入数量", trigger: "blur" }],
+  "items.code": [{ required: true, message: "请选输入编码", trigger: "blur" }],
 });
 
 const page = ref(1);
@@ -626,9 +633,9 @@ const enterDialog = async () => {
                 message: t("user.userAddedNote"),
                 showClose: true,
               });
+              getTableData();
+              closeDialog();
             }
-            getTableData();
-            closeDialog();
           }
           break;
         case "edit":
@@ -640,9 +647,9 @@ const enterDialog = async () => {
                 message: t("user.userEditedNote"),
                 showClose: true,
               });
+              getTableData();
+              closeDialog();
             }
-            getTableData();
-            closeDialog();
           }
           break;
         default:
@@ -660,7 +667,7 @@ const enterDialog = async () => {
 };
 
 const deleteTackFunc = async (row) => {
-  ElMessageBox.confirm("此操作将永久删除任务, 是否继续?", "提示", {
+  ElMessageBox.confirm("此操作将永久删除, 是否继续?", "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",
