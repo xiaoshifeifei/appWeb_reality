@@ -261,10 +261,10 @@
                   :placeholder="t('general.pleaseSelect')"
                 >
                   <el-option
-                    v-for="item1 in completeOptions"
-                    :key="item1.value"
-                    :label="item1.label"
-                    :value="item1.value"
+                    v-for="item in completeOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
                   />
                 </el-select>
               </el-form-item>
@@ -395,8 +395,20 @@
               <div style="padding: 0 0 5px 80px; color: red; font-size: 12px">
                 提示：输入物品配置的物品名称
               </div>
-              <el-form-item label="code">
-                <el-input :min="0" v-model="item.code" autocomplete="off" />
+              <el-form-item :label="t('tableColumn.code')">
+                <!-- <el-input :min="0" v-model="item.code" autocomplete="off" /> -->
+                <el-select
+                  clearable
+                  v-model="item.code"
+                  :placeholder="t('tableColumn.placeholder')"
+                >
+                  <el-option
+                    v-for="item1 in codeOptions"
+                    :key="item1.code"
+                    :label="t(`tableColumn.${item1.code}`)"
+                    :value="item1.code"
+                  />
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.num || type !== null">
@@ -517,7 +529,14 @@
 </template>
 
 <script setup>
-import { getTackList, deleteTack, updateTack, createTack } from "@/api/tack";
+import {
+  getTackList,
+  deleteTack,
+  updateTack,
+  createTack,
+  virtualItemGetList,
+} from "@/api/tack";
+import {} from "@/api/tack";
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
@@ -566,7 +585,7 @@ const form = ref({
     game: "",
   },
 });
-
+const codeOptions = ref([]);
 const type = ref("");
 const rules = ref({
   id: [{ required: true, message: "请输入id", trigger: "blur" }],
@@ -788,7 +807,17 @@ const clickBetDetail = (id) => {
   router.push({ name: "taskDetails", query });
 };
 
-getTableData();
+const initPage = async () => {
+  const itemData = await virtualItemGetList({
+    page: page.value,
+    pageSize: 9999,
+  });
+  if (itemData.code === 0) {
+    codeOptions.value = itemData.data.list;
+  }
+  getTableData();
+};
+initPage();
 // 批量操作
 const handleSelectionChange = (val) => {
   apis.value = val;

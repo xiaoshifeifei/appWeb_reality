@@ -665,7 +665,19 @@
                 :prop="`items.${index}.code`"
                 :rules="rules['items.code']"
               >
-                <el-input v-model="item.code" autocomplete="off" />
+                <!-- <el-input v-model="item.code" autocomplete="off" /> -->
+                <el-select
+                  clearable
+                  v-model="item.code"
+                  :placeholder="t('tableColumn.placeholder')"
+                >
+                  <el-option
+                    v-for="item1 in codeOptions"
+                    :key="item1.code"
+                    :label="t(`tableColumn.${item1.code}`)"
+                    :value="item1.code"
+                  />
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="15">
@@ -784,6 +796,7 @@ import {
   enterSyncApi,
   sendMailGo,
 } from "@/api/userInfo";
+import { virtualItemGetList } from "@/api/tack";
 import { setUserAuthorities } from "@/api/user";
 import CustomPic from "@/components/customPic/index.vue";
 import SignaturePad from "@/components/preview/index.vue";
@@ -830,7 +843,7 @@ const form = ref({
   vip: "",
   subAgentId: "",
 });
-
+const codeOptions = ref([]);
 const type = ref("");
 const rules = ref({
   id: [{ required: true, message: "请输入id", trigger: "blur" }],
@@ -1159,6 +1172,13 @@ const initPage = async () => {
     pageSize: 999,
   });
   setOptions(res.data.list);
+  const itemData = await virtualItemGetList({
+    page: page.value,
+    pageSize: 9999,
+  });
+  if (itemData.code === 0) {
+    codeOptions.value = itemData.data.list;
+  }
 };
 
 initPage();

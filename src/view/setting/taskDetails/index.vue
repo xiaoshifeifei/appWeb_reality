@@ -367,7 +367,19 @@
                 提示：输入物品配置的物品名称
               </div>
               <el-form-item label="code">
-                <el-input :min="0" v-model="item.code" autocomplete="off" />
+                <!-- <el-input :min="0" v-model="item.code" autocomplete="off" /> -->
+                <el-select
+                  clearable
+                  v-model="item.code"
+                  :placeholder="t('tableColumn.placeholder')"
+                >
+                  <el-option
+                    v-for="item1 in codeOptions"
+                    :key="item1.code"
+                    :label="t(`tableColumn.${item1.code}`)"
+                    :value="item1.code"
+                  />
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.num || type !== null">
@@ -488,7 +500,13 @@
 </template>
 
 <script setup>
-import { getTackList, deleteTack, updateTack, createTack } from "@/api/tack";
+import {
+  getTackList,
+  deleteTack,
+  updateTack,
+  createTack,
+  virtualItemGetList,
+} from "@/api/tack";
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRoute, useRouter } from "vue-router";
@@ -537,7 +555,7 @@ const form = ref({
     game: "",
   },
 });
-
+const codeOptions = ref([]);
 const type = ref("");
 const rules = ref({
   id: [{ required: true, message: "请输入id", trigger: "blur" }],
@@ -694,6 +712,13 @@ const handleCurrentChange = (val) => {
 // 初始化方法 查询
 const init = async () => {
   searchInfo.value.id = route.query.id;
+  const itemData = await virtualItemGetList({
+    page: page.value,
+    pageSize: 9999,
+  });
+  if (itemData.code === 0) {
+    codeOptions.value = itemData.data.list;
+  }
   if (route.query.id) {
     const table = await getTackList({
       page: page.value,
@@ -702,7 +727,6 @@ const init = async () => {
     });
     if (table.code === 0) {
       table.data.list.map((item, index) => {
-        console.log(99999);
         if (item.complete[0].value) {
           item.complete[0].value = handleChange(
             item.complete[0].value,

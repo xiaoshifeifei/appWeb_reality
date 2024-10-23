@@ -255,7 +255,19 @@
                 :prop="`items.${index}.code`"
                 :rules="rules['items.code']"
               >
-                <el-input :min="0" v-model="item.code" autocomplete="off" />
+                <!-- <el-input :min="0" v-model="item.code" autocomplete="off" /> -->
+                <el-select
+                  clearable
+                  v-model="item.code"
+                  :placeholder="t('tableColumn.placeholder')"
+                >
+                  <el-option
+                    v-for="item1 in codeOptions"
+                    :key="item1.code"
+                    :label="t(`tableColumn.${item1.code}`)"
+                    :value="item1.code"
+                  />
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="15">
@@ -374,7 +386,13 @@
 </template>
 
 <script setup>
-import { InboxGetList, InboxDel, InboxEdit, virtualItemAdd } from "@/api/tack";
+import {
+  InboxGetList,
+  InboxDel,
+  InboxEdit,
+  virtualItemAdd,
+  virtualItemGetList,
+} from "@/api/tack";
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
@@ -412,6 +430,7 @@ const rules = ref({
   ],
 });
 const sendMailVisible = ref(false);
+const codeOptions = ref([]);
 const page = ref(1);
 const total = ref(0);
 const pageSize = ref(10);
@@ -765,8 +784,17 @@ const getTableData = async () => {
     pageSize.value = table.data.pageSize;
   }
 };
-
-getTableData();
+const initPage = async () => {
+  const itemData = await virtualItemGetList({
+    page: page.value,
+    pageSize: 9999,
+  });
+  if (itemData.code === 0) {
+    codeOptions.value = itemData.data.list;
+  }
+  getTableData();
+};
+initPage();
 
 // 批量操作
 const handleSelectionChange = (val) => {

@@ -196,7 +196,19 @@
                 :prop="`items.${index}.code`"
                 :rules="rules['items.code']"
               >
-                <el-input :min="0" v-model="item.code" autocomplete="off" />
+                <!-- <el-input :min="0" v-model="item.code" autocomplete="off" /> -->
+                <el-select
+                  clearable
+                  v-model="item.code"
+                  :placeholder="t('tableColumn.placeholder')"
+                >
+                  <el-option
+                    v-for="item1 in codeOptions"
+                    :key="item1.code"
+                    :label="t(`tableColumn.${item1.code}`)"
+                    :value="item1.code"
+                  />
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="15">
@@ -310,6 +322,7 @@ import {
   systemInboxDel,
   systemInboxEdit,
   virtualItemAdd,
+  virtualItemGetList,
 } from "@/api/tack";
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -331,7 +344,7 @@ const form = ref({
   status: 0, //0开启 1关闭
   expired: "",
 });
-
+const codeOptions = ref([]);
 const type = ref("");
 const rules = ref({
   code: [{ required: true, message: "请输入code", trigger: "blur" }],
@@ -523,9 +536,9 @@ const enterMail = async () => {
           message: t("general.editSuccess"),
           showClose: true,
         });
+        closeMail();
+        getTableData();
       }
-      closeMail();
-      getTableData();
     }
   });
 };
@@ -642,8 +655,17 @@ const getTableData = async () => {
     pageSize.value = table.data.pageSize;
   }
 };
-
-getTableData();
+const initPage = async () => {
+  const itemData = await virtualItemGetList({
+    page: page.value,
+    pageSize: 9999,
+  });
+  if (itemData.code === 0) {
+    codeOptions.value = itemData.data.list;
+  }
+  getTableData();
+};
+initPage();
 
 // 批量操作
 const handleSelectionChange = (val) => {

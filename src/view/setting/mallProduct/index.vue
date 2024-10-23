@@ -220,7 +220,19 @@
                 :prop="`items.${index}.code`"
                 :rules="rules['items.code']"
               >
-                <el-input v-model="item.code" autocomplete="off" />
+                <!-- <el-input v-model="item.code" autocomplete="off" /> -->
+                <el-select
+                  clearable
+                  v-model="item.code"
+                  :placeholder="t('tableColumn.placeholder')"
+                >
+                  <el-option
+                    v-for="item1 in codeOptions"
+                    :key="item1.code"
+                    :label="t(`tableColumn.${item1.code}`)"
+                    :value="item1.code"
+                  />
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.num || type !== null">
@@ -321,6 +333,7 @@ import {
   mallProductDel,
   mallProductEdit,
   mallProductAdd,
+  virtualItemGetList,
 } from "@/api/tack";
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -344,7 +357,7 @@ const form = ref({
   discount: "",
   expired: "",
 });
-
+const codeOptions = ref([]);
 const type = ref("");
 const rules = ref({
   id: [{ required: true, message: "请输入id", trigger: "blur" }],
@@ -488,7 +501,17 @@ const handleChange = (number, index, params, params2) => {
     }
   }
 };
-getTableData();
+const initPage = async () => {
+  const itemData = await virtualItemGetList({
+    page: page.value,
+    pageSize: 9999,
+  });
+  if (itemData.code === 0) {
+    codeOptions.value = itemData.data.list;
+  }
+  getTableData();
+};
+initPage();
 // 批量操作
 const handleSelectionChange = (val) => {
   apis.value = val;
