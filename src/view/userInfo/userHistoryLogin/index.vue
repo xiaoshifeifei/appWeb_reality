@@ -158,7 +158,7 @@
           <el-date-picker
             v-model="formMail.expired"
             type="datetime"
-            placeholder="请选择过期时间"
+            :placeholder="t('tableColumn.PleaseTime')"
             @change="handleDateChange"
           />
         </el-form-item>
@@ -586,7 +586,7 @@ const deleteTackFunc = async (row) => {
     if (res.code === 0) {
       ElMessage({
         type: "success",
-        message: "删除成功!",
+        message: t(`general.deleteSuccess`),
       });
       getTableData();
     }

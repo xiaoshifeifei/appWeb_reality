@@ -147,7 +147,19 @@
                 :prop="`award.${index}.code`"
                 :rules="rules['award.code']"
               >
-                <el-input :min="0" v-model="item.code" autocomplete="off" />
+                <!-- <el-input :min="0" v-model="item.code" autocomplete="off" /> -->
+                <el-select
+                  clearable
+                  v-model="item.code"
+                  :placeholder="t('tableColumn.placeholder')"
+                >
+                  <el-option
+                    v-for="item1 in codeOptions"
+                    :key="item1.code"
+                    :label="t(`tableColumn.${item1.code}`)"
+                    :value="item1.code"
+                  />
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="item.num || type !== null">
@@ -204,6 +216,7 @@ import {
   day7SignDel,
   day7SignEdit,
   day7SignAdd,
+  virtualItemGetList,
 } from "@/api/tack";
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -215,7 +228,7 @@ const router = useRouter();
 defineOptions({
   name: "day7Sign",
 });
-
+const codeOptions = ref([]);
 const apis = ref([]);
 const form = ref({
   day: null,
@@ -319,8 +332,18 @@ const getTableData = async () => {
     pageSize.value = table.data.pageSize;
   }
 };
+const initPage = async () => {
+  const itemData = await virtualItemGetList({
+    page: page.value,
+    pageSize: 9999,
+  });
+  if (itemData.code === 0) {
+    codeOptions.value = itemData.data.list;
+  }
+  getTableData();
+};
+initPage();
 
-getTableData();
 // 批量操作
 const handleSelectionChange = (val) => {
   apis.value = val;

@@ -777,6 +777,7 @@
     "win": "赢",
     "inOut": "物品剩余数量",
     "placeholder": "请选择",
+    "PleaseTime": "请选择过期时间",
     "pleaseStart": "请输入开始时间",
     "pleaseEnd": "请输入结束时间",
     "time": "时间",

@@ -777,6 +777,7 @@
     "win": "Win",
     "inOut": "InOut",
     "placeholder": "Placeholder",
+    "PleaseTime": "Please select a time",
     "pleaseStart": "Please enter the start time",
     "pleaseEnd": "Please enter the end time",
     "time": "Time",

@@ -155,7 +155,7 @@
         ref="apiForm"
         :model="form"
         :rules="rules"
-        label-width="80px"
+        label-width="100px"
       >
         <el-row class="w-full">
           <el-col :span="12">

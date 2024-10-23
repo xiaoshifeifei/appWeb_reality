@@ -308,7 +308,7 @@
           <el-date-picker
             v-model="form.expired"
             type="datetime"
-            placeholder="请选择过期时间"
+            :placeholder="t('tableColumn.PleaseTime')"
             @change="handleDateChange"
           />
         </el-form-item>
