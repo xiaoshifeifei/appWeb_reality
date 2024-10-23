@@ -18,7 +18,7 @@
             <el-option
               v-for="item in completeOptions"
               :key="item.code"
-              :label="item.desc"
+              :label="t(`tableColumn.${item.code}`)"
               :value="item.code"
             />
           </el-select>

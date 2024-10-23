@@ -753,6 +753,7 @@
     "visitor": "游客",
     "seizeASeat": "占位",
     "goldCoins": "金币",
+    "gold_coin": "金币",
     "diamonds": "钻石",
     "pigCoins1": "小猪金币存钱罐1",
     "pigCoins2": "小猪金币存钱罐2",
@@ -802,6 +803,7 @@
     "dayAndWeek": "日/周",
     "daily": "日常任务",
     "weekly": "周常任务",
+    "sentSuccessfully": "发送成功",
     "bindThirdPartyAccount": "绑定第三方账号",
     "sendAnEmail": "发送邮件"
   }

@@ -752,7 +752,8 @@
     "normal": "Normal",
     "visitor": "Visitor",
     "seizeASeat": "Seize a seat",
-    "goldCoins": "Gold coins",
+    "goldCoins": "Gold_coins",
+    "gold_coin": "Gold_coins",
     "diamonds": "Diamonds",
     "pigCoins1": "Piggy Coin Savings Bank 1",
     "pigCoins2": "Piggy Coin Savings Bank 2",
@@ -802,6 +803,7 @@
     "dayAndWeek": "Day / Week",
     "daily": "daily",
     "weekly": "weekly",
+    "sentSuccessfully": "Sent Successfully!",
     "bindThirdPartyAccount": "bindThirdPartyAccount",
     "sendAnEmail": "SendAnEmail"
   }

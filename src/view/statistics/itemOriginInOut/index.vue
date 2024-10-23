@@ -265,7 +265,7 @@ const total = ref(0);
 const pageSize = ref(10);
 const tableData = ref([]);
 const searchInfo = ref({});
-const dialogTitle = ref("详情");
+const dialogTitle = ref(t("view.dictionary.sysDictionary.details"));
 const form = ref({});
 const dialogFormVisible = ref(false);
 
