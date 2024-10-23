@@ -69,7 +69,6 @@
             {{ scope.row.items }}
           </template>
         </el-table-column>
-
         <el-table-column
           align="center"
           min-width="90"

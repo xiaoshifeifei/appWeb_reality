@@ -75,6 +75,26 @@
         </el-table-column>
         <el-table-column
           align="center"
+          :label="t('tableColumn.start')"
+          min-width="150"
+          prop="start"
+        >
+          <template #default="scope">
+            <div>{{ dataGet(scope.row.start) }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.end')"
+          min-width="150"
+          prop="end"
+        >
+          <template #default="scope">
+            <div>{{ dataGet(scope.row.end) }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
           :label="t('tableColumn.unlock')"
           min-width="150"
           prop="unlock"
@@ -702,6 +722,22 @@ const handleCurrentChange = (val) => {
   page.value = val;
   getTableData();
 };
+const dataGet = (dateStr) => {
+  let date = new Date(dateStr);
+  let formattedDate =
+    date.getFullYear() +
+    "-" +
+    (date.getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    date.getDate().toString().padStart(2, "0") +
+    " " +
+    date.getHours().toString().padStart(2, "0") +
+    ":" +
+    date.getMinutes().toString().padStart(2, "0") +
+    ":" +
+    date.getSeconds().toString().padStart(2, "0");
+  return formattedDate;
+};
 
 // 查询
 const getTableData = async () => {
@@ -886,7 +922,7 @@ const enterDialog = async () => {
             if (res.code === 0) {
               ElMessage({
                 type: "success",
-                message: "添加成功",
+                message: t("user.userAddedNote"),
                 showClose: true,
               });
             }
@@ -900,7 +936,7 @@ const enterDialog = async () => {
             if (res.code === 0) {
               ElMessage({
                 type: "success",
-                message: "编辑成功",
+                message: t("user.userEditedNote"),
                 showClose: true,
               });
             }
@@ -912,7 +948,7 @@ const enterDialog = async () => {
           {
             ElMessage({
               type: "error",
-              message: "未知操作",
+              message: t("view.api.unknownOperation"),
               showClose: true,
             });
           }

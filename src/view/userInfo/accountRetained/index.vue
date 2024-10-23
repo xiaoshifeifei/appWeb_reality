@@ -49,7 +49,7 @@
         <el-table-column
           align="center"
           min-width="90"
-          label="站点ID"
+          :label="t('tableColumn.SiteId')"
           prop="siteId"
         >
           <template #default="scope">
@@ -58,7 +58,14 @@
         </el-table-column>
         <el-table-column
           align="center"
-          label="一日在线人数"
+          min-width="120"
+          :label="t('tableColumn.newAddNum')"
+          prop="newAddNum"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.oneDay')"
           min-width="120"
           prop="oneDay"
         >
@@ -67,13 +74,13 @@
         <el-table-column
           align="center"
           min-width="120"
-          label="次留率（%）"
+          :label="t('tableColumn.oneDayRatio')"
           prop="oneDayRatio"
         >
         </el-table-column>
         <el-table-column
           align="center"
-          label="三日在线人数"
+          :label="t('tableColumn.threeDay')"
           min-width="120"
           prop="threeDay"
         >
@@ -82,13 +89,13 @@
         <el-table-column
           align="center"
           min-width="120"
-          label="三日留存率（%）"
+          :label="t('tableColumn.threeDayRatio')"
           prop="threeDayRatio"
         >
         </el-table-column>
         <el-table-column
           align="center"
-          label="七日在线人数"
+          :label="t('tableColumn.sevenDay')"
           min-width="120"
           prop="sevenDay"
         >
@@ -97,7 +104,7 @@
         <el-table-column
           align="center"
           min-width="120"
-          label="七日留存率（%）"
+          :label="t('tableColumn.sevenDayRatio')"
           prop="sevenDayRatio"
         >
         </el-table-column>

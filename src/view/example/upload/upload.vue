@@ -213,7 +213,7 @@ const editFileNameFunc = async (row) => {
       if (res.code === 0) {
         ElMessage({
           type: "success",
-          message: "编辑成功!",
+          message: t("user.userEditedNote"),
         });
         getTableData();
       }

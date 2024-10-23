@@ -288,8 +288,8 @@
     "resetPassword": "Reset Password",
     "resetPasswordConfrim": "Do you want to reset current password to: 123456",
     "roleSetNote": "Role set successfully!!",
-    "userAddedNote": "User added successfully!!",
-    "userEditedNote": "User edited successfully!!",
+    "userAddedNote": "added successfully!!",
+    "userEditedNote": "edited successfully!!",
     "userName": "Username",
     "userNameLenNote": "Username should be 5 character at least.",
     "userNameNote": "Please enter username",
@@ -798,6 +798,7 @@
     "threeDayRatio": "ThreeDayRatio",
     "sevenDay": "SevenDay",
     "sevenDayRatio": "SevenDayRatio",
+    "newAddNum": "newAddNum",
     "bindThirdPartyAccount": "bindThirdPartyAccount",
     "sendAnEmail": "SendAnEmail"
   }

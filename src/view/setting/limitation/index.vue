@@ -294,7 +294,7 @@ const enterAddUserDialog = async () => {
       if (dialogFlag.value === "edit") {
         const res = await setUserInfo(req);
         if (res.code === 0) {
-          ElMessage({ type: "success", message: "编辑成功" });
+          ElMessage({ type: "success", message: t("user.userEditedNote") });
           await getTableData();
           closeAddUserDialog();
         }

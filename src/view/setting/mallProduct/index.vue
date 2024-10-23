@@ -623,7 +623,7 @@ const enterDialog = async () => {
             if (res.code === 0) {
               ElMessage({
                 type: "success",
-                message: "添加成功",
+                message: t("user.userAddedNote"),
                 showClose: true,
               });
             }
@@ -637,7 +637,7 @@ const enterDialog = async () => {
             if (res.code === 0) {
               ElMessage({
                 type: "success",
-                message: "编辑成功",
+                message: t("user.userEditedNote"),
                 showClose: true,
               });
             }
@@ -649,7 +649,7 @@ const enterDialog = async () => {
           {
             ElMessage({
               type: "error",
-              message: "未知操作",
+              message: t("view.api.unknownOperation"),
               showClose: true,
             });
           }
