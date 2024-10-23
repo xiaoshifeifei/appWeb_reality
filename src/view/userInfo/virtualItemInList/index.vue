@@ -340,7 +340,6 @@ const initPage = async () => {
       return { label: t(`tableColumn.${item}`), value: item };
     });
     originOptions.value = data;
-    console.log("originOptions.value", originOptions.value);
   }
   getTableData();
 };

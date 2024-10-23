@@ -267,7 +267,6 @@ const addContent = () => {
     message: "",
   };
   objectPush(formMail.value.content, "en" + addSz.value, obj);
-  console.log("formMail.value.content", formMail.value.content);
 };
 function objectPush(obj, key, value) {
   obj[key] = value;

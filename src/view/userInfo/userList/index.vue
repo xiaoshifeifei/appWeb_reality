@@ -1336,7 +1336,6 @@ const enterDialog = async () => {
           break;
         case "edit":
           {
-            console.log("form.value", form.value);
             // const res = await updateTack(form.value);
             // if (res.code === 0) {
             //   ElMessage({

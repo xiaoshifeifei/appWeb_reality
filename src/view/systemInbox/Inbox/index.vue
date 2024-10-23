@@ -761,7 +761,6 @@ const getTableData = async () => {
   if (!searchInfo.value.sender) {
     mySender.value = -1;
   } else {
-    console.log(222);
     mySender.value = searchInfo.value.sender;
   }
   const table = await InboxGetList({
