@@ -412,7 +412,7 @@
               <el-select
                 v-model="form.accountType"
                 style="width: 100%"
-                placeholder="请选择"
+                :placeholder="t('general.pleaseSelect')"
               >
                 <el-option
                   v-for="item in accountTypeOption"
@@ -541,7 +541,7 @@
               <el-select
                 v-model="form.country"
                 style="width: 100%"
-                placeholder="请选择"
+                :placeholder="t('general.pleaseSelect')"
               >
                 <el-option
                   v-for="item in searchOptions"
@@ -709,7 +709,7 @@
                 <el-select
                   v-model="item.lang"
                   style="width: 100%"
-                  placeholder="请选择"
+                  :placeholder="t('general.pleaseSelect')"
                 >
                   <el-option
                     v-for="item in completeOptions"

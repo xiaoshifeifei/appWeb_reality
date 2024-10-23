@@ -236,7 +236,7 @@
               <el-select
                 v-model="item.type"
                 style="width: 100%"
-                placeholder="请选择"
+                :placeholder="t('general.pleaseSelect')"
               >
                 <el-option
                   v-for="item1 in typeOptions"
@@ -258,7 +258,7 @@
                 <el-select
                   v-model="item.roomCode"
                   style="width: 100%"
-                  placeholder="请选择"
+                  :placeholder="t('general.pleaseSelect')"
                 >
                   <el-option
                     v-for="item1 in completeOptions"
@@ -369,7 +369,7 @@
                 <el-select
                   v-model="item.type"
                   style="width: 100%"
-                  placeholder="请选择"
+                  :placeholder="t('general.pleaseSelect')"
                 >
                   <el-option
                     v-for="item1 in typeOptions"
@@ -440,7 +440,7 @@
                 <el-select
                   v-model="item.type"
                   style="width: 100%"
-                  placeholder="请选择"
+                  :placeholder="t('general.pleaseSelect')"
                 >
                   <el-option
                     v-for="item1 in typeOptions"
@@ -484,7 +484,7 @@
               <el-select
                 v-model="form.tag.roomCode"
                 style="width: 100%"
-                placeholder="请选择"
+                :placeholder="t('general.pleaseSelect')"
               >
                 <el-option
                   v-for="item1 in completeOptions"
@@ -836,15 +836,15 @@ const initForm = () => {
   };
 };
 
-const dialogTitle = ref("新增");
+const dialogTitle = ref(t("general.add"));
 const dialogFormVisible = ref(false);
 const openDialog = (key) => {
   switch (key) {
     case "add":
-      dialogTitle.value = "新增";
+      dialogTitle.value = t("general.add");
       break;
     case "edit":
-      dialogTitle.value = "编辑";
+      dialogTitle.value = t("general.edit");
       break;
     default:
       break;
@@ -968,7 +968,7 @@ const deleteTackFunc = async (row) => {
     if (res.code === 0) {
       ElMessage({
         type: "success",
-        message: "删除成功!",
+        message: t(`general.deleteSuccess`),
       });
       getTableData();
     }

@@ -799,6 +799,9 @@
     "sevenDay": "七日在线人数",
     "sevenDayRatio": "七日留存率（%）",
     "newAddNum": "新增人数",
+    "dayAndWeek": "日/周",
+    "daily": "日常任务",
+    "weekly": "周常任务",
     "bindThirdPartyAccount": "绑定第三方账号",
     "sendAnEmail": "发送邮件"
   }

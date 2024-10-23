@@ -158,7 +158,7 @@
                 collapse-tags
                 v-model="formMail.receivers"
                 style="width: 100%"
-                placeholder="请选择"
+                :placeholder="t('general.pleaseSelect')"
                 :disabled="oneSend"
               >
                 <el-option
@@ -232,7 +232,7 @@
                 <el-select
                   v-model="item.lang"
                   style="width: 100%"
-                  placeholder="请选择"
+                  :placeholder="t('general.pleaseSelect')"
                 >
                   <el-option
                     v-for="item in completeOptions"

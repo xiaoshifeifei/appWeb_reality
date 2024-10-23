@@ -799,6 +799,9 @@
     "sevenDay": "SevenDay",
     "sevenDayRatio": "SevenDayRatio",
     "newAddNum": "newAddNum",
+    "dayAndWeek": "Day / Week",
+    "daily": "daily",
+    "weekly": "weekly",
     "bindThirdPartyAccount": "bindThirdPartyAccount",
     "sendAnEmail": "SendAnEmail"
   }

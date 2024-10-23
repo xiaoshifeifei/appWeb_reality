@@ -207,7 +207,7 @@
               <el-select
                 v-model="item.type"
                 style="width: 100%"
-                placeholder="请选择"
+                :placeholder="t('general.pleaseSelect')"
               >
                 <el-option
                   v-for="item1 in typeOptions"
@@ -229,7 +229,7 @@
                 <el-select
                   v-model="item.roomCode"
                   style="width: 100%"
-                  placeholder="请选择"
+                  :placeholder="t('general.pleaseSelect')"
                 >
                   <el-option
                     v-for="item1 in completeOptions"
@@ -340,7 +340,7 @@
                 <el-select
                   v-model="item.type"
                   style="width: 100%"
-                  placeholder="请选择"
+                  :placeholder="t('general.pleaseSelect')"
                 >
                   <el-option
                     v-for="item1 in typeOptions"
@@ -411,7 +411,7 @@
                 <el-select
                   v-model="item.type"
                   style="width: 100%"
-                  placeholder="请选择"
+                  :placeholder="t('general.pleaseSelect')"
                 >
                   <el-option
                     v-for="item1 in typeOptions"
@@ -455,7 +455,7 @@
               <el-select
                 v-model="form.tag.roomCode"
                 style="width: 100%"
-                placeholder="请选择"
+                :placeholder="t('general.pleaseSelect')"
               >
                 <el-option
                   v-for="item1 in completeOptions"

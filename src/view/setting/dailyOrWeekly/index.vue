@@ -2,12 +2,16 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <el-form-item label="日/周">
-          <el-select v-model="searchInfo.type" clearable placeholder="请选择">
+        <el-form-item :label="t('tableColumn.dayAndWeek')">
+          <el-select
+            v-model="searchInfo.type"
+            clearable
+            :placeholder="t('general.pleaseSelect')"
+          >
             <el-option
               v-for="item in methodOptions"
               :key="item.value"
-              :label="`${item.label}`"
+              :label="t(`tableColumn.${item.label}`)"
               :value="item.value"
             />
           </el-select>
@@ -223,11 +227,11 @@ const form = ref({
 const methodOptions = ref([
   {
     value: "daily",
-    label: "日常任务",
+    label: "daily",
   },
   {
     value: "weekly",
-    label: "周常任务",
+    label: "weekly",
   },
 ]);
 
@@ -243,10 +247,10 @@ const page = ref(1);
 const total = ref(0);
 const pageSize = ref(9999);
 const tableData = ref([]);
-const searchInfo = ref({ type: "日常任务" });
+const searchInfo = ref({ type: "daily" });
 
 const onReset = () => {
-  searchInfo.value = { type: "日常任务" };
+  searchInfo.value = { type: "daily" };
 };
 // 搜索
 
@@ -270,7 +274,7 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async () => {
-  if (searchInfo.value.type == "日常任务") {
+  if (searchInfo.value.type == "daily") {
     searchInfo.value.type = "daily";
   }
   const table = await dailyOrWeeklyGet({
@@ -407,15 +411,15 @@ const initForm = () => {
   };
 };
 
-const dialogTitle = ref("新增");
+const dialogTitle = ref(t("general.add"));
 const dialogFormVisible = ref(false);
 const openDialog = (key) => {
   switch (key) {
     case "add":
-      dialogTitle.value = "新增";
+      dialogTitle.value = t("general.add");
       break;
     case "edit":
-      dialogTitle.value = "编辑";
+      dialogTitle.value = t("general.edit");
       break;
     default:
       break;
@@ -445,7 +449,7 @@ const enterDialog = async () => {
             if (res.code === 0) {
               ElMessage({
                 type: "success",
-                message: res.msg,
+                message: t(`general.addSuccess`),
                 showClose: true,
               });
             }
@@ -496,7 +500,7 @@ const deleteTackFunc = async (row) => {
     if (res.code === 0) {
       ElMessage({
         type: "success",
-        message: "删除成功!",
+        message: t(`general.deleteSuccess`),
       });
       getTableData();
     }
