@@ -9,21 +9,14 @@
             :placeholder="t('tableColumn.accountId')"
           />
         </el-form-item>
-        <el-form-item :label="t('tableColumn.origin')">
-          <el-select
+        <el-form-item :label="t('tableColumn.gameCode')">
+          <el-input
             clearable
-            v-model="searchInfo.origin"
-            :placeholder="t('tableColumn.placeholder')"
-          >
-            <el-option
-              v-for="item in originOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
+            v-model="searchInfo.gameCode"
+            :placeholder="t('tableColumn.accountId')"
+          />
         </el-form-item>
-        <el-form-item :label="t('tableColumn.code')">
+        <!-- <el-form-item :label="t('tableColumn.gameCode')">
           <el-select
             clearable
             v-model="searchInfo.code"
@@ -36,28 +29,12 @@
               :value="item.code"
             />
           </el-select>
-        </el-form-item>
-
-        <!-- <el-form-item
-          :label="t('tableColumn.placeholder') + t('tableColumn.time')"
-        >
-          <el-date-picker
-            :style="{ width: '300px' }"
-            v-model="value2"
-            type="daterange"
-            range-separator="To"
-            start-placeholder="Start date"
-            end-placeholder="End date"
-            :default-time="defaultTime"
-          />
         </el-form-item> -->
-
-        <DataTime
+        <TimePickMinute
           v-model="value2"
           :paramsValue="paramsValue"
           @close="paramsValue = false"
-        ></DataTime>
-
+        ></TimePickMinute>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -157,13 +134,10 @@
 </template>
   
   <script setup>
-import {
-  getVirtualItemOutList,
-  getVirtualItemOriginList,
-} from "@/api/userInfo";
+import { betDetailGetList, getVirtualItemOriginList } from "@/api/userInfo";
 import { ElMessage } from "element-plus";
 import { virtualItemGetList } from "@/api/tack";
-import DataTime from "@/components/DataTime/index.vue";
+import TimePickMinute from "@/components/DataTime/timePickMinute.vue";
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import dayjs from "dayjs";
@@ -183,62 +157,8 @@ const tableData = ref([]);
 const searchInfo = ref({});
 const completeOptions = ref([]);
 const originOptions = ref([]);
-const paramsValue = ref(false);
 const value2 = ref("");
-const defaultTime = [
-  new Date(2000, 1, 1, 0, 0, 0),
-  new Date(2000, 2, 1, 23, 59, 59, 999),
-];
-
-const shortcuts = [
-  {
-    text: "Today",
-    value: () => {
-      const end = new Date();
-      const start = new Date();
-      return [start, end];
-    },
-  },
-  {
-    text: "Yesterday",
-    value: () => {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24);
-      end.setTime(end.getTime() - 3600 * 1000 * 24);
-      return [start, end];
-    },
-  },
-
-  {
-    text: "Last week",
-    value: () => {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-      return [start, end];
-    },
-  },
-  {
-    text: "Last month",
-    value: () => {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-      return [start, end];
-    },
-  },
-  {
-    text: "Last 3 months",
-    value: () => {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-      return [start, end];
-    },
-  },
-];
-
+const paramsValue = ref(false);
 const onReset = () => {
   searchInfo.value = {};
   value2.value = "";
@@ -272,8 +192,8 @@ const getTableData = async () => {
     searchInfo.value.start = null;
     searchInfo.value.end = null;
   }
-
-  const table = await getVirtualItemOutList({
+  // searchInfo.value.gameCode = "goldVolcano";
+  const table = await betDetailGetList({
     page: page.value,
     pageSize: pageSize.value,
     ...searchInfo.value,
@@ -286,24 +206,28 @@ const getTableData = async () => {
   }
 };
 const initPage = async () => {
-  searchInfo.value.accountId = route.query.id;
-  const itemData = await virtualItemGetList({
-    page: page.value,
-    pageSize: 9999,
-  });
-  if (itemData.code === 0) {
-    completeOptions.value = itemData.data.list;
-  }
-  const origin = await getVirtualItemOriginList({
-    page: page.value,
-    pageSize: 9999,
-  });
-  if (origin.code === 0) {
-    const data = origin.data.inOrigins.map((item) => {
-      return { label: t(`tableColumn.${item}`), value: item };
-    });
-    originOptions.value = data;
-  }
+  // searchInfo.value.gameCode = "goldVolcano";
+  // const end = new Date();
+  // const start = new Date();
+  // start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+  // value2.value = [start, end];
+  // const itemData = await virtualItemGetList({
+  //   page: page.value,
+  //   pageSize: 9999,
+  // });
+  // if (itemData.code === 0) {
+  //   completeOptions.value = itemData.data.list;
+  // }
+  // const origin = await getVirtualItemOriginList({
+  //   page: page.value,
+  //   pageSize: 9999,
+  // });
+  // if (origin.code === 0) {
+  //   const data = origin.data.inOrigins.map((item) => {
+  //     return { label: t(`tableColumn.${item}`), value: item };
+  //   });
+  //   originOptions.value = data;
+  // }
   getTableData();
 };
 
