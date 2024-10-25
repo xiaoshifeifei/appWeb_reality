@@ -453,11 +453,9 @@ const getTableData = async () => {
   }
 };
 const init = async () => {
-  const end = new Date();
-  const start = new Date();
-  start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-  value2.value = [start, end];
-  getTableData();
+  setTimeout(() => {
+    getTableData();
+  }, 10);
 };
 init();
 // 批量操作
