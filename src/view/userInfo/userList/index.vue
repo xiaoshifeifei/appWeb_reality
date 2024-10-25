@@ -19,7 +19,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item
+        <!-- <el-form-item
           :label="t('tableColumn.placeholder') + t('tableColumn.time')"
         >
           <el-date-picker
@@ -32,7 +32,8 @@
             end-placeholder="End date"
             :shortcuts="shortcuts"
           />
-        </el-form-item>
+        </el-form-item> -->
+        <DataTime v-model="value2"></DataTime>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -773,14 +774,18 @@
             :inactive-value="1"
           />
         </el-form-item>
-        <el-form-item :label="t('tableColumn.expired')" prop="expired">
+        <!-- <el-form-item :label="t('tableColumn.expired')" prop="expired">
           <el-date-picker
             v-model="formMail.expired"
             type="datetime"
             :placeholder="t('tableColumn.PleaseTime')"
             @change="handleDateChange"
           />
-        </el-form-item>
+        </el-form-item> -->
+        <SingleTime
+          v-model="valueExpired"
+          :title="t('tableColumn.expired')"
+        ></SingleTime>
       </el-form>
     </el-drawer>
   </div>
@@ -798,6 +803,8 @@ import {
 } from "@/api/userInfo";
 import { virtualItemGetList } from "@/api/tack";
 import { setUserAuthorities } from "@/api/user";
+import SingleTime from "@/components/DataTime/singleTime.vue";
+import DataTime from "@/components/DataTime/index.vue";
 import CustomPic from "@/components/customPic/index.vue";
 import SignaturePad from "@/components/preview/index.vue";
 import { ref, watch } from "vue";
@@ -813,6 +820,7 @@ defineOptions({
   name: "userInfo",
 });
 const value2 = ref("");
+const valueExpired = ref("");
 const apis = ref([]);
 const form = ref({
   status: "",
@@ -1146,9 +1154,11 @@ const handleCurrentChange = (val) => {
 // 查询
 const getTableData = async () => {
   if (value2.value && value2.value.length) {
-    value2.value.forEach((item, index) => {
-      handleDateChangeSearch(item, index);
-    });
+    searchInfo.value.start = value2.value[0];
+    searchInfo.value.end = value2.value[1];
+    // value2.value.forEach((item, index) => {
+    //   handleDateChangeSearch(item, index);
+    // });
   } else {
     searchInfo.value.start = null;
     searchInfo.value.end = null;
@@ -1380,6 +1390,9 @@ const enterMail = async () => {
             item.num = Number(item.num);
           }
         });
+      }
+      if (valueExpired.value) {
+        formMail.value.expired = valueExpired.value;
       }
       const res = await sendMailGo(formMail.value);
       if (res.code === 0) {

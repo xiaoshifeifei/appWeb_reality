@@ -16,7 +16,7 @@
             :placeholder="t('tableColumn.accountId')"
           />
         </el-form-item>
-        <el-form-item
+        <!-- <el-form-item
           :label="t('tableColumn.placeholder') + t('tableColumn.time')"
         >
           <el-date-picker
@@ -29,7 +29,8 @@
             end-placeholder="End date"
             :shortcuts="shortcuts"
           />
-        </el-form-item>
+        </el-form-item> -->
+        <DataTime v-model="value2"></DataTime>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -366,6 +367,7 @@ import {
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
+import DataTime from "@/components/DataTime/index.vue";
 import dayjs from "dayjs";
 import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
 const { t } = useI18n(); // added by mohamed hassan to support multilanguage
@@ -492,9 +494,11 @@ const handleCurrentChange = (val) => {
 // 查询
 const getTableData = async () => {
   if (value2.value && value2.value.length) {
-    value2.value.forEach((item, index) => {
-      handleDateChange(item, index);
-    });
+    searchInfo.value.start = value2.value[0];
+    searchInfo.value.end = value2.value[1];
+    // value2.value.forEach((item, index) => {
+    //   handleDateChange(item, index);
+    // });
   } else {
     searchInfo.value.start = null;
     searchInfo.value.end = null;

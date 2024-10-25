@@ -304,14 +304,20 @@
           </el-col>
         </el-row>
 
-        <el-form-item :label="t('tableColumn.expired')" prop="expired">
+        <!-- <el-form-item :label="t('tableColumn.expired')" prop="expired">
           <el-date-picker
             v-model="form.expired"
             type="datetime"
             :placeholder="t('tableColumn.PleaseTime')"
             @change="handleDateChange"
           />
-        </el-form-item>
+        </el-form-item> -->
+        <SingleTime
+          v-model="value2"
+          :values="form.expired"
+          :title="t('tableColumn.expired')"
+          :showTime="true"
+        ></SingleTime>
         <div style="padding: 0 0 20px 40px; color: red; font-size: 12px">
           类型提示：
           <div style="margin: 5px 0">0 //占位</div>
@@ -338,6 +344,7 @@ import {
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
+import SingleTime from "@/components/DataTime/singleTime.vue";
 import dayjs from "dayjs";
 import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
 const { t } = useI18n(); // added by mohamed hassan to support multilanguage
@@ -359,6 +366,7 @@ const form = ref({
 });
 const codeOptions = ref([]);
 const type = ref("");
+const value2 = ref("");
 const rules = ref({
   id: [{ required: true, message: "请输入id", trigger: "blur" }],
   type: [{ required: true, message: "请选择类型", trigger: "blur" }],
@@ -645,6 +653,12 @@ const enterDialog = async () => {
         } else {
           form.value.price = Number(form.value.price);
         }
+      }
+      if (value2.value) {
+        form.value.expired = value2.value;
+      }
+      if (!form.value.expired) {
+        return;
       }
       switch (type.value) {
         case "add":

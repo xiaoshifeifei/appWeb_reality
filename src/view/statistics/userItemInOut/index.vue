@@ -23,7 +23,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item
+        <!-- <el-form-item
           :label="t('tableColumn.placeholder') + t('tableColumn.time')"
         >
           <el-date-picker
@@ -36,7 +36,8 @@
             end-placeholder="End date"
             :shortcuts="shortcuts"
           />
-        </el-form-item>
+        </el-form-item> -->
+        <DataTime v-model="value2" :showTime="true"></DataTime>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -132,6 +133,7 @@
 import { getUserItemInOut } from "@/api/userInfo";
 import { ElMessage } from "element-plus";
 import { virtualItemGetList } from "@/api/tack";
+import DataTime from "@/components/DataTime/index.vue";
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import dayjs from "dayjs";
@@ -274,9 +276,11 @@ const getTableData = async () => {
   }
 
   if (value2.value && value2.value.length) {
-    value2.value.forEach((item, index) => {
-      handleDateChange(item, index);
-    });
+    searchInfo.value.start = value2.value[0];
+    searchInfo.value.end = value2.value[1];
+    // value2.value.forEach((item, index) => {
+    //   handleDateChange(item, index);
+    // });
   } else {
     searchInfo.value.start = null;
     searchInfo.value.end = null;
@@ -298,10 +302,10 @@ const getTableData = async () => {
   }
 };
 const initPage = async () => {
-  const end = new Date();
-  const start = new Date();
-  start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-  value2.value = [start, end];
+  // const end = new Date();
+  // const start = new Date();
+  // start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+  // value2.value = [start, end];
   searchInfo.value.accountId = route.query.id;
   const itemData = await virtualItemGetList({
     page: page.value,

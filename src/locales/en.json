@@ -673,7 +673,8 @@
     "商城订单": "MallOrder",
     "统计": "Statistics",
     "物品来源消耗统计": "ItemOrigin Statistics",
-    "商城配置": "Mall Configuration"
+    "商城配置": "Mall Configuration",
+    "Homepage": "Homepage"
   },
   "tableColumn": {
     "award": "Award",

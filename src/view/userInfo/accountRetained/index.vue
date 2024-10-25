@@ -2,7 +2,7 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <el-form-item
+        <!-- <el-form-item
           :label="t('tableColumn.placeholder') + t('tableColumn.time')"
         >
           <el-date-picker
@@ -14,7 +14,12 @@
             @change="handleDateChange"
             :shortcuts="shortcuts"
           />
-        </el-form-item>
+        </el-form-item> -->
+        <SingleTime
+          v-model="value2"
+          :title="t('tableColumn.placeholder') + t('tableColumn.time')"
+          :searchTime="true"
+        ></SingleTime>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -223,6 +228,7 @@
   
   <script setup>
 import { getAccountRetained } from "@/api/userInfo";
+import SingleTime from "@/components/DataTime/singleTime.vue";
 import { ElMessage } from "element-plus";
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
@@ -243,6 +249,7 @@ const tableData = ref([]);
 const searchInfo = ref({});
 const form = ref({});
 const dialogFormVisible = ref(false);
+const value2 = ref("");
 
 const shortcuts = [
   {
@@ -307,16 +314,19 @@ const disabledDate = (time) => {
 const onSubmit = () => {
   page.value = 1;
   pageSize.value = 10;
-  if (!searchInfo.value.day) {
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth() + 1; // 月份从0开始，需要加1
-    const day = currentDate.getDate();
-    const dataSrc = year + "-" + month + "-" + day + " 00:00:00";
-    const stamp = new Date(dataSrc).getTime();
-    const beijingTime = new Date(stamp).toISOString();
-    searchInfo.value.day = beijingTime;
+  if (value2.value) {
+    searchInfo.value.day = value2.value;
   }
+  // if (!searchInfo.value.day) {
+  //   const currentDate = new Date();
+  //   const year = currentDate.getFullYear();
+  //   const month = currentDate.getMonth() + 1; // 月份从0开始，需要加1
+  //   const day = currentDate.getDate();
+  //   const dataSrc = year + "-" + month + "-" + day + " 00:00:00";
+  //   const stamp = new Date(dataSrc).getTime();
+  //   const beijingTime = new Date(stamp).toISOString();
+  //   searchInfo.value.day = beijingTime;
+  // }
   getTableData();
 };
 

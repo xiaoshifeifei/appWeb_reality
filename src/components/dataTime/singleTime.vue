@@ -1,0 +1,82 @@
+<template>
+  <el-form
+    class="isForm"
+    ref="apiForm"
+    :model="form"
+    :rules="rules"
+    label-width="100px"
+  >
+    <el-form-item :label="title" :prop="searchTime ? '' : 'expired'">
+      <el-date-picker
+        v-model="form.expired"
+        type="datetime"
+        :placeholder="
+          searchTime
+            ? t('tableColumn.placeholder')
+            : t('tableColumn.PleaseTime')
+        "
+        @change="handleDateChange"
+      />
+    </el-form-item>
+  </el-form>
+</template>
+<script setup>
+import { ref, watch } from "vue";
+import dayjs from "dayjs";
+import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
+const { t } = useI18n(); // added by mohamed hassan to support multilanguage
+
+defineOptions({
+  name: "singleTime",
+});
+
+const emits = defineEmits(["update:modelValue"]);
+
+const props = defineProps({
+  modelValue: {
+    type: String,
+    default: "",
+  },
+  title: {
+    type: String,
+    default: "",
+  },
+  values: {
+    type: String,
+    default: "",
+  },
+  searchTime: {
+    type: Boolean,
+    default: false,
+  },
+});
+const form = ref({
+  expired: "",
+});
+const apiForm = ref(null);
+const rules = ref({
+  expired: [{ required: true, message: "请选择过期时间", trigger: "blur" }],
+});
+const handleDateChange = () => {
+  console.log("form", form.value.expired);
+  if (form.value.expired) {
+    const isoDate = dayjs(form.value.expired).format("YYYY-MM-DDTHH:mm:ssZ");
+    form.value.expired = isoDate;
+    console.log("isoDate", isoDate);
+    emits("update:modelValue", isoDate);
+    // apiForm.value.resetFields();
+  }
+};
+
+const value2 = ref("");
+
+watch(() => {
+  form.value.expired = props.values;
+});
+</script>
+  <style scoped lang="scss">
+.isForm {
+  display: inline-block;
+}
+</style>
+    

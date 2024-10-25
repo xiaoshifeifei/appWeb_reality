@@ -37,7 +37,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item
+        <!-- <el-form-item
           :label="t('tableColumn.placeholder') + t('tableColumn.time')"
         >
           <el-date-picker
@@ -50,7 +50,8 @@
             end-placeholder="End date"
             :shortcuts="shortcuts"
           />
-        </el-form-item>
+        </el-form-item> -->
+        <DataTime v-model="value2"></DataTime>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -153,6 +154,7 @@
 import { getVirtualItemInList, getVirtualItemOriginList } from "@/api/userInfo";
 import { ElMessage } from "element-plus";
 import { virtualItemGetList } from "@/api/tack";
+import DataTime from "@/components/DataTime/index.vue";
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import dayjs from "dayjs";
@@ -288,22 +290,12 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async () => {
-  if (!searchInfo.value.code || searchInfo.value.code === null) {
-    // return ElMessage.warning(
-    //   t("tableColumn.placeholder") + t("tableColumn.code")
-    // );
-  }
-
   if (value2.value && value2.value.length) {
-    value2.value.forEach((item, index) => {
-      handleDateChange(item, index);
-    });
+    searchInfo.value.start = value2.value[0];
+    searchInfo.value.end = value2.value[1];
   } else {
     searchInfo.value.start = null;
     searchInfo.value.end = null;
-    // return ElMessage.warning(
-    //   t("tableColumn.placeholder") + t("tableColumn.time")
-    // );
   }
 
   const table = await getVirtualItemInList({

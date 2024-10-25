@@ -37,20 +37,23 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item
+
+        <!-- <el-form-item
           :label="t('tableColumn.placeholder') + t('tableColumn.time')"
         >
           <el-date-picker
             :style="{ width: '300px' }"
             v-model="value2"
             type="daterange"
-            unlink-panels
             range-separator="To"
             start-placeholder="Start date"
             end-placeholder="End date"
-            :shortcuts="shortcuts"
+            :default-time="defaultTime"
           />
-        </el-form-item>
+        </el-form-item> -->
+
+        <DataTime v-model="value2"></DataTime>
+
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -156,6 +159,7 @@ import {
 } from "@/api/userInfo";
 import { ElMessage } from "element-plus";
 import { virtualItemGetList } from "@/api/tack";
+import DataTime from "@/components/DataTime/index.vue";
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import dayjs from "dayjs";
@@ -177,6 +181,10 @@ const completeOptions = ref([]);
 const originOptions = ref([]);
 
 const value2 = ref("");
+const defaultTime = [
+  new Date(2000, 1, 1, 0, 0, 0),
+  new Date(2000, 2, 1, 23, 59, 59, 999),
+];
 
 const shortcuts = [
   {
@@ -227,46 +235,6 @@ const shortcuts = [
   },
 ];
 
-const handleDateChange = (params, index) => {
-  if (index === 0) {
-    let date = new Date(params);
-    let formattedDate =
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0") +
-      " " +
-      "00" +
-      ":" +
-      "00" +
-      ":" +
-      "00";
-    const dataTime = new Date(formattedDate).getTime();
-    const myTime = new Date(dataTime);
-    const isoDate = dayjs(myTime).format("YYYY-MM-DDTHH:mm:ssZ");
-    searchInfo.value.start = isoDate;
-  } else if (index === 1) {
-    let date = new Date(params);
-    let formattedDate =
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0") +
-      " " +
-      "23" +
-      ":" +
-      "59" +
-      ":" +
-      "59";
-    const dataTime = new Date(formattedDate).getTime();
-    const myTime = new Date(dataTime);
-    const isoDate = dayjs(myTime).format("YYYY-MM-DDTHH:mm:ssZ");
-    searchInfo.value.end = isoDate;
-  }
-};
-
 const onReset = () => {
   searchInfo.value = {};
   value2.value = "";
@@ -292,22 +260,12 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async () => {
-  if (!searchInfo.value.code || searchInfo.value.code === null) {
-    // return ElMessage.warning(
-    //   t("tableColumn.placeholder") + t("tableColumn.code")
-    // );
-  }
-
   if (value2.value && value2.value.length) {
-    value2.value.forEach((item, index) => {
-      handleDateChange(item, index);
-    });
+    searchInfo.value.start = value2.value[0];
+    searchInfo.value.end = value2.value[1];
   } else {
     searchInfo.value.start = null;
     searchInfo.value.end = null;
-    // return ElMessage.warning(
-    //   t("tableColumn.placeholder") + t("tableColumn.time")
-    // );
   }
 
   const table = await getVirtualItemOutList({
@@ -323,10 +281,6 @@ const getTableData = async () => {
   }
 };
 const initPage = async () => {
-  //const end = new Date();
-  // const start = new Date();
-  // start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-  // value2.value = [start, end];
   searchInfo.value.accountId = route.query.id;
   const itemData = await virtualItemGetList({
     page: page.value,

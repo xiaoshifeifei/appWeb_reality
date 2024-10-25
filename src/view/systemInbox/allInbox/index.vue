@@ -2,20 +2,7 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <el-form-item
-          :label="t('tableColumn.placeholder') + t('tableColumn.time')"
-        >
-          <el-date-picker
-            :style="{ width: '300px' }"
-            v-model="value2"
-            type="daterange"
-            unlink-panels
-            range-separator="To"
-            start-placeholder="Start date"
-            end-placeholder="End date"
-            :shortcuts="shortcuts"
-          />
-        </el-form-item>
+        <DataTime v-model="value2"></DataTime>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -303,14 +290,19 @@
             :inactive-value="1"
           />
         </el-form-item>
-        <el-form-item :label="t('tableColumn.expired')" prop="expired">
+        <!-- <el-form-item :label="t('tableColumn.expired')" prop="expired">
           <el-date-picker
             v-model="formMail.expired"
             type="datetime"
             :placeholder="t('tableColumn.PleaseTime')"
             @change="handleDateChange"
           />
-        </el-form-item>
+        </el-form-item> -->
+        <SingleTime
+          v-model="valueExpired"
+          :title="t('tableColumn.expired')"
+          :values="formMail.expired"
+        ></SingleTime>
       </el-form>
     </el-drawer>
   </div>
@@ -326,6 +318,8 @@ import {
 } from "@/api/tack";
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
+import DataTime from "@/components/DataTime/index.vue";
+import SingleTime from "@/components/DataTime/singleTime.vue";
 import { useRouter } from "vue-router";
 import dayjs from "dayjs";
 import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
@@ -335,6 +329,7 @@ const router = useRouter();
 defineOptions({
   name: "goodsConfiguration",
 });
+const valueExpired = ref("");
 const value2 = ref("");
 const apis = ref([]);
 const form = ref({
@@ -529,6 +524,9 @@ const enterMail = async () => {
           }
         });
       }
+      if (valueExpired.value) {
+        formMail.value.expired = valueExpired.value;
+      }
       const res = await systemInboxEdit(formMail.value);
       if (res.code === 0) {
         ElMessage({
@@ -629,9 +627,8 @@ const handleCurrentChange = (val) => {
 // 查询
 const getTableData = async () => {
   if (value2.value && value2.value.length) {
-    value2.value.forEach((item, index) => {
-      handleDateChangeSearch(item, index);
-    });
+    searchInfo.value.start = value2.value[0];
+    searchInfo.value.end = value2.value[1];
   } else {
     searchInfo.value.start = null;
     searchInfo.value.end = null;
