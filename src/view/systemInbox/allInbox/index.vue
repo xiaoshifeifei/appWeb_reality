@@ -2,7 +2,11 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <DataTime v-model="value2"></DataTime>
+        <DataTime
+          v-model="value2"
+          :paramsValue="paramsValue"
+          @close="paramsValue = false"
+        ></DataTime>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -332,6 +336,7 @@ defineOptions({
 const valueExpired = ref("");
 const value2 = ref("");
 const apis = ref([]);
+const paramsValue = ref(false);
 const form = ref({
   id: null,
   content: {},
@@ -553,6 +558,7 @@ const filterKeys = (obj, keysToFilter) => {
 const onReset = () => {
   searchInfo.value = {};
   value2.value = "";
+  paramsValue.value = true;
 };
 
 // 搜索

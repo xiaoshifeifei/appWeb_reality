@@ -19,6 +19,8 @@
           v-model="value2"
           :title="t('tableColumn.placeholder') + t('tableColumn.time')"
           :searchTime="true"
+          :paramsValue="paramsValue"
+          @close="paramsValue = false"
         ></SingleTime>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
@@ -250,7 +252,7 @@ const searchInfo = ref({});
 const form = ref({});
 const dialogFormVisible = ref(false);
 const value2 = ref("");
-
+const paramsValue = ref(false);
 const shortcuts = [
   {
     text: "Today",
@@ -305,6 +307,7 @@ const initForm = () => {
 };
 const onReset = () => {
   searchInfo.value = {};
+  paramsValue.value = true;
 };
 // 搜索
 const disabledDate = (time) => {

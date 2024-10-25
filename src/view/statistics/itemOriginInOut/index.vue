@@ -23,7 +23,12 @@
             :shortcuts="shortcuts"
           />
         </el-form-item> -->
-        <DataTime v-model="value2" :showTime="true"></DataTime>
+        <DataTime
+          v-model="value2"
+          :showTime="true"
+          :paramsValue="paramsValue"
+          @close="paramsValue = false"
+        ></DataTime>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -270,7 +275,7 @@ const searchInfo = ref({});
 const dialogTitle = ref(t("view.dictionary.sysDictionary.details"));
 const form = ref({});
 const dialogFormVisible = ref(false);
-
+const paramsValue = ref(false);
 const value2 = ref("");
 const shortcuts = [
   {
@@ -404,6 +409,7 @@ const initForm = () => {
 const onReset = () => {
   searchInfo.value = {};
   value2.value = "";
+  paramsValue.value = true;
 };
 // 搜索
 

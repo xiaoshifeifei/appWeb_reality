@@ -58,6 +58,7 @@
   "/src/view/systemTools/index.vue": "System",
   "/src/view/systemTools/system/system.vue": "Config",
   "/src/view/userInfo/accountRetained/index.vue": "userInfo",
+  "/src/view/userInfo/betDetail/index.vue": "userInfo",
   "/src/view/userInfo/userHistoryLogin/index.vue": "goodsConfiguration",
   "/src/view/userInfo/userList/index.vue": "userInfo",
   "/src/view/userInfo/virtualItemInList/index.vue": "userInfo",

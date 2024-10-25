@@ -25,7 +25,7 @@
   </el-form-item>
 </template>
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, watchEffect } from "vue";
 import dayjs from "dayjs";
 import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
 const { t } = useI18n(); // added by mohamed hassan to support multilanguage
@@ -48,14 +48,19 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  paramsValue: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const value2 = ref("");
 
 const change = () => {
   const timeData = value2.value.map((item) => {
-    const isoDate = dayjs(item).format("YYYY-MM-DDTHH:mm:ssZ");
-    return isoDate;
+    // const isoDate = dayjs(item).format("YYYY-MM-DDTHH:mm:ssZ");
+    // return isoDate;
+    return item;
   });
   emits("update:modelValue", timeData);
 };
@@ -70,11 +75,19 @@ watch(() => {
     const isoDate2 = now2.toISOString();
     const isoArr = [isoDate, isoDate2];
     const timeData = isoArr.map((item) => {
-      const isoDate = dayjs(item).format("YYYY-MM-DDTHH:mm:ssZ");
-      return isoDate;
+      // const isoDate = dayjs(item).format("YYYY-MM-DDTHH:mm:ssZ");
+      // return isoDate;
+      return item;
     });
     value2.value = timeData;
     emits("update:modelValue", timeData);
+  }
+});
+
+watchEffect(() => {
+  if (props.paramsValue) {
+    value2.value = "";
+    emits("close");
   }
 });
 </script>

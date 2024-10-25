@@ -21,7 +21,7 @@
   </el-form>
 </template>
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, watchEffect } from "vue";
 import dayjs from "dayjs";
 import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
 const { t } = useI18n(); // added by mohamed hassan to support multilanguage
@@ -49,22 +49,22 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  paramsValue: {
+    type: Boolean,
+    default: false,
+  },
 });
 const form = ref({
   expired: "",
 });
 const apiForm = ref(null);
+
 const rules = ref({
   expired: [{ required: true, message: "请选择过期时间", trigger: "blur" }],
 });
 const handleDateChange = () => {
-  console.log("form", form.value.expired);
   if (form.value.expired) {
-    const isoDate = dayjs(form.value.expired).format("YYYY-MM-DDTHH:mm:ssZ");
-    form.value.expired = isoDate;
-    console.log("isoDate", isoDate);
-    emits("update:modelValue", isoDate);
-    // apiForm.value.resetFields();
+    emits("update:modelValue", form.value.expired);
   }
 };
 
@@ -72,6 +72,13 @@ const value2 = ref("");
 
 watch(() => {
   form.value.expired = props.values;
+});
+watchEffect(() => {
+  if (props.paramsValue) {
+    console.log(1324679);
+    form.value.expired = "";
+    emits("close");
+  }
 });
 </script>
   <style scoped lang="scss">

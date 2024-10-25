@@ -135,6 +135,15 @@ export const getVirtualItemOriginList = (params) => {
   });
 };
 
+// 下注记录列表
+export const betDetailGetList = (params) => {
+  return service({
+    url: "/app/user/betDetail",
+    method: "get",
+    params,
+  });
+};
+
 // @Tags Api
 // @Summary 更新api
 // @Security ApiKeyAuth

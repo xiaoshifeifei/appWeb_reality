@@ -30,7 +30,11 @@
             :shortcuts="shortcuts"
           />
         </el-form-item> -->
-        <DataTime v-model="value2"></DataTime>
+        <DataTime
+          v-model="value2"
+          :paramsValue="paramsValue"
+          @close="paramsValue = false"
+        ></DataTime>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -415,7 +419,7 @@ defineOptions({
 
 const apis = ref([]);
 const mySender = ref(0);
-
+const paramsValue = ref(false);
 const form = ref({
   id: null,
   content: {},
@@ -689,6 +693,7 @@ const filterKeys = (obj, keysToFilter) => {
 const onReset = () => {
   searchInfo.value = {};
   value2.value = "";
+  paramsValue.value = true;
 };
 
 // 搜索
