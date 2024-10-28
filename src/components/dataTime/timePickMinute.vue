@@ -11,7 +11,7 @@
       end-placeholder="End date"
       @change="change"
       :default-time="defaultTime"
-      :shortcuts="single ? shortcutSingle : shortcuts"
+      :shortcuts="shortcuts"
       @clear="clear"
     />
   </el-form-item>
@@ -52,97 +52,6 @@ const props = defineProps({
 const value2 = ref([]);
 
 const shortcuts = [
-  {
-    text: "Today",
-    value: () => {
-      const now = new Date();
-      const start = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate(),
-        0,
-        0,
-        0
-      );
-      const end = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate(),
-        23,
-        59,
-        59
-      );
-      return [start, end];
-    },
-  },
-  {
-    text: "Yesterday",
-    value: () => {
-      const now = new Date();
-      const end = new Date();
-      const start = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate() - 1
-      );
-      end.setTime(start.getTime() + 3600 * 1000 * 24 - 1);
-      return [start, end];
-    },
-  },
-  {
-    text: "Last week",
-    value: () => {
-      const now = new Date();
-      const end = new Date();
-      const start = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate() - 7,
-        0,
-        0,
-        0
-      );
-      end.setTime(start.getTime() + 3600 * 1000 * 24 * 8 - 1);
-      return [start, end];
-    },
-  },
-
-  {
-    text: "Last month",
-    value: () => {
-      const now = new Date();
-      const end = new Date();
-      const start = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate() - 30,
-        0,
-        0,
-        0
-      );
-      end.setTime(start.getTime() + 3600 * 1000 * 24 * 31 - 1);
-      return [start, end];
-    },
-  },
-  {
-    text: "Last 3 months",
-    value: () => {
-      const now = new Date();
-      const end = new Date();
-      const start = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate() - 90,
-        0,
-        0,
-        0
-      );
-      end.setTime(start.getTime() + 3600 * 1000 * 24 * 91 - 1);
-      return [start, end];
-    },
-  },
-];
-const shortcutSingle = [
   {
     text: "Today",
     value: () => {

@@ -23,7 +23,6 @@
         </el-form-item>
         <TimePickMinute
           v-model="value2"
-          :single="true"
           :paramsValue="paramsValue"
           @close="(paramsValue = false), (value2 = [])"
         ></TimePickMinute>
