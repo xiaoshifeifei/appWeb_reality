@@ -38,7 +38,7 @@
         <TimePickMinute
           v-model="value2"
           :paramsValue="paramsValue"
-          @close="paramsValue = false"
+          @close="(paramsValue = false), (value2 = [])"
         ></TimePickMinute>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">

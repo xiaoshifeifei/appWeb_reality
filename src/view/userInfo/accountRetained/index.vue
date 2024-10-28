@@ -2,25 +2,12 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <!-- <el-form-item
-          :label="t('tableColumn.placeholder') + t('tableColumn.time')"
-        >
-          <el-date-picker
-            :style="{ width: '250px' }"
-            v-model="searchInfo.day"
-            type="date"
-            :disabled-date="disabledDate"
-            placeholder="请选择时间"
-            @change="handleDateChange"
-            :shortcuts="shortcuts"
-          />
-        </el-form-item> -->
         <SingleTime
           v-model="value2"
           :title="t('tableColumn.placeholder') + t('tableColumn.time')"
           :searchTime="true"
           :paramsValue="paramsValue"
-          @close="paramsValue = false"
+          @close="(paramsValue = false), (value2 = null)"
         ></SingleTime>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
@@ -317,9 +304,7 @@ const disabledDate = (time) => {
 const onSubmit = () => {
   page.value = 1;
   pageSize.value = 10;
-  if (value2.value) {
-    searchInfo.value.day = value2.value;
-  }
+  searchInfo.value.day = value2.value;
   // if (!searchInfo.value.day) {
   //   const currentDate = new Date();
   //   const year = currentDate.getFullYear();

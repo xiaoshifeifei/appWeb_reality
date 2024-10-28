@@ -12,6 +12,7 @@
       @change="change"
       :default-time="defaultTime"
       :shortcuts="shortcuts"
+      @clear="clear"
     />
   </el-form-item>
 </template>
@@ -45,8 +46,6 @@ const props = defineProps({
   },
 });
 const value2 = ref([]);
-const selectedDate = ref(null);
-const firstClick = ref(false);
 
 const shortcuts = [
   {
@@ -89,6 +88,9 @@ const shortcuts = [
 ];
 const open = ref(false);
 const handleCalendarChange = (val) => {
+  if (!value2.value) {
+    value2.value = [];
+  }
   if (val[0]) {
     open.value = true;
     value2.value[0] = val[0];
@@ -107,7 +109,7 @@ const handleCalendarChange = (val) => {
 };
 
 const disabledDate = (time) => {
-  if (value2.value.length) {
+  if (value2.value && value2.value.length) {
     const data = value2.value[0];
     const now = new Date(data);
     now.setHours(0, 0, 0, 0);
@@ -119,15 +121,24 @@ const disabledDate = (time) => {
 };
 
 const change = (val) => {
-  const timeData = value2.value.map((item) => {
-    return item;
-  });
-  emits("update:modelValue", timeData);
+  if (value2.value && value2.value.length) {
+    const timeData = value2.value.map((item) => {
+      return item;
+    });
+    emits("update:modelValue", timeData);
+  } else {
+    emits("close");
+    emits("update:modelValue", []);
+  }
 };
 
+const clear = (val) => {
+  value2.value = [];
+  // emits("update:modelValue", []);
+};
 watchEffect(() => {
   if (props.paramsValue) {
-    value2.value = "";
+    value2.value = [];
     emits("close");
   }
 });

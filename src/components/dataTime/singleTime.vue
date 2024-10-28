@@ -16,6 +16,7 @@
             : t('tableColumn.PleaseTime')
         "
         @change="handleDateChange"
+        @clear="clear"
       />
     </el-form-item>
   </el-form>
@@ -65,6 +66,8 @@ const rules = ref({
 const handleDateChange = () => {
   if (form.value.expired) {
     emits("update:modelValue", form.value.expired);
+  } else {
+    emits("update:modelValue", null);
   }
 };
 
@@ -75,11 +78,14 @@ watch(() => {
 });
 watchEffect(() => {
   if (props.paramsValue) {
-    console.log(1324679);
     form.value.expired = "";
     emits("close");
   }
 });
+const clear = (val) => {
+  form.value.expired = "";
+  emits("close");
+};
 </script>
   <style scoped lang="scss">
 .isForm {

@@ -10,6 +10,7 @@
       end-placeholder="End date"
       @change="change"
       :default-time="defaultTime"
+      @clear="clear"
     />
     <el-date-picker
       v-else
@@ -21,6 +22,7 @@
       end-placeholder="End date"
       @change="change"
       :default-time="defaultTime"
+      @clear="clear"
     />
   </el-form-item>
 </template>
@@ -57,12 +59,16 @@ const props = defineProps({
 const value2 = ref("");
 
 const change = () => {
-  const timeData = value2.value.map((item) => {
-    // const isoDate = dayjs(item).format("YYYY-MM-DDTHH:mm:ssZ");
-    // return isoDate;
-    return item;
-  });
-  emits("update:modelValue", timeData);
+  if (value2.value) {
+    const timeData = value2.value.map((item) => {
+      // const isoDate = dayjs(item).format("YYYY-MM-DDTHH:mm:ssZ");
+      // return isoDate;
+      return item;
+    });
+    emits("update:modelValue", timeData);
+  } else {
+    emits("update:modelValue", "");
+  }
 };
 
 watch(() => {
@@ -83,7 +89,9 @@ watch(() => {
     emits("update:modelValue", timeData);
   }
 });
-
+const clear = (val) => {
+  value2.value = "";
+};
 watchEffect(() => {
   if (props.paramsValue) {
     value2.value = "";

@@ -811,6 +811,7 @@
     "bindThirdPartyAccount": "绑定第三方账号",
     "balance": "余额",
     "features": "特征",
+    "betId": "注单ID",
     "sendAnEmail": "发送邮件"
   }
 }

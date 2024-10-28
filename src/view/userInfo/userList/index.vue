@@ -1401,6 +1401,10 @@ const enterMail = async () => {
       }
       if (valueExpired.value) {
         formMail.value.expired = valueExpired.value;
+      } else {
+        return ElMessage.warning(
+          t("tableColumn.placeholder") + t("tableColumn.expired")
+        );
       }
       const res = await sendMailGo(formMail.value);
       if (res.code === 0) {

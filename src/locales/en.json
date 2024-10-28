@@ -811,6 +811,7 @@
     "bindThirdPartyAccount": "bindThirdPartyAccount",
     "balance": "balance",
     "features": "features",
+    "betId": "betId",
     "sendAnEmail": "SendAnEmail"
   }
 }
