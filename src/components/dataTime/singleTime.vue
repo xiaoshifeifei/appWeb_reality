@@ -31,7 +31,7 @@ defineOptions({
   name: "singleTime",
 });
 
-const emits = defineEmits(["update:modelValue"]);
+const emits = defineEmits(["update:modelValue", "closeTime"]);
 
 const props = defineProps({
   modelValue: {
@@ -65,9 +65,11 @@ const rules = ref({
 });
 const handleDateChange = () => {
   if (form.value.expired) {
+    emits("closeTime", false);
     emits("update:modelValue", form.value.expired);
   } else {
-    emits("update:modelValue", null);
+    emits("closeTime", true);
+    emits("update:modelValue", "");
   }
 };
 
@@ -78,13 +80,13 @@ watch(() => {
 });
 watchEffect(() => {
   if (props.paramsValue) {
-    form.value.expired = "";
-    emits("close");
+    form.value.expired = null;
   }
 });
 const clear = (val) => {
   form.value.expired = "";
-  emits("close");
+  emits("update:modelValue", "");
+  emits("closeTime", true);
 };
 </script>
   <style scoped lang="scss">

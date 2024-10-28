@@ -636,7 +636,21 @@ const handleChange = (number, index, params, params2) => {
     }
   }
 };
+// const arrObj = ref({});
 const enterMail = async () => {
+  // console.log("sendMailVisible", formMail.value.content);
+  // if (formMail.value.content && formMail.value.content.length) {
+  //   console.log(111);
+  //   for (const key in formMail.value.content) {
+  //     console.log(222);
+  //     arrObj.value[formMail.value.content[key].lang] = {
+  //       title: formMail.value.content[key].title,
+  //       message: formMail.value.content[key].message,
+  //     };
+  //   }
+  //   console.log(333, arrObj.value);
+  //   formMail.value.content = arrObj.value;
+  // }
   mailForm.value.validate(async (valid) => {
     if (valid) {
       let arrObj = {};
@@ -667,6 +681,12 @@ const enterMail = async () => {
       if (valueExpired.value) {
         formMail.value.expired = valueExpired.value;
       }
+      if (!valueExpired.value) {
+        return ElMessage.warning(
+          t("tableColumn.placeholder") + t("tableColumn.expired")
+        );
+      }
+      console.log("formMail.value", formMail.value);
       const res = await InboxEdit(formMail.value);
       if (res.code === 0) {
         ElMessage({

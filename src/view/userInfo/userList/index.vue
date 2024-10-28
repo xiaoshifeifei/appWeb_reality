@@ -1317,6 +1317,7 @@ const closeMail = () => {
   initMailForm();
   multipleTable.value.clearSelection();
   sendMailVisible.value = false;
+  valueExpired.value = "";
 };
 
 function isJSON(str) {
@@ -1399,6 +1400,7 @@ const enterMail = async () => {
           }
         });
       }
+
       if (valueExpired.value) {
         formMail.value.expired = valueExpired.value;
       } else {

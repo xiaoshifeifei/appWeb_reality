@@ -532,6 +532,11 @@ const enterMail = async () => {
       if (valueExpired.value) {
         formMail.value.expired = valueExpired.value;
       }
+      if (!valueExpired.value) {
+        return ElMessage.warning(
+          t("tableColumn.placeholder") + t("tableColumn.expired")
+        );
+      }
       const res = await systemInboxEdit(formMail.value);
       if (res.code === 0) {
         ElMessage({

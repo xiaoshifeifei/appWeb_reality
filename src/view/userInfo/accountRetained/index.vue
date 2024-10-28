@@ -7,7 +7,7 @@
           :title="t('tableColumn.placeholder') + t('tableColumn.time')"
           :searchTime="true"
           :paramsValue="paramsValue"
-          @close="(paramsValue = false), (value2 = null)"
+          @closeTime="(paramsValue = false), (value2 = null)"
         ></SingleTime>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
@@ -33,13 +33,6 @@
         }"
         :row-class-name="tableRowClassName"
       >
-        <!-- <el-table-column
-          align="center"
-          min-width="90"
-          :label="t('tableColumn.days')"
-          prop="day"
-        >
-        </el-table-column> -->
         <el-table-column
           align="center"
           min-width="90"

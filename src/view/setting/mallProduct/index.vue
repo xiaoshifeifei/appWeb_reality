@@ -317,6 +317,7 @@
           :values="form.expired"
           :title="t('tableColumn.expired')"
           :showTime="true"
+          @closeTime="closeTime"
         ></SingleTime>
         <div style="padding: 0 0 20px 40px; color: red; font-size: 12px">
           类型提示：
@@ -383,6 +384,7 @@ const total = ref(0);
 const pageSize = ref(10);
 const tableData = ref([]);
 const searchInfo = ref({});
+const showTimeBo = ref(false);
 const completeOptions = ref([
   { label: "seizeASeat", value: 0 },
   { label: "goldCoins", value: 1 },
@@ -402,7 +404,9 @@ const onSubmit = () => {
   pageSize.value = 10;
   getTableData();
 };
-
+const closeTime = (val) => {
+  showTimeBo.value = val;
+};
 // 分页
 const handleSizeChange = (val) => {
   pageSize.value = val;
@@ -657,8 +661,11 @@ const enterDialog = async () => {
       if (value2.value) {
         form.value.expired = value2.value;
       }
-      if (!form.value.expired) {
-        return;
+
+      if (showTimeBo.value) {
+        return ElMessage.warning(
+          t("tableColumn.placeholder") + t("tableColumn.expired")
+        );
       }
       switch (type.value) {
         case "add":
