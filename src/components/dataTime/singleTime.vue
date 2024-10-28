@@ -56,7 +56,7 @@ const props = defineProps({
   },
 });
 const form = ref({
-  expired: "",
+  expired: null,
 });
 const apiForm = ref(null);
 
@@ -69,11 +69,9 @@ const handleDateChange = () => {
     emits("update:modelValue", form.value.expired);
   } else {
     emits("closeTime", true);
-    emits("update:modelValue", "");
+    emits("update:modelValue", null);
   }
 };
-
-const value2 = ref("");
 
 watch(() => {
   form.value.expired = props.values;
@@ -84,8 +82,8 @@ watchEffect(() => {
   }
 });
 const clear = (val) => {
-  form.value.expired = "";
-  emits("update:modelValue", "");
+  form.value.expired = null;
+  emits("update:modelValue", null);
   emits("closeTime", true);
 };
 </script>

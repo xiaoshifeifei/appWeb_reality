@@ -286,6 +286,7 @@ const initForm = () => {
   form.value = {};
 };
 const onReset = () => {
+  value2.value = null;
   searchInfo.value = {};
   paramsValue.value = true;
 };
