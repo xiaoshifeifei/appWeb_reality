@@ -21,22 +21,9 @@
             placeholder="暂时只能搜索goldVolcano"
           />
         </el-form-item>
-        <!-- <el-form-item :label="t('tableColumn.gameCode')">
-          <el-select
-            clearable
-            v-model="searchInfo.code"
-            :placeholder="t('tableColumn.placeholder')"
-          >
-            <el-option
-              v-for="item in completeOptions"
-              :key="item.code"
-              :label="t(`tableColumn.${item.code}`)"
-              :value="item.code"
-            />
-          </el-select>
-        </el-form-item> -->
         <TimePickMinute
           v-model="value2"
+          :single="true"
           :paramsValue="paramsValue"
           @close="(paramsValue = false), (value2 = [])"
         ></TimePickMinute>
@@ -246,28 +233,6 @@ const getTableData = async () => {
   }
 };
 const initPage = async () => {
-  // searchInfo.value.gameCode = "goldVolcano";
-  // const end = new Date();
-  // const start = new Date();
-  // start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-  // value2.value = [start, end];
-  // const itemData = await virtualItemGetList({
-  //   page: page.value,
-  //   pageSize: 9999,
-  // });
-  // if (itemData.code === 0) {
-  //   completeOptions.value = itemData.data.list;
-  // }
-  // const origin = await getVirtualItemOriginList({
-  //   page: page.value,
-  //   pageSize: 9999,
-  // });
-  // if (origin.code === 0) {
-  //   const data = origin.data.inOrigins.map((item) => {
-  //     return { label: t(`tableColumn.${item}`), value: item };
-  //   });
-  //   originOptions.value = data;
-  // }
   getTableData();
 };
 
