@@ -16,20 +16,7 @@
             :placeholder="t('tableColumn.sender')"
           />
         </el-form-item>
-        <!-- <el-form-item
-          :label="t('tableColumn.placeholder') + t('tableColumn.time')"
-        >
-          <el-date-picker
-            :style="{ width: '300px' }"
-            v-model="value2"
-            type="daterange"
-            unlink-panels
-            range-separator="To"
-            start-placeholder="Start date"
-            end-placeholder="End date"
-            :shortcuts="shortcuts"
-          />
-        </el-form-item> -->
+
         <DataTime
           v-model="value2"
           :paramsValue="paramsValue"
@@ -260,7 +247,6 @@
                 :prop="`items.${index}.code`"
                 :rules="rules['items.code']"
               >
-                <!-- <el-input :min="0" v-model="item.code" autocomplete="off" /> -->
                 <el-select
                   clearable
                   v-model="item.code"
@@ -377,14 +363,7 @@
             :inactive-value="1"
           />
         </el-form-item>
-        <!-- <el-form-item :label="t('tableColumn.expired')" prop="expired">
-          <el-date-picker
-            v-model="formMail.expired"
-            type="datetime"
-            :placeholder="t('tableColumn.PleaseTime')"
-            @change="handleDateChange"
-          />
-        </el-form-item> -->
+
         <SingleTime
           v-model="valueExpired"
           :title="t('tableColumn.expired')"
@@ -540,39 +519,7 @@ const dataGet = (dateStr) => {
     date.getSeconds().toString().padStart(2, "0");
   return formattedDate;
 };
-const handleDateChange = () => {
-  if (formMail.value.expired) {
-    const isoDate = dayjs(formMail.value.expired).format(
-      "YYYY-MM-DDTHH:mm:ssZ"
-    );
-    formMail.value.expired = isoDate;
-  }
-};
-const handleDateChangeSreach = (params, index) => {
-  if (index === 0) {
-    const isoDate = dayjs(params).format("YYYY-MM-DDTHH:mm:ssZ");
-    searchInfo.value.start = isoDate;
-  } else if (index === 1) {
-    let date = new Date(params);
-    let formattedDate =
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0") +
-      " " +
-      "23" +
-      ":" +
-      "59" +
-      ":" +
-      "59";
-    const dataTime = new Date(formattedDate).getTime();
-    const myTime = new Date(dataTime);
 
-    const isoDate = dayjs(myTime).format("YYYY-MM-DDTHH:mm:ssZ");
-    searchInfo.value.end = isoDate;
-  }
-};
 const addItem = () => {
   formMail.value.items.push({
     code: "",
@@ -691,15 +638,6 @@ const enterMail = async () => {
       getTableData();
     }
   });
-};
-
-const filterKeys = (obj, keysToFilter) => {
-  return Object.keys(obj)
-    .filter((key) => !keysToFilter.includes(key))
-    .reduce((newObj, key) => {
-      newObj[key] = obj[key];
-      return newObj;
-    }, {});
 };
 
 const onReset = () => {
@@ -879,52 +817,6 @@ const editTackFunc = async (row) => {
   type.value = "edit";
 };
 
-const enterDialog = async () => {
-  apiForm.value.validate(async (valid) => {
-    if (valid) {
-      switch (type.value) {
-        case "add":
-          {
-            const res = await virtualItemAdd(form.value);
-            if (res.code === 0) {
-              ElMessage({
-                type: "success",
-                message: t("user.userAddedNote"),
-                showClose: true,
-              });
-              getTableData();
-              closeDialog();
-            }
-          }
-          break;
-        case "edit":
-          {
-            const res = await InboxEdit(form.value);
-            if (res.code === 0) {
-              ElMessage({
-                type: "success",
-                message: t("user.userEditedNote"),
-                showClose: true,
-              });
-              getTableData();
-              closeDialog();
-            }
-          }
-          break;
-        default:
-          {
-            ElMessage({
-              type: "error",
-              message: t("view.api.unknownOperation"),
-              showClose: true,
-            });
-          }
-          break;
-      }
-    }
-  });
-};
-
 const deleteTackFunc = async (row) => {
   ElMessageBox.confirm(t("general.deleteConfirm"), t("general.hint"), {
     confirmButtonText: t("general.confirm"),
@@ -950,9 +842,6 @@ const tableRowClassName = ({ row, rowIndex }) => {
 };
 </script>
 <style scoped lang="scss">
-// :deep(.el-table td.el-table__cell div) {
-//   color: #000;
-// }
 :deep(.el-table tr th .cell) {
   color: #fff !important;
 }

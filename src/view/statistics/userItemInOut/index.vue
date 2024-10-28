@@ -23,20 +23,7 @@
             />
           </el-select>
         </el-form-item>
-        <!-- <el-form-item
-          :label="t('tableColumn.placeholder') + t('tableColumn.time')"
-        >
-          <el-date-picker
-            :style="{ width: '300px' }"
-            v-model="value2"
-            type="daterange"
-            unlink-panels
-            range-separator="To"
-            start-placeholder="Start date"
-            end-placeholder="End date"
-            :shortcuts="shortcuts"
-          />
-        </el-form-item> -->
+
         <DataTime
           v-model="value2"
           :showTime="true"
@@ -284,9 +271,6 @@ const getTableData = async () => {
   if (value2.value && value2.value.length) {
     searchInfo.value.start = value2.value[0];
     searchInfo.value.end = value2.value[1];
-    // value2.value.forEach((item, index) => {
-    //   handleDateChange(item, index);
-    // });
   } else {
     searchInfo.value.start = null;
     searchInfo.value.end = null;
@@ -308,10 +292,6 @@ const getTableData = async () => {
   }
 };
 const initPage = async () => {
-  // const end = new Date();
-  // const start = new Date();
-  // start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-  // value2.value = [start, end];
   searchInfo.value.accountId = route.query.id;
   const itemData = await virtualItemGetList({
     page: page.value,

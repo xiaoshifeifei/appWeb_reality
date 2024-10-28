@@ -294,14 +294,6 @@
             :inactive-value="1"
           />
         </el-form-item>
-        <!-- <el-form-item :label="t('tableColumn.expired')" prop="expired">
-          <el-date-picker
-            v-model="formMail.expired"
-            type="datetime"
-            :placeholder="t('tableColumn.PleaseTime')"
-            @change="handleDateChange"
-          />
-        </el-form-item> -->
         <SingleTime
           v-model="valueExpired"
           :title="t('tableColumn.expired')"
@@ -318,7 +310,6 @@ import {
   systemInboxGetList,
   systemInboxDel,
   systemInboxEdit,
-  virtualItemAdd,
   virtualItemGetList,
 } from "@/api/tack";
 import { ref } from "vue";
@@ -364,7 +355,6 @@ const page = ref(1);
 const total = ref(0);
 const pageSize = ref(10);
 const tableData = ref([]);
-const tableUser = ref([]);
 const searchInfo = ref({});
 const showTimeBo = ref(false);
 const completeOptions = ref([
@@ -424,39 +414,7 @@ const addContent = () => {
 function objectPush(obj, key, value) {
   obj[key] = value;
 }
-const handleDateChange = () => {
-  if (formMail.value.expired) {
-    const isoDate = dayjs(formMail.value.expired).format(
-      "YYYY-MM-DDTHH:mm:ssZ"
-    );
-    formMail.value.expired = isoDate;
-  }
-};
-const handleDateChangeSearch = (params, index) => {
-  if (index === 0) {
-    const isoDate = dayjs(params).format("YYYY-MM-DDTHH:mm:ssZ");
-    searchInfo.value.start = isoDate;
-  } else if (index === 1) {
-    let date = new Date(params);
-    let formattedDate =
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0") +
-      " " +
-      "23" +
-      ":" +
-      "59" +
-      ":" +
-      "59";
-    const dataTime = new Date(formattedDate).getTime();
-    const myTime = new Date(dataTime);
 
-    const isoDate = dayjs(myTime).format("YYYY-MM-DDTHH:mm:ssZ");
-    searchInfo.value.end = isoDate;
-  }
-};
 const closeTime = (val) => {
   showTimeBo.value = val;
 };
@@ -557,15 +515,6 @@ const enterMail = async () => {
   });
 };
 
-const filterKeys = (obj, keysToFilter) => {
-  return Object.keys(obj)
-    .filter((key) => !keysToFilter.includes(key))
-    .reduce((newObj, key) => {
-      newObj[key] = obj[key];
-      return newObj;
-    }, {});
-};
-
 const onReset = () => {
   searchInfo.value = {};
   value2.value = "";
@@ -588,7 +537,6 @@ const handleSizeChange = (val) => {
 const switchStatus = async (row) => {
   let myUserInfo = JSON.parse(JSON.stringify(row));
   myUserInfo.items.map((item) => {
-    // item.num = Number(item.num);
     item.num = item.num + "";
     if (item.num.indexOf("B") !== -1) {
       const newStr = item.num.replace("B", "");
@@ -686,21 +634,8 @@ const handleSelectionChange = (val) => {
   apis.value = val;
 };
 
-const syncApiData = ref({
-  newApis: [],
-  deleteApis: [],
-  ignoreApis: [],
-});
-
 // 弹窗相关
 const apiForm = ref(null);
-const initForm = () => {
-  apiForm.value.resetFields();
-  form.value = {
-    code: "",
-    desc: "",
-  };
-};
 
 const dialogTitle = ref(t("general.add"));
 const dialogFormVisible = ref(false);
@@ -718,11 +653,7 @@ const openDialog = (key) => {
   type.value = key;
   dialogFormVisible.value = true;
 };
-const closeDialog = () => {
-  initForm();
-  dialogFormVisible.value = false;
-};
-const formKey = ref("");
+
 const editTackFunc = async (row) => {
   let rows = JSON.parse(JSON.stringify(row));
   for (const key in rows.content) {
@@ -735,52 +666,6 @@ const editTackFunc = async (row) => {
   sendMailVisible.value = true;
 
   type.value = "edit";
-};
-
-const enterDialog = async () => {
-  apiForm.value.validate(async (valid) => {
-    if (valid) {
-      switch (type.value) {
-        case "add":
-          {
-            const res = await virtualItemAdd(form.value);
-            if (res.code === 0) {
-              ElMessage({
-                type: "success",
-                message: t("user.userAddedNote"),
-                showClose: true,
-              });
-              getTableData();
-              closeDialog();
-            }
-          }
-          break;
-        case "edit":
-          {
-            const res = await systemInboxEdit(form.value);
-            if (res.code === 0) {
-              ElMessage({
-                type: "success",
-                message: t("user.userEditedNote"),
-                showClose: true,
-              });
-              getTableData();
-              closeDialog();
-            }
-          }
-          break;
-        default:
-          {
-            ElMessage({
-              type: "error",
-              message: t("view.api.unknownOperation"),
-              showClose: true,
-            });
-          }
-          break;
-      }
-    }
-  });
 };
 
 const deleteTackFunc = async (row) => {
@@ -808,9 +693,6 @@ const tableRowClassName = ({ row, rowIndex }) => {
 };
 </script>
 <style scoped lang="scss">
-// :deep(.el-table td.el-table__cell div) {
-//   color: #000;
-// }
 :deep(.el-table tr th .cell) {
   color: #fff !important;
 }

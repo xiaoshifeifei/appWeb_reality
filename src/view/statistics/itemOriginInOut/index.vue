@@ -191,9 +191,6 @@
           <div class="origin">
             <div v-for="(item1, key1, index1) in item" :key="index1">
               <div v-if="key1 === 'origins'">
-                <!-- <div class="nameKey1 pose">
-                  {{ t(`tableColumn.${key1}`) }}：
-                </div> -->
                 <el-table
                   :data="item[key1]"
                   border
@@ -218,30 +215,6 @@
                     width="200"
                   />
                 </el-table>
-                <!-- <div v-for="(item2, key2, index2) in item[key1]" :key="index2">
-                  <div class="nameKey1" v-if="key2 === 'level'">
-                    {{ t(`tableColumn.levels`) }}：
-                  </div>
-                  <div class="nameKey1" v-else>
-                    {{ t(`tableColumn.${key2}`) }}：
-                  </div>
-                  <div class="temple">
-                    <div
-                      v-for="(item3, key3, index3) in item[key1][key2]"
-                      :key="index3"
-                    >
-                      <div class="temp1">
-                        <el-form-item :label="t(`tableColumn.${key3}`)">
-                          <el-input
-                            v-model="item[key1][key2][key3]"
-                            readonly
-                            autocomplete="off"
-                          />
-                        </el-form-item>
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
               </div>
             </div>
           </div>
@@ -435,9 +408,6 @@ const getTableData = async () => {
   if (value2.value && value2.value.length) {
     searchInfo.value.start = value2.value[0];
     searchInfo.value.end = value2.value[1];
-    // value2.value.forEach((item, index) => {
-    //   handleDateChange(item, index);
-    // });
   } else {
     searchInfo.value.start = null;
     searchInfo.value.end = null;

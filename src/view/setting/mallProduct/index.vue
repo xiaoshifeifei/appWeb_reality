@@ -304,14 +304,6 @@
           </el-col>
         </el-row>
 
-        <!-- <el-form-item :label="t('tableColumn.expired')" prop="expired">
-          <el-date-picker
-            v-model="form.expired"
-            type="datetime"
-            :placeholder="t('tableColumn.PleaseTime')"
-            @change="handleDateChange"
-          />
-        </el-form-item> -->
         <SingleTime
           v-model="value2"
           :values="form.expired"
