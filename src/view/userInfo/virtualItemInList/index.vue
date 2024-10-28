@@ -37,20 +37,7 @@
             />
           </el-select>
         </el-form-item>
-        <!-- <el-form-item
-          :label="t('tableColumn.placeholder') + t('tableColumn.time')"
-        >
-          <el-date-picker
-            :style="{ width: '300px' }"
-            v-model="value2"
-            type="daterange"
-            unlink-panels
-            range-separator="To"
-            start-placeholder="Start date"
-            end-placeholder="End date"
-            :shortcuts="shortcuts"
-          />
-        </el-form-item> -->
+
         <DataTime
           v-model="value2"
           :paramsValue="paramsValue"
@@ -126,6 +113,11 @@
           :label="t('tableColumn.num')"
           prop="num"
         >
+          <template #default="scope">
+            <div style="font-weight: 700; color: #666">
+              +{{ scope.row.num }}
+            </div>
+          </template>
         </el-table-column>
 
         <el-table-column
@@ -156,15 +148,12 @@
   
   <script setup>
 import { getVirtualItemInList, getVirtualItemOriginList } from "@/api/userInfo";
-import { ElMessage } from "element-plus";
 import { virtualItemGetList } from "@/api/tack";
 import DataTime from "@/components/DataTime/index.vue";
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import dayjs from "dayjs";
 import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
 const { t } = useI18n(); // added by mohamed hassan to support multilanguage
-const router = useRouter();
 const route = useRoute();
 
 defineOptions({
@@ -180,94 +169,6 @@ const completeOptions = ref([]);
 const originOptions = ref([]);
 const value2 = ref("");
 const paramsValue = ref(false);
-const shortcuts = [
-  {
-    text: "Today",
-    value: () => {
-      const end = new Date();
-      const start = new Date();
-      return [start, end];
-    },
-  },
-  {
-    text: "Yesterday",
-    value: () => {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24);
-      end.setTime(end.getTime() - 3600 * 1000 * 24);
-      return [start, end];
-    },
-  },
-
-  {
-    text: "Last week",
-    value: () => {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-      return [start, end];
-    },
-  },
-  {
-    text: "Last month",
-    value: () => {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-      return [start, end];
-    },
-  },
-  {
-    text: "Last 3 months",
-    value: () => {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-      return [start, end];
-    },
-  },
-];
-
-const handleDateChange = (params, index) => {
-  if (index === 0) {
-    let date = new Date(params);
-    let formattedDate =
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0") +
-      " " +
-      "00" +
-      ":" +
-      "00" +
-      ":" +
-      "00";
-    const dataTime = new Date(formattedDate).getTime();
-    const myTime = new Date(dataTime);
-    const isoDate = dayjs(myTime).format("YYYY-MM-DDTHH:mm:ssZ");
-    searchInfo.value.start = isoDate;
-  } else if (index === 1) {
-    let date = new Date(params);
-    let formattedDate =
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0") +
-      " " +
-      "23" +
-      ":" +
-      "59" +
-      ":" +
-      "59";
-    const dataTime = new Date(formattedDate).getTime();
-    const myTime = new Date(dataTime);
-    const isoDate = dayjs(myTime).format("YYYY-MM-DDTHH:mm:ssZ");
-    searchInfo.value.end = isoDate;
-  }
-};
 
 const onReset = () => {
   searchInfo.value = {};
@@ -316,10 +217,6 @@ const getTableData = async () => {
   }
 };
 const initPage = async () => {
-  // const end = new Date();
-  // const start = new Date();
-  // start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-  // value2.value = [start, end];
   searchInfo.value.accountId = route.query.id;
   const itemData = await virtualItemGetList({
     page: page.value,
