@@ -809,6 +809,8 @@
     "weekly": "weekly",
     "sentSuccessfully": "Sent Successfully!",
     "bindThirdPartyAccount": "bindThirdPartyAccount",
+    "balance": "balance",
+    "features": "features",
     "sendAnEmail": "SendAnEmail"
   }
 }

@@ -809,6 +809,8 @@
     "weekly": "周常任务",
     "sentSuccessfully": "发送成功",
     "bindThirdPartyAccount": "绑定第三方账号",
+    "balance": "余额",
+    "features": "特征",
     "sendAnEmail": "发送邮件"
   }
 }

@@ -10,10 +10,15 @@
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.gameCode')">
-          <el-input
+          <!-- <el-input
             clearable
             v-model="searchInfo.gameCode"
             :placeholder="t('tableColumn.accountId')"
+          /> -->
+          <el-input
+            clearable
+            v-model="searchInfo.gameCode"
+            placeholder="暂时只能搜索goldVolcano"
           />
         </el-form-item>
         <!-- <el-form-item :label="t('tableColumn.gameCode')">
@@ -68,33 +73,61 @@
         </el-table-column>
         <el-table-column
           align="center"
+          :label="t('tableColumn.betId')"
           min-width="90"
-          :label="t('tableColumn.siteId')"
-          prop="siteId"
-        >
-        </el-table-column>
+          prop="betId"
+        />
         <el-table-column
           align="center"
+          :label="t('tableColumn.username')"
           min-width="90"
-          :label="t('tableColumn.id')"
-          prop="id"
-        >
-        </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.code')"
-          min-width="90"
-          prop="code"
+          prop="username"
         />
         <el-table-column
           align="center"
           min-width="90"
-          :label="t('tableColumn.origin')"
-          prop="origin"
+          :label="t('tableColumn.bet')"
+          prop="bet"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.win')"
+          prop="win"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.winLoss')"
+          prop="winLoss"
         >
           <template #default="scope">
             <div>
-              {{ scope.row.origin }}
+              <span style="color: red !important">
+                {{ scope.row.winLoss }}</span
+              >
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.balance')"
+          prop="balance"
+        >
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          min-width="90"
+          :label="t('tableColumn.features')"
+          prop="features"
+        >
+          <template #default="scope">
+            <div>
+              {{ scope.row.features }}
             </div>
           </template>
         </el-table-column>
@@ -102,19 +135,26 @@
         <el-table-column
           align="center"
           min-width="150"
-          :label="t('tableColumn.num')"
-          prop="num"
+          :label="t('tableColumn.gameCode')"
+          prop="gameCode"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          min-width="150"
+          :label="t('tableColumn.mode')"
+          prop="mode"
         >
         </el-table-column>
 
         <el-table-column
           align="center"
           min-width="90"
-          :label="t('tableColumn.created')"
-          prop="created"
+          :label="t('tableColumn.time')"
+          prop="time"
         >
           <template #default="scope">
-            <div>{{ dataGet(scope.row.created) }}</div>
+            <div>{{ dataGet(scope.row.time) }}</div>
           </template>
         </el-table-column>
       </el-table>
