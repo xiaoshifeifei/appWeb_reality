@@ -114,9 +114,7 @@
           prop="num"
         >
           <template #default="scope">
-            <div style="font-weight: 700; color: #666">
-              +{{ scope.row.num }}
-            </div>
+            <div style="color: red">+{{ scope.row.num }}</div>
           </template>
         </el-table-column>
 

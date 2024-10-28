@@ -91,30 +91,24 @@ const shortcuts = [
   },
 ];
 const open = ref(false);
+const oldData = ref([]);
 const handleCalendarChange = (val) => {
-  if (!value2.value) {
-    value2.value = [];
-  }
-  if (val[0]) {
-    open.value = true;
-    value2.value[0] = val[0];
-  }
-  if (open.value) {
-    const now2 = new Date(val[0]);
-    now2.setHours(23, 59, 59, 999);
-    value2.value[1] = now2;
-  }
-  if (value2.value[0] && value2.value[1]) {
-    const timeData = value2.value.map((item) => {
-      return item;
-    });
-    emits("update:modelValue", timeData);
+  oldData.value = val;
+
+  // if (oldData.value) {
+  //   const now2 = new Date(val[0]);
+  //   now2.setHours(23, 59, 59, 999);
+  //   oldData.value[1] = now2;
+  // }
+  if (oldData.value[0] && oldData.value[1]) {
+    emits("update:modelValue", oldData.value);
   }
 };
 
 const disabledDate = (time) => {
-  if (value2.value && value2.value.length) {
-    const data = value2.value[0];
+  console.log("oldData.value ", oldData.value);
+  if (oldData.value && oldData.value[1] === null) {
+    const data = oldData.value[0];
     const now = new Date(data);
     now.setHours(0, 0, 0, 0);
     const now2 = new Date(data);
@@ -138,7 +132,8 @@ const change = (val) => {
 
 const clear = (val) => {
   value2.value = [];
-  // emits("update:modelValue", []);
+  emits("update:modelValue", []);
+  emits("close");
 };
 watchEffect(() => {
   if (props.paramsValue) {

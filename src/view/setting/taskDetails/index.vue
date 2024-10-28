@@ -764,7 +764,6 @@ const getTableData = async () => {
   });
   if (table.code === 0) {
     table.data.list.map((item, index) => {
-      console.log(99999);
       if (item.complete[0].value) {
         item.complete[0].value = handleChange(
           item.complete[0].value,

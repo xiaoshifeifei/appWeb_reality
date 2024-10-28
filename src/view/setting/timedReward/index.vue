@@ -480,11 +480,7 @@ const closeDialog = () => {
 const editTackFunc = async (row) => {
   let rows = JSON.parse(JSON.stringify(row));
   form.value = rows;
-  // if (form.value.award != null && form.value.award.length > 0) {
-  //   form.value.award.map((item, index) => {
-  //     console.log("item", item);
-  //   });
-  // }
+
   handleChange(form.value.max, 0, "v4");
   openDialog("edit");
 };

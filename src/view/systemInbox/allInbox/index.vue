@@ -508,9 +508,7 @@ const handleChange = (number, index, params, params2) => {
   }
 };
 const enterMail = async () => {
-  console.log("showTimeBo.value", showTimeBo.value);
   if (showTimeBo.value) {
-    console.log(132456);
     return ElMessage.warning(
       t("tableColumn.placeholder") + t("tableColumn.expired")
     );
