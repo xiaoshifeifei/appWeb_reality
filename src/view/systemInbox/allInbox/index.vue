@@ -306,6 +306,7 @@
           v-model="valueExpired"
           :title="t('tableColumn.expired')"
           :values="formMail.expired"
+          @closeTime="closeTime"
         ></SingleTime>
       </el-form>
     </el-drawer>
@@ -365,6 +366,7 @@ const pageSize = ref(10);
 const tableData = ref([]);
 const tableUser = ref([]);
 const searchInfo = ref({});
+const showTimeBo = ref(false);
 const completeOptions = ref([
   { label: "EN", value: "en" },
   { label: "CN", value: "cn" },
@@ -455,6 +457,10 @@ const handleDateChangeSearch = (params, index) => {
     searchInfo.value.end = isoDate;
   }
 };
+const closeTime = (val) => {
+  showTimeBo.value = val;
+};
+
 const addItem = () => {
   formMail.value.items.push({
     code: "",
@@ -502,6 +508,13 @@ const handleChange = (number, index, params, params2) => {
   }
 };
 const enterMail = async () => {
+  console.log("showTimeBo.value", showTimeBo.value);
+  if (showTimeBo.value) {
+    console.log(132456);
+    return ElMessage.warning(
+      t("tableColumn.placeholder") + t("tableColumn.expired")
+    );
+  }
   mailForm.value.validate(async (valid) => {
     if (valid) {
       let arrObj = {};
@@ -531,11 +544,6 @@ const enterMail = async () => {
       }
       if (valueExpired.value) {
         formMail.value.expired = valueExpired.value;
-      }
-      if (!valueExpired.value) {
-        return ElMessage.warning(
-          t("tableColumn.placeholder") + t("tableColumn.expired")
-        );
       }
       const res = await systemInboxEdit(formMail.value);
       if (res.code === 0) {

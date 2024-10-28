@@ -389,6 +389,7 @@
           v-model="valueExpired"
           :title="t('tableColumn.expired')"
           :values="formMail.expired"
+          @closeTime="closeTime"
         ></SingleTime>
       </el-form>
     </el-drawer>
@@ -450,6 +451,7 @@ const pageSize = ref(10);
 const tableData = ref([]);
 const tableUser = ref([]);
 const searchInfo = ref({});
+const showTimeBo = ref(false);
 const completeOptions = ref([
   { label: "EN", value: "en" },
   { label: "CN", value: "cn" },
@@ -577,6 +579,11 @@ const addItem = () => {
     num: null,
   });
 };
+
+const closeTime = (val) => {
+  showTimeBo.value = val;
+};
+
 const delItem = (index) => {
   formMail.value.items.splice(index, 1);
 };
@@ -636,21 +643,12 @@ const handleChange = (number, index, params, params2) => {
     }
   }
 };
-// const arrObj = ref({});
 const enterMail = async () => {
-  // console.log("sendMailVisible", formMail.value.content);
-  // if (formMail.value.content && formMail.value.content.length) {
-  //   console.log(111);
-  //   for (const key in formMail.value.content) {
-  //     console.log(222);
-  //     arrObj.value[formMail.value.content[key].lang] = {
-  //       title: formMail.value.content[key].title,
-  //       message: formMail.value.content[key].message,
-  //     };
-  //   }
-  //   console.log(333, arrObj.value);
-  //   formMail.value.content = arrObj.value;
-  // }
+  if (showTimeBo.value) {
+    return ElMessage.warning(
+      t("tableColumn.placeholder") + t("tableColumn.expired")
+    );
+  }
   mailForm.value.validate(async (valid) => {
     if (valid) {
       let arrObj = {};
@@ -681,12 +679,6 @@ const enterMail = async () => {
       if (valueExpired.value) {
         formMail.value.expired = valueExpired.value;
       }
-      if (!valueExpired.value) {
-        return ElMessage.warning(
-          t("tableColumn.placeholder") + t("tableColumn.expired")
-        );
-      }
-      console.log("formMail.value", formMail.value);
       const res = await InboxEdit(formMail.value);
       if (res.code === 0) {
         ElMessage({
