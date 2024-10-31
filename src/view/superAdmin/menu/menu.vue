@@ -17,7 +17,8 @@
           prop="authorityName"
         >
           <template #default="scope">
-            <span>{{ scope.row.meta.title }}</span>
+            <!-- <span>{{ scope.row.meta.title }}</span> -->
+            <span>{{ t(`zhMenu.${scope.row.meta.title}`) }}</span>
           </template>
         </el-table-column>
         <el-table-column
