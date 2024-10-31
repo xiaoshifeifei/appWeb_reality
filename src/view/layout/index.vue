@@ -12,15 +12,24 @@
     />
     <gva-header />
     <div class="flex flex-row w-full gva-container pt-16 box-border h-full">
-        <gva-aside v-if="config.side_mode === 'normal' || (device === 'mobile' && config.side_mode == 'head' ) || (device === 'mobile' && config.side_mode == 'combination' )" />
-        <gva-aside v-if="config.side_mode === 'combination' && device !== 'mobile'" mode="normal"/>
+      <gva-aside
+        v-if="
+          config.side_mode === 'normal' ||
+          (device === 'mobile' && config.side_mode == 'head') ||
+          (device === 'mobile' && config.side_mode == 'combination')
+        "
+      />
+      <gva-aside
+        v-if="config.side_mode === 'combination' && device !== 'mobile'"
+        mode="normal"
+      />
       <div class="flex-1 p-2 w-0 h-full">
         <gva-tabs v-if="config.showTabs" />
         <div
           class="overflow-auto"
           :class="config.showTabs ? 'gva-container2' : 'gva-container pt-1'"
         >
-          <router-view v-if="reloadFlag" v-slot="{ Component,route }">
+          <router-view v-if="reloadFlag" v-slot="{ Component, route }">
             <div
               id="gva-base-load-dom"
               class="gva-body-h bg-gray-50 dark:bg-slate-800"
@@ -33,6 +42,7 @@
             </div>
           </router-view>
           <BottomInfo />
+          <div class="bgcBot"></div>
         </div>
       </div>
     </div>
@@ -53,9 +63,9 @@ import { useUserStore } from "@/pinia/modules/user";
 import { useAppStore } from "@/pinia";
 import { storeToRefs } from "pinia";
 
-import { useI18n } from 'vue-i18n'; // added by mohamed hassan to support multilanguage
+import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
 
-const { t } = useI18n() // added by mohamed hassan to support multilanguage
+const { t } = useI18n(); // added by mohamed hassan to support multilanguage
 
 const appStore = useAppStore();
 const { config, theme, device } = storeToRefs(appStore);
@@ -107,5 +117,19 @@ const reload = async () => {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.light .bgcBot {
+  width: 50%;
+  height: 30px;
+  margin: auto;
+  background-color: var(--el-bot-bgc);
+  transform: translateY(-30px);
+}
+.dark .bgcBot {
+  width: 50%;
+  height: 30px;
+  margin: auto;
+  background-color: var(--el-bot-bgc);
+  transform: translateY(-30px);
+}
 </style>

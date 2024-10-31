@@ -27,7 +27,7 @@
         @selection-change="handleSelectionChange"
         highlight-current-row
         :header-cell-style="{
-          backgroundColor: '#217E8C',
+          backgroundColor: 'var(--el-tab-bgc)',
           Color: '#FFF',
         }"
         :row-class-name="tableRowClassName"
@@ -348,21 +348,40 @@ const tableRowClassName = ({ row, rowIndex }) => {
 };
 </script>
 <style scoped lang="scss">
-// :deep(.el-table td.el-table__cell div) {
-//   color: #000;
-// }
-:deep(.el-table tr th .cell) {
-  color: #fff !important;
+.light .gva-table-box {
+  ::v-deep(.el-table tr th .cell) {
+    color: var(--el-bg-font-color) !important;
+  }
+  ::v-deep(.el-table__row.warnBg .el-table__cell) {
+    width: 100%;
+    height: 100%;
+    background-color: var(--el-warn-bgc);
+    color: #000;
+  }
+  ::v-deep(.el-table__body tr:hover > td) {
+    background-color: var(--el-warn-bgc-hover) !important;
+  }
+  ::v-deep(.el-table__body tr.current-row > td) {
+    background-color: var(--el-warn-bgc-current) !important;
+  }
 }
-:deep(.el-table .warnBg) {
-  background-color: #c7e4ea;
-  color: #000;
-}
-:deep(.el-table__body tr:hover > td) {
-  background-color: #6dc58b !important;
-}
-:deep(.el-table__body tr.current-row > td) {
-  background-color: #6dc58b !important;
+
+.dark .gva-table-box {
+  ::v-deep(.el-table tr th .cell) {
+    color: var(--el-bg-font-color) !important;
+  }
+  ::v-deep(.el-table__row.warnBg .el-table__cell) {
+    width: 100%;
+    height: 100%;
+    background-color: var(--el-warn-bgc);
+    color: #000;
+  }
+  ::v-deep(.el-table__body tr:hover > td) {
+    background-color: var(--el-warn-bgc-hover) !important;
+  }
+  ::v-deep(.el-table__body tr.current-row > td) {
+    background-color: var(--el-warn-bgc-current) !important;
+  }
 }
 </style>
 

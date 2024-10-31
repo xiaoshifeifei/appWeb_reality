@@ -1,0 +1,15 @@
+
+
+html.dark {
+    /* 自定义深色背景颜色 */
+    --el-bg-color: rgb(30 ,41 ,59);
+    --el-bg-color-overlay: rgb(40 ,51 ,69);
+    --el-fill-color-light:  rgb(15 ,23 ,42);
+    --el-fill-color : rgb(15 ,23 ,42);
+    --el-bg-font-color: #fff;
+    --el-warn-bgc: #1c2632 !important;
+    --el-warn-bgc-hover: #304156 !important;
+    --el-warn-bgc-current: #304156 !important;
+    --el-bot-bgc: rgb(30, 41, 59) !important;
+    --el-tab-bgc: #090e14 !important;
+}

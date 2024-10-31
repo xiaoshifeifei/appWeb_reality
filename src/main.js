@@ -4,6 +4,8 @@ import "element-plus/es/components/notification/style/css";
 import "element-plus/es/components/message-box/style/css";
 import "element-plus/theme-chalk/dark/css-vars.css";
 import "./style/element_visiable.scss";
+import "./style/dark.scss";
+import "./style/light.scss";
 import "element-plus/dist/index.css";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 import ElementPlus from "element-plus";
