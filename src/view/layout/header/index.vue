@@ -90,9 +90,9 @@
                 </span>
               </el-dropdown-item>
             </template>
-            <el-dropdown-item icon="avatar" @click="toPerson">
+            <!-- <el-dropdown-item icon="avatar" @click="toPerson">
               {{ t("layout.header.personalInfo") }}
-            </el-dropdown-item>
+            </el-dropdown-item> -->
             <el-dropdown-item icon="reading-lamp" @click="userStore.LoginOut">
               {{ t("layout.header.logout") }}
             </el-dropdown-item>
@@ -112,7 +112,7 @@ import { useAppStore } from "@/pinia";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { setUserAuthority } from "@/api/user";
-import { fmtTitle } from "@/utils/fmtRouterTitle";
+// import { fmtTitle } from "@/utils/fmtRouterTitle";
 import gvaAside from "@/view/layout/aside/index.vue";
 import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
 
@@ -128,6 +128,21 @@ const isMobile = computed(() => {
 const toPerson = () => {
   router.push({ name: "person" });
 };
+const fmtTitle = (title, now) => {
+  const reg = /\$\{(.+?)\}/;
+  const reg_g = /\$\{(.+?)\}/g;
+  const result = title.match(reg_g);
+  if (result) {
+    result.forEach((item) => {
+      const key = item.match(reg)[1];
+      const value = now.params[key] || now.query[key];
+      title = title.replace(item, value);
+    });
+  }
+  return t(`zhMenu.${title}`);
+  // return title;
+};
+
 const matched = computed(() => route.meta.matched);
 
 const changeUserAuth = async (id) => {

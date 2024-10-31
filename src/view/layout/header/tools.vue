@@ -5,7 +5,7 @@
 
 <template>
   <div class="flex items-center mx-4 gap-4">
-    <el-tooltip
+    <!-- <el-tooltip
       class=""
       effect="dark"
       :content="t('layout.tools.videoTutorial')"
@@ -29,9 +29,9 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-    </el-tooltip>
+    </el-tooltip> -->
 
-    <el-tooltip
+    <!-- <el-tooltip
       class=""
       effect="dark"
       :content="t('layout.tools.search')"
@@ -43,9 +43,9 @@
       >
         <Search />
       </el-icon>
-    </el-tooltip>
+    </el-tooltip> -->
 
-    <el-tooltip
+    <!-- <el-tooltip
       class=""
       effect="dark"
       :content="t('layout.tools.systemSettings')"
@@ -57,9 +57,9 @@
       >
         <Setting />
       </el-icon>
-    </el-tooltip>
+    </el-tooltip> -->
 
-    <el-tooltip
+    <!-- <el-tooltip
       class=""
       effect="dark"
       :content="t('layout.tools.refresh')"
@@ -72,7 +72,7 @@
       >
         <Refresh />
       </el-icon>
-    </el-tooltip>
+    </el-tooltip> -->
     <el-tooltip
       class=""
       effect="dark"
