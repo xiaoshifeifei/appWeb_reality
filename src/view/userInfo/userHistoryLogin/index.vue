@@ -368,15 +368,6 @@ const enterMail = async () => {
   });
 };
 
-const filterKeys = (obj, keysToFilter) => {
-  return Object.keys(obj)
-    .filter((key) => !keysToFilter.includes(key))
-    .reduce((newObj, key) => {
-      newObj[key] = obj[key];
-      return newObj;
-    }, {});
-};
-
 const onReset = () => {
   searchInfo.value = {};
 };
@@ -394,39 +385,7 @@ const handleSizeChange = (val) => {
   pageSize.value = val;
   getTableData();
 };
-const switchStatus = async (row) => {
-  let myUserInfo = JSON.parse(JSON.stringify(row));
-  myUserInfo.items.map((item) => {
-    // item.num = Number(item.num);
-    item.num = item.num + "";
-    if (item.num.indexOf("B") !== -1) {
-      const newStr = item.num.replace("B", "");
-      item.num = Number(newStr) * 1000000000;
-    } else if (item.num.indexOf("M") !== -1) {
-      const newStr = item.num.replace("M", "");
-      item.num = Number(newStr) * 1000000;
-    } else if (item.num.indexOf("K") !== -1) {
-      const newStr = item.num.replace("K", "");
-      item.num = Number(newStr) * 1000;
-    } else {
-      item.num = Number(item.num);
-    }
-  });
-  const res = await systemInboxEdit(myUserInfo);
-  if (res.code === 0) {
-    ElMessage({
-      type: "success",
-      message: `${
-        myUserInfo.status === 0
-          ? t("user.enabledSuccessfully")
-          : t("user.disabledSuccessfully")
-      }`,
-    });
-    getTableData();
-  } else {
-    getTableData();
-  }
-};
+
 // 弹窗相关
 const mailForm = ref(null);
 const initMailForm = () => {
@@ -474,17 +433,6 @@ const getTableData = async () => {
 
 getTableData();
 
-// 批量操作
-const handleSelectionChange = (val) => {
-  apis.value = val;
-};
-
-const syncApiData = ref({
-  newApis: [],
-  deleteApis: [],
-  ignoreApis: [],
-});
-
 // 弹窗相关
 const apiForm = ref(null);
 const initForm = () => {
@@ -497,20 +445,7 @@ const initForm = () => {
 
 const dialogTitle = ref("新增");
 const dialogFormVisible = ref(false);
-const openDialog = (key) => {
-  switch (key) {
-    case "add":
-      dialogTitle.value = "新增";
-      break;
-    case "edit":
-      dialogTitle.value = "编辑";
-      break;
-    default:
-      break;
-  }
-  type.value = key;
-  dialogFormVisible.value = true;
-};
+
 const closeDialog = () => {
   initForm();
   dialogFormVisible.value = false;

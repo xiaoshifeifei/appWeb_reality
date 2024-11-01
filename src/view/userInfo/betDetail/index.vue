@@ -161,12 +161,9 @@
   
   <script setup>
 import { betDetailGetList, getVirtualItemOriginList } from "@/api/userInfo";
-import { ElMessage } from "element-plus";
-import { virtualItemGetList } from "@/api/tack";
 import TimePickMinute from "@/components/DataTime/timePickMinute.vue";
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import dayjs from "dayjs";
 import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
 const { t } = useI18n(); // added by mohamed hassan to support multilanguage
 const router = useRouter();
@@ -181,8 +178,6 @@ const total = ref(0);
 const pageSize = ref(10);
 const tableData = ref([]);
 const searchInfo = ref({});
-const completeOptions = ref([]);
-const originOptions = ref([]);
 const value2 = ref([]);
 const paramsValue = ref(false);
 const onReset = () => {

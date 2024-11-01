@@ -1,7 +1,7 @@
 <template>
   <el-menu-item
     :index="routerInfo.name"
-    class="dark:text-slate-300 overflow-x-hidden"
+    class="dark:text-slate-300 overflow-x-hidden menuTitle"
     :style="{
       height: sideHeight,
     }"
@@ -44,5 +44,8 @@ const sideHeight = computed(() => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.menuTitle {
+  overflow: hidden;
+}
 </style>

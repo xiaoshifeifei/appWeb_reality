@@ -211,10 +211,8 @@
   <script setup>
 import { getAccountRetained } from "@/api/userInfo";
 import SingleTime from "@/components/DataTime/singleTime.vue";
-import { ElMessage } from "element-plus";
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import dayjs from "dayjs";
 import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
 const { t } = useI18n(); // added by mohamed hassan to support multilanguage
 const router = useRouter();
@@ -263,19 +261,6 @@ const dataGet = (dateStr) => {
   return formattedDate;
 };
 
-const seeFunc = async (row) => {
-  let rows = JSON.parse(JSON.stringify(row));
-  rows.day = dataGet(rows.day);
-  form.value = rows;
-  dialogFormVisible.value = true;
-};
-const handleDateChange = () => {
-  if (searchInfo.value.day) {
-    const stamp = new Date(searchInfo.value.day).getTime();
-    const beijingTime = new Date(stamp).toISOString();
-    searchInfo.value.day = beijingTime;
-  }
-};
 const closeDialog = () => {
   initForm();
   dialogFormVisible.value = false;
@@ -299,16 +284,7 @@ const onSubmit = () => {
   page.value = 1;
   pageSize.value = 10;
   searchInfo.value.day = value2.value;
-  // if (!searchInfo.value.day) {
-  //   const currentDate = new Date();
-  //   const year = currentDate.getFullYear();
-  //   const month = currentDate.getMonth() + 1; // 月份从0开始，需要加1
-  //   const day = currentDate.getDate();
-  //   const dataSrc = year + "-" + month + "-" + day + " 00:00:00";
-  //   const stamp = new Date(dataSrc).getTime();
-  //   const beijingTime = new Date(stamp).toISOString();
-  //   searchInfo.value.day = beijingTime;
-  // }
+
   getTableData();
 };
 
@@ -382,6 +358,15 @@ const tableRowClassName = ({ row, rowIndex }) => {
     background-color: var(--el-warn-bgc);
     color: #000;
   }
+  ::v-deep(.el-table .el-table__row.warning-row td .cell) {
+    color: #fff !important ;
+  }
+  ::v-deep(.el-table__row.warning-row .el-table__cell) {
+    width: 100%;
+    height: 100%;
+    background-color: var(--el-warn-row-bgc);
+    color: #fff !important ;
+  }
   ::v-deep(.el-table__body tr:hover > td) {
     background-color: var(--el-warn-bgc-hover) !important;
   }
@@ -398,6 +383,12 @@ const tableRowClassName = ({ row, rowIndex }) => {
     width: 100%;
     height: 100%;
     background-color: var(--el-warn-bgc);
+    color: #000;
+  }
+  ::v-deep(.el-table__row.warning-row .el-table__cell) {
+    width: 100%;
+    height: 100%;
+    background-color: var(--el-warn-row-bgc);
     color: #000;
   }
   ::v-deep(.el-table__body tr:hover > td) {
