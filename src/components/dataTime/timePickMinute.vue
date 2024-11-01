@@ -106,7 +106,6 @@ const handleCalendarChange = (val) => {
 };
 
 const disabledDate = (time) => {
-  console.log("oldData.value ", oldData.value);
   if (oldData.value && oldData.value[1] === null) {
     const data = oldData.value[0];
     const now = new Date(data);
