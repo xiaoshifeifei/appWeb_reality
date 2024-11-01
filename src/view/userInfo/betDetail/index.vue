@@ -183,11 +183,11 @@ const tableData = ref([]);
 const searchInfo = ref({});
 const completeOptions = ref([]);
 const originOptions = ref([]);
-const value2 = ref("");
+const value2 = ref([]);
 const paramsValue = ref(false);
 const onReset = () => {
   searchInfo.value = {};
-  value2.value = "";
+  value2.value = [];
   paramsValue.value = true;
 };
 // 搜索
