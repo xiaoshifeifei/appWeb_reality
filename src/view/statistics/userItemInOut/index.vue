@@ -145,7 +145,7 @@ const tableData = ref([]);
 const searchInfo = ref({});
 const completeOptions = ref([]);
 const paramsValue = ref(false);
-const value2 = ref("");
+const value2 = ref([]);
 
 const shortcuts = [
   {
@@ -238,7 +238,7 @@ const handleDateChange = (params, index) => {
 
 const onReset = () => {
   searchInfo.value = {};
-  value2.value = "";
+  value2.value = [];
   paramsValue.value = true;
 };
 // 搜索

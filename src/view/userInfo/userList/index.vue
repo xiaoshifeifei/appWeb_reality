@@ -19,21 +19,6 @@
             />
           </el-select>
         </el-form-item>
-        <!-- <el-form-item
-          :label="t('tableColumn.placeholder') + t('tableColumn.time')"
-        >
-          <el-date-picker
-            :style="{ width: '300px' }"
-            v-model="value2"
-            type="daterange"
-            unlink-panels
-            range-separator="To"
-            start-placeholder="Start date"
-            end-placeholder="End date"
-            :shortcuts="shortcuts"
-          />
-        </el-form-item> -->
-
         <DataTime
           v-model="value2"
           :paramsValue="paramsValue"
@@ -48,10 +33,6 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <!-- <div style="padding-left: 40px; color: red; font-size: 20px">
-        增加修改 可修改用户基本资料（昵称，头像，个性签名登）<br />
-        增加封禁 、删除 、加入黑名单 操作功能
-      </div> -->
     </div>
 
     <div class="gva-table-box">
@@ -824,7 +805,7 @@ const router = useRouter();
 defineOptions({
   name: "userInfo",
 });
-const value2 = ref("");
+const value2 = ref([]);
 const valueExpired = ref("");
 const apis = ref([]);
 const form = ref({
@@ -1137,7 +1118,7 @@ const delItem = (index) => {
 
 const onReset = () => {
   searchInfo.value = {};
-  value2.value = "";
+  value2.value = [];
   paramsValue.value = true;
 };
 // 搜索

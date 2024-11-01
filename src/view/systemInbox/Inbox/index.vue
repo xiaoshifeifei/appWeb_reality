@@ -407,7 +407,7 @@ const form = ref({
   status: 0, //0开启 1关闭
   expired: "",
 });
-const value2 = ref("");
+const value2 = ref([]);
 const valueExpired = ref("");
 const type = ref("");
 const rules = ref({
@@ -642,7 +642,7 @@ const enterMail = async () => {
 
 const onReset = () => {
   searchInfo.value = {};
-  value2.value = "";
+  value2.value = [];
   paramsValue.value = true;
 };
 

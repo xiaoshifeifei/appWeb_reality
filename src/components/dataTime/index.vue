@@ -45,8 +45,8 @@ const emits = defineEmits(["update:modelValue"]);
 
 const props = defineProps({
   modelValue: {
-    type: String,
-    default: "",
+    type: Array,
+    default: [],
   },
   showTime: {
     type: Boolean,
@@ -167,7 +167,7 @@ const change = () => {
   }
 };
 
-watch(() => {
+watchEffect(() => {
   if (props.showTime) {
     const now = new Date();
     now.setHours(0, 0, 0, 0);

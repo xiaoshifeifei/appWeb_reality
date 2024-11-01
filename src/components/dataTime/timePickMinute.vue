@@ -33,8 +33,8 @@ const emits = defineEmits(["update:modelValue"]);
 
 const props = defineProps({
   modelValue: {
-    type: String,
-    default: "",
+    type: Array,
+    default: [],
   },
   showTime: {
     type: Boolean,

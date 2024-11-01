@@ -38,20 +38,6 @@
           </el-select>
         </el-form-item>
 
-        <!-- <el-form-item
-          :label="t('tableColumn.placeholder') + t('tableColumn.time')"
-        >
-          <el-date-picker
-            :style="{ width: '300px' }"
-            v-model="value2"
-            type="daterange"
-            range-separator="To"
-            start-placeholder="Start date"
-            end-placeholder="End date"
-            :default-time="defaultTime"
-          />
-        </el-form-item> -->
-
         <DataTime
           v-model="value2"
           :paramsValue="paramsValue"
@@ -187,7 +173,7 @@ const searchInfo = ref({});
 const completeOptions = ref([]);
 const originOptions = ref([]);
 const paramsValue = ref(false);
-const value2 = ref("");
+const value2 = ref([]);
 const defaultTime = [
   new Date(2000, 1, 1, 0, 0, 0),
   new Date(2000, 2, 1, 23, 59, 59, 999),
@@ -244,7 +230,7 @@ const shortcuts = [
 
 const onReset = () => {
   searchInfo.value = {};
-  value2.value = "";
+  value2.value = [];
   paramsValue.value = true;
 };
 // 搜索

@@ -9,20 +9,6 @@
             :placeholder="t('tableColumn.accountId')"
           />
         </el-form-item>
-        <!-- <el-form-item
-          :label="t('tableColumn.placeholder') + t('tableColumn.time')"
-        >
-          <el-date-picker
-            :style="{ width: '300px' }"
-            v-model="value2"
-            type="daterange"
-            unlink-panels
-            range-separator="To"
-            start-placeholder="Start date"
-            end-placeholder="End date"
-            :shortcuts="shortcuts"
-          />
-        </el-form-item> -->
         <DataTime
           v-model="value2"
           :showTime="true"
@@ -249,7 +235,7 @@ const dialogTitle = ref(t("view.dictionary.sysDictionary.details"));
 const form = ref({});
 const dialogFormVisible = ref(false);
 const paramsValue = ref(false);
-const value2 = ref("");
+const value2 = ref([]);
 const shortcuts = [
   {
     text: "Today",
@@ -381,7 +367,7 @@ const initForm = () => {
 };
 const onReset = () => {
   searchInfo.value = {};
-  value2.value = "";
+  value2.value = [];
   paramsValue.value = true;
 };
 // 搜索

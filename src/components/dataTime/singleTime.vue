@@ -74,7 +74,7 @@ const handleDateChange = () => {
   }
 };
 
-watch(() => {
+watchEffect(() => {
   form.value.expired = props.values;
 });
 watchEffect(() => {

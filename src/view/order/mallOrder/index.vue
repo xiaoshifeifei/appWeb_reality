@@ -391,7 +391,7 @@ const form = ref({
   discount: "",
   expired: "",
 });
-const value2 = ref("");
+const value2 = ref([]);
 
 const type = ref("");
 const rules = ref({
@@ -410,7 +410,7 @@ const searchInfo = ref({});
 
 const onReset = () => {
   searchInfo.value = {};
-  value2.value = "";
+  value2.value = [];
   paramsValue.value = true;
 };
 // 搜索
@@ -501,9 +501,6 @@ const getTableData = async () => {
   if (value2.value && value2.value.length) {
     searchInfo.value.start = value2.value[0];
     searchInfo.value.end = value2.value[1];
-    // value2.value.forEach((item, index) => {
-    //   handleDateChange(item, index);
-    // });
   } else {
     searchInfo.value.start = null;
     searchInfo.value.end = null;

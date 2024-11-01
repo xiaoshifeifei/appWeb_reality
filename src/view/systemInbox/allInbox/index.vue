@@ -326,7 +326,7 @@ defineOptions({
   name: "goodsConfiguration",
 });
 const valueExpired = ref("");
-const value2 = ref("");
+const value2 = ref([]);
 const apis = ref([]);
 const paramsValue = ref(false);
 const form = ref({
@@ -517,7 +517,7 @@ const enterMail = async () => {
 
 const onReset = () => {
   searchInfo.value = {};
-  value2.value = "";
+  value2.value = [];
   paramsValue.value = true;
 };
 
