@@ -41,6 +41,12 @@
         />
         <el-table-column
           align="center"
+          :label="t('tableColumn.name')"
+          min-width="150"
+          prop="name"
+        />
+        <el-table-column
+          align="center"
           :label="t('tableColumn.type')"
           min-width="150"
           prop="type"

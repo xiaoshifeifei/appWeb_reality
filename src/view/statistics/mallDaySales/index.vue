@@ -2,13 +2,6 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <el-form-item :label="t('tableColumn.accountId')">
-          <el-input
-            clearable
-            v-model="searchInfo.accountId"
-            :placeholder="t('tableColumn.accountId')"
-          />
-        </el-form-item>
         <DataTime
           v-model="value2"
           :showTime="true"
@@ -52,42 +45,16 @@
           </template>
         </el-table-column>
         <el-table-column
-          align="left"
-          :label="t('tableColumn.items')"
+          align="center"
+          :label="t('tableColumn.productSales')"
           min-width="400"
-          prop="items"
+          prop="productSales"
         >
           <template #default="scope">
-            {{ scope.row.items }}
+            {{ scope.row.productSales }}
           </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          min-width="90"
-          :label="t('tableColumn.bet')"
-          prop="bet"
-        >
-        </el-table-column>
-        <el-table-column
-          align="center"
-          min-width="90"
-          :label="t('tableColumn.win')"
-          prop="win"
-        >
         </el-table-column>
 
-        <el-table-column
-          align="center"
-          min-width="150"
-          :label="t('tableColumn.winLoss')"
-          prop="winLoss"
-        >
-          <template #default="scope">
-            <div style="color: rgb(255, 0, 0)">
-              {{ scope.row.winLoss }}
-            </div>
-          </template>
-        </el-table-column>
         <el-table-column
           align="center"
           fixed="right"
@@ -101,17 +68,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <!-- <div class="gva-pagination">
-        <el-pagination
-          :current-page="page"
-          :page-size="pageSize"
-          :page-sizes="[10, 30, 50, 100]"
-          :total="total"
-          layout="total, sizes, prev, pager, next, jumper"
-          @current-change="handleCurrentChange"
-          @size-change="handleSizeChange"
-        />
-      </div> -->
     </div>
     <el-drawer
       v-if="dialogFormVisible"
@@ -133,95 +89,57 @@
         </div>
       </template>
 
-      <el-form
-        class="myForm"
-        ref="apiForm"
-        :model="form"
-        :rules="rules"
-        label-width="120px"
-      >
+      <el-form class="myForm" ref="apiForm" :model="form" label-width="120px">
         <el-row class="w-full">
-          <el-col :span="8">
+          <el-col :span="12">
             <el-form-item :label="t('tableColumn.days')">
               <el-input v-model="form.day" readonly autocomplete="off" />
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row class="w-full">
-          <el-col :span="8">
-            <el-form-item :label="t('tableColumn.bet')">
-              <el-input v-model="form.bet" readonly autocomplete="off" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row class="w-full">
-          <el-col :span="8">
-            <el-form-item :label="t('tableColumn.win')">
-              <el-input v-model="form.win" readonly autocomplete="off" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row class="w-full">
-          <el-col :span="8">
-            <el-form-item :label="t('tableColumn.winLoss')">
-              <el-input
-                v-model="form.winLoss"
-                readonly
-                autocomplete="off"
-                style="--el-input-text-color: red"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <template v-for="(item, key, index) in form.items" :key="index">
-          <div class="nameKey">{{ key }}：</div>
-          <div class="temple">
-            <div v-for="(item1, key1, index1) in item" :key="index1">
-              <div v-if="key1 !== 'origins'" class="temp1">
-                <el-form-item :label="t(`tableColumn.${key1}`)">
-                  <el-input v-model="item[key1]" readonly autocomplete="off" />
-                </el-form-item>
-              </div>
-            </div>
-          </div>
-          <div class="origin">
-            <div v-for="(item1, key1, index1) in item" :key="index1">
-              <div v-if="key1 === 'origins'">
-                <el-table
-                  :data="item[key1]"
-                  border
-                  style="width: 600px; margin-top: 20px"
-                >
-                  <el-table-column
-                    prop="name"
-                    align="center"
-                    :label="t(`tableColumn.${key1}`)"
-                    width="200"
-                  />
-                  <el-table-column
-                    prop="in"
-                    align="center"
-                    :label="t(`tableColumn.in`)"
-                    width="200"
-                  />
-                  <el-table-column
-                    prop="out"
-                    align="center"
-                    :label="t(`tableColumn.out`)"
-                    width="200"
-                  />
-                </el-table>
-              </div>
-            </div>
-          </div>
-        </template>
+        <el-table
+          :data="form.productSales"
+          border
+          style="width: 1000px; margin-top: 20px"
+        >
+          <el-table-column
+            prop="productName"
+            align="center"
+            :label="t(`tableColumn.productName`)"
+            width="200"
+          />
+          <el-table-column
+            prop="productId"
+            align="center"
+            :label="t(`tableColumn.productId`)"
+            width="200"
+          />
+          <el-table-column
+            prop="accountCount"
+            align="center"
+            :label="t(`tableColumn.accountCount`)"
+            width="200"
+          />
+          <el-table-column
+            prop="purchaseAmount"
+            align="center"
+            :label="t(`tableColumn.purchaseAmount`)"
+            width="200"
+          />
+          <el-table-column
+            prop="purchaseTimes"
+            align="center"
+            :label="t(`tableColumn.purchaseTimes`)"
+            width="200"
+          />
+        </el-table>
       </el-form>
     </el-drawer>
   </div>
 </template>
   
   <script setup>
-import { getItemOriginInOut } from "@/api/userInfo";
+import { getMallDaySales } from "@/api/userInfo";
 import { ElMessage } from "element-plus";
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
@@ -235,7 +153,22 @@ const route = useRoute();
 defineOptions({
   name: "userInfo",
 });
-
+const AAA = ref([
+  {
+    accountCount: 1,
+    productId: 1,
+    productName: 1,
+    purchaseAmount: 1,
+    purchaseTimes: 1,
+  },
+  {
+    accountCount: 2,
+    productId: 2,
+    productName: 2,
+    purchaseAmount: 2,
+    purchaseTimes: 2,
+  },
+]);
 const page = ref(1);
 const total = ref(0);
 const pageSize = ref(10);
@@ -349,21 +282,8 @@ const dataGet = (dateStr) => {
 const seeFunc = async (row) => {
   let rows = JSON.parse(JSON.stringify(row));
   rows.day = dataGet(rows.day);
-  for (let key in rows.items) {
-    for (let key1 in rows.items[key]) {
-      if (typeof rows.items[key][key1] === "object") {
-        const obj1 = Object.keys(rows.items[key][key1]);
-        const obj2 = Object.values(rows.items[key][key1]);
-        const obj3 = obj1.map((item, index) => {
-          obj2[index].name = t(`tableColumn.${item}`);
-          return obj2[index];
-        });
-        rows.items[key][key1] = obj3;
-      }
-    }
-  }
-
   form.value = rows;
+  console.log("form.value.productSales ", form.value.productSales);
   dialogFormVisible.value = true;
 };
 const closeDialog = () => {
@@ -412,16 +332,13 @@ const getTableData = async () => {
     );
   }
 
-  const table = await getItemOriginInOut({
+  const table = await getMallDaySales({
     page: page.value,
     pageSize: pageSize.value,
     ...searchInfo.value,
   });
   if (table.code === 0) {
     tableData.value = table.data;
-    total.value = table.data.total;
-    page.value = table.data.page;
-    pageSize.value = table.data.pageSize;
   }
 };
 const init = async () => {
@@ -524,9 +441,6 @@ const tableRowClassName = ({ row, rowIndex }) => {
 .pose {
   // margin-left: -50px;
   color: #666;
-}
-.myInput .el-input__inner {
-  color: red;
 }
 </style>
   

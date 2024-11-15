@@ -101,6 +101,15 @@ export const getItemOriginInOut = (params) => {
   });
 };
 
+//商城商品购买记录列表
+export const getMallDaySales = (params) => {
+  return service({
+    url: "/app/statistics/mallDaySales",
+    method: "get",
+    params,
+  });
+};
+
 //用户留存
 export const getAccountRetained = (params) => {
   return service({

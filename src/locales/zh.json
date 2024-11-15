@@ -679,10 +679,12 @@
     "统计": "统计",
     "物品来源消耗统计": "物品来源消耗统计",
     "商城配置": "商城配置",
+    "商城商品购买记录": "商城商品购买记录",
     "Homepage": "首页"
   },
   "tableColumn": {
     "award": "奖励",
+    "name": "商品名称",
     "gameCode": "游戏Code",
     "before": "before",
     "complete": "模板",
@@ -816,6 +818,11 @@
     "balance": "余额",
     "features": "特征",
     "betId": "注单ID",
+    "productSales": "商品购买量",
+    "productName": "商品名称",
+    "accountCount": "账户数量",
+    "purchaseAmount": "购买数量",
+    "purchaseTimes": "购买时间",
     "sendAnEmail": "发送邮件"
   }
 }
