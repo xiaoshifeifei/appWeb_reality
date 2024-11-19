@@ -17,7 +17,7 @@
           />
         </el-form-item>
         <!-- <el-form-item
-          :label="t('tableColumn.placeholder') + t('tableColumn.time')"
+          :label="t('tableColumn.placeholder') +  t('tableColumn.time')"
         >
           <el-date-picker
             :style="{ width: '300px' }"

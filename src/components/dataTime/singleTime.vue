@@ -1,11 +1,5 @@
 <template>
-  <el-form
-    class="isForm"
-    ref="apiForm"
-    :model="form"
-    :rules="rules"
-    label-width="100px"
-  >
+  <el-form class="isForm" ref="apiForm" :model="form" :rules="rules">
     <el-form-item :label="title" :prop="searchTime ? '' : 'expired'">
       <el-date-picker
         v-model="form.expired"

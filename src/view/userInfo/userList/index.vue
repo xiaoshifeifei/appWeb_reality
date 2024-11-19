@@ -302,22 +302,22 @@
           min-width="200"
         >
           <template #default="scope">
-            <el-button
+            <!-- <el-button
               type="primary"
               size="small"
               @click="editTackFunc(scope.row)"
             >
               {{ t("general.edit") }}
-            </el-button>
+            </el-button> -->
             <el-button type="success" size="small" @click="sendMail(scope.row)">
               {{ t("tableColumn.sendAnEmail") }}
             </el-button>
 
-            <el-button type="warning" size="small"> 封禁 </el-button>
+            <!-- <el-button type="warning" size="small"> 封禁 </el-button>
             <el-button type="info" size="small"> 黑名单 </el-button>
             <el-button size="small">
               {{ t("general.delete") }}
-            </el-button>
+            </el-button> -->
           </template>
         </el-table-column>
       </el-table>
