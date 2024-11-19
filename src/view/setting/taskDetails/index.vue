@@ -72,20 +72,12 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.award')"
-          min-width="400"
+          min-width="200"
           prop="award"
         >
           <template #default="scope">
-            <div
-              v-for="(item, index) in scope.row.award"
-              :key="index"
-              class="spanZ"
-            >
-              <div
-                v-for="(item1, key, index1) in item"
-                :key="index1"
-                class="spanCla"
-              >
+            <div v-for="(item, index) in scope.row.award" :key="index">
+              <div v-for="(item1, key, index1) in item" :key="index1">
                 <span class="span1">{{ t(`tableColumn.${key}`) }}: </span>
                 <span class="span2">{{ item1 }}</span>
               </div>
