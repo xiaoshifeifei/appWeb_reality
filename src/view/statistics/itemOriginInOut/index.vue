@@ -133,13 +133,7 @@
         </div>
       </template>
 
-      <el-form
-        class="myForm"
-        ref="apiForm"
-        :model="form"
-        :rules="rules"
-        label-width="120px"
-      >
+      <el-form class="myForm" ref="apiForm" :model="form" label-width="120px">
         <el-row class="w-full">
           <el-col :span="8">
             <el-form-item :label="t('tableColumn.days')">

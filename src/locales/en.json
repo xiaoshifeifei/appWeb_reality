@@ -680,7 +680,8 @@
     "物品来源消耗统计": "ItemOrigin Statistics",
     "商城配置": "Mall Configuration",
     "商城商品购买记录": "Shopping Mall Product",
-    "首页": "Homepage"
+    "首页": "Homepage",
+    "Homepage": "Homepage"
   },
   "tableColumn": {
     "award": "Award",
