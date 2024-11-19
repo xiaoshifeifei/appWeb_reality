@@ -33,36 +33,54 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.id')"
-          min-width="150"
+          min-width="100"
           prop="id"
         />
         <el-table-column
           align="center"
           :label="t('tableColumn.code')"
-          min-width="150"
+          min-width="100"
           prop="code"
         />
         <el-table-column
           align="center"
           :label="t('tableColumn.interval')"
-          min-width="150"
+          min-width="100"
           prop="interval"
         />
 
         <el-table-column
           align="center"
-          :label="t('tableColumn.award')"
+          :label="t('tableColumn.awardData')"
           min-width="400"
           prop="award"
         >
           <template #default="scope">
-            <div>{{ scope.row.award }}</div>
+            <!-- <div>{{ scope.row.award }}</div> -->
+            <div v-for="(item, index) in scope.row.awardData" :key="index">
+              <div
+                v-for="(item1, key, index1) in item"
+                :key="index1"
+                class="spanCla"
+              >
+                <span>{{ t(`tableColumn.${key}`) }}: </span>
+                <span :class="key == 'code' ? 'span2' : ''"> {{ item1 }}</span>
+              </div>
+              <span
+                class="span4"
+                v-if="
+                  scope.row.awardData.length > 1 &&
+                  scope.row.awardData.length - 1 > index
+                "
+              >
+              </span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.max')"
-          min-width="150"
+          min-width="100"
           prop="max"
         />
         <el-table-column
@@ -307,6 +325,7 @@ const page = ref(1);
 const total = ref(0);
 const pageSize = ref(10);
 const tableData = ref([]);
+const awardData = ref([]);
 const searchInfo = ref({});
 
 const onReset = () => {
@@ -401,11 +420,42 @@ const getTableData = async () => {
     table.data.list.map((item, index) => {
       item.max = handleChange(item.max, index, "v4", true);
       if (item.award != null && item.award.length > 0) {
+        item.awardData = JSON.stringify(item.award);
         item.award.map((item2, index2) => {
           item2.num = handleChange(item2.num, index2, "v2", true);
         });
       }
     });
+
+    table.data.list.map((item, index) => {
+      item.awardData = JSON.parse(item.awardData);
+      if (item.awardData != null && item.awardData.length > 0) {
+        // 按照 code 分组并计算 value 的总和
+        const result = item.awardData.reduce((acc, item) => {
+          // 如果该 code 不在结果对象中，初始化
+          if (!acc[item.code]) {
+            acc[item.code] = { code: item.code, num: 0, weight: 0 };
+          }
+          // 累加 value 值
+          acc[item.code].num += item.num;
+          acc[item.code].weight += item.weight;
+          return acc;
+        }, {});
+
+        // 转换为数组形式
+        const output = Object.values(result);
+        item.awardData = output;
+      }
+    });
+    table.data.list.map((item, index) => {
+      item.max = handleChange(item.max, index, "v4", true);
+      if (item.awardData != null && item.awardData.length > 0) {
+        item.awardData.map((item2, index2) => {
+          item2.num = handleChange(item2.num, index2, "v2", true);
+        });
+      }
+    });
+
     tableData.value = table.data.list;
     total.value = table.data.total;
     page.value = table.data.page;
@@ -636,5 +686,31 @@ const tableRowClassName = ({ row, rowIndex }) => {
   .inputN {
     width: 100%;
   }
+}
+
+.span2 {
+  font-weight: 700;
+}
+.span4 {
+  display: block;
+  border-bottom: 1px solid #ebeef5;
+  width: 80%;
+  margin: auto;
+}
+
+.span1 {
+  display: inline-block;
+  width: 50%;
+  text-align: right;
+}
+.span3 {
+  display: inline-block;
+  width: calc(49% - 8px);
+  text-align: left;
+  padding-left: 8px;
+}
+.spanCla {
+  display: inline-block;
+  margin-right: 20px;
 }
 </style>

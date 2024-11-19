@@ -68,27 +68,54 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.complete')"
-          min-width="170"
+          min-width="400"
           prop="complete"
         >
           <template #default="scope">
-            <div>{{ scope.row.complete }}</div>
+            <div
+              v-for="(item, index) in scope.row.complete"
+              :key="index"
+              class="spanZ"
+            >
+              <div
+                v-for="(item1, key, index1) in item"
+                :key="index1"
+                class="spanCla"
+              >
+                <span class="span1">{{ t(`tableColumn.${key}`) }}:</span>
+                <span class="span2">{{ item1 }}</span>
+              </div>
+            </div>
           </template>
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.award')"
-          min-width="200"
+          min-width="400"
           prop="award"
         >
           <template #default="scope">
-            <div>{{ scope.row.award }}</div>
+            <!-- <div>{{ scope.row.award }}</div> -->
+            <div
+              v-for="(item, index) in scope.row.award"
+              :key="index"
+              class="spanZ"
+            >
+              <div
+                v-for="(item1, key, index1) in item"
+                :key="index1"
+                class="spanCla"
+              >
+                <span class="span1">{{ t(`tableColumn.${key}`) }}:</span>
+                <span class="span2">{{ item1 }}</span>
+              </div>
+            </div>
           </template>
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.start')"
-          min-width="150"
+          min-width="180"
           prop="start"
         >
           <template #default="scope">
@@ -98,7 +125,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.end')"
-          min-width="150"
+          min-width="180"
           prop="end"
         >
           <template #default="scope">
@@ -108,21 +135,31 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.unlock')"
-          min-width="150"
+          min-width="200"
           prop="unlock"
         >
           <template #default="scope">
-            <div>{{ scope.row.unlock }}</div>
+            <!-- <div>{{ scope.row.unlock }}</div> -->
+            <div v-for="(item, index) in scope.row.unlock" :key="index">
+              <div v-for="(item1, key, index1) in item" :key="index1">
+                <span class="span1">{{ t(`tableColumn.${key}`) }}:</span>
+                <span class="span2">{{ item1 }}</span>
+              </div>
+            </div>
           </template>
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.tag')"
-          min-width="150"
+          min-width="200"
           prop="tag"
         >
           <template #default="scope">
-            <div>{{ scope.row.tag }}</div>
+            <!-- <div>{{ scope.row.tag }}</div> -->
+            <div v-for="(item1, key, index1) in scope.row.tag" :key="index1">
+              <span class="span1">{{ t(`tableColumn.${key}`) }}:</span>
+              <span class="span2">{{ item1 }}</span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column
@@ -555,5 +592,25 @@ const tableRowClassName = ({ row, rowIndex }) => {
 <style scoped lang="scss">
 .warning {
   color: #dc143c;
+}
+.span1 {
+  display: inline-block;
+  width: 50%;
+  text-align: right;
+}
+.span2 {
+  display: inline-block;
+  width: calc(49% - 8px);
+  text-align: left;
+  padding-left: 8px;
+}
+.spanZ {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+.spanCla {
+  width: 50%;
 }
 </style>

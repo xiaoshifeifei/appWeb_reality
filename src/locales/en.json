@@ -686,6 +686,9 @@
   },
   "tableColumn": {
     "award": "Award",
+    "value": "Value",
+    "value2": "Value2",
+    "awardData": "Award",
     "name": "Name",
     "gameCode": "Game Code",
     "before": "Before",

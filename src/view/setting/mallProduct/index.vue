@@ -36,7 +36,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.id')"
-          min-width="150"
+          min-width="100"
           prop="id"
         />
         <el-table-column
@@ -77,23 +77,34 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.items')"
-          min-width="150"
+          min-width="300"
           prop="items"
         >
           <template #default="scope">
-            <div>{{ scope.row.items }}</div>
+            <div v-for="(item, index) in scope.row.items" :key="index">
+              <div
+                v-for="(item1, key, index1) in item"
+                :key="index1"
+                class="spanCla"
+              >
+                <span>{{ t(`tableColumn.${key}`) }}: </span>
+                <span :class="key == 'code' ? 'span3' : ''">
+                  {{ item1 }}
+                </span>
+              </div>
+            </div>
           </template>
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.price')"
-          min-width="150"
+          min-width="80"
           prop="price"
         />
         <el-table-column
           align="center"
           :label="t('tableColumn.discount')"
-          min-width="150"
+          min-width="80"
           prop="discount"
         />
         <el-table-column
@@ -119,7 +130,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.status')"
-          min-width="150"
+          min-width="80"
           prop="status"
         >
           <template #default="scope">
@@ -775,5 +786,20 @@ const tableRowClassName = ({ row, rowIndex }) => {
 }
 .el-input-number {
   width: 50%;
+}
+.span1 {
+  display: inline-block;
+  width: 50%;
+  text-align: right;
+}
+.span2 {
+  display: inline-block;
+  width: calc(49% - 8px);
+  text-align: left;
+  padding-left: 8px;
+}
+.spanCla {
+  display: inline-block;
+  margin-right: 20px;
 }
 </style>

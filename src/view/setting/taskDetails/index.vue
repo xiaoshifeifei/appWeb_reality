@@ -49,21 +49,67 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.complete')"
-          min-width="170"
+          min-width="400"
           prop="complete"
         >
           <template #default="scope">
-            <div>{{ scope.row.complete }}</div>
+            <div
+              v-for="(item, index) in scope.row.complete"
+              :key="index"
+              class="spanZ"
+            >
+              <div
+                v-for="(item1, key, index1) in item"
+                :key="index1"
+                class="spanCla"
+              >
+                <span class="span1">{{ t(`tableColumn.${key}`) }}: </span>
+                <span class="span2">{{ item1 }}</span>
+              </div>
+            </div>
           </template>
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.award')"
-          min-width="200"
+          min-width="400"
           prop="award"
         >
           <template #default="scope">
-            <div>{{ scope.row.award }}</div>
+            <div
+              v-for="(item, index) in scope.row.award"
+              :key="index"
+              class="spanZ"
+            >
+              <div
+                v-for="(item1, key, index1) in item"
+                :key="index1"
+                class="spanCla"
+              >
+                <span class="span1">{{ t(`tableColumn.${key}`) }}: </span>
+                <span class="span2">{{ item1 }}</span>
+              </div>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.start')"
+          min-width="180"
+          prop="start"
+        >
+          <template #default="scope">
+            <div>{{ dataGet(scope.row.start) }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.end')"
+          min-width="180"
+          prop="end"
+        >
+          <template #default="scope">
+            <div>{{ dataGet(scope.row.end) }}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -73,7 +119,12 @@
           prop="unlock"
         >
           <template #default="scope">
-            <div>{{ scope.row.unlock }}</div>
+            <div v-for="(item, index) in scope.row.unlock" :key="index">
+              <div v-for="(item1, key, index1) in item" :key="index1">
+                <span class="span1">{{ t(`tableColumn.${key}`) }}:</span>
+                <span class="span2">{{ item1 }}</span>
+              </div>
+            </div>
           </template>
         </el-table-column>
         <el-table-column
@@ -83,7 +134,10 @@
           prop="tag"
         >
           <template #default="scope">
-            <div>{{ scope.row.tag }}</div>
+            <div v-for="(item1, key, index1) in scope.row.tag" :key="index1">
+              <span class="span1">{{ t(`tableColumn.${key}`) }}:</span>
+              <span class="span2">{{ item1 }}</span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column
@@ -865,6 +919,22 @@ function isJSON(str) {
     return true;
   }
 }
+const dataGet = (dateStr) => {
+  let date = new Date(dateStr);
+  let formattedDate =
+    date.getFullYear() +
+    "-" +
+    (date.getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    date.getDate().toString().padStart(2, "0") +
+    " " +
+    date.getHours().toString().padStart(2, "0") +
+    ":" +
+    date.getMinutes().toString().padStart(2, "0") +
+    ":" +
+    date.getSeconds().toString().padStart(2, "0");
+  return formattedDate;
+};
 const editTackFunc = async (row) => {
   let rows = JSON.parse(JSON.stringify(row));
   form.value = rows;
@@ -1032,6 +1102,27 @@ const tableRowClassName = ({ row, rowIndex }) => {
   color: #dc143c;
 }
 .el-input-number {
+  width: 50%;
+}
+.span1 {
+  display: inline-block;
+  width: 50%;
+  text-align: right;
+  vertical-align: top;
+}
+.span2 {
+  display: inline-block;
+  width: calc(49% - 8px);
+  text-align: left;
+  padding-left: 8px;
+}
+.spanZ {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+.spanCla {
   width: 50%;
 }
 </style>

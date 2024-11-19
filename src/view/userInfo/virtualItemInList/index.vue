@@ -93,7 +93,17 @@
           :label="t('tableColumn.code')"
           min-width="90"
           prop="code"
-        />
+        >
+          <template #default="scope">
+            {{
+              scope.row.code == "diamond"
+                ? t("tableColumn.diamond")
+                : scope.row.code == "gold_coin"
+                ? t("tableColumn.gold_coin")
+                : scope.row.code
+            }}
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
           min-width="90"
@@ -102,7 +112,29 @@
         >
           <template #default="scope">
             <div>
-              {{ scope.row.origin }}
+              {{
+                scope.row.origin == "collect"
+                  ? t("tableColumn.collect")
+                  : scope.row.origin == "day7sign"
+                  ? t("tableColumn.day7sign")
+                  : scope.row.origin == "advertise"
+                  ? t("tableColumn.advertise")
+                  : scope.row.origin == "inbox"
+                  ? t("tableColumn.inbox")
+                  : scope.row.origin == "mall"
+                  ? t("tableColumn.mall")
+                  : scope.row.origin == "mission"
+                  ? t("tableColumn.mission")
+                  : scope.row.origin == "present"
+                  ? t("tableColumn.present")
+                  : scope.row.origin == "timedReward"
+                  ? t("tableColumn.timedReward")
+                  : scope.row.origin == "wheelOfFortune"
+                  ? t("tableColumn.wheelOfFortune")
+                  : scope.row.origin == "levels"
+                  ? t("tableColumn.levels")
+                  : scope.row.origin
+              }}
             </div>
           </template>
         </el-table-column>

@@ -41,7 +41,7 @@
       >
         <el-table-column
           align="center"
-          min-width="120"
+          min-width="100"
           :label="t('tableColumn.days')"
           prop="day"
         >
@@ -52,25 +52,74 @@
           </template>
         </el-table-column>
         <el-table-column
-          align="left"
+          align="center"
           :label="t('tableColumn.items')"
           min-width="400"
           prop="items"
         >
           <template #default="scope">
-            {{ scope.row.items }}
+            <!-- {{ scope.row.items }} -->
+            <div
+              v-for="(item, key, index) in scope.row.items"
+              :key="index"
+              class="spanZ"
+            >
+              <span class="span4" v-if="index > 0"></span>
+              <div class="spanTitle">
+                <span>{{ t(`tableColumn.code`) }}: </span>
+                <span>{{
+                  key == "diamond"
+                    ? t(`tableColumn.diamond`)
+                    : key == "gold_coin"
+                    ? t(`tableColumn.gold_coin`)
+                    : key
+                }}</span>
+              </div>
+              <div
+                v-for="(item1, key1, index1) in item"
+                :key="index1"
+                class="spanCla"
+              >
+                <span v-if="key1 != 'out'">{{
+                  key1 == "in"
+                    ? t(`tableColumn.in`) + ":"
+                    : key1 == "out"
+                    ? ""
+                    : key1 == "inOut"
+                    ? t(`tableColumn.inOut`) + ":"
+                    : key1 == "origins"
+                    ? t(`tableColumn.origins`) + ":"
+                    : key1
+                }}</span>
+                <span v-if="key1 != 'out' && key1 != 'origins'">
+                  <!-- {{ item1 }} -->
+                  {{ handleChange(item1, index1, "v4", true) }}
+                </span>
+                <span v-if="key1 === 'origins'">
+                  <span v-for="(item2, key2, index2) in item1" :key="index2">
+                    <span
+                      v-if="index2 > 0"
+                      style="color: #ccc; vertical-align: top"
+                    >
+                      |
+                    </span>
+                    {{ t(`tableColumn.${key2}`) }}
+                  </span>
+                </span>
+              </div>
+            </div>
           </template>
         </el-table-column>
         <el-table-column
           align="center"
-          min-width="90"
+          min-width="80"
           :label="t('tableColumn.bet')"
           prop="bet"
         >
         </el-table-column>
         <el-table-column
           align="center"
-          min-width="90"
+          min-width="80"
           :label="t('tableColumn.win')"
           prop="win"
         >
@@ -78,7 +127,7 @@
 
         <el-table-column
           align="center"
-          min-width="150"
+          min-width="80"
           :label="t('tableColumn.winLoss')"
           prop="winLoss"
         >
@@ -339,6 +388,35 @@ const dataGet = (dateStr) => {
     " ";
   return formattedDate;
 };
+const handleChange = (number, index, params, params2) => {
+  if (params == "v4") {
+    if (number >= 1000000000) {
+      if (params2) {
+        return number / 1000000000 + "B";
+      } else {
+        return (form.value.award[index].num = number / 1000000000 + "B");
+      }
+    } else if (number >= 1000000) {
+      if (params2) {
+        return number / 1000000 + "M";
+      } else {
+        return (form.value.award[index].num = number / 1000000 + "M");
+      }
+    } else if (number >= 1000) {
+      if (params2) {
+        return number / 1000 + "K";
+      } else {
+        return (form.value.award[index].num = number / 1000 + "K");
+      }
+    } else {
+      if (params2) {
+        return number.toString();
+      } else {
+        return (form.value.award[index].num = number.toString());
+      }
+    }
+  }
+};
 
 const seeFunc = async (row) => {
   let rows = JSON.parse(JSON.stringify(row));
@@ -521,6 +599,42 @@ const tableRowClassName = ({ row, rowIndex }) => {
 }
 .myInput .el-input__inner {
   color: red;
+}
+
+.span1 {
+  display: inline-block;
+  width: 30%;
+  text-align: right;
+  vertical-align: top;
+}
+.span2 {
+  display: inline-block;
+  width: calc(69% - 8px);
+  text-align: left;
+  padding-left: 8px;
+}
+.span3 {
+  font-weight: 700;
+}
+.span4 {
+  display: block;
+  border-bottom: 1px solid #ebeef5;
+  width: 100%;
+  margin: auto;
+}
+.spanZ {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.spanCla {
+  // width: 50%;
+  display: inline-block;
+  margin-right: 20px;
+}
+.spanTitle {
+  width: 100%;
 }
 </style>
   

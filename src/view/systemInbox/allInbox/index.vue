@@ -38,33 +38,75 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.id')"
-          min-width="150"
+          min-width="80"
           prop="id"
         />
         <el-table-column
           align="center"
           :label="t('tableColumn.items')"
-          min-width="150"
+          min-width="180"
           prop="items"
         >
           <template #default="scope">
-            <div>{{ scope.row.items }}</div>
+            <div v-for="(item, index) in scope.row.items" :key="index">
+              <div v-for="(item1, key, index1) in item" :key="index1">
+                <span class="span1">{{ t(`tableColumn.${key}`) }}: </span>
+                <span class="span2" :class="key == 'code' ? 'span3' : ''">
+                  <span v-if="item1 == 'diamond' || item1 == 'gold_coin'">
+                    {{ t(`tableColumn.${item1}`) }}
+                  </span>
+                  <span v-else>{{ item1 }}</span>
+                </span>
+              </div>
+              <span
+                class="span4"
+                v-if="
+                  scope.row.items.length > 1 &&
+                  scope.row.items.length - 1 > index
+                "
+              >
+              </span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.content')"
-          min-width="150"
+          min-width="400"
           prop="content"
         >
           <template #default="scope">
-            <div>{{ scope.row.content }}</div>
+            <div v-for="(item, key, index) in scope.row.content" :key="index">
+              <span class="span4" v-if="index > 0"></span>
+              <span class="span1"> {{ t("tableColumn.lang") }}: </span>
+              <span class="span2">
+                {{ key }}
+              </span>
+              <div v-for="(item1, key1, index1) in item" :key="index1">
+                <span v-if="key1 == 'message'">
+                  {{
+                    key1 == "title"
+                      ? t("tableColumn.title")
+                      : key1 == "message"
+                      ? t("tableColumn.message")
+                      : key1
+                  }}:
+                </span>
+                <span
+                  class="textSpan"
+                  v-if="key1 == 'message'"
+                  :class="key == 'code' ? 'span3' : ''"
+                >
+                  {{ item1 }}
+                </span>
+              </div>
+            </div>
           </template>
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.created')"
-          min-width="200"
+          min-width="140"
           prop="created"
         >
           <template #default="scope">
@@ -74,7 +116,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.expired')"
-          min-width="200"
+          min-width="140"
           prop="expired"
         >
           <template #default="scope">
@@ -84,7 +126,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.status')"
-          min-width="150"
+          min-width="80"
           prop="status"
         >
           <template #default="scope">
@@ -736,5 +778,38 @@ const tableRowClassName = ({ row, rowIndex }) => {
 }
 .el-input-number {
   width: 50%;
+}
+.span1 {
+  display: inline-block;
+  width: 50%;
+  text-align: right;
+}
+.span2 {
+  display: inline-block;
+  width: calc(49% - 8px);
+  text-align: left;
+  padding-left: 8px;
+}
+.span3 {
+  font-weight: 700;
+}
+.span4 {
+  display: block;
+  border-bottom: 1px solid #ebeef5;
+  width: 80%;
+  margin: auto;
+}
+.spanZ {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+.spanCla {
+  width: 50%;
+}
+.textSpan {
+  word-break: break-all;
+  text-align: left;
 }
 </style>

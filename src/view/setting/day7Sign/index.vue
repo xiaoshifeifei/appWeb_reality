@@ -39,11 +39,29 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.award')"
-          min-width="200"
+          min-width="400"
           prop="award"
         >
           <template #default="scope">
-            <div>{{ scope.row.award }}</div>
+            <!-- <div>{{ scope.row.award }}</div> -->
+            <div v-for="(item, index) in scope.row.award" :key="index">
+              <div
+                v-for="(item1, key, index1) in item"
+                :key="index1"
+                class="spanCla"
+              >
+                <span>{{ t(`tableColumn.${key}`) }}: </span>
+                <span :class="key == 'code' ? 'span3' : ''">{{ item1 }}</span>
+              </div>
+              <span
+                class="span4"
+                v-if="
+                  scope.row.award.length > 1 &&
+                  scope.row.award.length - 1 > index
+                "
+              >
+              </span>
+            </div>
           </template>
         </el-table-column>
 
@@ -326,6 +344,7 @@ const getTableData = async () => {
         });
       }
     });
+
     tableData.value = table.data.list;
     total.value = table.data.total;
     page.value = table.data.page;
@@ -533,5 +552,29 @@ const tableRowClassName = ({ row, rowIndex }) => {
 }
 .el-input-number {
   width: 50%;
+}
+.span1 {
+  display: inline-block;
+  width: 50%;
+  text-align: right;
+}
+.span2 {
+  display: inline-block;
+  width: calc(49% - 8px);
+  text-align: left;
+  padding-left: 8px;
+}
+.span3 {
+  font-weight: 700;
+}
+.span4 {
+  display: block;
+  border-bottom: 1px solid #ebeef5;
+  width: 50%;
+  margin: auto;
+}
+.spanCla {
+  display: inline-block;
+  margin-right: 20px;
 }
 </style>

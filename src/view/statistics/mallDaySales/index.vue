@@ -51,7 +51,41 @@
           prop="productSales"
         >
           <template #default="scope">
-            {{ scope.row.productSales }}
+            <!-- {{ scope.row.productSales }} -->
+            <div v-for="(item, index) in scope.row.productSales" :key="index">
+              <div
+                v-for="(item1, key, index1) in item"
+                :key="index1"
+                class="spanCla"
+              >
+                <span>
+                  <span class="span1"
+                    >{{
+                      key == "productName"
+                        ? t(`tableColumn.productName`)
+                        : key == "productId"
+                        ? t(`tableColumn.productId`)
+                        : key == "accountCount"
+                        ? t(`tableColumn.accountCount`)
+                        : key == "purchaseAmount"
+                        ? t(`tableColumn.purchaseAmount`)
+                        : key == "purchaseTimes"
+                        ? t(`tableColumn.purchaseTimes`)
+                        : key
+                    }}:</span
+                  >
+                  <span class="span2">{{ item1 }}</span>
+                </span>
+              </div>
+              <span
+                class="span4"
+                v-if="
+                  scope.row.productSales.length > 1 &&
+                  scope.row.productSales.length - 1 > index
+                "
+              >
+              </span>
+            </div>
           </template>
         </el-table-column>
 
@@ -441,6 +475,24 @@ const tableRowClassName = ({ row, rowIndex }) => {
 .pose {
   // margin-left: -50px;
   color: #666;
+}
+
+.span1 {
+}
+.span2 {
+}
+.span3 {
+  font-weight: 700;
+}
+.span4 {
+  display: block;
+  border-bottom: 1px solid #ebeef5;
+  width: 50%;
+  margin: auto;
+}
+.spanCla {
+  display: inline-block;
+  margin-right: 20px;
 }
 </style>
   

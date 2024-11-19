@@ -66,7 +66,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.orderNo')"
-          min-width="150"
+          min-width="180"
           prop="orderNo"
         >
           <template #default="scope">
@@ -76,20 +76,20 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.productId')"
-          min-width="150"
+          min-width="90"
           prop="productId"
         >
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.accountId')"
-          min-width="150"
+          min-width="90"
           prop="accountId"
         />
         <el-table-column
           align="center"
           :label="t('tableColumn.price')"
-          min-width="150"
+          min-width="90"
           prop="price"
         >
         </el-table-column>
@@ -97,13 +97,13 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.discount')"
-          min-width="150"
+          min-width="90"
           prop="discount"
         />
         <el-table-column
           align="center"
           :label="t('tableColumn.status')"
-          min-width="150"
+          min-width="120"
           prop="status"
         >
           <template #default="scope">
@@ -127,7 +127,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.origin')"
-          min-width="150"
+          min-width="120"
           prop="origin"
         >
           <template #default="scope">
@@ -149,7 +149,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.payMethod')"
-          min-width="150"
+          min-width="120"
           prop="payMethod"
         >
           <template #default="scope">
@@ -165,7 +165,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.created')"
-          min-width="150"
+          min-width="170"
           prop="created"
         >
           <template #default="scope">
@@ -175,7 +175,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.expired')"
-          min-width="150"
+          min-width="170"
           prop="expired"
         >
           <template #default="scope">
@@ -185,7 +185,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.finished')"
-          min-width="150"
+          min-width="170"
           prop="finished"
         >
           <template #default="scope">
@@ -195,7 +195,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.updated')"
-          min-width="150"
+          min-width="170"
           prop="updated"
         >
           <template #default="scope">
