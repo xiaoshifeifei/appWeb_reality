@@ -209,6 +209,17 @@
           :label="t('tableColumn.gender')"
           prop="gender"
         >
+          <template #default="scope">
+            {{
+              scope.row.gender == 0
+                ? t("tableColumn.Conceal")
+                : scope.row.gender == 1
+                ? t("tableColumn.Male")
+                : scope.row.gender == 2
+                ? t("tableColumn.female")
+                : ""
+            }}
+          </template>
         </el-table-column>
 
         <el-table-column

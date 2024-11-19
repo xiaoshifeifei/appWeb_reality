@@ -825,6 +825,9 @@
     "accountCount": "账户数量",
     "purchaseAmount": "购买数量",
     "purchaseTimes": "购买时间",
-    "sendAnEmail": "发送邮件"
+    "sendAnEmail": "发送邮件",
+    "Conceal": "隐藏",
+    "Male": "男性",
+    "female": "女性"
   }
 }

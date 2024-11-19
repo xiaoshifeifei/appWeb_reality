@@ -825,6 +825,9 @@
     "accountCount": "accountCount",
     "purchaseAmount": "purchaseAmount",
     "purchaseTimes": "purchaseTimes",
-    "sendAnEmail": "SendAnEmail"
+    "sendAnEmail": "SendAnEmail",
+    "Conceal": "Conceal",
+    "Male": "Male",
+    "female": "female"
   }
 }
