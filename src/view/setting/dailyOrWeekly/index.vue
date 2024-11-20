@@ -80,10 +80,12 @@
               <div
                 v-for="(item1, key, index1) in item"
                 :key="index1"
-                class="spanCla"
+                class="spanClass"
               >
-                <span class="span1">{{ t(`tableColumn.${key}`) }}:</span>
-                <span class="span2">{{ item1 }}</span>
+                <span v-if="item1 !== ''" class="spanRi">
+                  <span>{{ t(`tableColumn.${key}`) }}: </span>
+                  <span>{{ item1 }}</span>
+                </span>
               </div>
             </div>
           </template>
@@ -603,5 +605,11 @@ const tableRowClassName = ({ row, rowIndex }) => {
 }
 .spanCla {
   width: 50%;
+}
+.spanClass {
+  display: inline;
+}
+.spanRi {
+  margin-right: 30px;
 }
 </style>
