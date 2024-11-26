@@ -88,12 +88,15 @@
             <div v-for="(item, index) in scope.row.award" :key="index">
               <div v-for="(item1, key, index1) in item" :key="index1">
                 <span class="span1">{{ t(`tableColumn.${key}`) }}: </span>
-                <span class="span2">{{ item1 }}</span>
+                <span v-if="key == 'code'" class="span2">{{
+                  t(`tableColumn.${item1}`)
+                }}</span>
+                <span v-else class="span2">{{ item1 }}</span>
               </div>
             </div>
           </template>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           align="center"
           :label="t('tableColumn.start')"
           min-width="180"
@@ -112,7 +115,7 @@
           <template #default="scope">
             <div>{{ dataGet(scope.row.end) }}</div>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           align="center"
           :label="t('tableColumn.unlock')"
