@@ -7,6 +7,7 @@
           :title="t('tableColumn.placeholder') + t('tableColumn.time')"
           :searchTime="true"
           :paramsValue="paramsValue"
+          :values="timeVal"
           @closeTime="(paramsValue = false), (value2 = null)"
         ></SingleTime>
         <el-form-item>
@@ -313,6 +314,7 @@ const getTableData = async () => {
     pageSize.value = table.data.pageSize;
   }
 };
+const timeVal = ref("");
 const init = async () => {
   const currentDate = new Date();
   const year = currentDate.getFullYear();
@@ -322,6 +324,8 @@ const init = async () => {
   const stamp = new Date(dataSrc).getTime();
   const beijingTime = new Date(stamp).toISOString();
   searchInfo.value.day = beijingTime;
+  timeVal.value = beijingTime;
+  value2.value = beijingTime;
   getTableData();
 };
 init();
