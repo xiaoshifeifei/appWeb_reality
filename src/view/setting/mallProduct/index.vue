@@ -88,7 +88,13 @@
                 class="spanCla"
               >
                 <span>{{ t(`tableColumn.${key}`) }}: </span>
-                <span :class="key == 'code' ? 'span3' : ''">
+                <span
+                  v-if="key == 'code'"
+                  :class="key == 'code' ? 'span3' : ''"
+                >
+                  {{ t(`tableColumn.${item1}`) }}
+                </span>
+                <span v-else :class="key == 'code' ? 'span3' : ''">
                   {{ item1 }}
                 </span>
               </div>
@@ -801,5 +807,8 @@ const tableRowClassName = ({ row, rowIndex }) => {
 .spanCla {
   display: inline-block;
   margin-right: 20px;
+}
+.span3 {
+  font-weight: 700;
 }
 </style>

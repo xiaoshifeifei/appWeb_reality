@@ -64,7 +64,15 @@
                 class="spanCla"
               >
                 <span>{{ t(`tableColumn.${key}`) }}: </span>
-                <span :class="key == 'code' ? 'span2' : ''"> {{ item1 }}</span>
+                <span
+                  v-if="key == 'code'"
+                  :class="key == 'code' ? 'span2' : ''"
+                >
+                  {{ t(`tableColumn.${item1}`) }}</span
+                >
+                <span v-else :class="key == 'code' ? 'span2' : ''">
+                  {{ item1 }}</span
+                >
               </div>
               <span
                 class="span4"
