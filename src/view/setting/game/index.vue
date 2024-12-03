@@ -3,16 +3,32 @@
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
         <el-form-item :label="t('tableColumn.code')">
-          <el-input
+          <el-select
             v-model="searchInfo.code"
+            clearable
             :placeholder="t('general.pleaseSelect') + t('tableColumn.code')"
-          />
+          >
+            <el-option
+              v-for="item in codeArray"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item :label="t('tableColumn.gameName')">
-          <el-input
+          <el-select
             v-model="searchInfo.name"
-            :placeholder="t('general.pleaseSelect') + t('tableColumn.gameName')"
-          />
+            clearable
+            :placeholder="t('general.pleaseSelect') + t('tableColumn.name')"
+          >
+            <el-option
+              v-for="item in nameArray"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
@@ -102,13 +118,6 @@
             </el-form-item>
           </el-col>
           <el-col :span="20">
-            <!-- <el-form-item :label="t('tableColumn.originId')" prop="originId">
-              <el-input
-                v-model="form.originId"
-                autocomplete="off"
-                @input="form.originId = form.originId.replace(/[^\d|]/g, '')"
-              />
-            </el-form-item> -->
             <el-form-item :label="t('tableColumn.originId')">
               <el-select
                 v-model="form.originId"
@@ -125,9 +134,6 @@
             </el-form-item>
           </el-col>
           <el-col :span="20">
-            <!-- <el-form-item :label="t('tableColumn.typeId')" prop="typeId">
-              <el-input v-model="form.typeId" autocomplete="off" />
-            </el-form-item> -->
             <el-form-item :label="t('tableColumn.typeId')">
               <el-select
                 v-model="form.typeId"
@@ -164,11 +170,6 @@
           </el-col>
           <el-col :span="20">
             <el-form-item :label="t('tableColumn.line')" prop="line">
-              <!-- <el-input
-                v-model="form.line"
-                autocomplete="off"
-                @input="form.line = form.line.replace(/[^\d|]/g, '')"
-              /> -->
               <el-select
                 v-model="form.line"
                 style="width: 100%"
@@ -188,13 +189,6 @@
               :label="t('tableColumn.realityLine')"
               prop="realityLine"
             >
-              <!-- <el-input
-                v-model="form.realityLine"
-                autocomplete="off"
-                @input="
-                  form.realityLine = form.realityLine.replace(/[^\d|]/g, '')
-                "
-              /> -->
               <el-select
                 v-model="form.realityLine"
                 style="width: 100%"
@@ -267,10 +261,6 @@ const lineOptions = ref([
   { value: 0, label: "no" },
   { value: 1, label: "yes" },
 ]);
-// const lineOptions = ref([
-//   { value: 0, label: "no" },
-//   { value: 1, label: "yes" },
-// ]);
 
 // 表格数据
 const dialogTitle = ref(t("general.add"));
@@ -279,6 +269,8 @@ const result = ref([]);
 const tableData = ref([]);
 const mergedArray = ref([]);
 const chunkedArray = ref([]);
+const codeArray = ref([]);
+const nameArray = ref([]);
 const startDate = ref(null);
 const endDate = ref(null);
 const gameId = ref(null);
@@ -301,8 +293,23 @@ const getTableData = async () => {
     next();
   }
 };
-
 getTableData();
+
+const getSearchData = async () => {
+  const table = await getGameList({
+    page: page.value,
+    pageSize: pageSize.value,
+  });
+  if (table.code === 0) {
+    let data = table.data.list;
+    data.forEach((item) => {
+      codeArray.value.push({ value: item.code, label: item.code });
+      nameArray.value.push({ value: item.name, label: item.cnName });
+    });
+  }
+};
+
+getSearchData(); //获取搜索条件
 
 const onReset = () => {
   searchInfo.value = {};
@@ -448,7 +455,8 @@ const enterDialog = async () => {
 <style>
 table {
   width: 100%;
-  border-collapse: collapse;
+  /* border-collapse: collapse; */
+  border-collapse: separate;
 }
 
 th,
@@ -464,10 +472,11 @@ td {
   transition: background-color 0.3s;
   height: 50px;
   position: relative;
+  width: 10%;
 }
 
 .draggable-cell:nth-child(odd) {
-  background-color: #f2f2f2;
+  background-color: #eeeae5;
 }
 
 .draggable-cell:nth-child(even) {
@@ -488,11 +497,34 @@ td {
   position: absolute;
   right: 10px;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-40%);
 }
 .icons {
   vertical-align: middle;
   transform: translateY(-1px);
   font-size: 15px;
+}
+
+/* 鼠标悬浮时的动态边框光效 */
+.draggable-cell:hover {
+  z-index: 99999;
+  animation: borderEffect 1s ease infinite;
+}
+
+/* 动态边框光效动画 */
+@keyframes borderEffect {
+  0% {
+    border-color: transparent;
+    box-shadow: 0 0 10px rgba(131, 218, 255, 0.7);
+  }
+  50% {
+    border-color: #409eff;
+    box-shadow: 0 0 20px rgba(131, 218, 255, 1),
+      0 0 30px rgba(131, 218, 255, 0.8);
+  }
+  100% {
+    border-color: transparent;
+    box-shadow: 0 0 10px rgba(2131, 218, 255, 0.7);
+  }
 }
 </style>
