@@ -682,6 +682,7 @@
     "商城商品购买记录": "Shopping Mall Product",
     "首页": "Homepage",
     "配置": "Config",
+    "游戏": "Game",
     "Homepage": "Homepage"
   },
   "tableColumn": {
@@ -831,6 +832,26 @@
     "sendAnEmail": "SendAnEmail",
     "Conceal": "Conceal",
     "Male": "Male",
+    "gameId": "gameId",
+    "cnName": "cnName",
+    "originId": "originId",
+    "typeId": "typeId",
+    "vendorId": "vendorId",
+    "enabled": "enabled",
+    "line": "line",
+    "realityLine": "realityLine",
+    "sort": "sort",
+    "skg": "skg",
+    "Malay": "Malay",
+    "Shenzhen": "Shen Zhen",
+    "activity": "activity",
+    "solt": "solt",
+    "fishing": "fishing",
+    "blockchain": "block chain",
+    "yes": "yes",
+    "no": "no",
+    "gameName": "Name",
+    "Drag": "Drag and drop sorting",
     "female": "female"
   }
 }

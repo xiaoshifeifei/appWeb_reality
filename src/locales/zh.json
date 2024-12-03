@@ -682,6 +682,7 @@
     "商城商品购买记录": "商城商品购买记录",
     "首页": "首页",
     "配置": "配置",
+    "游戏": "游戏",
     "Homepage": "首页"
   },
   "tableColumn": {
@@ -831,6 +832,26 @@
     "sendAnEmail": "发送邮件",
     "Conceal": "隐藏",
     "Male": "男性",
+    "gameId": "游戏ID",
+    "cnName": "中文",
+    "originId": "来源ID",
+    "typeId": "类型ID",
+    "vendorId": "厂商ID",
+    "enabled": "状态",
+    "line": "热门",
+    "realityLine": "即将上线",
+    "sort": "排序",
+    "skg": "skg",
+    "Malay": "马来",
+    "Shenzhen": "深圳",
+    "activity": "活动",
+    "solt": "solt",
+    "fishing": "fishing",
+    "blockchain": "block chain",
+    "yes": "是",
+    "no": "否",
+    "gameName": "游戏名",
+    "Drag": "拖拽排序",
     "female": "女性"
   }
 }

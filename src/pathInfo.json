@@ -26,6 +26,7 @@
   "/src/view/routerHolder.vue": "RouterHolder",
   "/src/view/setting/dailyOrWeekly/index.vue": "dailyOrWeekly",
   "/src/view/setting/day7Sign/index.vue": "day7Sign",
+  "/src/view/setting/game/index.vue": "game",
   "/src/view/setting/goodsConfiguration/index.vue": "goodsConfiguration",
   "/src/view/setting/limitation/index.vue": "limitation",
   "/src/view/setting/mallProduct/index.vue": "goodsConfiguration",
