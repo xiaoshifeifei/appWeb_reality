@@ -53,7 +53,9 @@
             @drop="onDrop(rowIndex, cellIndex)"
             class="draggable-cell"
           >
-            <em class="indexNum">{{ rowIndex * 4 + cellIndex }} </em>
+            <em class="indexNum glowing-number"
+              >{{ rowIndex * 4 + cellIndex }}
+            </em>
             <span style="padding: 0 10px">{{ cell }}</span>
             <em class="edit" @click="editTackFunc(cell)">
               {{ t("view.dictionary.sysDictionary.details") }}
@@ -525,6 +527,34 @@ td {
   100% {
     border-color: transparent;
     box-shadow: 0 0 10px rgba(2131, 218, 255, 0.7);
+  }
+}
+.glowing-number {
+  font-size: 20px; /* Text size set to 20px */
+  font-weight: bold;
+  color: #fff; /* Text color */
+  text-align: center;
+  animation: glowing 1.5s infinite alternate;
+  text-shadow: 0 0 1px #ff6347, 0 0 2px #ff6347, 0 0 3px #ff6347,
+    0 0 4px #ff6347, 0 0 5px #ff6347;
+}
+
+/* Animation for glowing effect */
+@keyframes glowing {
+  0% {
+    text-shadow: 0 0 1px #ff6347, 0 0 2px #ff6347, 0 0 3px #ff6347,
+      0 0 4px #ff6347, 0 0 5px #ff6347;
+    color: #ff6347; /* Initial light blue color */
+  }
+  50% {
+    text-shadow: 0 0 2px #ff6347, 0 0 3px #ff6347, 0 0 5px #ff6347,
+      0 0 6px #ff6347, 0 0 7px #ff6347;
+    color: #a2dff7; /* Lighter blue color */
+  }
+  100% {
+    text-shadow: 0 0 3px #ff6347, 0 0 5px #ff6347, 0 0 7px #ff6347,
+      0 0 8px #ff6347, 0 0 10px #ff6347;
+    color: #a9d6f2; /* Final lighter blue color */
   }
 }
 </style>
