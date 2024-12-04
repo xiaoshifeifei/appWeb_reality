@@ -31,7 +31,7 @@
             class="draggable-cell"
           >
             <em class="indexNum glowing-number" v-if="searchParams"
-              >{{ value2.index }}
+              >{{ indexVal }}
             </em>
             <em class="indexNum glowing-number" v-else
               >{{ rowIndex * 4 + cellIndex }}
@@ -233,6 +233,7 @@ const total = ref(0);
 const pageSize = ref(1000000);
 const searchInfo = ref({});
 const value2 = ref({});
+const indexVal = ref(0);
 const searchClear = ref(false);
 const searchParams = ref(false);
 
@@ -266,8 +267,11 @@ const num = ref(6); //每行个数
 const apiForm = ref(null);
 
 const getTableData = async () => {
+  console.log(234679);
   searchInfo.value.code = value2.value.code;
   searchInfo.value.name = value2.value.name;
+  indexVal.value = value2.value.index;
+
   const table = await getGameList({
     page: page.value,
     pageSize: pageSize.value,
