@@ -2,34 +2,11 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <el-form-item :label="t('tableColumn.code')">
-          <el-select
-            v-model="searchInfo.code"
-            clearable
-            :placeholder="t('general.pleaseSelect') + t('tableColumn.code')"
-          >
-            <el-option
-              v-for="item in codeArray"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="t('tableColumn.gameName')">
-          <el-select
-            v-model="searchInfo.name"
-            clearable
-            :placeholder="t('general.pleaseSelect') + t('tableColumn.name')"
-          >
-            <el-option
-              v-for="item in nameArray"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
+        <SelectInput
+          v-model="value2"
+          :searchClear="searchClear"
+          @close="searchClear = false"
+        ></SelectInput>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -53,7 +30,10 @@
             @drop="onDrop(rowIndex, cellIndex)"
             class="draggable-cell"
           >
-            <em class="indexNum glowing-number"
+            <em class="indexNum glowing-number" v-if="searchParams"
+              >{{ value2.index }}
+            </em>
+            <em class="indexNum glowing-number" v-else
               >{{ rowIndex * 4 + cellIndex }}
             </em>
             <span style="padding: 0 10px">{{ cell }}</span>
@@ -223,6 +203,7 @@
 <script setup>
 import { ref } from "vue";
 import { getGameList, setGameSort } from "@/api/game";
+import SelectInput from "@/components/selectInput/selectInput.vue";
 import { ElMessage } from "element-plus";
 import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
 const { t } = useI18n(); // added by mohamed hassan to support multilanguage
@@ -248,6 +229,10 @@ const page = ref(1);
 const total = ref(0);
 const pageSize = ref(1000000);
 const searchInfo = ref({});
+const value2 = ref({});
+const searchClear = ref(false);
+const searchParams = ref(false);
+
 const completeOptions = ref([
   { value: 1, label: "skg" },
   { value: 2, label: "Malay" },
@@ -271,8 +256,6 @@ const result = ref([]);
 const tableData = ref([]);
 const mergedArray = ref([]);
 const chunkedArray = ref([]);
-const codeArray = ref([]);
-const nameArray = ref([]);
 const startDate = ref(null);
 const endDate = ref(null);
 const gameId = ref(null);
@@ -280,13 +263,20 @@ const num = ref(6); //每行个数
 const apiForm = ref(null);
 
 const getTableData = async () => {
+  searchInfo.value.code = value2.value.code;
+  searchInfo.value.name = value2.value.name;
   const table = await getGameList({
     page: page.value,
     pageSize: pageSize.value,
-    ...searchInfo.value,
+    ...value2.value,
   });
   if (table.code === 0) {
     tableData.value = table.data.list;
+    if (value2.value.code) {
+      searchParams.value = true;
+    } else {
+      searchParams.value = false;
+    }
     total.value = table.data.total;
     page.value = table.data.page;
     pageSize.value = table.data.pageSize;
@@ -297,24 +287,9 @@ const getTableData = async () => {
 };
 getTableData();
 
-const getSearchData = async () => {
-  const table = await getGameList({
-    page: page.value,
-    pageSize: pageSize.value,
-  });
-  if (table.code === 0) {
-    let data = table.data.list;
-    data.forEach((item) => {
-      codeArray.value.push({ value: item.code, label: item.code });
-      nameArray.value.push({ value: item.name, label: item.cnName });
-    });
-  }
-};
-
-getSearchData(); //获取搜索条件
-
 const onReset = () => {
   searchInfo.value = {};
+  searchClear.value = true;
 };
 const onSubmit = () => {
   page.value = 1;
