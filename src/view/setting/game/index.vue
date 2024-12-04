@@ -86,22 +86,23 @@
           </el-col>
           <el-col :span="20">
             <el-form-item :label="t('tableColumn.cnName')" prop="cnName">
-              <el-input v-model="form.cnName" autocomplete="off" />
+              <el-input disabled v-model="form.cnName" autocomplete="off" />
             </el-form-item>
           </el-col>
           <el-col :span="20">
             <el-form-item :label="t('tableColumn.code')" prop="code">
-              <el-input v-model="form.code" autocomplete="off" />
+              <el-input disabled v-model="form.code" autocomplete="off" />
             </el-form-item>
           </el-col>
           <el-col :span="20">
             <el-form-item :label="t('tableColumn.name')" prop="name">
-              <el-input v-model="form.name" autocomplete="off" />
+              <el-input disabled v-model="form.name" autocomplete="off" />
             </el-form-item>
           </el-col>
           <el-col :span="20">
             <el-form-item :label="t('tableColumn.originId')">
               <el-select
+                disabled
                 v-model="form.originId"
                 style="width: 100%"
                 :placeholder="t('general.pleaseSelect')"
@@ -118,6 +119,7 @@
           <el-col :span="20">
             <el-form-item :label="t('tableColumn.typeId')">
               <el-select
+                disabled
                 v-model="form.typeId"
                 style="width: 100%"
                 :placeholder="t('general.pleaseSelect')"
@@ -134,6 +136,7 @@
           <el-col :span="20">
             <el-form-item :label="t('tableColumn.vendorId')" prop="vendorId">
               <el-input
+                disabled
                 v-model="form.vendorId"
                 autocomplete="off"
                 @input="form.vendorId = form.vendorId.replace(/[^\d|]/g, '')"
