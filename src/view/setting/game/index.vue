@@ -18,7 +18,7 @@
       </el-form>
     </div>
     <h2>{{ t("tableColumn.Drag") }}</h2>
-    <table>
+    <table :class="tableData.length === 1 ? 'tableWidth' : ''">
       <tbody>
         <tr v-for="(row, rowIndex) in mergedArray" :key="rowIndex">
           <td
@@ -435,7 +435,9 @@ table {
   /* border-collapse: collapse; */
   border-collapse: separate;
 }
-
+.tableWidth {
+  width: 400px !important;
+}
 th,
 td {
   border: 1px solid #ccc;
