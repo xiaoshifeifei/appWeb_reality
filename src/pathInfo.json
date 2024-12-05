@@ -19,6 +19,7 @@
   "/src/view/layout/setting/index.vue": "GvaSetting",
   "/src/view/layout/tabs/index.vue": "HistoryComponent",
   "/src/view/login/index.vue": "Login",
+  "/src/view/loginRecord/phoneQuery/index.vue": "phoneQuery",
   "/src/view/maintain/banned/index.vue": "userInfo",
   "/src/view/maintain/block/index.vue": "userInfo",
   "/src/view/order/mallOrder/index.vue": "goodsConfiguration",
