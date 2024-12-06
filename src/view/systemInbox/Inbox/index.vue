@@ -59,7 +59,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.sender')"
-          min-width="80"
+          min-width="100"
           prop="sender"
         />
         <el-table-column

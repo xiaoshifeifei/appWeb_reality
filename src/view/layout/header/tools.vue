@@ -73,7 +73,7 @@
         <Refresh />
       </el-icon>
     </el-tooltip> -->
-    <!-- <el-tooltip
+    <el-tooltip
       class=""
       effect="dark"
       :content="t('layout.tools.switchTheme')"
@@ -94,7 +94,7 @@
       >
         <Moon />
       </el-icon>
-    </el-tooltip> -->
+    </el-tooltip>
 
     <el-tooltip
       class=""

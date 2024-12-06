@@ -685,6 +685,7 @@
     "游戏": "Game",
     "登录注册记录": "Login registration records",
     "手机号绑定查询": "Phone binding query",
+    "公告": "Notice",
     "Homepage": "Homepage"
   },
   "tableColumn": {
@@ -854,6 +855,9 @@
     "no": "no",
     "gameName": "Name",
     "Drag": "Drag and drop sorting",
+    "NoticeContent": "Notice Content",
+    "CyclesNumber": "Cycles Number",
+    "CycleInterval": "Cycle Interval",
     "female": "female"
   }
 }

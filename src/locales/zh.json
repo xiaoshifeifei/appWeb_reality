@@ -685,6 +685,7 @@
     "游戏": "游戏",
     "登录注册记录": "登录注册记录",
     "手机号绑定查询": "手机号绑定查询",
+    "公告": "公告",
     "Homepage": "首页"
   },
   "tableColumn": {
@@ -854,6 +855,9 @@
     "no": "否",
     "gameName": "游戏名",
     "Drag": "拖拽排序",
+    "NoticeContent": "公告内容",
+    "CyclesNumber": "循环次数",
+    "CycleInterval": "循环间隔",
     "female": "女性"
   }
 }

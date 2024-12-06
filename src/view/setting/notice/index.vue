@@ -1,10 +1,7 @@
 <template>
   <div>
-    <div class="gva-search-box">
+    <!-- <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <!-- <el-form-item label="code">
-            <el-input v-model="searchInfo.key" placeholder="code" />
-          </el-form-item> -->
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -14,7 +11,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-    </div>
+    </div> -->
     <div class="gva-table-box">
       <div class="gva-btn-list">
         <el-button type="primary" icon="plus" @click="openDialog('add')">
@@ -35,26 +32,23 @@
         <el-table-column type="selection" align="center" width="60" />
         <el-table-column
           align="center"
-          :label="t('tableColumn.code')"
+          :label="t('tableColumn.NoticeContent')"
           min-width="150"
           prop="code"
         />
         <el-table-column
           align="center"
-          :label="t('tableColumn.desc')"
+          :label="t('tableColumn.CyclesNumber')"
           min-width="170"
           prop="desc"
         >
         </el-table-column>
         <el-table-column
           align="center"
-          :label="t('tableColumn.created')"
+          :label="t('tableColumn.CycleInterval')"
           min-width="200"
           prop="created"
         >
-          <template #default="scope">
-            <div>{{ dataGet(scope.row.created) }}</div>
-          </template>
         </el-table-column>
 
         <el-table-column
@@ -98,7 +92,7 @@
     <el-drawer
       v-if="dialogFormVisible"
       v-model="dialogFormVisible"
-      size="60%"
+      size="40%"
       :before-close="closeDialog"
       :show-close="false"
     >
@@ -123,15 +117,23 @@
         :rules="rules"
         label-width="80px"
       >
-        <el-form-item :label="t('tableColumn.code')" prop="code">
-          <el-input
+        <el-form-item :label="t('tableColumn.NoticeContent')" prop="code">
+          <textarea
             v-model="form.code"
-            :disabled="type === 'edit'"
-            autocomplete="off"
-          />
+            :placeholder="t('general.pleaseEnter') + '...'"
+            rows="10"
+            style="
+              width: calc(50% - 20px);
+              border: 1px solid #707070;
+              padding: 10px;
+            "
+          ></textarea>
         </el-form-item>
-        <el-form-item :label="t('tableColumn.desc')" prop="desc">
-          <el-input v-model="form.desc" autocomplete="off" />
+        <el-form-item :label="t('tableColumn.CyclesNumber')" prop="desc">
+          <el-input-number v-model="form.desc" autocomplete="off" />
+        </el-form-item>
+        <el-form-item l :label="t('tableColumn.CycleInterval')" prop="desc">
+          <el-input-number v-model="form.desc" autocomplete="off" />
         </el-form-item>
       </el-form>
     </el-drawer>

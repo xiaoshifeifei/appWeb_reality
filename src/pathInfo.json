@@ -31,6 +31,7 @@
   "/src/view/setting/goodsConfiguration/index.vue": "goodsConfiguration",
   "/src/view/setting/limitation/index.vue": "limitation",
   "/src/view/setting/mallProduct/index.vue": "goodsConfiguration",
+  "/src/view/setting/notice/index.vue": "notice",
   "/src/view/setting/taskDetails/index.vue": "taskDetails",
   "/src/view/setting/tasks/index.vue": "tack",
   "/src/view/setting/timedReward/index.vue": "day7Sign",
