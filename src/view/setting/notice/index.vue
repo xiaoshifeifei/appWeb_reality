@@ -132,7 +132,7 @@
         <el-form-item :label="t('tableColumn.CyclesNumber')" prop="desc">
           <el-input-number v-model="form.desc" autocomplete="off" />
         </el-form-item>
-        <el-form-item l :label="t('tableColumn.CycleInterval')" prop="desc">
+        <el-form-item :label="t('tableColumn.CycleInterval')" prop="desc">
           <el-input-number v-model="form.desc" autocomplete="off" />
         </el-form-item>
       </el-form>
