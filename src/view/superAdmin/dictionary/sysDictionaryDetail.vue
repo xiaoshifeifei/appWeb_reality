@@ -378,43 +378,7 @@ const tableRowClassName = ({ row, rowIndex }) => {
   }
 };
 </script>
-<style scoped lang="scss">
-.light .gva-table-box {
-  ::v-deep(.el-table tr th .cell) {
-    color: var(--el-bg-font-color) !important;
-  }
-  ::v-deep(.el-table__row.warnBg .el-table__cell) {
-    width: 100%;
-    height: 100%;
-    background-color: var(--el-warn-bgc);
-    color: #000;
-  }
-  ::v-deep(.el-table__body tr:hover > td) {
-    background-color: var(--el-warn-bgc-hover) !important;
-  }
-  ::v-deep(.el-table__body tr.current-row > td) {
-    background-color: var(--el-warn-bgc-current) !important;
-  }
-}
 
-.dark .gva-table-box {
-  ::v-deep(.el-table tr th .cell) {
-    color: var(--el-bg-font-color) !important;
-  }
-  ::v-deep(.el-table__row.warnBg .el-table__cell) {
-    width: 100%;
-    height: 100%;
-    background-color: var(--el-warn-bgc);
-    color: #000;
-  }
-  ::v-deep(.el-table__body tr:hover > td) {
-    background-color: var(--el-warn-bgc-hover) !important;
-  }
-  ::v-deep(.el-table__body tr.current-row > td) {
-    background-color: var(--el-warn-bgc-current) !important;
-  }
-}
-</style>
 
 <style>
 </style>

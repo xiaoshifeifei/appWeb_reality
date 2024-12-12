@@ -1,5 +1,11 @@
 
 
+$el-bg-font-color: #fff;
+$el-warn-bgc: #1c2632;
+$el-warn-bgc-hover: #304156;
+$el-warn-bgc-current: #304156;
+$el-border-color: #4b4b4b;
+$el-font-cell-color: #000;
 html.dark {
     /* 自定义深色背景颜色 */
     --el-bg-color: rgb(30 ,41 ,59);
@@ -13,4 +19,26 @@ html.dark {
     --el-bot-bgc: rgb(30, 41, 59) !important;
     --el-tab-bgc: #090e14 !important;
     --el-warn-row-bgc:#121b24 !important;
+    .el-table, .el-table__cell {
+        border: 1px solid $el-border-color;
+    }
+    .el-table tr th .cell {
+        color: $el-bg-font-color !important;
+    }
+    .el-table__row.warnBg .el-table__cell{
+        width: 100%;
+        height: 100%;
+        background-color:$el-warn-bgc !important;
+        color: $el-font-cell-color;
+    }
+    .el-table__row:hover .el-table__cell {
+        background-color: $el-warn-bgc-hover !important; 
+    }
+    .el-table__body tr:hover > td {
+        background-color: $el-warn-bgc-hover !important;
+    }
+    .el-table__body tr.current-row > td {
+        background-color:$el-warn-bgc-current !important;
+    }
 }
+
