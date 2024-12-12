@@ -912,7 +912,7 @@ const tableRowClassName = ({ row, rowIndex }) => {
 }
 .span4 {
   display: block;
-  border-bottom: 1px solid #ebeef5;
+  border-bottom: 1px solid var(--border-color);
   width: 80%;
   margin: auto;
 }
