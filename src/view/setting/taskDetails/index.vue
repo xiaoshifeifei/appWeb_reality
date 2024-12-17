@@ -86,7 +86,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           align="center"
           :label="t('tableColumn.start')"
           min-width="180"
@@ -105,7 +105,7 @@
           <template #default="scope">
             <div>{{ dataGet(scope.row.end) }}</div>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           align="center"
           :label="t('tableColumn.unlock')"
