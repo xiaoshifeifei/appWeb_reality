@@ -8,7 +8,14 @@
       </div>
 
       <!-- 由于此处菜单跟左侧列表一一对应所以不需要分页 pageSize默认999 -->
-      <el-table :data="tableData" row-key="ID">
+      <el-table
+        :data="tableData"
+        row-key="ID"
+        :header-cell-style="{
+          backgroundColor: 'var(--el-tab-bgc)',
+          Color: '#FFF',
+        }"
+      >
         <el-table-column align="left" label="ID" min-width="100" prop="ID" />
         <el-table-column
           align="left"

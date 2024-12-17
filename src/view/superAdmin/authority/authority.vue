@@ -8,8 +8,13 @@
         }}</el-button>
       </div>
       <el-table
+        border
         :data="tableData"
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+        :header-cell-style="{
+          backgroundColor: 'var(--el-tab-bgc)',
+          Color: '#FFF',
+        }"
         row-key="authorityId"
         style="width: 100%"
       >
