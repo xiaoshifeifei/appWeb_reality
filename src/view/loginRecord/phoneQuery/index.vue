@@ -986,7 +986,7 @@ const initPage = async () => {
     page: 1,
     pageSize: 999,
   });
-  setOptions(res.data.list);
+  setOptions(res.data);
   const itemData = await virtualItemGetList({
     page: page.value,
     pageSize: 9999,

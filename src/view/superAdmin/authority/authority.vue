@@ -237,7 +237,7 @@ const getTableData = async () => {
     ...searchInfo.value,
   });
   if (table.code === 0) {
-    tableData.value = table.data.list;
+    tableData.value = table.data;
     total.value = table.data.total;
     page.value = table.data.page;
     pageSize.value = table.data.pageSize;

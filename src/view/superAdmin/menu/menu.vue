@@ -515,13 +515,14 @@ const tableData = ref([]);
 const searchInfo = ref({});
 // 查询
 const getTableData = async () => {
+  console.log(123456798);
   const table = await getMenuList({
     page: page.value,
     pageSize: pageSize.value,
     ...searchInfo.value,
   });
   if (table.code === 0) {
-    tableData.value = table.data.list;
+    tableData.value = table.data;
     total.value = table.data.total;
     page.value = table.data.page;
     pageSize.value = table.data.pageSize;

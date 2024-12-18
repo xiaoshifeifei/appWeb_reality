@@ -607,7 +607,7 @@ const initPage = async () => {
     page: 1,
     pageSize: 999,
   });
-  setOptions(res.data.list);
+  setOptions(res.data);
 };
 
 initPage();
