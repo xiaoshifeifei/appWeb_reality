@@ -77,6 +77,7 @@ export default ({ command, mode }) => {
         // 把key的路径代理到target位置
         // detail: https://cli.vuejs.org/config/#devserver-proxy
         [process.env.VITE_BASE_API]: {
+          // "/reality": {
           // 需要代理的路径   例如 '/api'
           target: `${process.env.VITE_BASE_PATH}:${process.env.VITE_SERVER_PORT}/`, // 代理到 目标路径
           changeOrigin: true,
@@ -113,6 +114,7 @@ export default ({ command, mode }) => {
           "Edge >= 15",
         ],
       }),
+
       vuePlugin(),
       svgBuilder("./src/assets/icons/"),
       [Banner(`\n Build based on gin-vue-admin \n Time : ${timestamp}`)],

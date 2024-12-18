@@ -434,9 +434,6 @@
             :inactive-value="1"
           />
         </el-form-item>
-        <el-form-item :label="t('tableColumn.signature')" prop="status">
-          <SignaturePad />
-        </el-form-item>
       </el-form>
     </el-drawer>
 
@@ -600,18 +597,6 @@
             :inactive-value="1"
           />
         </el-form-item>
-        <!-- <el-form-item :label="t('tableColumn.expired')" prop="expired">
-          <el-date-picker
-            v-model="formMail.expired"
-            type="datetime"
-            :placeholder="t('tableColumn.PleaseTime')"
-            @change="handleDateChange"
-          />
-        </el-form-item> -->
-        <SingleTime
-          v-model="valueExpired"
-          :title="t('tableColumn.expired')"
-        ></SingleTime>
       </el-form>
     </el-drawer>
   </div>
@@ -619,20 +604,14 @@
   
   <script setup>
 import {
-  getUserList,
-  setUserInfo,
-  deleteTack,
-  updateTack,
-  createTack,
-  enterSyncApi,
-  sendMailGo,
+  getAccountList,
+  // setUserInfo,
+  // deleteTack,
+  // enterSyncApi,
+  // sendMailGo,
 } from "@/api/userInfo";
 import { virtualItemGetList } from "@/api/tack";
 import { setUserAuthorities } from "@/api/user";
-import SingleTime from "@/components/DataTime/singleTime.vue";
-import DataTime from "@/components/DataTime/index.vue";
-import CustomPic from "@/components/customPic/index.vue";
-import SignaturePad from "@/components/preview/index.vue";
 import { ref, watch } from "vue";
 import { getAuthorityList } from "@/api/authority";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -985,14 +964,11 @@ const getTableData = async () => {
   if (value2.value && value2.value.length) {
     searchInfo.value.start = value2.value[0];
     searchInfo.value.end = value2.value[1];
-    // value2.value.forEach((item, index) => {
-    //   handleDateChangeSearch(item, index);
-    // });
   } else {
     searchInfo.value.start = null;
     searchInfo.value.end = null;
   }
-  const table = await getUserList({
+  const table = await getAccountList({
     page: page.value,
     pageSize: pageSize.value,
     ...searchInfo.value,
