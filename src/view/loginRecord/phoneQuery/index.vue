@@ -7,19 +7,19 @@
         :model="searchInfo"
         :label-width="100"
       >
-        <el-form-item :label="t('tableColumn.accountId')">
-          <el-input
-            clearable
-            v-model="searchInfo.accountId"
-            :placeholder="t('tableColumn.accountId')"
-            class="input_w"
-          />
-        </el-form-item>
         <el-form-item :label="t('tableColumn.username')">
           <el-input
             clearable
             v-model="searchInfo.username"
             :placeholder="t('tableColumn.username')"
+            class="input_w"
+          />
+        </el-form-item>
+        <el-form-item :label="t('tableColumn.accountId')">
+          <el-input
+            clearable
+            v-model="searchInfo.accountId"
+            :placeholder="t('tableColumn.accountId')"
             class="input_w"
           />
         </el-form-item>
@@ -242,7 +242,8 @@
 
         <el-table-column
           align="center"
-          min-width="160"
+          min-width="135"
+          fixed="right"
           :label="t('tableColumn.changePassword')"
         >
           <template #default="scope">
@@ -256,8 +257,9 @@
           </template>
         </el-table-column>
         <el-table-column
+          fixed="right"
           align="center"
-          min-width="160"
+          min-width="135"
           :label="t('tableColumn.unbindPhone')"
         >
           <template #default="scope">

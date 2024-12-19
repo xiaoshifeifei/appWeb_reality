@@ -168,7 +168,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="gva-pagination">
+      <!-- <div class="gva-pagination">
         <el-pagination
           :current-page="page"
           :page-size="pageSize"
@@ -178,7 +178,7 @@
           @current-change="handleCurrentChange"
           @size-change="handleSizeChange"
         />
-      </div>
+      </div> -->
     </div>
 
     <el-drawer
@@ -287,7 +287,7 @@ const statusOption = ref([
 
 const page = ref(1);
 const total = ref(0);
-const pageSize = ref(10);
+const pageSize = ref(100);
 const tableData = ref([]);
 const searchInfo = ref({
   id: null,
