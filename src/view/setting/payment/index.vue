@@ -12,6 +12,7 @@
             clearable
             v-model="searchInfo.channelCode"
             :placeholder="t('tableColumn.channelCode')"
+            class="input_w"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.transactionCode')">
@@ -19,6 +20,7 @@
             clearable
             v-model="searchInfo.transactionCode"
             :placeholder="t('tableColumn.transactionCode')"
+            class="input_w"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.paymentCode')">
@@ -26,6 +28,7 @@
             clearable
             v-model="searchInfo.paymentCode"
             :placeholder="t('tableColumn.paymentCode')"
+            class="input_w"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.transactionType')">
@@ -33,6 +36,7 @@
             clearable
             v-model="searchInfo.transactionType"
             :placeholder="t('tableColumn.transactionType')"
+            class="input_w"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.type')">
@@ -40,7 +44,7 @@
             clearable
             v-model="searchInfo.type"
             :placeholder="t('tableColumn.placeholder')"
-            style="width: 193px"
+            class="input_w"
           >
             <el-option
               v-for="item in accountTypeOption"
@@ -55,7 +59,7 @@
             clearable
             v-model="searchInfo.status"
             :placeholder="t('tableColumn.placeholder')"
-            style="width: 193px"
+            class="input_w"
           >
             <el-option
               v-for="item in statusOption"
@@ -442,8 +446,6 @@ const init = async () => {
     status: 1,
   });
   if (table.code === 0) {
-    // tableData.value = table.data.list;
-    console.log("table.data.list", table.data.list);
     table.data.list.forEach((item) => {
       codeOption.value.push({ label: item.code, value: item.code });
     });
@@ -614,6 +616,9 @@ const tableRowClassName = ({ row, rowIndex }) => {
 .spanCla {
   display: inline-block;
   margin-right: 20px;
+}
+.input_w {
+  width: 200px !important;
 }
 </style>
   

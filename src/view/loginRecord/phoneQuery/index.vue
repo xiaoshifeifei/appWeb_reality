@@ -12,6 +12,7 @@
             clearable
             v-model="searchInfo.accountId"
             :placeholder="t('tableColumn.accountId')"
+            class="input_w"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.username')">
@@ -19,6 +20,7 @@
             clearable
             v-model="searchInfo.username"
             :placeholder="t('tableColumn.username')"
+            class="input_w"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.phone')">
@@ -26,6 +28,7 @@
             clearable
             v-model="searchInfo.phone"
             :placeholder="t('tableColumn.phone')"
+            class="input_w"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.accountType')">
@@ -33,7 +36,7 @@
             clearable
             v-model="searchInfo.accountType"
             :placeholder="t('tableColumn.placeholder')"
-            style="width: 193px"
+            class="input_w"
           >
             <el-option
               v-for="item in accountTypeOption"
@@ -48,6 +51,7 @@
             clearable
             v-model="searchInfo.siteId"
             :placeholder="t('tableColumn.siteId')"
+            class="input_w"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.status')">
@@ -55,7 +59,7 @@
             clearable
             v-model="searchInfo.status"
             :placeholder="t('tableColumn.status')"
-            style="width: 193px"
+            class="input_w"
           >
             <el-option
               v-for="item in statusOption"
@@ -916,7 +920,6 @@ const setAuthorityIds = () => {
 const authOptions = ref([]);
 const setOptions = (authData) => {
   authOptions.value = [];
-  setAuthorityOptions(authData, authOptions.value);
 };
 const tempAuth = {};
 const changeAuthority = async (row, flag, removeAuth) => {
@@ -988,13 +991,6 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async () => {
-  if (value2.value && value2.value.length) {
-    searchInfo.value.start = value2.value[0];
-    searchInfo.value.end = value2.value[1];
-  } else {
-    searchInfo.value.start = null;
-    searchInfo.value.end = null;
-  }
   const table = await getAccountList({
     page: page.value,
     pageSize: pageSize.value,
@@ -1014,18 +1010,6 @@ const getTableData = async () => {
 };
 const initPage = async () => {
   getTableData();
-  const res = await getAuthorityList({
-    page: 1,
-    pageSize: 999,
-  });
-  setOptions(res.data);
-  const itemData = await virtualItemGetList({
-    page: page.value,
-    pageSize: 9999,
-  });
-  if (itemData.code === 0) {
-    codeOptions.value = itemData.data.list;
-  }
 };
 
 initPage();
@@ -1306,6 +1290,9 @@ const tableRowClassName = ({ row, rowIndex }) => {
 }
 .myForm {
   padding-bottom: 50px;
+}
+.input_w {
+  width: 200px !important;
 }
 </style>
   

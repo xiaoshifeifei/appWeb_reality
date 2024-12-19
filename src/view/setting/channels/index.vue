@@ -12,6 +12,7 @@
             clearable
             v-model="searchInfo.id"
             :placeholder="t('tableColumn.id')"
+            class="input_w"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.code')">
@@ -19,6 +20,7 @@
             clearable
             v-model="searchInfo.code"
             :placeholder="t('tableColumn.code')"
+            class="input_w"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.status')">
@@ -26,7 +28,7 @@
             clearable
             v-model="searchInfo.status"
             :placeholder="t('tableColumn.placeholder')"
-            style="width: 193px"
+            class="input_w"
           >
             <el-option
               v-for="item in statusOption"
@@ -411,7 +413,6 @@ const closeDialog = () => {
 const editTackFunc = async (row) => {
   let rows = JSON.parse(JSON.stringify(row));
   form.value = rows;
-  console.log(123456, form.value);
   openDialog("edit");
 };
 
@@ -421,7 +422,6 @@ const enterDialog = async () => {
       switch (type.value) {
         case "add":
           {
-            console.log("form.value", form.value);
             const res = await addPaymentChannel(form.value);
             if (res.code === 0) {
               ElMessage({
@@ -504,9 +504,12 @@ const tableRowClassName = ({ row, rowIndex }) => {
 </script>
   
   
-  <style scoped lang="scss">
+<style scoped lang="scss">
 .warning {
   color: #dc143c;
+}
+.input_w {
+  width: 200px !important;
 }
 </style>
   
