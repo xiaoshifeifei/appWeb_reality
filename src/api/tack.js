@@ -59,11 +59,11 @@ export const dailyOrWeeklyDel = (data) => {
 
 // 物品配置列表
 export const virtualItemGetList = (params) => {
-  return service({
-    url: "/config/virtualItem/list",
-    method: "get",
-    params,
-  });
+  // return service({
+  //   url: "/config/virtualItem/list",
+  //   method: "get",
+  //   params,
+  // });
 };
 
 // 物品配置新增

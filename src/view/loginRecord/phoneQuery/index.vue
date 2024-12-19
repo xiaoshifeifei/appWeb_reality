@@ -1,12 +1,67 @@
 <template>
   <div>
     <div class="gva-search-box">
-      <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <el-form-item label="玩家手机号">
-          <el-input clearable v-model="searchInfo.accountId" placeholder="ID" />
-        </el-form-item>
+      <el-form
+        ref="searchForm"
+        :inline="true"
+        :model="searchInfo"
+        label-width="80"
+      >
         <el-form-item label="玩家ID">
-          <el-input clearable v-model="searchInfo.accountId" placeholder="ID" />
+          <el-input
+            clearable
+            v-model="searchInfo.accountId"
+            placeholder="玩家ID"
+          />
+        </el-form-item>
+        <el-form-item label="用户名">
+          <el-input
+            clearable
+            v-model="searchInfo.username"
+            placeholder="玩家用户名"
+          />
+        </el-form-item>
+        <el-form-item label="手机号">
+          <el-input
+            clearable
+            v-model="searchInfo.phone"
+            placeholder="绑定手机号"
+          />
+        </el-form-item>
+        <el-form-item :label="t('tableColumn.accountType')">
+          <el-select
+            clearable
+            v-model="searchInfo.accountType"
+            :placeholder="t('tableColumn.placeholder')"
+          >
+            <el-option
+              v-for="item in accountTypeOption"
+              :key="item.value"
+              :label="t(`tableColumn.${item.label}`)"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="站点ID">
+          <el-input
+            clearable
+            v-model="searchInfo.siteId"
+            placeholder="站点ID"
+          />
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-select
+            clearable
+            v-model="searchInfo.status"
+            :placeholder="t('tableColumn.placeholder')"
+          >
+            <el-option
+              v-for="item in statusOption"
+              :key="item.value"
+              :label="t(`tableColumn.${item.label}`)"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
 
         <el-form-item>
@@ -35,36 +90,106 @@
       >
         <el-table-column
           align="center"
-          min-width="90"
+          min-width="120"
           label="玩家ID"
           prop="accountId"
         >
         </el-table-column>
         <el-table-column
           align="center"
-          label="玩家昵称"
+          min-width="120"
+          label="下级代理人ID"
+          prop="subagentId"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="用户名"
           min-width="100"
           prop="username"
         />
         <el-table-column
           align="center"
-          min-width="90"
+          min-width="120"
           label="绑定手机号"
-          prop="accountId"
+          prop="phone"
         >
         </el-table-column>
         <el-table-column
           align="center"
-          min-width="90"
-          label="密码"
-          prop="accountId"
+          min-width="120"
+          label="玩家类型"
+          prop="accountType"
+        >
+          <template #default="scope">
+            <div>
+              {{
+                scope.row.accountType === 1
+                  ? t("tableColumn.normal")
+                  : scope.row.accountType === 2
+                  ? t("tableColumn.visitor")
+                  : scope.row.accountType
+              }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          min-width="120"
+          label="头像ID"
+          prop="avatarId"
         >
         </el-table-column>
         <el-table-column
           align="center"
-          min-width="90"
+          min-width="120"
+          label="客户端ID"
+          prop="clientId"
+        >
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          min-width="120"
+          label="国家"
+          prop="country"
+        >
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          min-width="120"
+          label="货币"
+          prop="currency"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          min-width="120"
+          label="邮件"
+          prop="email"
+        >
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          min-width="120"
+          label="邀请码"
+          prop="invitationCode"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          min-width="120"
+          label="IP地址"
+          prop="ipaddr"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          min-width="180"
           label="注册时间"
-          prop="lastUpdate"
+          prop="createAt"
         >
           <template #default="scope">
             <div>
@@ -72,30 +197,50 @@
             </div>
           </template>
         </el-table-column>
-
         <el-table-column
           align="center"
-          min-width="90"
+          min-width="180"
           label="登出时间"
           prop="lastUpdate"
         >
           <template #default="scope">
             <div>
-              {{ dataGet(scope.row.createAt) }}
+              {{ dataGet(scope.row.lastUpdate) }}
             </div>
           </template>
         </el-table-column>
+        <el-table-column
+          align="center"
+          label="玩家昵称"
+          min-width="100"
+          prop="nickname"
+        />
 
         <el-table-column
           align="center"
-          min-width="90"
-          label="最近充值时间"
-          prop="lastUpdate"
+          min-width="120"
+          label="站点ID"
+          prop="siteId"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.status')"
+          min-width="80"
+          prop="status"
         >
           <template #default="scope">
-            <div>
-              {{ dataGet(scope.row.createAt) }}
-            </div>
+            <el-switch
+              v-model="scope.row.status"
+              inline-prompt
+              :active-value="0"
+              :inactive-value="1"
+              @change="
+                () => {
+                  switchStatus(scope.row);
+                }
+              "
+            />
           </template>
         </el-table-column>
 
@@ -603,13 +748,7 @@
 </template>
   
   <script setup>
-import {
-  getAccountList,
-  // setUserInfo,
-  // deleteTack,
-  // enterSyncApi,
-  // sendMailGo,
-} from "@/api/userInfo";
+import { getAccountList } from "@/api/userInfo";
 import { virtualItemGetList } from "@/api/tack";
 import { setUserAuthorities } from "@/api/user";
 import { ref, watch } from "vue";
@@ -727,6 +866,10 @@ const completeOptions = ref([
 const accountTypeOption = ref([
   { label: "normal", value: 1 },
   { label: "visitor", value: 2 },
+]);
+const statusOption = ref([
+  { label: "Enable", value: 0 },
+  { label: "Enable", value: 1 },
 ]);
 const handleDateChange = () => {
   if (formMail.value.expired) {
@@ -893,22 +1036,22 @@ const setAuthorityOptions = (AuthorityData, optionsData) => {
 const switchStatus = async (row) => {
   let myUserInfo = JSON.parse(JSON.stringify(row));
 
-  let params = {
-    accountId: myUserInfo.accountId,
-    status: myUserInfo.status,
-  };
-  const res = await setUserInfo(params);
-  if (res.code === 0) {
-    ElMessage({
-      type: "success",
-      message: `${
-        params.status === 0
-          ? t("user.enabledSuccessfully")
-          : t("user.disabledSuccessfully")
-      }`,
-    });
-    await getTableData();
-  }
+  // let params = {
+  //   accountId: myUserInfo.accountId,
+  //   status: myUserInfo.status,
+  // };
+  // const res = await setUserInfo(params);
+  // if (res.code === 0) {
+  //   ElMessage({
+  //     type: "success",
+  //     message: `${
+  //       params.status === 0
+  //         ? t("user.enabledSuccessfully")
+  //         : t("user.disabledSuccessfully")
+  //     }`,
+  //   });
+  //   await getTableData();
+  // }
 };
 const syncing = ref(false);
 
@@ -974,7 +1117,12 @@ const getTableData = async () => {
     ...searchInfo.value,
   });
   if (table.code === 0) {
-    tableData.value = table.data.list;
+    tableData.value = [];
+    if (searchInfo.value.phone) {
+      tableData.value = table.data.same;
+    } else {
+      tableData.value = table.data.list;
+    }
     total.value = table.data.total;
     page.value = table.data.page;
     pageSize.value = table.data.pageSize;

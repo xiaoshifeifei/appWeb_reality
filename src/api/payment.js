@@ -1,9 +1,9 @@
 import service from "@/utils/request";
 
 // 获取用户列表
-export const getAccountList = (params) => {
+export const getPaymentList = (params) => {
   return service({
-    url: "/account/getAccounts",
+    url: "/setup/getPayments",
     method: "get",
     params,
   });

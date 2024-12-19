@@ -1,0 +1,629 @@
+<template>
+  <div>
+    <div class="gva-search-box">
+      <el-form
+        ref="searchForm"
+        :inline="true"
+        :model="searchInfo"
+        label-width="80"
+      >
+        <el-form-item label="渠道编码">
+          <el-input
+            clearable
+            v-model="searchInfo.channelCode"
+            placeholder="渠道编码"
+          />
+        </el-form-item>
+        <el-form-item label="交易代码">
+          <el-input
+            clearable
+            v-model="searchInfo.transactionCode"
+            placeholder="交易代码"
+          />
+        </el-form-item>
+        <el-form-item label="支付代码">
+          <el-input
+            clearable
+            v-model="searchInfo.paymentCode"
+            placeholder="支付代码"
+          />
+        </el-form-item>
+        <el-form-item label="交易类型">
+          <el-input
+            clearable
+            v-model="searchInfo.transactionType"
+            placeholder="交易类型"
+          />
+        </el-form-item>
+        <el-form-item label="类型">
+          <el-select
+            clearable
+            v-model="searchInfo.type"
+            :placeholder="t('tableColumn.placeholder')"
+          >
+            <el-option
+              v-for="item in accountTypeOption"
+              :key="item.value"
+              :label="t(`tableColumn.${item.label}`)"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-select
+            clearable
+            v-model="searchInfo.status"
+            :placeholder="t('tableColumn.placeholder')"
+          >
+            <el-option
+              v-for="item in statusOption"
+              :key="item.value"
+              :label="t(`tableColumn.${item.label}`)"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" icon="search" @click="onSubmit">
+            {{ t("general.search") }}
+          </el-button>
+          <el-button icon="refresh" @click="onReset">
+            {{ t("general.reset") }}
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+    <div class="gva-table-box">
+      <div class="gva-btn-list">
+        <el-button type="primary" icon="plus" @click="openDialog('add')">
+          {{ t("general.add") }}
+        </el-button>
+      </div>
+      <el-table
+        border
+        :data="tableData"
+        @selection-change="handleSelectionChange"
+        highlight-current-row
+        :header-cell-style="{
+          backgroundColor: 'var(--el-tab-bgc)',
+          Color: '#FFF',
+        }"
+        :row-class-name="tableRowClassName"
+      >
+        <el-table-column
+          align="center"
+          label="渠道编码"
+          min-width="150"
+          prop="channelCode"
+        />
+
+        <el-table-column
+          align="center"
+          label="支付代码"
+          min-width="200"
+          prop="paymentCode"
+        />
+
+        <el-table-column
+          align="center"
+          label="交易代码"
+          min-width="150"
+          prop="transactionCode"
+        />
+        <el-table-column
+          align="center"
+          label="交易类型"
+          min-width="150"
+          prop="transactionType"
+        />
+        <el-table-column
+          align="center"
+          label="类型"
+          min-width="150"
+          prop="type"
+        >
+          <template #default="scope">
+            <div>
+              {{ scope.row.type === 1 ? "代收" : "代付" }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="创建时间"
+          min-width="150"
+          prop="createdAt"
+        >
+          <template #default="scope">
+            <div>
+              {{ dataGet(scope.row.createdAt) }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="状态"
+          min-width="150"
+          prop="status"
+        >
+          <template #default="scope">
+            <div>
+              {{ scope.row.status === 1 ? "关闭" : "开启" }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          fixed="right"
+          :label="t('general.operations')"
+          min-width="200"
+        >
+          <template #default="scope">
+            <el-button
+              type="primary"
+              icon="edit"
+              size="small"
+              @click="editTackFunc(scope.row)"
+            >
+              {{ t("general.edit") }}
+            </el-button>
+            <el-button
+              icon="delete"
+              size="small"
+              @click="deleteTackFunc(scope.row)"
+            >
+              {{ t("general.delete") }}
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="gva-pagination">
+        <el-pagination
+          :current-page="page"
+          :page-size="pageSize"
+          :page-sizes="[10, 30, 50, 100]"
+          :total="total"
+          layout="total, sizes, prev, pager, next, jumper"
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+        />
+      </div>
+    </div>
+
+    <el-drawer
+      v-if="dialogFormVisible"
+      v-model="dialogFormVisible"
+      size="60%"
+      :before-close="closeDialog"
+      :show-close="false"
+    >
+      <template #header>
+        <div class="flex justify-between items-center">
+          <span class="text-lg">{{ dialogTitle }}</span>
+          <div>
+            <el-button @click="closeDialog">
+              {{ t("general.close") }}
+            </el-button>
+            <el-button type="primary" @click="enterDialog">
+              {{ t("general.confirm") }}
+            </el-button>
+          </div>
+        </div>
+      </template>
+
+      <el-form
+        class="myForm"
+        ref="apiForm"
+        :model="form"
+        :rules="rules"
+        label-width="80px"
+      >
+        <el-row class="w-full">
+          <el-col :span="12">
+            <el-form-item :label="t('tableColumn.day')" prop="day">
+              <el-input-number
+                :disabled="type === 'edit'"
+                :min="0"
+                v-model="form.day"
+                autocomplete="off"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <div
+          style="
+            padding: 0 0 20px 40px;
+            color: black;
+            font-size: 16px;
+            font-weight: 700;
+          "
+        >
+          {{ t("tableColumn.award") }}
+        </div>
+        <div style="padding: 0 0 20px 40px; color: red; font-size: 12px">
+          提示：分别填写物品配置的名称 / 数量
+        </div>
+        <template v-for="(item, index) in form.award" :key="index">
+          <el-row class="w-full">
+            <el-col :span="12" v-if="item.code || type !== null">
+              <el-form-item
+                :label="t('tableColumn.code')"
+                :prop="`award.${index}.code`"
+                :rules="rules['award.code']"
+              >
+                <!-- <el-input :min="0" v-model="item.code" autocomplete="off" /> -->
+                <el-select
+                  clearable
+                  v-model="item.code"
+                  :placeholder="t('tableColumn.placeholder')"
+                >
+                  <el-option
+                    v-for="item1 in codeOptions"
+                    :key="item1.code"
+                    :label="t(`tableColumn.${item1.code}`)"
+                    :value="item1.code"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12" v-if="item.num || type !== null">
+              <!-- <el-form-item label="num">
+                  <el-input-number
+                    :min="0"
+                    v-model="item.num"
+                    autocomplete="off"
+                  />
+                  <el-button
+                    style="margin-left: 20px"
+                    type="delete"
+                    @click="delItem(index)"
+                  >
+                    删除
+                  </el-button>
+                </el-form-item> -->
+              <el-form-item
+                :label="t('tableColumn.num')"
+                :prop="`award.${index}.num`"
+                :rules="rules['award.num']"
+              >
+                <el-input
+                  style="width: 55%"
+                  v-model="item.num"
+                  autocomplete="off"
+                  @input="item.num = item.num.replace(/[^\d|\.]/g, '')"
+                  @change="handleChange(item.num, index, 'v4')"
+                />
+                <el-button
+                  style="margin-left: 20px"
+                  icon="delete"
+                  @click="delItem(index)"
+                >
+                  {{ t("general.delete") }}
+                </el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </template>
+        <el-form-item>
+          <el-button type="primary" icon="plus" @click="addItem()">
+            {{ t("general.add") }}
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </el-drawer>
+  </div>
+</template>
+  
+  <script setup>
+import { getPaymentList } from "@/api/payment";
+import { ref } from "vue";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { useRouter } from "vue-router";
+
+import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
+const { t } = useI18n(); // added by mohamed hassan to support multilanguage
+const router = useRouter();
+
+defineOptions({
+  name: "day7Sign",
+});
+const codeOptions = ref([]);
+const apis = ref([]);
+const form = ref({
+  day: null,
+  award: [
+    {
+      code: "",
+      num: null,
+    },
+  ],
+});
+
+const type = ref("");
+const rules = ref({
+  day: [{ required: true, message: "请输入天数", trigger: "blur" }],
+  "award.code": [{ required: true, message: "请输入code", trigger: "blur" }],
+  "award.num": [{ required: true, message: "请选输入数量", trigger: "blur" }],
+});
+const accountTypeOption = ref([
+  { label: "代收", value: 1 },
+  { label: "代付", value: 2 },
+]);
+const statusOption = ref([
+  { label: "Enable", value: 0 },
+  { label: "Enable", value: 1 },
+]);
+
+const page = ref(1);
+const total = ref(0);
+const pageSize = ref(10);
+const tableData = ref([]);
+const searchInfo = ref({});
+
+const onReset = () => {
+  searchInfo.value = {};
+};
+const dataGet = (dateStr) => {
+  let date = new Date(dateStr);
+  let formattedDate =
+    date.getFullYear() +
+    "-" +
+    (date.getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    date.getDate().toString().padStart(2, "0") +
+    " " +
+    date.getHours().toString().padStart(2, "0") +
+    ":" +
+    date.getMinutes().toString().padStart(2, "0") +
+    ":" +
+    date.getSeconds().toString().padStart(2, "0");
+  return formattedDate;
+};
+const handleChange = (number, index, params, params2) => {
+  if (params == "v4") {
+    if (number >= 1000000000) {
+      if (params2) {
+        return number / 1000000000 + "B";
+      } else {
+        return (form.value.award[index].num = number / 1000000000 + "B");
+      }
+    } else if (number >= 1000000) {
+      if (params2) {
+        return number / 1000000 + "M";
+      } else {
+        return (form.value.award[index].num = number / 1000000 + "M");
+      }
+    } else if (number >= 1000) {
+      if (params2) {
+        return number / 1000 + "K";
+      } else {
+        return (form.value.award[index].num = number / 1000 + "K");
+      }
+    } else {
+      if (params2) {
+        return number.toString();
+      } else {
+        return (form.value.award[index].num = number.toString());
+      }
+    }
+  }
+};
+// 搜索
+
+const onSubmit = () => {
+  page.value = 1;
+  pageSize.value = 10;
+  getTableData();
+};
+
+// 分页
+const handleSizeChange = (val) => {
+  pageSize.value = val;
+  getTableData();
+};
+
+const handleCurrentChange = (val) => {
+  page.value = val;
+  getTableData();
+};
+
+// 查询
+const getTableData = async () => {
+  const table = await getPaymentList({
+    page: page.value,
+    pageSize: pageSize.value,
+    ...searchInfo.value,
+  });
+  if (table.code === 0) {
+    tableData.value = table.data.list;
+    total.value = table.data.total;
+    page.value = table.data.page;
+    pageSize.value = table.data.pageSize;
+  }
+};
+const initPage = async () => {
+  getTableData();
+};
+initPage();
+// 批量操作
+const handleSelectionChange = (val) => {
+  apis.value = val;
+};
+
+// 弹窗相关
+const apiForm = ref(null);
+const initForm = () => {
+  apiForm.value.resetFields();
+  form.value = {
+    day: null,
+    award: [
+      {
+        code: "",
+        num: null,
+      },
+    ],
+  };
+};
+
+const addItem = () => {
+  form.value.award.push({
+    code: "",
+    num: null,
+  });
+};
+
+const delItem = (index) => {
+  form.value.award.splice(index, 1);
+};
+
+const dialogTitle = ref(t("general.add"));
+const dialogFormVisible = ref(false);
+const openDialog = (key) => {
+  switch (key) {
+    case "add":
+      dialogTitle.value = t("general.add");
+      break;
+    case "edit":
+      dialogTitle.value = t("general.edit");
+      break;
+    default:
+      break;
+  }
+  type.value = key;
+  dialogFormVisible.value = true;
+};
+const closeDialog = () => {
+  initForm();
+  dialogFormVisible.value = false;
+};
+
+const editTackFunc = async (row) => {
+  let rows = JSON.parse(JSON.stringify(row));
+  form.value = rows;
+  openDialog("edit");
+};
+
+const enterDialog = async () => {
+  apiForm.value.validate(async (valid) => {
+    if (valid) {
+      if (form.value.award != null && form.value.award.length) {
+        form.value.award.map((item, index) => {
+          item.num = item.num + "";
+          if (item.num.indexOf("B") !== -1) {
+            const newStr = item.num.replace("B", "");
+            item.num = Number(newStr) * 1000000000;
+          } else if (item.num.indexOf("M") !== -1) {
+            const newStr = item.num.replace("M", "");
+            item.num = Number(newStr) * 1000000;
+          } else if (item.num.indexOf("K") !== -1) {
+            const newStr = item.num.replace("K", "");
+            item.num = Number(newStr) * 1000;
+          } else {
+            item.num = Number(item.num);
+          }
+        });
+      }
+      switch (type.value) {
+        case "add":
+          {
+            const res = await day7SignAdd(form.value);
+            if (res.code === 0) {
+              ElMessage({
+                type: "success",
+                message: t("user.userAddedNote"),
+                showClose: true,
+              });
+              getTableData();
+              closeDialog();
+            }
+          }
+          break;
+        case "edit":
+          {
+            const res = await day7SignEdit(form.value);
+            if (res.code === 0) {
+              ElMessage({
+                type: "success",
+                message: t("user.userEditedNote"),
+                showClose: true,
+              });
+              getTableData();
+              closeDialog();
+            }
+          }
+          break;
+        default:
+          {
+            ElMessage({
+              type: "error",
+              message: t("view.api.unknownOperation"),
+              showClose: true,
+            });
+          }
+          break;
+      }
+    }
+  });
+};
+
+const deleteTackFunc = async (row) => {
+  ElMessageBox.confirm(t("general.deleteConfirm"), t("general.hint"), {
+    confirmButtonText: t("general.confirm"),
+    cancelButtonText: t("general.cancel"),
+    type: "warning",
+  }).then(async () => {
+    const res = await day7SignDel({ day: row.day });
+    if (res.code === 0) {
+      ElMessage({
+        type: "success",
+        message: t(`general.deleteSuccess`),
+      });
+      getTableData();
+    }
+  });
+};
+const tableRowClassName = ({ row, rowIndex }) => {
+  if (rowIndex % 2 == 0) {
+    return "";
+  } else {
+    return "warnBg";
+  }
+};
+</script>
+  
+  
+  <style scoped lang="scss">
+.warning {
+  color: #dc143c;
+}
+.el-input-number {
+  width: 50%;
+}
+.span1 {
+  display: inline-block;
+  width: 50%;
+  text-align: right;
+}
+.span2 {
+  display: inline-block;
+  width: calc(49% - 8px);
+  text-align: left;
+  padding-left: 8px;
+}
+.span3 {
+  font-weight: 700;
+}
+.span4 {
+  display: block;
+  border-bottom: 1px solid var(--border-color);
+  width: 50%;
+  margin: auto;
+}
+.spanCla {
+  display: inline-block;
+  margin-right: 20px;
+}
+</style>
+  
