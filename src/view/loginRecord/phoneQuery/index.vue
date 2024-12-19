@@ -5,27 +5,27 @@
         ref="searchForm"
         :inline="true"
         :model="searchInfo"
-        label-width="80"
+        :label-width="100"
       >
-        <el-form-item label="玩家ID">
+        <el-form-item :label="t('tableColumn.accountId')">
           <el-input
             clearable
             v-model="searchInfo.accountId"
-            placeholder="玩家ID"
+            :placeholder="t('tableColumn.accountId')"
           />
         </el-form-item>
-        <el-form-item label="用户名">
+        <el-form-item :label="t('tableColumn.username')">
           <el-input
             clearable
             v-model="searchInfo.username"
-            placeholder="玩家用户名"
+            :placeholder="t('tableColumn.username')"
           />
         </el-form-item>
-        <el-form-item label="手机号">
+        <el-form-item :label="t('tableColumn.phone')">
           <el-input
             clearable
             v-model="searchInfo.phone"
-            placeholder="绑定手机号"
+            :placeholder="t('tableColumn.phone')"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.accountType')">
@@ -33,6 +33,7 @@
             clearable
             v-model="searchInfo.accountType"
             :placeholder="t('tableColumn.placeholder')"
+            style="width: 193px"
           >
             <el-option
               v-for="item in accountTypeOption"
@@ -42,23 +43,24 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="站点ID">
+        <el-form-item :label="t('tableColumn.siteId')">
           <el-input
             clearable
             v-model="searchInfo.siteId"
-            placeholder="站点ID"
+            :placeholder="t('tableColumn.siteId')"
           />
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item :label="t('tableColumn.status')">
           <el-select
             clearable
             v-model="searchInfo.status"
-            :placeholder="t('tableColumn.placeholder')"
+            :placeholder="t('tableColumn.status')"
+            style="width: 193px"
           >
             <el-option
               v-for="item in statusOption"
               :key="item.value"
-              :label="t(`tableColumn.${item.label}`)"
+              :label="t(`user.${item.label}`)"
               :value="item.value"
             />
           </el-select>
@@ -91,34 +93,34 @@
         <el-table-column
           align="center"
           min-width="120"
-          label="玩家ID"
+          :label="t('tableColumn.accountId')"
           prop="accountId"
         >
         </el-table-column>
         <el-table-column
           align="center"
           min-width="120"
-          label="下级代理人ID"
+          :label="t('tableColumn.subagentId')"
           prop="subagentId"
         >
         </el-table-column>
         <el-table-column
           align="center"
-          label="用户名"
+          :label="t('tableColumn.username')"
           min-width="100"
           prop="username"
         />
         <el-table-column
           align="center"
           min-width="120"
-          label="绑定手机号"
+          :label="t('tableColumn.phone')"
           prop="phone"
         >
         </el-table-column>
         <el-table-column
           align="center"
           min-width="120"
-          label="玩家类型"
+          :label="t('tableColumn.accountType')"
           prop="accountType"
         >
           <template #default="scope">
@@ -136,14 +138,14 @@
         <el-table-column
           align="center"
           min-width="120"
-          label="头像ID"
+          :label="t('tableColumn.avatarId')"
           prop="avatarId"
         >
         </el-table-column>
         <el-table-column
           align="center"
           min-width="120"
-          label="客户端ID"
+          :label="t('tableColumn.clientId')"
           prop="clientId"
         >
         </el-table-column>
@@ -151,7 +153,7 @@
         <el-table-column
           align="center"
           min-width="120"
-          label="国家"
+          :label="t('tableColumn.country')"
           prop="country"
         >
         </el-table-column>
@@ -159,36 +161,36 @@
         <el-table-column
           align="center"
           min-width="120"
-          label="货币"
+          :label="t('tableColumn.currency')"
           prop="currency"
         >
         </el-table-column>
         <el-table-column
           align="center"
           min-width="120"
-          label="邮件"
+          :label="t('tableColumn.email')"
           prop="email"
         >
         </el-table-column>
 
         <el-table-column
           align="center"
-          min-width="120"
-          label="邀请码"
+          min-width="140"
+          :label="t('tableColumn.invitationCode')"
           prop="invitationCode"
         >
         </el-table-column>
         <el-table-column
           align="center"
           min-width="120"
-          label="IP地址"
+          :label="t('tableColumn.ipaddr')"
           prop="ipaddr"
         >
         </el-table-column>
         <el-table-column
           align="center"
           min-width="180"
-          label="注册时间"
+          :label="t('tableColumn.createAt')"
           prop="createAt"
         >
           <template #default="scope">
@@ -200,7 +202,7 @@
         <el-table-column
           align="center"
           min-width="180"
-          label="登出时间"
+          :label="t('tableColumn.lastUpdate')"
           prop="lastUpdate"
         >
           <template #default="scope">
@@ -211,7 +213,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          label="玩家昵称"
+          :label="t('tableColumn.nickname')"
           min-width="100"
           prop="nickname"
         />
@@ -219,7 +221,7 @@
         <el-table-column
           align="center"
           min-width="120"
-          label="站点ID"
+          :label="t('tableColumn.siteId')"
           prop="siteId"
         >
         </el-table-column>
@@ -230,53 +232,41 @@
           prop="status"
         >
           <template #default="scope">
-            <el-switch
-              v-model="scope.row.status"
-              inline-prompt
-              :active-value="0"
-              :inactive-value="1"
-              @change="
-                () => {
-                  switchStatus(scope.row);
-                }
-              "
-            />
+            {{ scope.row.status == 1 ? t("user.enable") : t("user.disable") }}
           </template>
         </el-table-column>
 
         <el-table-column
           align="center"
-          min-width="80"
-          label="修改密码"
-          prop="createAt"
+          min-width="160"
+          :label="t('tableColumn.changePassword')"
         >
           <template #default="scope">
             <el-button
               type="primary"
               size="small"
-              @click="editTackFunc(scope.row)"
+              @click="resetFunc(scope.row)"
             >
-              重置
+              {{ t("general.reset") }}
             </el-button>
           </template>
         </el-table-column>
         <el-table-column
           align="center"
-          min-width="80"
-          label="解绑手机"
-          prop="createAt"
+          min-width="160"
+          :label="t('tableColumn.unbindPhone')"
         >
           <template #default="scope">
             <el-button
               type="primary"
               size="small"
-              @click="editTackFunc(scope.row)"
+              @click="unbindFunc(scope.row)"
             >
-              解绑
+              {{ t("tableColumn.unbind") }}
             </el-button>
           </template>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           align="center"
           min-width="80"
           label="解绑银行卡"
@@ -291,7 +281,7 @@
               解绑
             </el-button>
           </template>
-        </el-table-column>
+        </el-table-column> -->
 
         <!-- <el-table-column
           align="center"
@@ -318,7 +308,7 @@
         />
       </div>
     </div>
-
+    <!-- 
     <el-drawer
       v-if="dialogFormVisible"
       v-model="dialogFormVisible"
@@ -575,14 +565,14 @@
           <el-switch
             v-model="form.status"
             inline-prompt
-            :active-value="0"
-            :inactive-value="1"
+            :active-value="1"
+            :inactive-value="0"
           />
         </el-form-item>
       </el-form>
-    </el-drawer>
+    </el-drawer> -->
 
-    <el-drawer
+    <!-- <el-drawer
       v-if="sendMailVisible"
       v-model="sendMailVisible"
       size="50%"
@@ -634,7 +624,6 @@
                 :prop="`items.${index}.code`"
                 :rules="rules['items.code']"
               >
-                <!-- <el-input v-model="item.code" autocomplete="off" /> -->
                 <el-select
                   clearable
                   v-model="item.code"
@@ -743,12 +732,16 @@
           />
         </el-form-item>
       </el-form>
-    </el-drawer>
+    </el-drawer> -->
   </div>
 </template>
   
   <script setup>
-import { getAccountList } from "@/api/userInfo";
+import {
+  getAccountList,
+  resetAccountPassword,
+  unbindAccountPhone,
+} from "@/api/userInfo";
 import { virtualItemGetList } from "@/api/tack";
 import { setUserAuthorities } from "@/api/user";
 import { ref, watch } from "vue";
@@ -868,8 +861,8 @@ const accountTypeOption = ref([
   { label: "visitor", value: 2 },
 ]);
 const statusOption = ref([
-  { label: "Enable", value: 0 },
-  { label: "Enable", value: 1 },
+  { label: "enable", value: 1 },
+  { label: "disable", value: 0 },
 ]);
 const handleDateChange = () => {
   if (formMail.value.expired) {
@@ -950,11 +943,6 @@ const changeAuthority = async (row, flag, removeAuth) => {
   }
 };
 
-const clickBetDetail = (id) => {
-  let query = {};
-  query["id"] = id;
-  router.push({ name: "userItemInOut", query });
-};
 const dataGet = (dateStr) => {
   let date = new Date(dateStr);
   let formattedDate =
@@ -972,111 +960,7 @@ const dataGet = (dateStr) => {
   return formattedDate;
 };
 
-const handleChange = (number, index, params, params2) => {
-  if (params == "v4") {
-    if (number >= 1000000000) {
-      if (params2) {
-        return number / 1000000000 + "B";
-      } else {
-        return (formMail.value.items[index].num = number / 1000000000 + "B");
-      }
-    } else if (number >= 1000000) {
-      if (params2) {
-        return number / 1000000 + "M";
-      } else {
-        return (formMail.value.items[index].num = number / 1000000 + "M");
-      }
-    } else if (number >= 1000) {
-      if (params2) {
-        return number / 1000 + "K";
-      } else {
-        return (formMail.value.items[index].num = number / 1000 + "K");
-      }
-    } else {
-      if (params2) {
-        return number.toString();
-      } else {
-        return (formMail.value.items[index].num = number.toString());
-      }
-    }
-  }
-};
-const delContent = (index) => {
-  formMail.value.content.splice(index, 1);
-};
-const addContent = () => {
-  formMail.value.content.push({
-    lang: "en",
-    title: "",
-    message: "",
-  });
-};
-
 // 初始化相关
-const setAuthorityOptions = (AuthorityData, optionsData) => {
-  AuthorityData &&
-    AuthorityData.forEach((item) => {
-      if (item.children && item.children.length) {
-        const option = {
-          authorityId: item.authorityId,
-          authorityName: item.authorityName,
-          children: [],
-        };
-        setAuthorityOptions(item.children, option.children);
-        optionsData.push(option);
-      } else {
-        const option = {
-          authorityId: item.authorityId,
-          authorityName: item.authorityName,
-        };
-        optionsData.push(option);
-      }
-    });
-};
-const switchStatus = async (row) => {
-  let myUserInfo = JSON.parse(JSON.stringify(row));
-
-  // let params = {
-  //   accountId: myUserInfo.accountId,
-  //   status: myUserInfo.status,
-  // };
-  // const res = await setUserInfo(params);
-  // if (res.code === 0) {
-  //   ElMessage({
-  //     type: "success",
-  //     message: `${
-  //       params.status === 0
-  //         ? t("user.enabledSuccessfully")
-  //         : t("user.disabledSuccessfully")
-  //     }`,
-  //   });
-  //   await getTableData();
-  // }
-};
-const syncing = ref(false);
-
-const enterSyncDialog = async () => {
-  syncing.value = true;
-  const res = await enterSyncApi(syncApiData.value);
-  syncing.value = false;
-  if (res.code === 0) {
-    ElMessage({
-      type: "success",
-      message: res.msg,
-    });
-    syncApiFlag.value = false;
-    getTableData();
-  }
-};
-const addItem = () => {
-  formMail.value.items.push({
-    code: "",
-    num: null,
-  });
-};
-const delItem = (index) => {
-  formMail.value.items.splice(index, 1);
-};
 
 const onReset = () => {
   searchInfo.value = {};
@@ -1157,14 +1041,6 @@ const handleSelectionChange = (val) => {
   }
 };
 const multipleTable = ref(null);
-
-const syncApiData = ref({
-  newApis: [],
-  deleteApis: [],
-  ignoreApis: [],
-});
-
-const syncApiFlag = ref(false);
 
 // 弹窗相关
 const apiForm = ref(null);
@@ -1276,6 +1152,39 @@ const editTackFunc = async (row) => {
   let rows = JSON.parse(JSON.stringify(row));
   form.value = rows;
   openDialog("edit");
+};
+const resetFunc = async (row) => {
+  ElMessageBox.confirm(t("general.resetConfirm"), t("general.hint"), {
+    confirmButtonText: t("general.confirm"),
+    cancelButtonText: t("general.cancel"),
+    type: "warning",
+  }).then(async () => {
+    const res = await resetAccountPassword({ accountId: row.accountId });
+    if (res.code === 0) {
+      ElMessage({
+        type: "success",
+        message: t(`general.resetSuccess`),
+        showClose: true,
+      });
+    }
+  });
+};
+
+const unbindFunc = async (row) => {
+  ElMessageBox.confirm(t("general.unbindPhone"), t("general.hint"), {
+    confirmButtonText: t("general.confirm"),
+    cancelButtonText: t("general.cancel"),
+    type: "warning",
+  }).then(async () => {
+    const res = await unbindAccountPhone({ accountId: row.accountId });
+    if (res.code === 0) {
+      ElMessage({
+        type: "success",
+        message: t(`general.unbindSuccess`),
+        showClose: true,
+      });
+    }
+  });
 };
 
 const enterDialog = async () => {

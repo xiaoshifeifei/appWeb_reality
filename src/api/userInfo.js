@@ -8,6 +8,22 @@ export const getAccountList = (params) => {
     params,
   });
 };
+// 用户密码重置
+export const resetAccountPassword = (data) => {
+  return service({
+    url: "/account/resetAccountPassword",
+    method: "post",
+    data,
+  });
+};
+// 用户手机号解绑
+export const unbindAccountPhone = (data) => {
+  return service({
+    url: "/account/unbindAccountPhone",
+    method: "post",
+    data,
+  });
+};
 // 获取用户列表
 export const getUserList = (params) => {
   return service({

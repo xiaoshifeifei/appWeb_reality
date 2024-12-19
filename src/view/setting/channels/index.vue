@@ -5,50 +5,21 @@
         ref="searchForm"
         :inline="true"
         :model="searchInfo"
-        label-width="125"
+        label-width="60"
       >
-        <el-form-item :label="t('tableColumn.channelCode')">
+        <el-form-item :label="t('tableColumn.id')">
           <el-input
             clearable
-            v-model="searchInfo.channelCode"
-            :placeholder="t('tableColumn.channelCode')"
+            v-model="searchInfo.id"
+            :placeholder="t('tableColumn.id')"
           />
         </el-form-item>
-        <el-form-item :label="t('tableColumn.transactionCode')">
+        <el-form-item :label="t('tableColumn.code')">
           <el-input
             clearable
-            v-model="searchInfo.transactionCode"
-            :placeholder="t('tableColumn.transactionCode')"
+            v-model="searchInfo.code"
+            :placeholder="t('tableColumn.code')"
           />
-        </el-form-item>
-        <el-form-item :label="t('tableColumn.paymentCode')">
-          <el-input
-            clearable
-            v-model="searchInfo.paymentCode"
-            :placeholder="t('tableColumn.paymentCode')"
-          />
-        </el-form-item>
-        <el-form-item :label="t('tableColumn.transactionType')">
-          <el-input
-            clearable
-            v-model="searchInfo.transactionType"
-            :placeholder="t('tableColumn.transactionType')"
-          />
-        </el-form-item>
-        <el-form-item :label="t('tableColumn.type')">
-          <el-select
-            clearable
-            v-model="searchInfo.type"
-            :placeholder="t('tableColumn.placeholder')"
-            style="width: 193px"
-          >
-            <el-option
-              v-for="item in accountTypeOption"
-              :key="item.value"
-              :label="t(`tableColumn.${item.label}`)"
-              :value="item.value"
-            />
-          </el-select>
         </el-form-item>
         <el-form-item :label="t('tableColumn.status')">
           <el-select
@@ -77,11 +48,11 @@
       </el-form>
     </div>
     <div class="gva-table-box">
-      <!-- <div class="gva-btn-list">
+      <div class="gva-btn-list">
         <el-button type="primary" icon="plus" @click="openDialog('add')">
           {{ t("general.add") }}
         </el-button>
-      </div> -->
+      </div>
       <el-table
         border
         :data="tableData"
@@ -95,52 +66,41 @@
       >
         <el-table-column
           align="center"
-          :label="t('tableColumn.channelCode')"
-          min-width="150"
-          prop="channelCode"
+          :label="t('tableColumn.id')"
+          min-width="80"
+          prop="id"
         />
-
         <el-table-column
           align="center"
-          :label="t('tableColumn.paymentCode')"
+          :label="t('tableColumn.merchantId')"
+          min-width="110"
+          prop="merchantId"
+        />
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.apiKey')"
           min-width="200"
-          prop="paymentCode"
+          prop="apiKey"
         />
 
         <el-table-column
           align="center"
-          :label="t('tableColumn.transactionCode')"
-          min-width="150"
-          prop="transactionCode"
+          :label="t('tableColumn.code')"
+          min-width="200"
+          prop="code"
         />
+
         <el-table-column
           align="center"
-          :label="t('tableColumn.transactionType')"
+          :label="t('tableColumn.url')"
           min-width="150"
-          prop="transactionType"
+          prop="url"
         />
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.type')"
-          min-width="150"
-          prop="type"
-        >
-          <template #default="scope">
-            <div>
-              {{
-                scope.row.type === 1
-                  ? t("tableColumn.recharge")
-                  : scope.row.type === 2
-                  ? t("tableColumn.drawMoney")
-                  : scope.row.type
-              }}
-            </div>
-          </template>
-        </el-table-column>
+
         <el-table-column
           align="center"
           :label="t('tableColumn.createdAt')"
-          min-width="150"
+          min-width="180"
           prop="createdAt"
         >
           <template #default="scope">
@@ -151,8 +111,20 @@
         </el-table-column>
         <el-table-column
           align="center"
+          :label="t('tableColumn.updatedAt')"
+          min-width="180"
+          prop="updatedAt"
+        >
+          <template #default="scope">
+            <div>
+              {{ dataGet(scope.row.updatedAt) }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
           :label="t('tableColumn.status')"
-          min-width="150"
+          min-width="70"
           prop="status"
         >
           <template #default="scope">
@@ -184,13 +156,13 @@
             >
               {{ t("general.edit") }}
             </el-button>
-            <!-- <el-button
+            <el-button
               icon="delete"
               size="small"
               @click="deleteTackFunc(scope.row)"
             >
               {{ t("general.delete") }}
-            </el-button> -->
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -233,62 +205,26 @@
         ref="apiForm"
         :model="form"
         :rules="rules"
-        label-width="140px"
+        label-width="100px"
       >
         <el-col :span="18">
-          <el-form-item
-            :label="t('tableColumn.transactionCode')"
-            prop="transactionCode"
-          >
-            <el-input
-              v-model="form.transactionCode"
-              disabled
-              autocomplete="off"
-            />
+          <el-form-item :label="t('tableColumn.code')" prop="code">
+            <el-input v-model="form.code" autocomplete="off" />
           </el-form-item>
         </el-col>
         <el-col :span="18">
-          <el-form-item
-            :label="t('tableColumn.paymentCode')"
-            prop="paymentCode"
-          >
-            <el-input v-model="form.paymentCode" disabled autocomplete="off" />
+          <el-form-item :label="t('tableColumn.merchantId')" prop="merchantId">
+            <el-input v-model="form.merchantId" autocomplete="off" />
           </el-form-item>
         </el-col>
         <el-col :span="18">
-          <el-form-item
-            :label="t('tableColumn.transactionType')"
-            prop="transactionType"
-          >
-            <el-input
-              v-model="form.transactionType"
-              disabled
-              autocomplete="off"
-            />
+          <el-form-item :label="t('tableColumn.apiKey')" prop="apiKey">
+            <el-input v-model="form.apiKey" autocomplete="off" />
           </el-form-item>
         </el-col>
         <el-col :span="18">
-          <el-form-item :label="t('tableColumn.type')" prop="type">
-            <el-input v-model="form.type" disabled autocomplete="off" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="18">
-          <el-form-item
-            :label="t('tableColumn.channelCode')"
-            prop="channelCode"
-          >
-            <el-select
-              clearable
-              v-model="form.channelCode"
-              :placeholder="t('tableColumn.placeholder')"
-            >
-              <el-option
-                v-for="item in codeOption"
-                :key="item.value"
-                :label="item.labe"
-                :value="item.value"
-              />
-            </el-select>
+          <el-form-item :label="t('tableColumn.url')" prop="url">
+            <el-input v-model="form.url" autocomplete="off" />
           </el-form-item>
         </el-col>
         <el-form-item :label="t('tableColumn.status')" prop="status">
@@ -305,66 +241,65 @@
 </template>
   
   <script setup>
-import { getPaymentList, editPayment } from "@/api/payment";
-import { getPaymentChannels } from "@/api/payment";
+import {
+  getPaymentChannels,
+  addPaymentChannel,
+  editPaymentChannel,
+  delPaymentChannel,
+} from "@/api/payment";
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
-
+import SingleTime from "@/components/DataTime/singleTime.vue";
+import dayjs from "dayjs";
 import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
 const { t } = useI18n(); // added by mohamed hassan to support multilanguage
 const router = useRouter();
 
 defineOptions({
-  name: "payment",
+  name: "channels",
 });
 const codeOptions = ref([]);
+const value2 = ref("");
 const apis = ref([]);
 const form = ref({
-  transactionCode: null,
-  paymentCode: null,
-  transactionType: null,
-  type: null,
-  channelCode: null,
+  code: null,
+  merchantId: null,
+  apiKey: null,
+  url: null,
   status: null,
 });
 
 const type = ref("");
+const showTimeBo = ref(false);
 const rules = ref({
   day: [{ required: true, message: "请输入天数", trigger: "blur" }],
   "award.code": [{ required: true, message: "请输入code", trigger: "blur" }],
   "award.num": [{ required: true, message: "请选输入数量", trigger: "blur" }],
 });
-const accountTypeOption = ref([
-  { label: "recharge", value: 1 },
-  { label: "drawMoney", value: 2 },
-]);
+
 const statusOption = ref([
   { label: "enable", value: 1 },
   { label: "disable", value: 0 },
 ]);
-const codeOption = ref([]);
 
 const page = ref(1);
 const total = ref(0);
 const pageSize = ref(10);
 const tableData = ref([]);
 const searchInfo = ref({
-  channelCode: null,
-  transactionCode: null,
-  paymentCode: null,
-  transactionType: null,
-  type: null,
+  id: null,
+  code: null,
   status: null,
 });
+const closeTime = (val) => {
+  showTimeBo.value = val;
+};
 
 const onReset = () => {
   searchInfo.value = {
-    channelCode: null,
-    transactionCode: null,
-    paymentCode: null,
-    transactionType: null,
-    type: null,
+    id: null,
+    code: null,
     status: null,
   };
 };
@@ -418,8 +353,7 @@ const replaceEmptyStringsWithNull = (obj) => {
 // 查询
 const getTableData = async () => {
   searchInfo.value = replaceEmptyStringsWithNull(searchInfo.value);
-
-  const table = await getPaymentList({
+  const table = await getPaymentChannels({
     page: page.value,
     pageSize: pageSize.value,
     ...searchInfo.value,
@@ -435,21 +369,6 @@ const initPage = async () => {
   getTableData();
 };
 initPage();
-const init = async () => {
-  const table = await getPaymentChannels({
-    page: page.value,
-    pageSize: pageSize.value,
-    status: 1,
-  });
-  if (table.code === 0) {
-    // tableData.value = table.data.list;
-    console.log("table.data.list", table.data.list);
-    table.data.list.forEach((item) => {
-      codeOption.value.push({ label: item.code, value: item.code });
-    });
-  }
-};
-init();
 // 批量操作
 const handleSelectionChange = (val) => {
   apis.value = val;
@@ -460,11 +379,10 @@ const apiForm = ref(null);
 const initForm = () => {
   apiForm.value.resetFields();
   form.value = {
-    transactionCode: null,
-    paymentCode: null,
-    transactionType: null,
-    type: null,
-    channelCode: null,
+    code: null,
+    merchantId: null,
+    apiKey: null,
+    url: null,
     status: null,
   };
 };
@@ -493,6 +411,7 @@ const closeDialog = () => {
 const editTackFunc = async (row) => {
   let rows = JSON.parse(JSON.stringify(row));
   form.value = rows;
+  console.log(123456, form.value);
   openDialog("edit");
 };
 
@@ -502,7 +421,8 @@ const enterDialog = async () => {
       switch (type.value) {
         case "add":
           {
-            const res = await day7SignAdd(form.value);
+            console.log("form.value", form.value);
+            const res = await addPaymentChannel(form.value);
             if (res.code === 0) {
               ElMessage({
                 type: "success",
@@ -516,7 +436,7 @@ const enterDialog = async () => {
           break;
         case "edit":
           {
-            const res = await editPayment(form.value);
+            const res = await editPaymentChannel(form.value);
             if (res.code === 0) {
               ElMessage({
                 type: "success",
@@ -544,7 +464,7 @@ const enterDialog = async () => {
 const switchStatus = async (row) => {
   let myUserInfo = JSON.parse(JSON.stringify(row));
 
-  const res = await editPayment(myUserInfo);
+  const res = await editPaymentChannel(myUserInfo);
   if (res.code === 0) {
     ElMessage({
       type: "success",
@@ -564,7 +484,7 @@ const deleteTackFunc = async (row) => {
     cancelButtonText: t("general.cancel"),
     type: "warning",
   }).then(async () => {
-    const res = await day7SignDel({ day: row.day });
+    const res = await delPaymentChannel({ id: row.id });
     if (res.code === 0) {
       ElMessage({
         type: "success",
@@ -587,33 +507,6 @@ const tableRowClassName = ({ row, rowIndex }) => {
   <style scoped lang="scss">
 .warning {
   color: #dc143c;
-}
-.el-input-number {
-  width: 50%;
-}
-.span1 {
-  display: inline-block;
-  width: 50%;
-  text-align: right;
-}
-.span2 {
-  display: inline-block;
-  width: calc(49% - 8px);
-  text-align: left;
-  padding-left: 8px;
-}
-.span3 {
-  font-weight: 700;
-}
-.span4 {
-  display: block;
-  border-bottom: 1px solid var(--border-color);
-  width: 50%;
-  margin: auto;
-}
-.spanCla {
-  display: inline-block;
-  margin-right: 20px;
 }
 </style>
   
