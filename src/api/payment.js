@@ -25,14 +25,7 @@ export const getPaymentChannels = (params) => {
     params,
   });
 };
-// 支付渠道新增
-export const addPaymentChannel = (data) => {
-  return service({
-    url: "/setup/addPaymentChannel",
-    method: "post",
-    data,
-  });
-};
+
 // 支付渠道修改
 export const editPaymentChannel = (data) => {
   return service({
@@ -41,10 +34,36 @@ export const editPaymentChannel = (data) => {
     data,
   });
 };
-// 支付渠道删除
-export const delPaymentChannel = (data) => {
+
+// 获取金额配置列表
+export const getPaymentRechargeAmounts = (params) => {
   return service({
-    url: "/setup/delPaymentChannel",
+    url: "/setup/getPaymentRechargeAmounts",
+    method: "get",
+    params,
+  });
+};
+// 金额配置新增
+export const addPaymentRechargeAmount = (data) => {
+  return service({
+    url: "/setup/addPaymentRechargeAmount",
+    method: "post",
+    data,
+  });
+};
+// 金额配置编辑
+export const editPaymentRechargeAmount = (data) => {
+  return service({
+    url: "/setup/editPaymentRechargeAmount",
+    method: "post",
+    data,
+  });
+};
+
+// 金额配置删除
+export const delPaymentRechargeAmount = (data) => {
+  return service({
+    url: "/setup/delPaymentRechargeAmount",
     method: "post",
     data,
   });

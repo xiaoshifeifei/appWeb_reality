@@ -692,6 +692,7 @@
     "公告": "公告",
     "支付列表": "支付列表",
     "支付渠道": "支付渠道",
+    "金额限制": "金额配置",
     "Homepage": "首页"
   },
   "tableColumn": {
@@ -880,6 +881,10 @@
     "transactionType": "交易类型",
     "recharge": "充值",
     "drawMoney": "提款",
+    "giftRatio": "赠送比例",
+    "rake": "比例",
+    "maxAmount": "最大金额",
+    "minAmount": "最小金额",
     "female": "女性"
   }
 }

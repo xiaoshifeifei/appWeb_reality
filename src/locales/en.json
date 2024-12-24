@@ -692,6 +692,7 @@
     "公告": "Notice",
     "支付列表": "Payment List",
     "支付渠道": "Payment Channel",
+    "金额限制": "Amount Configuration",
     "Homepage": "Homepage"
   },
   "tableColumn": {
@@ -880,6 +881,10 @@
     "transactionType": "Transaction Type",
     "recharge": "Recharge",
     "drawMoney": "Draw Money",
+    "giftRatio": "giftRatio",
+    "rake": "rake",
+    "maxAmount": "maxAmount",
+    "minAmount": "minAmount",
     "female": "Female"
   }
 }

@@ -1,12 +1,7 @@
 <template>
   <div>
     <div class="gva-search-box">
-      <el-form
-        ref="searchForm"
-        :inline="true"
-        :model="searchInfo"
-        label-width="60"
-      >
+      <el-form ref="searchForm" :inline="true" :model="searchInfo">
         <el-form-item :label="t('tableColumn.id')">
           <el-input
             clearable
@@ -15,28 +10,21 @@
             class="input_w"
           />
         </el-form-item>
-        <el-form-item :label="t('tableColumn.code')">
+        <el-form-item :label="t('tableColumn.channelCode')">
           <el-input
             clearable
-            v-model="searchInfo.code"
-            :placeholder="t('tableColumn.code')"
+            v-model="searchInfo.channelCode"
+            :placeholder="t('tableColumn.channelCode')"
             class="input_w"
           />
         </el-form-item>
-        <el-form-item :label="t('tableColumn.status')">
-          <el-select
+        <el-form-item :label="t('tableColumn.paymentCode')">
+          <el-input
             clearable
-            v-model="searchInfo.status"
-            :placeholder="t('tableColumn.placeholder')"
+            v-model="searchInfo.paymentCode"
+            :placeholder="t('tableColumn.paymentCode')"
             class="input_w"
-          >
-            <el-option
-              v-for="item in statusOption"
-              :key="item.value"
-              :label="t(`user.${item.label}`)"
-              :value="item.value"
-            />
-          </el-select>
+          />
         </el-form-item>
 
         <el-form-item>
@@ -50,11 +38,11 @@
       </el-form>
     </div>
     <div class="gva-table-box">
-      <!-- <div class="gva-btn-list">
+      <div class="gva-btn-list">
         <el-button type="primary" icon="plus" @click="openDialog('add')">
           {{ t("general.add") }}
         </el-button>
-      </div> -->
+      </div>
       <el-table
         border
         :data="tableData"
@@ -74,75 +62,45 @@
         />
         <el-table-column
           align="center"
-          :label="t('tableColumn.merchantId')"
+          :label="t('tableColumn.channelCode')"
           min-width="110"
-          prop="merchantId"
+          prop="channelCode"
         />
         <el-table-column
           align="center"
-          :label="t('tableColumn.apiKey')"
-          min-width="200"
-          prop="apiKey"
-        />
-
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.code')"
-          min-width="200"
-          prop="code"
-        />
-
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.url')"
-          min-width="150"
-          prop="url"
-        />
-
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.createdAt')"
+          :label="t('tableColumn.paymentCode')"
           min-width="180"
-          prop="createdAt"
+          prop="paymentCode"
         >
-          <template #default="scope">
-            <div>
-              {{ dataGet(scope.row.createdAt) }}
-            </div>
-          </template>
         </el-table-column>
+
         <el-table-column
           align="center"
-          :label="t('tableColumn.updatedAt')"
-          min-width="180"
-          prop="updatedAt"
-        >
-          <template #default="scope">
-            <div>
-              {{ dataGet(scope.row.updatedAt) }}
-            </div>
-          </template>
-        </el-table-column>
+          :label="t('tableColumn.giftRatio')"
+          min-width="100"
+          prop="giftRatio"
+        />
         <el-table-column
           align="center"
-          :label="t('tableColumn.status')"
-          min-width="70"
-          prop="status"
-        >
-          <template #default="scope">
-            <el-switch
-              v-model="scope.row.status"
-              inline-prompt
-              :active-value="1"
-              :inactive-value="0"
-              @change="
-                () => {
-                  switchStatus(scope.row);
-                }
-              "
-            />
-          </template>
-        </el-table-column>
+          :label="t('tableColumn.rake')"
+          min-width="100"
+          prop="rake"
+        />
+
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.maxAmount')"
+          min-width="100"
+          prop="max"
+        />
+
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.minAmount')"
+          min-width="100"
+          prop="min"
+        />
+
         <el-table-column
           align="center"
           fixed="right"
@@ -158,13 +116,13 @@
             >
               {{ t("general.edit") }}
             </el-button>
-            <!-- <el-button
+            <el-button
               icon="delete"
               size="small"
               @click="deleteTackFunc(scope.row)"
             >
               {{ t("general.delete") }}
-            </el-button> -->
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -207,36 +165,65 @@
         ref="apiForm"
         :model="form"
         :rules="rules"
-        label-width="100px"
+        label-width="120px"
       >
-        <el-col :span="18">
-          <el-form-item :label="t('tableColumn.code')" prop="code">
-            <el-input disabled v-model="form.code" autocomplete="off" />
+        <el-col :span="18" v-if="type == 'edit'">
+          <el-form-item :label="t('tableColumn.id')" prop="id">
+            <el-input disabled v-model="form.id" autocomplete="off" />
           </el-form-item>
         </el-col>
         <el-col :span="18">
-          <el-form-item :label="t('tableColumn.merchantId')" prop="merchantId">
-            <el-input disabled v-model="form.merchantId" autocomplete="off" />
+          <el-form-item
+            :label="t('tableColumn.channelCode')"
+            prop="channelCode"
+          >
+            <el-input v-model="form.channelCode" autocomplete="off" />
           </el-form-item>
         </el-col>
         <el-col :span="18">
-          <el-form-item :label="t('tableColumn.apiKey')" prop="apiKey">
-            <el-input disabled v-model="form.apiKey" autocomplete="off" />
+          <el-form-item
+            :label="t('tableColumn.paymentCode')"
+            prop="paymentCode"
+          >
+            <el-input v-model="form.paymentCode" autocomplete="off" />
           </el-form-item>
         </el-col>
         <el-col :span="18">
-          <el-form-item :label="t('tableColumn.url')" prop="url">
-            <el-input disabled v-model="form.url" autocomplete="off" />
+          <el-form-item :label="t('tableColumn.giftRatio')" prop="giftRatio">
+            <el-input
+              v-model="form.giftRatio"
+              @input="form.giftRatio = form.giftRatio.replace(/[^\d|\.]/g, '')"
+              autocomplete="off"
+            />
           </el-form-item>
         </el-col>
-        <el-form-item :label="t('tableColumn.status')" prop="status">
-          <el-switch
-            v-model="form.status"
-            inline-prompt
-            :active-value="1"
-            :inactive-value="0"
-          />
-        </el-form-item>
+        <el-col :span="18">
+          <el-form-item :label="t('tableColumn.rake')" prop="rake">
+            <el-input
+              v-model="form.rake"
+              @input="form.rake = form.rake.replace(/[^\d|\.]/g, '')"
+              autocomplete="off"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="18">
+          <el-form-item :label="t('tableColumn.maxAmount')" prop="max">
+            <el-input
+              v-model="form.max"
+              @input="form.max = form.max.replace(/[^\d|\.]/g, '')"
+              autocomplete="off"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="18">
+          <el-form-item :label="t('tableColumn.minAmount')" prop="min">
+            <el-input
+              v-model="form.min"
+              @input="form.min = form.min.replace(/[^\d|\.]/g, '')"
+              autocomplete="off"
+            />
+          </el-form-item>
+        </el-col>
       </el-form>
     </el-drawer>
   </div>
@@ -244,10 +231,10 @@
   
   <script setup>
 import {
-  getPaymentChannels,
-  // addPaymentChannel,
-  editPaymentChannel,
-  // delPaymentChannel,
+  getPaymentRechargeAmounts,
+  addPaymentRechargeAmount,
+  editPaymentRechargeAmount,
+  delPaymentRechargeAmount,
 } from "@/api/payment";
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -265,11 +252,12 @@ const codeOptions = ref([]);
 const value2 = ref("");
 const apis = ref([]);
 const form = ref({
-  code: null,
-  merchantId: null,
-  apiKey: null,
-  url: null,
-  status: null,
+  channelCode: null,
+  paymentCode: null,
+  giftRatio: null,
+  rake: null,
+  max: null,
+  min: null,
 });
 
 const type = ref("");
@@ -291,8 +279,8 @@ const pageSize = ref(100);
 const tableData = ref([]);
 const searchInfo = ref({
   id: null,
-  code: null,
-  status: null,
+  channelCode: null,
+  paymentCode: null,
 });
 const closeTime = (val) => {
   showTimeBo.value = val;
@@ -301,8 +289,8 @@ const closeTime = (val) => {
 const onReset = () => {
   searchInfo.value = {
     id: null,
-    code: null,
-    status: null,
+    channelCode: null,
+    paymentCode: null,
   };
 };
 const dataGet = (dateStr) => {
@@ -355,7 +343,7 @@ const replaceEmptyStringsWithNull = (obj) => {
 // 查询
 const getTableData = async () => {
   searchInfo.value = replaceEmptyStringsWithNull(searchInfo.value);
-  const table = await getPaymentChannels({
+  const table = await getPaymentRechargeAmounts({
     page: page.value,
     pageSize: pageSize.value,
     ...searchInfo.value,
@@ -381,11 +369,12 @@ const apiForm = ref(null);
 const initForm = () => {
   apiForm.value.resetFields();
   form.value = {
-    code: null,
-    merchantId: null,
-    apiKey: null,
-    url: null,
-    status: null,
+    channelCode: null,
+    paymentCode: null,
+    giftRatio: null,
+    rake: null,
+    max: null,
+    min: null,
   };
 };
 
@@ -422,7 +411,7 @@ const enterDialog = async () => {
       switch (type.value) {
         case "add":
           {
-            const res = await addPaymentChannel(form.value);
+            const res = await addPaymentRechargeAmount(form.value);
             if (res.code === 0) {
               ElMessage({
                 type: "success",
@@ -436,7 +425,7 @@ const enterDialog = async () => {
           break;
         case "edit":
           {
-            const res = await editPaymentChannel(form.value);
+            const res = await editPaymentRechargeAmount(form.value);
             if (res.code === 0) {
               ElMessage({
                 type: "success",
@@ -461,22 +450,6 @@ const enterDialog = async () => {
     }
   });
 };
-const switchStatus = async (row) => {
-  let myUserInfo = JSON.parse(JSON.stringify(row));
-
-  const res = await editPaymentChannel(myUserInfo);
-  if (res.code === 0) {
-    ElMessage({
-      type: "success",
-      message: `${
-        myUserInfo.status === 1
-          ? t("user.enabledSuccessfully")
-          : t("user.disabledSuccessfully")
-      }`,
-    });
-    getTableData();
-  }
-};
 
 const deleteTackFunc = async (row) => {
   ElMessageBox.confirm(t("general.deleteConfirm"), t("general.hint"), {
@@ -484,7 +457,7 @@ const deleteTackFunc = async (row) => {
     cancelButtonText: t("general.cancel"),
     type: "warning",
   }).then(async () => {
-    const res = await delPaymentChannel({ id: row.id });
+    const res = await delPaymentRechargeAmount({ id: row.id });
     if (res.code === 0) {
       ElMessage({
         type: "success",

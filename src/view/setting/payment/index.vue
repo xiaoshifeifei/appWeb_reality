@@ -104,12 +104,12 @@
           prop="channelCode"
         />
 
-        <el-table-column
+        <!-- <el-table-column
           align="center"
           :label="t('tableColumn.paymentCode')"
           min-width="200"
           prop="paymentCode"
-        />
+        /> -->
 
         <el-table-column
           align="center"
@@ -141,7 +141,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           align="center"
           :label="t('tableColumn.createdAt')"
           min-width="150"
@@ -152,7 +152,7 @@
               {{ dataGet(scope.row.createdAt) }}
             </div>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           align="center"
           :label="t('tableColumn.status')"
