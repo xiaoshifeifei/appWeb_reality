@@ -2,26 +2,47 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <el-form-item :label="t('tableColumn.accountId')">
-          <el-input
-            clearable
-            v-model="searchInfo.accountId"
-            :placeholder="t('tableColumn.accountId')"
-          />
-        </el-form-item>
-        <el-form-item :label="t('tableColumn.sender')">
+        <el-form-item :label="t('tableColumn.senderName')">
           <el-input
             clearable
             v-model="searchInfo.sender"
-            :placeholder="t('tableColumn.sender')"
+            :placeholder="t('tableColumn.senderName')"
+            style="width: 200px"
           />
         </el-form-item>
+        <el-form-item :label="t('tableColumn.receivers')">
+          <el-select
+            clearable
+            multiple
+            collapse-tags
+            v-model="searchInfo.receiver"
+            :placeholder="t('tableColumn.receivers')"
+            style="width: 300px"
+          >
+            <el-option
+              v-for="item in selectData"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="t('tableColumn.status')">
+          <el-select
+            clearable
+            v-model="searchInfo.status"
+            :placeholder="t('tableColumn.placeholder')"
+            class="input_w"
+          >
+            <el-option
+              v-for="item in statusOption"
+              :key="item.value"
+              :label="t(`user.${item.label}`)"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
 
-        <DataTime
-          v-model="value2"
-          :paramsValue="paramsValue"
-          @close="paramsValue = false"
-        ></DataTime>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -33,11 +54,11 @@
       </el-form>
     </div>
     <div class="gva-table-box">
-      <!-- <div class="gva-btn-list">
+      <div class="gva-btn-list">
         <el-button type="primary" icon="plus" @click="openDialog('add')">
-             {{ t("general.add") }}
+          {{ t("tableColumn.sendAnEmail") }}
         </el-button>
-      </div> -->
+      </div>
       <el-table
         border
         :data="tableData"
@@ -52,106 +73,85 @@
         <el-table-column type="selection" align="center" width="60" />
         <el-table-column
           align="center"
-          :label="t('tableColumn.accountId')"
-          min-width="80"
-          prop="accountId"
+          :label="t('tableColumn.id')"
+          min-width="100"
+          prop="id"
         />
         <el-table-column
           align="center"
-          :label="t('tableColumn.sender')"
+          :label="t('tableColumn.senderName')"
           min-width="100"
           prop="sender"
         />
         <el-table-column
           align="center"
-          :label="t('tableColumn.id')"
-          min-width="80"
-          prop="id"
-        />
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.items')"
-          min-width="220"
-          prop="items"
+          :label="t('tableColumn.receivers')"
+          min-width="100"
+          prop="receiver"
         >
           <template #default="scope">
-            <!-- <div>{{ scope.row.items }}</div> -->
-            <div v-for="(item, index) in scope.row.items" :key="index">
-              <div v-for="(item1, key, index1) in item" :key="index1">
-                <span class="span1">{{ t(`tableColumn.${key}`) }}:</span>
-                <span class="span2" :class="key == 'code' ? 'span3' : ''">
-                  <span v-if="item1 == 'diamond' || item1 == 'gold_coin'">
-                    {{ t(`tableColumn.${item1}`) }}
-                  </span>
-                  <span v-else>{{ item1 }}</span>
-                </span>
-              </div>
-              <span
-                class="span4"
-                v-if="
-                  scope.row.items.length > 1 &&
-                  scope.row.items.length - 1 > index
-                "
-              >
-              </span>
-            </div>
+            {{ scope.row.receiver == 0 ? "" : scope.row.receiver }}
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.title')"
+          min-width="100"
+          prop="content"
+        >
+          <template #default="scope">
+            <div>{{ scope.row.content.title }}</div>
           </template>
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.content')"
-          min-width="400"
+          min-width="100"
           prop="content"
         >
           <template #default="scope">
-            <!-- <div>{{ scope.row.content }}</div> -->
-            <div
-              v-for="(item, key, index) in scope.row.content"
-              :key="index"
-              class="hideSpan"
-            >
-              <span class="span4" v-if="index > 0"></span>
-              <span> {{ t("tableColumn.lang") }}: </span>
-              <span> {{ key }} </span>
-              <div v-for="(item1, key1, index1) in item" :key="index1">
-                <span v-if="key1 == 'message'">
-                  {{
-                    key1 == "title"
-                      ? t("tableColumn.title")
-                      : key1 == "message"
-                      ? t("tableColumn.message")
-                      : key1
-                  }}:
-                </span>
-                <span
-                  class="textSpan"
-                  v-if="key1 == 'message'"
-                  :class="key == 'code' ? 'span3' : ''"
-                >
-                  {{ item1 }}
-                </span>
-              </div>
-            </div>
+            <div>{{ scope.row.content.content }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.betRequiredMultiple')"
+          min-width="100"
+          prop="content"
+        >
+          <template #default="scope">
+            <div>{{ scope.row.content.betRequiredMultiple }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.amount')"
+          min-width="100"
+          prop="content"
+        >
+          <template #default="scope">
+            <div>{{ scope.row.content.amount }}</div>
           </template>
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.created')"
           min-width="200"
-          prop="created"
+          prop="createdAt"
         >
           <template #default="scope">
-            <div>{{ dataGet(scope.row.created) }}</div>
+            <div>{{ dataGet(scope.row.createdAt) }}</div>
           </template>
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.expired')"
           min-width="200"
-          prop="expired"
+          prop="expiredAt"
         >
           <template #default="scope">
-            <div>{{ dataGet(scope.row.expired) }}</div>
+            <div>{{ dataGet(scope.row.expiredAt) }}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -164,8 +164,8 @@
             <el-switch
               v-model="scope.row.status"
               inline-prompt
-              :active-value="0"
-              :inactive-value="1"
+              :active-value="1"
+              :inactive-value="2"
               @change="
                 () => {
                   switchStatus(scope.row);
@@ -189,17 +189,17 @@
             >
               {{ t("general.edit") }}
             </el-button>
-            <el-button
+            <!-- <el-button
               size="small"
               icon="delete"
               @click="deleteTackFunc(scope.row)"
             >
               {{ t("general.delete") }}
-            </el-button>
+            </el-button> -->
           </template>
         </el-table-column>
       </el-table>
-      <div class="gva-pagination">
+      <!-- <div class="gva-pagination">
         <el-pagination
           :current-page="page"
           :page-size="pageSize"
@@ -209,7 +209,7 @@
           @current-change="handleCurrentChange"
           @size-change="handleSizeChange"
         />
-      </div>
+      </div> -->
     </div>
     <el-drawer
       v-if="sendMailVisible"
@@ -235,185 +235,122 @@
         ref="mailForm"
         :model="formMail"
         :rules="rulesMail"
-        label-width="80px"
+        label-width="180px"
       >
         <el-row class="w-full">
-          <el-col :span="15">
+          <el-col :span="18" v-if="type === 'edit'">
             <el-form-item :label="t('tableColumn.id')" prop="id">
               <el-input
                 :disabled="type === 'edit'"
                 v-model="formMail.id"
                 autocomplete="off"
+                :placeholder="t('tableColumn.id')"
               />
             </el-form-item>
           </el-col>
-          <el-col :span="15">
-            <el-form-item :label="t('tableColumn.type')" prop="type">
+          <el-col :span="18">
+            <el-form-item :label="t('tableColumn.senderName')" prop="sender">
               <el-input
-                :disabled="type === 'edit'"
-                v-model="formMail.type"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="15">
-            <el-form-item :label="t('tableColumn.accountId')" prop="accountId">
-              <el-input
-                :disabled="type === 'edit'"
-                v-model="formMail.accountId"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="15">
-            <el-form-item :label="t('tableColumn.sender')" prop="sender">
-              <el-input
-                :disabled="type === 'edit'"
                 v-model="formMail.sender"
                 autocomplete="off"
+                :placeholder="t('tableColumn.senderName')"
               />
+            </el-form-item>
+          </el-col>
+          <el-col :span="18">
+            <el-form-item
+              :label="t('tableColumn.receivers')"
+              prop="receivers"
+              :rules="rules['content.receivers']"
+            >
+              <el-select
+                clearable
+                multiple
+                collapse-tags
+                v-model="formMail.receivers"
+                style="width: 100%"
+                :placeholder="t('general.pleaseSelect')"
+              >
+                <el-option
+                  v-for="item in selectData"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
-        <div
-          style="
-            padding: 0 0 20px 40px;
-            color: black;
-            font-size: 16px;
-            font-weight: 700;
-          "
+        <el-col :span="18">
+          <el-form-item :label="t('tableColumn.title')" prop="content.title">
+            <el-input
+              v-model="formMail.content.title"
+              autocomplete="off"
+              :placeholder="t('tableColumn.title')"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="18">
+          <el-form-item
+            :label="t('tableColumn.content')"
+            prop="content.content"
+          >
+            <el-input
+              v-model="formMail.content.content"
+              autocomplete="off"
+              :placeholder="t('tableColumn.content')"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="18">
+          <el-form-item :label="t('tableColumn.amount')" prop="content.amount">
+            <el-input
+              v-model="formMail.content.amount"
+              autocomplete="off"
+              @input="
+                formMail.content.amount = formMail.content.amount.replace(
+                  /[^\d|\.]/g,
+                  ''
+                )
+              "
+              :placeholder="t('tableColumn.amount')"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="18">
+          <el-form-item
+            :label="t('tableColumn.betRequiredMultiple')"
+            prop="content.betRequiredMultiple"
+          >
+            <el-input
+              v-model="formMail.content.betRequiredMultiple"
+              autocomplete="off"
+              @input="
+                formMail.content.betRequiredMultiple =
+                  formMail.content.betRequiredMultiple.replace(/[^\d|\.]/g, '')
+              "
+              :placeholder="t('tableColumn.betRequiredMultiple')"
+            />
+          </el-form-item>
+        </el-col>
+        <el-form-item
+          :label="t('tableColumn.status')"
+          prop="status"
+          v-if="type === 'edit'"
         >
-          {{ t("tableColumn.award") }}
-        </div>
-        <template v-for="(item, index) in formMail.items" :key="index">
-          <el-row class="w-full">
-            <el-col :span="6">
-              <el-form-item
-                :label="t('tableColumn.code')"
-                :prop="`items.${index}.code`"
-                :rules="rules['items.code']"
-              >
-                <el-select
-                  clearable
-                  v-model="item.code"
-                  :placeholder="t('tableColumn.placeholder')"
-                >
-                  <el-option
-                    v-for="item1 in codeOptions"
-                    :key="item1.code"
-                    :label="t(`tableColumn.${item1.code}`)"
-                    :value="item1.code"
-                  />
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="15">
-              <el-form-item
-                :label="t('tableColumn.num')"
-                :prop="`items.${index}.num`"
-                :rules="rules['items.num']"
-              >
-                <el-input
-                  style="width: 55%"
-                  v-model="item.num"
-                  autocomplete="off"
-                  @input="item.num = item.num.replace(/[^\d|\.]/g, '')"
-                  @change="handleChange(item.num, index, 'v4')"
-                />
-                <el-button
-                  style="margin-left: 20px"
-                  icon="delete"
-                  @click="delItem(index)"
-                >
-                  {{ t("general.delete") }}
-                </el-button>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </template>
-        <el-form-item>
-          <el-button type="primary" icon="plus" @click="addItem()">
-            {{ t("general.add") }}
-          </el-button>
-        </el-form-item>
-        <div
-          style="
-            padding: 0 0 20px 40px;
-            color: black;
-            font-size: 16px;
-            font-weight: 700;
-          "
-        >
-          {{ t("tableColumn.content") }}
-        </div>
-        <template v-for="(item, index) in formMail.content" :key="index">
-          <el-row class="w-full">
-            <el-col :span="15">
-              <el-form-item
-                :label="t('tableColumn.lang')"
-                :prop="`content.${index}.lang`"
-                :rules="rules['content.lang']"
-              >
-                <el-select
-                  v-model="item.lang"
-                  style="width: 100%"
-                  :placeholder="t('general.pleaseSelect')"
-                >
-                  <el-option
-                    v-for="item in completeOptions"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="15">
-              <el-form-item
-                :label="t('tableColumn.title')"
-                :prop="`content.${index}.title`"
-                :rules="rules['content.title']"
-              >
-                <el-input :min="0" v-model="item.title" autocomplete="off" />
-              </el-form-item>
-            </el-col>
-            <el-button
-              style="margin-left: 20px"
-              icon="delete"
-              @click="delContent(index)"
-            >
-              {{ t("general.delete") }}
-            </el-button>
-            <el-col :span="15">
-              <el-form-item
-                :label="t('tableColumn.message')"
-                :prop="`content.${index}.message`"
-                :rules="rules['content.message']"
-              >
-                <el-input :min="0" v-model="item.message" autocomplete="off" />
-              </el-form-item>
-            </el-col>
-            <div style="width: 100%; height: 20px"></div>
-          </el-row>
-        </template>
-        <el-form-item>
-          <el-button type="primary" icon="plus" @click="addContent()">
-            {{ t("general.add") }}
-          </el-button>
-        </el-form-item>
-        <el-form-item :label="t('tableColumn.status')" prop="status">
           <el-switch
             v-model="formMail.status"
             inline-prompt
-            :active-value="0"
-            :inactive-value="1"
+            :active-value="1"
+            :inactive-value="2"
           />
         </el-form-item>
 
         <SingleTime
+          style="margin-left: 110px"
           v-model="valueExpired"
           :title="t('tableColumn.expired')"
-          :values="formMail.expired"
+          :values="formMail.expiredAt"
           @closeTime="closeTime"
         ></SingleTime>
       </el-form>
@@ -423,12 +360,13 @@
 
 <script setup>
 import {
-  InboxGetList,
+  getMails,
   InboxDel,
-  InboxEdit,
-  virtualItemAdd,
+  sendMail,
+  editMail,
   virtualItemGetList,
 } from "@/api/tack";
+import { getAccountList } from "@/api/userInfo";
 import { ref } from "vue";
 import DataTime from "@/components/DataTime/index.vue";
 import SingleTime from "@/components/DataTime/singleTime.vue";
@@ -447,11 +385,11 @@ const apis = ref([]);
 const mySender = ref(0);
 const paramsValue = ref(false);
 const form = ref({
-  id: null,
-  content: {},
-  items: [{ code: "", num: null }],
-  status: 0, //0开启 1关闭
-  expired: "",
+  content: null,
+  loop: null,
+  loopInterval: null,
+  status: null,
+  expiredAt: null,
 });
 const value2 = ref([]);
 const valueExpired = ref("");
@@ -472,7 +410,7 @@ const sendMailVisible = ref(false);
 const codeOptions = ref([]);
 const page = ref(1);
 const total = ref(0);
-const pageSize = ref(10);
+const pageSize = ref(10000);
 const tableData = ref([]);
 const tableUser = ref([]);
 const searchInfo = ref({});
@@ -490,16 +428,21 @@ const completeOptions = ref([
   { label: "TH", value: "th" },
   { label: "VI", value: "vi" },
 ]);
+const statusOption = ref([
+  { label: "enable", value: 1 },
+  { label: "disable", value: 2 },
+]);
+const selectData = ref([]);
 const formMail = ref({
   receivers: [],
-  expired: "",
-  items: [
-    {
-      code: "",
-      num: null,
-    },
-  ],
-  content: {},
+  expiredAt: null,
+  sender: null,
+  content: {
+    title: null,
+    content: null,
+    amount: null,
+    betRequiredMultiple: null,
+  },
 });
 const shortcuts = [
   {
@@ -604,8 +547,20 @@ const closeMail = () => {
   sendMailVisible.value = false;
 };
 const rulesMail = ref({
-  id: [{ required: true, message: "请输入id", trigger: "blur" }],
-  expired: [{ required: true, message: "请选择过期时间", trigger: "blur" }],
+  sender: [{ required: true, message: "请输入发件人名称", trigger: "blur" }],
+  "content.title": [
+    { required: true, message: "请输入title", trigger: "blur" },
+  ],
+  "content.content": [
+    { required: true, message: "请输入content", trigger: "blur" },
+  ],
+  "content.amount": [
+    { required: true, message: "请输入amount", trigger: "blur" },
+  ],
+  "content.betRequiredMultiple": [
+    { required: true, message: "请输入betRequiredMultiple", trigger: "blur" },
+  ],
+  expiredAt: [{ required: true, message: "请选择过期时间", trigger: "blur" }],
 });
 const handleChange = (number, index, params, params2) => {
   if (params == "v4") {
@@ -636,52 +591,70 @@ const handleChange = (number, index, params, params2) => {
     }
   }
 };
-const enterMail = async () => {
-  if (showTimeBo.value) {
-    return ElMessage.warning(
-      t("tableColumn.placeholder") + t("tableColumn.expired")
-    );
+
+const init = async () => {
+  const table = await getAccountList({
+    page: 1,
+    pageSize: 1000000,
+    ...searchInfo.value,
+  });
+  if (table.code === 0) {
+    table.data.list.forEach((item) => {
+      selectData.value.push({
+        label: item.username || item.nickname,
+        value: item.accountId,
+      });
+    });
   }
+};
+
+init();
+
+const enterMail = async () => {
   mailForm.value.validate(async (valid) => {
     if (valid) {
-      let arrObj = {};
-      for (const key in formMail.value.content) {
-        arrObj[formMail.value.content[key].lang] = {
-          title: formMail.value.content[key].title,
-          message: formMail.value.content[key].message,
-        };
-      }
-      formMail.value.content = arrObj;
-      if (formMail.value.items != null && formMail.value.items.length) {
-        formMail.value.items.map((item, index) => {
-          item.num = item.num + "";
-          if (item.num.indexOf("B") !== -1) {
-            const newStr = item.num.replace("B", "");
-            item.num = Number(newStr) * 1000000000;
-          } else if (item.num.indexOf("M") !== -1) {
-            const newStr = item.num.replace("M", "");
-            item.num = Number(newStr) * 1000000;
-          } else if (item.num.indexOf("K") !== -1) {
-            const newStr = item.num.replace("K", "");
-            item.num = Number(newStr) * 1000;
-          } else {
-            item.num = Number(item.num);
-          }
-        });
-      }
       if (valueExpired.value) {
-        formMail.value.expired = valueExpired.value;
+        formMail.value.expiredAt = valueExpired.value;
       }
-      const res = await InboxEdit(formMail.value);
-      if (res.code === 0) {
-        ElMessage({
-          type: "success",
-          message: t("user.enabledSuccessfully"),
-          showClose: true,
-        });
+      switch (type.value) {
+        case "add":
+          {
+            const res = await sendMail(formMail.value);
+            if (res.code === 0) {
+              ElMessage({
+                type: "success",
+                message: t("user.enabledSuccessfully"),
+                showClose: true,
+              });
+            }
+            closeMail();
+            getTableData();
+          }
+          break;
+        case "edit":
+          {
+            const res = await editMail(formMail.value);
+            if (res.code === 0) {
+              ElMessage({
+                type: "success",
+                message: t("user.userEditedNote"),
+                showClose: true,
+              });
+              closeMail();
+              getTableData();
+            }
+          }
+          break;
+        default:
+          {
+            ElMessage({
+              type: "error",
+              message: t("view.api.unknownOperation"),
+              showClose: true,
+            });
+          }
+          break;
       }
-      closeMail();
-      getTableData();
     }
   });
 };
@@ -696,7 +669,7 @@ const onReset = () => {
 
 const onSubmit = () => {
   page.value = 1;
-  pageSize.value = 10;
+  pageSize.value = 100000;
   getTableData();
 };
 
@@ -706,29 +679,12 @@ const handleSizeChange = (val) => {
   getTableData();
 };
 const switchStatus = async (row) => {
-  let myUserInfo = JSON.parse(JSON.stringify(row));
-  myUserInfo.items.map((item) => {
-    item.num = item.num + "";
-    if (item.num.indexOf("B") !== -1) {
-      const newStr = item.num.replace("B", "");
-      item.num = Number(newStr) * 1000000000;
-    } else if (item.num.indexOf("M") !== -1) {
-      const newStr = item.num.replace("M", "");
-      item.num = Number(newStr) * 1000000;
-    } else if (item.num.indexOf("K") !== -1) {
-      const newStr = item.num.replace("K", "");
-      item.num = Number(newStr) * 1000;
-    } else {
-      item.num = Number(item.num);
-    }
-  });
-
-  const res = await InboxEdit(myUserInfo);
+  const res = await editMail(row);
   if (res.code === 0) {
     ElMessage({
       type: "success",
       message: `${
-        myUserInfo.status === 0
+        row.status === 1
           ? t("user.enabledSuccessfully")
           : t("user.disabledSuccessfully")
       }`,
@@ -744,15 +700,14 @@ const initMailForm = () => {
   mailForm.value.resetFields();
   formMail.value = {
     receivers: [],
-    expired: "",
-
-    items: [
-      {
-        code: "",
-        num: null,
-      },
-    ],
-    content: {},
+    expiredAt: null,
+    sender: null,
+    content: {
+      title: null,
+      content: null,
+      amount: null,
+      betRequiredMultiple: null,
+    },
   };
 };
 
@@ -763,23 +718,10 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async () => {
-  if (value2.value && value2.value.length) {
-    searchInfo.value.start = value2.value[0];
-    searchInfo.value.end = value2.value[1];
-  } else {
-    searchInfo.value.start = null;
-    searchInfo.value.end = null;
-  }
-  if (!searchInfo.value.sender) {
-    mySender.value = -1;
-  } else {
-    mySender.value = searchInfo.value.sender;
-  }
-  const table = await InboxGetList({
+  const table = await getMails({
     page: page.value,
     pageSize: pageSize.value,
     ...searchInfo.value,
-    sender: mySender.value,
   });
   if (table.code === 0) {
     table.data.list.map((item, index) => {
@@ -796,13 +738,6 @@ const getTableData = async () => {
   }
 };
 const initPage = async () => {
-  const itemData = await virtualItemGetList({
-    page: page.value,
-    pageSize: 9999,
-  });
-  if (itemData.code === 0) {
-    codeOptions.value = itemData.data.list;
-  }
   getTableData();
 };
 initPage();
@@ -842,7 +777,7 @@ const openDialog = (key) => {
       break;
   }
   type.value = key;
-  dialogFormVisible.value = true;
+  sendMailVisible.value = true;
 };
 const closeDialog = () => {
   initForm();
@@ -850,16 +785,8 @@ const closeDialog = () => {
 };
 const formKey = ref("");
 const editTackFunc = async (row) => {
-  let rows = JSON.parse(JSON.stringify(row));
-  for (const key in rows.content) {
-    rows.content[key] = {
-      lang: key,
-      ...rows.content[key],
-    };
-  }
-  formMail.value = rows;
+  formMail.value = row;
   sendMailVisible.value = true;
-
   type.value = "edit";
 };
 

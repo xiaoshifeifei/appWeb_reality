@@ -693,6 +693,7 @@
     "支付列表": "支付列表",
     "支付渠道": "支付渠道",
     "金额限制": "金额配置",
+    "邮件列表": "邮件列表",
     "Homepage": "首页"
   },
   "tableColumn": {
@@ -731,6 +732,7 @@
     "lastUpdate": "最后更新时间",
     "content": "内容",
     "sender": "发件人ID",
+    "senderName": "发件人名称",
     "accountId": "账户ID",
     "desc": "描述",
     "limit": "限制",
@@ -885,6 +887,11 @@
     "rake": "比例",
     "maxAmount": "最大金额",
     "minAmount": "最小金额",
+    "amount": "数量",
+    "receivers": "收件人",
+    "betRequiredMultiple": "投注倍数",
+    "loop": "循环次数",
+    "loopInterval": "循环间隔",
     "female": "女性"
   }
 }

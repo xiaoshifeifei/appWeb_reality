@@ -693,6 +693,7 @@
     "支付列表": "Payment List",
     "支付渠道": "Payment Channel",
     "金额限制": "Amount Configuration",
+    "邮件列表": "Email List",
     "Homepage": "Homepage"
   },
   "tableColumn": {
@@ -731,6 +732,7 @@
     "lastUpdate": "Last Update",
     "content": "Content",
     "sender": "Sender",
+    "senderName": "sender Name",
     "accountId": "Account Id",
     "desc": "Desc",
     "limit": "Limit",
@@ -885,6 +887,11 @@
     "rake": "rake",
     "maxAmount": "maxAmount",
     "minAmount": "minAmount",
+    "amount": "Amount",
+    "receivers": "receivers",
+    "betRequiredMultiple": "Bet Required Multiple",
+    "loop": "Loop",
+    "loopInterval": "Loop Interval",
     "female": "Female"
   }
 }

@@ -66,6 +66,30 @@ export const virtualItemGetList = (params) => {
   // });
 };
 
+// 公告列表
+export const getAnnouncements = (params) => {
+  return service({
+    url: "/setup/getAnnouncements",
+    method: "get",
+    params,
+  });
+};
+// 公告新增
+export const sendAnnouncement = (data) => {
+  return service({
+    url: "/setup/sendAnnouncement",
+    method: "post",
+    data,
+  });
+};
+// 公告新增
+export const editAnnouncement = (data) => {
+  return service({
+    url: "/setup/editAnnouncement",
+    method: "post",
+    data,
+  });
+};
 // 物品配置新增
 export const virtualItemAdd = (data) => {
   return service({
@@ -226,12 +250,28 @@ export const systemInboxDel = (data) => {
   });
 };
 
-// 个人邮件列表
-export const InboxGetList = (params) => {
+// 邮件列表
+export const getMails = (params) => {
   return service({
-    url: "/app/inbox/list",
+    url: "/setup/getMails",
     method: "get",
     params,
+  });
+};
+// 邮件创建
+export const sendMail = (data) => {
+  return service({
+    url: "/setup/sendMail",
+    method: "post",
+    data,
+  });
+};
+//邮件修改
+export const editMail = (data) => {
+  return service({
+    url: "/setup/editMail",
+    method: "post",
+    data,
   });
 };
 
