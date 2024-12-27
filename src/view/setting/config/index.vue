@@ -735,9 +735,15 @@ const apiForm = ref(null);
 const initForm = () => {
   apiForm.value.resetFields();
   form.value = {
-    content: null,
-    loop: null,
-    loopInterval: null,
+    code: null,
+    config: {
+      betRequiredMultiple: null,
+      bonusAmount: null,
+      giftAmountMultiple: null,
+      giftAmount: null,
+      depositAmount: null,
+      bonus: [],
+    },
     status: null,
     expiredAt: null,
   };
@@ -767,7 +773,6 @@ const closeDialog = () => {
 const editTackFunc = async (row) => {
   let rows = JSON.parse(JSON.stringify(row));
   form.value = rows;
-  console.log("form.value", form.value);
   openDialog("edit");
 };
 
@@ -837,7 +842,6 @@ const enterDialog = async () => {
           break;
         case "edit":
           {
-            console.log("form.value", form.value);
             const res = await editActivityConfig(form.value);
             if (res.code === 0) {
               ElMessage({

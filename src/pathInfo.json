@@ -24,6 +24,7 @@
   "/src/view/maintain/block/index.vue": "userInfo",
   "/src/view/order/mallOrder/index.vue": "goodsConfiguration",
   "/src/view/person/person.vue": "Person",
+  "/src/view/redemptionCode/redemption/index.vue": "notice",
   "/src/view/routerHolder.vue": "RouterHolder",
   "/src/view/set/dailyOrWeekly/index.vue": "dailyOrWeekly",
   "/src/view/set/day7Sign/index.vue": "day7Sign",

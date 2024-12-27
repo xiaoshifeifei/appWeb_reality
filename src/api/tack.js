@@ -65,6 +65,38 @@ export const virtualItemGetList = (params) => {
   //   params,
   // });
 };
+// 兑换码列表
+export const getRedemptionCodes = (params) => {
+  return service({
+    url: "/setup/getRedemptionCodes",
+    method: "get",
+    params,
+  });
+};
+// 获取兑换码类型
+export const getRedemptionCodeTypes = (params) => {
+  return service({
+    url: "/setup/getRedemptionCodeTypes",
+    method: "get",
+    params,
+  });
+};
+//兑换码新增
+export const addRedemptionCode = (data) => {
+  return service({
+    url: "/setup/addRedemptionCode",
+    method: "post",
+    data,
+  });
+};
+//兑换码编辑
+export const editRedemptionCode = (data) => {
+  return service({
+    url: "/setup/editRedemptionCode",
+    method: "post",
+    data,
+  });
+};
 
 // 公告列表
 export const getAnnouncements = (params) => {

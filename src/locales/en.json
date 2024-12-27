@@ -695,6 +695,8 @@
     "金额限制": "Amount Configuration",
     "邮件列表": "Email List",
     "活动配置": "Active Config",
+    "兑换码": "Redemption Code",
+    "兑换码列表": "Redemption Code L",
     "Homepage": "Homepage"
   },
   "tableColumn": {
@@ -899,6 +901,8 @@
     "giftAmount": "Gift Amount",
     "bonus": "Bonus",
     "min": "min",
+    "count": "Count",
+    "remainCount": "Remain Count",
     "female": "Female"
   }
 }
