@@ -90,6 +90,30 @@ export const editAnnouncement = (data) => {
     data,
   });
 };
+// 活动配置列表
+export const getActivityConfig = (params) => {
+  return service({
+    url: "/setup/getActivityConfig",
+    method: "get",
+    params,
+  });
+};
+// 活动配置修改
+export const editActivityConfig = (data) => {
+  return service({
+    url: "/setup/editActivityConfig",
+    method: "post",
+    data,
+  });
+};
+// 活动code获取
+export const getActivityCodes = (params) => {
+  return service({
+    url: "/setup/getActivityCodes",
+    method: "get",
+    params,
+  });
+};
 // 物品配置新增
 export const virtualItemAdd = (data) => {
   return service({

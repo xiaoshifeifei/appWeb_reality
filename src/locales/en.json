@@ -694,6 +694,7 @@
     "支付渠道": "Payment Channel",
     "金额限制": "Amount Configuration",
     "邮件列表": "Email List",
+    "活动配置": "Active Config",
     "Homepage": "Homepage"
   },
   "tableColumn": {
@@ -711,7 +712,7 @@
     "tag": "Tag",
     "type": "Type",
     "unlock": "Unlock",
-    "max": "Unlock",
+    "max": "unlock",
     "interval": "Interval",
     "code": "Code",
     "day": "Day",
@@ -892,6 +893,12 @@
     "betRequiredMultiple": "Bet Required Multiple",
     "loop": "Loop",
     "loopInterval": "Loop Interval",
+    "bonusAmount": "Bonus Amount",
+    "giftAmountMultiple": "Gift Amount Multiple",
+    "depositAmount": "Deposit Amount",
+    "giftAmount": "Gift Amount",
+    "bonus": "Bonus",
+    "min": "min",
     "female": "Female"
   }
 }

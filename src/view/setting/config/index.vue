@@ -1,0 +1,924 @@
+<template>
+  <div>
+    <div class="gva-search-box">
+      <el-form ref="searchForm" :inline="true" :model="searchInfo">
+        <el-form-item :label="t('tableColumn.code')">
+          <el-select
+            clearable
+            v-model="searchInfo.code"
+            :placeholder="t('tableColumn.placeholder')"
+            style="width: 300px"
+          >
+            <el-option
+              v-for="item in statusOption"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="search" @click="onSubmit">
+            {{ t("general.search") }}
+          </el-button>
+          <el-button icon="refresh" @click="onReset">
+            {{ t("general.reset") }}
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+    <div class="gva-table-box">
+      <!-- <div class="gva-btn-list">
+        <el-button type="primary" icon="plus" @click="openDialog('add')">
+          {{ t("general.add") }}
+        </el-button>
+      </div> -->
+      <el-table
+        border
+        :data="tableData"
+        @selection-change="handleSelectionChange"
+        highlight-current-row
+        :header-cell-style="{
+          backgroundColor: 'var(--el-tab-bgc)',
+          Color: '#FFF',
+        }"
+        :row-class-name="tableRowClassName"
+      >
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.code')"
+          min-width="200"
+          prop="code"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.betRequiredMultiple')"
+          min-width="200"
+          prop="config"
+        >
+          <template #default="scope">
+            <div v-if="scope.row.config.betRequiredMultiple">
+              {{ scope.row.config.betRequiredMultiple }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-if="tableDataShowBonusAmount"
+          align="center"
+          :label="t('tableColumn.bonusAmount')"
+          min-width="200"
+          prop="config"
+        >
+          <template #default="scope">
+            <div v-if="scope.row.config.bonusAmount">
+              {{ scope.row.config.bonusAmount }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-if="tableDataShowGiftAmountMultiple"
+          align="center"
+          :label="t('tableColumn.giftAmountMultiple')"
+          min-width="200"
+          prop="config"
+        >
+          <template #default="scope">
+            <div v-if="scope.row.config.giftAmountMultiple">
+              {{ scope.row.config.giftAmountMultiple }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-if="tableDataShowDepositAmount"
+          align="center"
+          :label="t('tableColumn.depositAmount')"
+          min-width="200"
+          prop="config"
+        >
+          <template #default="scope">
+            <div v-if="scope.row.config.depositAmount">
+              {{ scope.row.config.depositAmount }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-if="tableDataShowGiftAmount"
+          align="center"
+          :label="t('tableColumn.giftAmount')"
+          min-width="200"
+          prop="config"
+        >
+          <template #default="scope">
+            <div v-if="scope.row.config.giftAmount">
+              {{ scope.row.config.giftAmount }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-if="tableDataShowBonus"
+          align="center"
+          :label="t('tableColumn.bonus')"
+          min-width="400"
+          prop="config"
+        >
+          <template #default="scope">
+            <div v-for="(item, index) in scope.row.config.bonus" :key="index">
+              <div
+                v-for="(item1, key, index1) in item"
+                :key="index1"
+                class="spanCla"
+              >
+                <span>{{ t(`tableColumn.${key}`) }}: </span>
+                <span class="span3">{{ item1 }}</span>
+              </div>
+              <span
+                class="span4"
+                v-if="
+                  scope.row.config.bonus.length > 1 &&
+                  scope.row.config.bonus.length - 1 > index
+                "
+              >
+              </span>
+            </div>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.expired')"
+          min-width="200"
+          prop="expiredAt"
+        >
+          <template #default="scope">
+            <div>{{ dataGet(scope.row.expiredAt) }}</div>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.status')"
+          min-width="150"
+          prop="status"
+        >
+          <template #default="scope">
+            <el-switch
+              v-model="scope.row.status"
+              inline-prompt
+              :active-value="1"
+              :inactive-value="2"
+              @change="
+                () => {
+                  switchStatus(scope.row);
+                }
+              "
+            />
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          fixed="right"
+          :label="t('general.operations')"
+          min-width="200"
+        >
+          <template #default="scope">
+            <el-button
+              type="primary"
+              size="small"
+              icon="edit"
+              @click="editTackFunc(scope.row)"
+            >
+              {{ t("general.edit") }}
+            </el-button>
+            <!-- <el-button
+              size="small"
+              icon="delete"
+              @click="deleteTackFunc(scope.row)"
+            >
+              {{ t("general.delete") }}
+            </el-button> -->
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- <div class="gva-pagination">
+        <el-pagination
+          :current-page="page"
+          :page-size="pageSize"
+          :page-sizes="[10, 30, 50, 100]"
+          :total="total"
+          layout="total, sizes, prev, pager, next, jumper"
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+        />
+      </div> -->
+    </div>
+
+    <el-drawer
+      v-if="dialogFormVisible"
+      v-model="dialogFormVisible"
+      size="60%"
+      :before-close="closeDialog"
+      :show-close="false"
+    >
+      <template #header>
+        <div class="flex justify-between items-center">
+          <span class="text-lg">{{ dialogTitle }}</span>
+          <div>
+            <el-button @click="closeDialog">
+              {{ t("general.close") }}
+            </el-button>
+            <el-button type="primary" @click="enterDialog">
+              {{ t("general.confirm") }}
+            </el-button>
+          </div>
+        </div>
+      </template>
+
+      <el-form
+        class="myForm"
+        ref="apiForm"
+        :model="form"
+        :rules="rules"
+        label-width="120px"
+      >
+        <el-col :span="18">
+          <el-form-item :label="t('tableColumn.code')" prop="code">
+            <el-input
+              disabled
+              v-model="form.code"
+              autocomplete="off"
+              :placeholder="t('tableColumn.code')"
+            />
+          </el-form-item>
+        </el-col>
+
+        <el-col :span="18">
+          <el-form-item
+            :label="t('tableColumn.betRequiredMultiple')"
+            prop="config.betRequiredMultiple"
+          >
+            <el-input
+              v-model="form.config.betRequiredMultiple"
+              autocomplete="off"
+              @input="
+                form.config.betRequiredMultiple =
+                  form.config.betRequiredMultiple.replace(/[^\d|\.]/g, '')
+              "
+              :placeholder="t('tableColumn.betRequiredMultiple')"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="18" v-if="form.config.bonusAmount">
+          <el-form-item
+            :label="t('tableColumn.bonusAmount')"
+            prop="config.bonusAmount"
+          >
+            <el-input
+              v-model="form.config.bonusAmount"
+              autocomplete="off"
+              @input="
+                form.config.bonusAmount = form.config.bonusAmount.replace(
+                  /[^\d|\.]/g,
+                  ''
+                )
+              "
+              :placeholder="t('tableColumn.bonusAmount')"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="18" v-if="form.config.giftAmountMultiple">
+          <el-form-item
+            :label="t('tableColumn.giftAmountMultiple')"
+            prop="config.giftAmountMultiple"
+          >
+            <el-input
+              v-model="form.config.giftAmountMultiple"
+              autocomplete="off"
+              @input="
+                form.config.giftAmountMultiple =
+                  form.config.giftAmountMultiple.replace(/[^\d|\.]/g, '')
+              "
+              :placeholder="t('tableColumn.giftAmountMultiple')"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="18" v-if="form.config.depositAmount">
+          <el-form-item
+            :label="t('tableColumn.depositAmount')"
+            prop="config.depositAmount"
+          >
+            <el-input
+              v-model="form.config.depositAmount"
+              autocomplete="off"
+              @input="
+                form.config.depositAmount = form.config.depositAmount.replace(
+                  /[^\d|\.]/g,
+                  ''
+                )
+              "
+              :placeholder="t('tableColumn.depositAmount')"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="18" v-if="form.config.giftAmount">
+          <el-form-item
+            :label="t('tableColumn.giftAmount')"
+            prop="config.giftAmount"
+          >
+            <el-input
+              v-model="form.config.giftAmount"
+              autocomplete="off"
+              @input="
+                form.config.giftAmount = form.config.giftAmount.replace(
+                  /[^\d|\.]/g,
+                  ''
+                )
+              "
+              :placeholder="t('tableColumn.giftAmount')"
+            />
+          </el-form-item>
+        </el-col>
+        <div v-if="form.config.bonus && form.config.bonus.length">
+          <template v-for="(item, index) in form.config.bonus" :key="index">
+            <el-row class="w-full">
+              <el-col :span="6" v-if="item.min || type !== null">
+                <el-form-item
+                  :label="t('tableColumn.min')"
+                  :prop="`config.bonus.${index}.min`"
+                  :rules="rules['config.bonus.min']"
+                >
+                  <el-input
+                    style="width: 100%"
+                    v-model="item.min"
+                    autocomplete="off"
+                    @input="item.min = item.min.replace(/[^\d|\.]/g, '')"
+                    @change="
+                      handleChange(item.min, index, 'v4', undefined, 'min')
+                    "
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="6" v-if="item.max || type !== null">
+                <el-form-item
+                  :label="t('tableColumn.max')"
+                  :prop="`config.bonus.${index}.max`"
+                  :rules="rules['config.bonus.max']"
+                >
+                  <el-input
+                    style="width: 100%"
+                    v-model="item.max"
+                    autocomplete="off"
+                    @input="item.max = item.max.replace(/[^\d|\.]/g, '')"
+                    @change="
+                      handleChange(item.max, index, 'v4', undefined, 'max')
+                    "
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="9" v-if="item.weight || type !== null">
+                <el-form-item
+                  :label="t('tableColumn.weight')"
+                  :prop="`config.bonus.${index}.weight`"
+                  :rules="rules['config.bonus.weight']"
+                >
+                  <el-input
+                    style="width: 50%"
+                    v-model="item.weight"
+                    autocomplete="off"
+                    @input="item.weight = item.weight.replace(/[^\d|\.]/g, '')"
+                    @change="
+                      handleChange(
+                        item.weight,
+                        index,
+                        'v4',
+                        undefined,
+                        'weight'
+                      )
+                    "
+                  />
+                  <el-button
+                    style="margin-left: 20px"
+                    icon="delete"
+                    @click="delItem(index)"
+                  >
+                    {{ t("general.delete") }}
+                  </el-button>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </template>
+          <el-form-item>
+            <el-button type="primary" icon="plus" @click="addItem()">
+              {{ t("general.add") }}
+            </el-button>
+          </el-form-item>
+        </div>
+
+        <el-form-item
+          :label="t('tableColumn.status')"
+          prop="status"
+          v-if="type === 'edit'"
+        >
+          <el-switch
+            v-model="form.status"
+            inline-prompt
+            :active-value="1"
+            :inactive-value="2"
+          />
+        </el-form-item>
+
+        <SingleTime
+          style="margin-left: 50px"
+          v-model="valueExpired"
+          :title="t('tableColumn.expired')"
+          :values="form.expiredAt"
+          @closeTime="closeTime"
+        ></SingleTime>
+      </el-form>
+    </el-drawer>
+  </div>
+</template>
+  
+  <script setup>
+import {
+  getActivityConfig,
+  virtualItemDel,
+  editActivityConfig,
+  sendAnnouncement,
+  getActivityCodes,
+} from "@/api/tack";
+import { ref } from "vue";
+import { ElMessage, ElMessageBox } from "element-plus";
+import SingleTime from "@/components/DataTime/singleTime.vue";
+import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
+const { t } = useI18n(); // added by mohamed hassan to support multilanguage
+const router = useRouter();
+
+defineOptions({
+  name: "config",
+});
+const valueExpired = ref("");
+const apis = ref([]);
+const form = ref({
+  code: null,
+  config: {
+    betRequiredMultiple: null,
+    bonusAmount: null,
+    giftAmountMultiple: null,
+    giftAmount: null,
+    depositAmount: null,
+    bonus: [],
+  },
+  status: null,
+  expiredAt: null,
+});
+const statusOption = ref([]);
+const tableDataShowBonusAmount = ref(false);
+const tableDataShowGiftAmountMultiple = ref(false);
+const tableDataShowDepositAmount = ref(false);
+const tableDataShowGiftAmount = ref(false);
+const tableDataShowBonus = ref(false);
+
+const type = ref("");
+const rules = ref({
+  content: [{ required: true, message: "请输入content", trigger: "blur" }],
+  loop: [{ required: true, message: "请输入循环次数", trigger: "blur" }],
+  loopInterval: [
+    { required: true, message: "请输入循环间隔", trigger: "blur" },
+  ],
+});
+const showTimeBo = ref(false);
+const addItem = () => {
+  form.value.config.bonus.push({
+    min: null,
+    max: null,
+    weight: null,
+  });
+};
+
+const page = ref(1);
+const total = ref(0);
+const pageSize = ref(10);
+const tableData = ref([]);
+const searchInfo = ref({});
+
+const onReset = () => {
+  searchInfo.value = {};
+};
+// 搜索
+const closeTime = (val) => {
+  showTimeBo.value = val;
+};
+
+const onSubmit = () => {
+  page.value = 1;
+  pageSize.value = 10;
+  getTableData();
+};
+const delItem = (index) => {
+  form.value.config.bonus.splice(index, 1);
+};
+
+// 分页
+const handleSizeChange = (val) => {
+  pageSize.value = val;
+  getTableData();
+};
+const switchStatus = async (row) => {
+  if (row.config.bonus != null && row.config.bonus.length) {
+    row.config.bonus.map((item, index) => {
+      item.min = item.min + "";
+      if (item.min.indexOf("B") !== -1) {
+        const newStr = item.min.replace("B", "");
+        item.min = Number(newStr) * 1000000000;
+      } else if (item.min.indexOf("M") !== -1) {
+        const newStr = item.min.replace("M", "");
+        item.min = Number(newStr) * 1000000;
+      } else if (item.min.indexOf("K") !== -1) {
+        const newStr = item.min.replace("K", "");
+        item.min = Number(newStr) * 1000;
+      } else {
+        item.min = Number(item.min);
+      }
+      item.max = item.max + "";
+      if (item.max.indexOf("B") !== -1) {
+        const newStr = item.max.replace("B", "");
+        item.max = Number(newStr) * 1000000000;
+      } else if (item.max.indexOf("M") !== -1) {
+        const newStr = item.max.replace("M", "");
+        item.max = Number(newStr) * 1000000;
+      } else if (item.max.indexOf("K") !== -1) {
+        const newStr = item.max.replace("K", "");
+        item.max = Number(newStr) * 1000;
+      } else {
+        item.max = Number(item.max);
+      }
+      item.weight = item.weight + "";
+      if (item.weight.indexOf("B") !== -1) {
+        const newStr = item.weight.replace("B", "");
+        item.weight = Number(newStr) * 1000000000;
+      } else if (item.weight.indexOf("M") !== -1) {
+        const newStr = item.weight.replace("M", "");
+        item.weight = Number(newStr) * 1000000;
+      } else if (item.weight.indexOf("K") !== -1) {
+        const newStr = item.weight.replace("K", "");
+        item.weight = Number(newStr) * 1000;
+      } else {
+        item.weight = Number(item.weight);
+      }
+    });
+  }
+  const res = await editActivityConfig(row);
+  if (res.code === 0) {
+    ElMessage({
+      type: "success",
+      message: `${
+        row.status === 1
+          ? t("user.enabledSuccessfully")
+          : t("user.disabledSuccessfully")
+      }`,
+    });
+    getTableData();
+  } else {
+    getTableData();
+  }
+};
+
+const dataGet = (dateStr) => {
+  let date = new Date(dateStr);
+  let formattedDate =
+    date.getFullYear() +
+    "-" +
+    (date.getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    date.getDate().toString().padStart(2, "0") +
+    " " +
+    date.getHours().toString().padStart(2, "0") +
+    ":" +
+    date.getMinutes().toString().padStart(2, "0") +
+    ":" +
+    date.getSeconds().toString().padStart(2, "0");
+  return formattedDate;
+};
+
+const handleCurrentChange = (val) => {
+  page.value = val;
+  getTableData();
+};
+const getTableData = async () => {
+  if (!searchInfo.value.code) {
+    return ElMessage.warning(
+      t("tableColumn.placeholder") + t("tableColumn.code")
+    );
+  }
+  const table = await getActivityConfig({
+    page: page.value,
+    pageSize: pageSize.value,
+    ...searchInfo.value,
+  });
+  if (table.code === 0) {
+    tableData.value = [table.data];
+    tableData.value.map((item, index) => {
+      if (item.config.bonus != null && item.config.bonus.length > 0) {
+        item.config.bonus.map((item2, index2) => {
+          item2.min = handleChange(item2.min, index2, "v4", true, "min");
+          item2.max = handleChange(item2.max, index2, "v4", true, "max");
+          item2.weight = handleChange(
+            item2.weight,
+            index2,
+            "v4",
+            true,
+            "weight"
+          );
+        });
+      }
+    });
+    if (table.data.config.bonusAmount) {
+      tableDataShowBonusAmount.value = true;
+    } else {
+      tableDataShowBonusAmount.value = false;
+    }
+    if (table.data.config.giftAmountMultiple) {
+      tableDataShowGiftAmountMultiple.value = true;
+    } else {
+      tableDataShowGiftAmountMultiple.value = false;
+    }
+    if (table.data.config.depositAmount) {
+      tableDataShowDepositAmount.value = true;
+    } else {
+      tableDataShowDepositAmount.value = false;
+    }
+    if (table.data.config.giftAmount) {
+      tableDataShowGiftAmount.value = true;
+    } else {
+      tableDataShowGiftAmount.value = false;
+    }
+    if (table.data.config.bonus) {
+      tableDataShowBonus.value = true;
+    } else {
+      tableDataShowBonus.value = false;
+    }
+
+    // total.value = table.data.total;
+    // page.value = table.data.page;
+    // pageSize.value = table.data.pageSize;
+  }
+};
+const init = async () => {
+  const table = await getActivityCodes({
+    page: page.value,
+    pageSize: 1000,
+  });
+  if (table.code === 0) {
+    statusOption.value = table.data;
+    if (statusOption.value && statusOption.value.length) {
+      searchInfo.value.code = table.data[0];
+      getTableData();
+    }
+  }
+};
+
+init();
+const handleChange = (number, index, params, params2, params3) => {
+  if (number) {
+    number = Number(number);
+  }
+  if (params == "v4") {
+    if (number >= 1000000000) {
+      if (params2) {
+        return number / 1000000000 + "B";
+      } else {
+        return (form.value.config.bonus[index][params3] =
+          number / 1000000000 + "B");
+      }
+    } else if (number >= 1000000) {
+      if (params2) {
+        return number / 1000000 + "M";
+      } else {
+        return (form.value.config.bonus[index][params3] =
+          number / 1000000 + "M");
+      }
+    } else if (number >= 1000) {
+      if (params2) {
+        return number / 1000 + "K";
+      } else {
+        return (form.value.config.bonus[index][params3] = number / 1000 + "K");
+      }
+    } else {
+      if (params2) {
+        return number.toString();
+      } else {
+        return (form.value.config.bonus[index][params3] = number.toString());
+      }
+    }
+  }
+};
+
+// 查询
+
+// getTableData();
+// 批量操作
+const handleSelectionChange = (val) => {
+  apis.value = val;
+};
+
+const syncApiData = ref({
+  newApis: [],
+  deleteApis: [],
+  ignoreApis: [],
+});
+
+// 弹窗相关
+const apiForm = ref(null);
+const initForm = () => {
+  apiForm.value.resetFields();
+  form.value = {
+    content: null,
+    loop: null,
+    loopInterval: null,
+    status: null,
+    expiredAt: null,
+  };
+};
+
+const dialogTitle = ref(t("general.add"));
+const dialogFormVisible = ref(false);
+const openDialog = (key) => {
+  switch (key) {
+    case "add":
+      dialogTitle.value = t("general.add");
+      break;
+    case "edit":
+      dialogTitle.value = t("general.edit");
+      break;
+    default:
+      break;
+  }
+  type.value = key;
+  dialogFormVisible.value = true;
+};
+const closeDialog = () => {
+  initForm();
+  dialogFormVisible.value = false;
+};
+
+const editTackFunc = async (row) => {
+  let rows = JSON.parse(JSON.stringify(row));
+  form.value = rows;
+  console.log("form.value", form.value);
+  openDialog("edit");
+};
+
+const enterDialog = async () => {
+  apiForm.value.validate(async (valid) => {
+    if (valid) {
+      if (valueExpired.value) {
+        form.value.expiredAt = valueExpired.value;
+      }
+      if (form.value.config.bonus != null && form.value.config.bonus.length) {
+        form.value.config.bonus.map((item, index) => {
+          item.min = item.min + "";
+          if (item.min.indexOf("B") !== -1) {
+            const newStr = item.min.replace("B", "");
+            item.min = Number(newStr) * 1000000000;
+          } else if (item.min.indexOf("M") !== -1) {
+            const newStr = item.min.replace("M", "");
+            item.min = Number(newStr) * 1000000;
+          } else if (item.min.indexOf("K") !== -1) {
+            const newStr = item.min.replace("K", "");
+            item.min = Number(newStr) * 1000;
+          } else {
+            item.min = Number(item.min);
+          }
+          item.max = item.max + "";
+          if (item.max.indexOf("B") !== -1) {
+            const newStr = item.max.replace("B", "");
+            item.max = Number(newStr) * 1000000000;
+          } else if (item.max.indexOf("M") !== -1) {
+            const newStr = item.max.replace("M", "");
+            item.max = Number(newStr) * 1000000;
+          } else if (item.max.indexOf("K") !== -1) {
+            const newStr = item.max.replace("K", "");
+            item.max = Number(newStr) * 1000;
+          } else {
+            item.max = Number(item.max);
+          }
+          item.weight = item.weight + "";
+          if (item.weight.indexOf("B") !== -1) {
+            const newStr = item.weight.replace("B", "");
+            item.weight = Number(newStr) * 1000000000;
+          } else if (item.weight.indexOf("M") !== -1) {
+            const newStr = item.weight.replace("M", "");
+            item.weight = Number(newStr) * 1000000;
+          } else if (item.weight.indexOf("K") !== -1) {
+            const newStr = item.weight.replace("K", "");
+            item.weight = Number(newStr) * 1000;
+          } else {
+            item.weight = Number(item.weight);
+          }
+        });
+      }
+      switch (type.value) {
+        case "add":
+          {
+            const res = await sendAnnouncement(form.value);
+            if (res.code === 0) {
+              ElMessage({
+                type: "success",
+                message: t("user.userAddedNote"),
+                showClose: true,
+              });
+              getTableData();
+              closeDialog();
+            }
+          }
+          break;
+        case "edit":
+          {
+            console.log("form.value", form.value);
+            const res = await editActivityConfig(form.value);
+            if (res.code === 0) {
+              ElMessage({
+                type: "success",
+                message: t("user.userEditedNote"),
+                showClose: true,
+              });
+              getTableData();
+              closeDialog();
+            }
+          }
+          break;
+        default:
+          {
+            ElMessage({
+              type: "error",
+              message: t("view.api.unknownOperation"),
+              showClose: true,
+            });
+          }
+          break;
+      }
+    }
+  });
+};
+
+const deleteTackFunc = async (row) => {
+  ElMessageBox.confirm(t("general.deleteConfirm"), t("general.hint"), {
+    confirmButtonText: t("general.confirm"),
+    cancelButtonText: t("general.cancel"),
+    type: "warning",
+  }).then(async () => {
+    const res = await virtualItemDel({ code: row.code });
+    if (res.code === 0) {
+      ElMessage({
+        type: "success",
+        message: t(`general.deleteSuccess`),
+      });
+      getTableData();
+    }
+  });
+};
+const tableRowClassName = ({ row, rowIndex }) => {
+  if (rowIndex % 2 == 0) {
+    return "";
+  } else {
+    return "warnBg";
+  }
+};
+</script>
+
+<style scoped lang="scss">
+.warning {
+  color: #dc143c;
+}
+.el-input-number {
+  width: 50%;
+}
+.span1 {
+  display: inline-block;
+  width: 50%;
+  text-align: right;
+}
+.span2 {
+  display: inline-block;
+  width: calc(49% - 8px);
+  text-align: left;
+  padding-left: 8px;
+}
+.span3 {
+  font-weight: 700;
+}
+.span4 {
+  display: block;
+  border-bottom: 1px solid var(--border-color);
+  width: 50%;
+  margin: auto;
+}
+.spanCla {
+  display: inline-block;
+  margin-right: 20px;
+}
+</style>
+  

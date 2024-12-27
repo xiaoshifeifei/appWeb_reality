@@ -36,6 +36,7 @@
   "/src/view/set/tasks/index.vue": "tack",
   "/src/view/set/timedReward/index.vue": "day7Sign",
   "/src/view/setting/channels/index.vue": "channels",
+  "/src/view/setting/config/index.vue": "config",
   "/src/view/setting/notice/index.vue": "notice",
   "/src/view/setting/payment/index.vue": "payment",
   "/src/view/setting/rechargeAmount/index.vue": "channels",

@@ -694,6 +694,7 @@
     "支付渠道": "支付渠道",
     "金额限制": "金额配置",
     "邮件列表": "邮件列表",
+    "活动配置": "活动配置",
     "Homepage": "首页"
   },
   "tableColumn": {
@@ -892,6 +893,12 @@
     "betRequiredMultiple": "投注倍数",
     "loop": "循环次数",
     "loopInterval": "循环间隔",
+    "bonusAmount": "奖金金额",
+    "giftAmountMultiple": "礼品金额倍数",
+    "depositAmount": "存款金额",
+    "giftAmount": "礼品金额",
+    "bonus": "奖金",
+    "min": "最小奖励",
     "female": "女性"
   }
 }
