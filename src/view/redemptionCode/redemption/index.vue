@@ -70,42 +70,36 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.code')"
-          min-width="200"
           prop="code"
         >
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.type')"
-          min-width="200"
           prop="type"
         >
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.betRequiredMultiple')"
-          min-width="200"
           prop="betRequiredMultiple"
         >
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.bonusAmount')"
-          min-width="200"
           prop="bonusAmount"
         />
 
         <el-table-column
           align="center"
           :label="t('tableColumn.count')"
-          min-width="200"
           prop="count"
         >
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.remainCount')"
-          min-width="200"
           prop="remainCount"
         >
         </el-table-column>
@@ -113,7 +107,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.created')"
-          min-width="200"
+          min-width="120"
           prop="createdAt"
         >
           <template #default="scope">
@@ -123,7 +117,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.expired')"
-          min-width="200"
+          min-width="120"
           prop="expiredAt"
         >
           <template #default="scope">
@@ -134,7 +128,6 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.status')"
-          min-width="150"
           prop="status"
         >
           <template #default="scope">

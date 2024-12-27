@@ -1,5 +1,6 @@
 {
   "/src/view/about/index.vue": "About",
+  "/src/view/activity/config/index.vue": "config",
   "/src/view/error/index.vue": "Error",
   "/src/view/error/reload.vue": "Reload",
   "/src/view/example/breakpoint/breakpoint.vue": "BreakPoint",
