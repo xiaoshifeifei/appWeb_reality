@@ -349,10 +349,10 @@ export const InboxDel = (data) => {
   });
 };
 
-// 获取商城订单列表
-export const getMallOrderList = (params) => {
+// 获取用户留存列表
+export const getSiteDayRetained = (params) => {
   return service({
-    url: "/app/mallOrder/list",
+    url: "/statistics/getSiteDayRetained",
     method: "get",
     params,
   });

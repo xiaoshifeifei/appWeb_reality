@@ -32,12 +32,25 @@
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.transactionType')">
-          <el-input
+          <!-- <el-input
             clearable
             v-model="searchInfo.transactionType"
             :placeholder="t('tableColumn.transactionType')"
             class="input_w"
-          />
+          /> -->
+          <el-select
+            clearable
+            v-model="searchInfo.transactionType"
+            :placeholder="t('tableColumn.placeholder')"
+            class="input_w"
+          >
+            <el-option
+              v-for="item in transactionOption"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item :label="t('tableColumn.type')">
           <el-select
@@ -343,6 +356,11 @@ const accountTypeOption = ref([
   { label: "recharge", value: 1 },
   { label: "drawMoney", value: 2 },
 ]);
+const transactionOption = ref([
+  { label: "EWALLET", value: "EWALLET" },
+  { label: "QRIS", value: "QRIS" },
+  { label: "VA", value: "VA" },
+]);
 const statusOption = ref([
   { label: "enable", value: 1 },
   { label: "disable", value: 0 },
@@ -351,7 +369,7 @@ const codeOption = ref([]);
 
 const page = ref(1);
 const total = ref(0);
-const pageSize = ref(100);
+const pageSize = ref(10000);
 const tableData = ref([]);
 const searchInfo = ref({
   channelCode: null,
@@ -393,7 +411,7 @@ const dataGet = (dateStr) => {
 
 const onSubmit = () => {
   page.value = 1;
-  pageSize.value = 10;
+  pageSize.value = 10000;
   getTableData();
 };
 

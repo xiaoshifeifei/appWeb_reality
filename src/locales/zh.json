@@ -698,6 +698,7 @@
     "兑换码": "兑换码",
     "兑换码列表": "兑换码列表",
     "活动": "活动",
+    "风控": "风控",
     "Homepage": "首页"
   },
   "tableColumn": {
@@ -904,6 +905,13 @@
     "min": "最小奖励",
     "count": "可兑换次数",
     "remainCount": "剩余兑换次数",
+    "newDay": "日期",
+    "accountOnlineNum": "在线人数",
+    "accountNewAddNum": "新增人数",
+    "oneDayRetainedNum": "次留数",
+    "threeDayRetainedNum": "三日留存数",
+    "sevenDayRetainedNum": "七日留存数",
+    "thirtyDayRetainedNum": "三十日留存数",
     "female": "女性"
   }
 }

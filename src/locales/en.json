@@ -698,6 +698,7 @@
     "兑换码": "Redemption Code",
     "兑换码列表": "Redemption Code List",
     "活动": "Activity",
+    "风控": "Risk Set",
     "Homepage": "Homepage"
   },
   "tableColumn": {
@@ -904,6 +905,13 @@
     "min": "min",
     "count": "Count",
     "remainCount": "Remain Count",
+    "newDay": "Day",
+    "accountOnlineNum": "Account Online Num",
+    "accountNewAddNum": "Account NewAdd Num",
+    "oneDayRetainedNum": "oneDay Retained Num",
+    "threeDayRetainedNum": "threeDay Retained Num",
+    "sevenDayRetainedNum": "sevenDay Retained Num",
+    "thirtyDayRetainedNum": "thirtyDay Retained Num",
     "female": "Female"
   }
 }

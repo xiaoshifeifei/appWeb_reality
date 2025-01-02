@@ -2,31 +2,21 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <el-form-item :label="t('tableColumn.id')">
-          <el-input
+        <el-form-item :label="t('tableColumn.code')">
+          <el-select
             clearable
-            v-model="searchInfo.id"
-            :placeholder="t('tableColumn.id')"
+            v-model="searchInfo.code"
+            :placeholder="t('tableColumn.placeholder')"
             class="input_w"
-          />
+          >
+            <el-option
+              v-for="item in codeOption"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
         </el-form-item>
-        <el-form-item :label="t('tableColumn.channelCode')">
-          <el-input
-            clearable
-            v-model="searchInfo.channelCode"
-            :placeholder="t('tableColumn.channelCode')"
-            class="input_w"
-          />
-        </el-form-item>
-        <el-form-item :label="t('tableColumn.paymentCode')">
-          <el-input
-            clearable
-            v-model="searchInfo.paymentCode"
-            :placeholder="t('tableColumn.paymentCode')"
-            class="input_w"
-          />
-        </el-form-item>
-
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -62,9 +52,9 @@
         />
         <el-table-column
           align="center"
-          :label="t('tableColumn.channelCode')"
+          :label="t('tableColumn.code')"
           min-width="110"
-          prop="channelCode"
+          prop="code"
         />
         <el-table-column
           align="center"
@@ -231,10 +221,11 @@
   
   <script setup>
 import {
-  getPaymentRechargeAmounts,
-  addPaymentRechargeAmount,
-  editPaymentRechargeAmount,
-  delPaymentRechargeAmount,
+  getContacts,
+  addContact,
+  editContact,
+  delContact,
+  getContactCodes,
 } from "@/api/payment";
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -259,6 +250,7 @@ const form = ref({
   max: null,
   min: null,
 });
+const codeOption = ref([]);
 
 const type = ref("");
 const showTimeBo = ref(false);
@@ -268,14 +260,9 @@ const rules = ref({
   "award.num": [{ required: true, message: "请选输入数量", trigger: "blur" }],
 });
 
-const statusOption = ref([
-  { label: "enable", value: 1 },
-  { label: "disable", value: 0 },
-]);
-
 const page = ref(1);
 const total = ref(0);
-const pageSize = ref(100);
+const pageSize = ref(10);
 const tableData = ref([]);
 const searchInfo = ref({
   id: null,
@@ -314,7 +301,7 @@ const dataGet = (dateStr) => {
 
 const onSubmit = () => {
   page.value = 1;
-  pageSize.value = 100;
+  pageSize.value = 10;
   getTableData();
 };
 
@@ -340,10 +327,20 @@ const replaceEmptyStringsWithNull = (obj) => {
   return obj;
 };
 
+const getCodeS = async () => {
+  // searchInfo.value = replaceEmptyStringsWithNull(searchInfo.value);
+  const table = await getContactCodes({
+    page: page.value,
+    pageSize: 10000,
+  });
+  if (table.code === 0) {
+    codeOption.value = table.data;
+  }
+};
 // 查询
 const getTableData = async () => {
-  searchInfo.value = replaceEmptyStringsWithNull(searchInfo.value);
-  const table = await getPaymentRechargeAmounts({
+  // searchInfo.value = replaceEmptyStringsWithNull(searchInfo.value);
+  const table = await getContacts({
     page: page.value,
     pageSize: pageSize.value,
     ...searchInfo.value,
@@ -356,6 +353,7 @@ const getTableData = async () => {
   }
 };
 const initPage = async () => {
+  getCodeS();
   getTableData();
 };
 initPage();
@@ -411,7 +409,7 @@ const enterDialog = async () => {
       switch (type.value) {
         case "add":
           {
-            const res = await addPaymentRechargeAmount(form.value);
+            const res = await addContact(form.value);
             if (res.code === 0) {
               ElMessage({
                 type: "success",
@@ -425,7 +423,7 @@ const enterDialog = async () => {
           break;
         case "edit":
           {
-            const res = await editPaymentRechargeAmount(form.value);
+            const res = await editContact(form.value);
             if (res.code === 0) {
               ElMessage({
                 type: "success",
@@ -457,7 +455,7 @@ const deleteTackFunc = async (row) => {
     cancelButtonText: t("general.cancel"),
     type: "warning",
   }).then(async () => {
-    const res = await delPaymentRechargeAmount({ id: row.id });
+    const res = await delContact({ id: row.id });
     if (res.code === 0) {
       ElMessage({
         type: "success",

@@ -68,3 +68,45 @@ export const delPaymentRechargeAmount = (data) => {
     data,
   });
 };
+
+// 获取客服列表code
+export const getContactCodes = (params) => {
+  return service({
+    url: "/setup/getContactCodes",
+    method: "get",
+    params,
+  });
+};
+// 获取客服列表
+export const getContacts = (params) => {
+  return service({
+    url: "/setup/getContacts",
+    method: "get",
+    params,
+  });
+};
+// 客服配置新增
+export const addContact = (data) => {
+  return service({
+    url: "/setup/addContact",
+    method: "post",
+    data,
+  });
+};
+// 客服配置编辑
+export const editContact = (data) => {
+  return service({
+    url: "/setup/editContact",
+    method: "post",
+    data,
+  });
+};
+
+// 客服配置删除
+export const delContact = (data) => {
+  return service({
+    url: "/setup/delContact",
+    method: "post",
+    data,
+  });
+};

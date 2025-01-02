@@ -177,8 +177,6 @@ watchEffect(() => {
     const isoDate2 = now2.toISOString();
     const isoArr = [isoDate, isoDate2];
     const timeData = isoArr.map((item) => {
-      // const isoDate = dayjs(item).format("YYYY-MM-DDTHH:mm:ssZ");
-      // return isoDate;
       return item;
     });
     value2.value = timeData;
