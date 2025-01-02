@@ -339,6 +339,14 @@ export const InboxEdit = (data) => {
     data,
   });
 };
+// 获取商城订单列表
+export const getMallOrderList = (params) => {
+  return service({
+    url: "/app/mallOrder/list",
+    method: "get",
+    params,
+  });
+};
 
 // 个人邮件删除
 export const InboxDel = (data) => {
