@@ -53,49 +53,50 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.code')"
-          min-width="110"
           prop="code"
         />
         <el-table-column
           align="center"
-          :label="t('tableColumn.paymentCode')"
-          min-width="180"
-          prop="paymentCode"
+          :label="t('tableColumn.contact')"
+          prop="contact"
         >
         </el-table-column>
 
         <el-table-column
           align="center"
-          :label="t('tableColumn.giftRatio')"
-          min-width="100"
-          prop="giftRatio"
+          :label="t('tableColumn.extra')"
+          prop="extra"
         />
         <el-table-column
           align="center"
-          :label="t('tableColumn.rake')"
-          min-width="100"
-          prop="rake"
-        />
-
+          :label="t('tableColumn.created')"
+          min-width="180"
+          prop="createdAt"
+        >
+          <template #default="scope">
+            <div>
+              {{ dataGet(scope.row.createdAt) }}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
-          :label="t('tableColumn.maxAmount')"
-          min-width="100"
-          prop="max"
-        />
-
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.minAmount')"
-          min-width="100"
-          prop="min"
-        />
+          :label="t('tableColumn.updatedAt')"
+          min-width="180"
+          prop="updatedAt"
+        >
+          <template #default="scope">
+            <div>
+              {{ dataGet(scope.row.updatedAt) }}
+            </div>
+          </template>
+        </el-table-column>
 
         <el-table-column
           align="center"
           fixed="right"
           :label="t('general.operations')"
-          min-width="200"
+          min-width="150"
         >
           <template #default="scope">
             <el-button
@@ -163,54 +164,36 @@
           </el-form-item>
         </el-col>
         <el-col :span="18">
-          <el-form-item
-            :label="t('tableColumn.channelCode')"
-            prop="channelCode"
-          >
-            <el-input v-model="form.channelCode" autocomplete="off" />
+          <el-form-item :label="t('tableColumn.code')" prop="code">
+            <!-- <el-input v-model="form.code" autocomplete="off" /> -->
+            <el-select
+              clearable
+              v-model="form.code"
+              :placeholder="t('tableColumn.placeholder')"
+              class="input_w"
+            >
+              <el-option
+                v-for="item in codeOption"
+                :key="item"
+                :label="item"
+                :value="item"
+              />
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="18">
-          <el-form-item
-            :label="t('tableColumn.paymentCode')"
-            prop="paymentCode"
-          >
-            <el-input v-model="form.paymentCode" autocomplete="off" />
+          <el-form-item :label="t('tableColumn.contact')" prop="contact">
+            <el-input v-model="form.contact" autocomplete="off" />
           </el-form-item>
         </el-col>
         <el-col :span="18">
-          <el-form-item :label="t('tableColumn.giftRatio')" prop="giftRatio">
+          <el-form-item :label="t('tableColumn.extra')" prop="extra">
             <el-input
-              v-model="form.giftRatio"
-              @input="form.giftRatio = form.giftRatio.replace(/[^\d|\.]/g, '')"
+              v-model="form.extra"
+              :rows="10"
+              type="textarea"
               autocomplete="off"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="18">
-          <el-form-item :label="t('tableColumn.rake')" prop="rake">
-            <el-input
-              v-model="form.rake"
-              @input="form.rake = form.rake.replace(/[^\d|\.]/g, '')"
-              autocomplete="off"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="18">
-          <el-form-item :label="t('tableColumn.maxAmount')" prop="max">
-            <el-input
-              v-model="form.max"
-              @input="form.max = form.max.replace(/[^\d|\.]/g, '')"
-              autocomplete="off"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="18">
-          <el-form-item :label="t('tableColumn.minAmount')" prop="min">
-            <el-input
-              v-model="form.min"
-              @input="form.min = form.min.replace(/[^\d|\.]/g, '')"
-              autocomplete="off"
+              :placeholder="t('tableColumn.extra')"
             />
           </el-form-item>
         </el-col>
@@ -243,12 +226,9 @@ const codeOptions = ref([]);
 const value2 = ref("");
 const apis = ref([]);
 const form = ref({
-  channelCode: null,
-  paymentCode: null,
-  giftRatio: null,
-  rake: null,
-  max: null,
-  min: null,
+  code: null,
+  contact: null,
+  extra: null,
 });
 const codeOption = ref([]);
 
@@ -262,23 +242,15 @@ const rules = ref({
 
 const page = ref(1);
 const total = ref(0);
-const pageSize = ref(10);
+const pageSize = ref(1000);
 const tableData = ref([]);
-const searchInfo = ref({
-  id: null,
-  channelCode: null,
-  paymentCode: null,
-});
+const searchInfo = ref({});
 const closeTime = (val) => {
   showTimeBo.value = val;
 };
 
 const onReset = () => {
-  searchInfo.value = {
-    id: null,
-    channelCode: null,
-    paymentCode: null,
-  };
+  searchInfo.value = {};
 };
 const dataGet = (dateStr) => {
   let date = new Date(dateStr);
@@ -301,7 +273,7 @@ const dataGet = (dateStr) => {
 
 const onSubmit = () => {
   page.value = 1;
-  pageSize.value = 10;
+  pageSize.value = 1000;
   getTableData();
 };
 
@@ -346,10 +318,10 @@ const getTableData = async () => {
     ...searchInfo.value,
   });
   if (table.code === 0) {
-    tableData.value = table.data.list;
-    total.value = table.data.total;
-    page.value = table.data.page;
-    pageSize.value = table.data.pageSize;
+    tableData.value = table.data;
+    // total.value = table.data.total;
+    // page.value = table.data.page;
+    // pageSize.value = table.data.pageSize;
   }
 };
 const initPage = async () => {
@@ -367,12 +339,9 @@ const apiForm = ref(null);
 const initForm = () => {
   apiForm.value.resetFields();
   form.value = {
-    channelCode: null,
-    paymentCode: null,
-    giftRatio: null,
-    rake: null,
-    max: null,
-    min: null,
+    code: null,
+    contact: null,
+    extra: null,
   };
 };
 

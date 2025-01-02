@@ -912,6 +912,8 @@
     "threeDayRetainedNum": "threeDay Retained Num",
     "sevenDayRetainedNum": "sevenDay Retained Num",
     "thirtyDayRetainedNum": "thirtyDay Retained Num",
+    "contact": "Contact",
+    "extra": "Extra",
     "female": "Female"
   }
 }

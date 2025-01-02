@@ -912,6 +912,8 @@
     "threeDayRetainedNum": "三日留存数",
     "sevenDayRetainedNum": "七日留存数",
     "thirtyDayRetainedNum": "三十日留存数",
+    "contact": "联系",
+    "extra": "附加",
     "female": "女性"
   }
 }
