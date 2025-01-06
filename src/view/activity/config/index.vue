@@ -47,7 +47,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.code')"
-          min-width="200"
+          min-width="280"
           prop="code"
         >
         </el-table-column>
@@ -112,6 +112,19 @@
           <template #default="scope">
             <div v-if="scope.row.config.giftAmount">
               {{ scope.row.config.giftAmount }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-if="tableDataShowInterval"
+          align="center"
+          :label="t('tableColumn.interval')"
+          min-width="200"
+          prop="config"
+        >
+          <template #default="scope">
+            <div v-if="scope.row.config.interval">
+              {{ scope.row.config.interval }}
             </div>
           </template>
         </el-table-column>
@@ -339,7 +352,13 @@
             />
           </el-form-item>
         </el-col>
-        <div v-if="form.config.bonus && form.config.bonus.length">
+        <div
+          v-if="
+            form.config.bonus &&
+            form.config.bonus.length &&
+            form.code == 'DAILY_WHOOSH'
+          "
+        >
           <template v-for="(item, index) in form.config.bonus" :key="index">
             <el-row class="w-full">
               <el-col :span="6" v-if="item.min || type !== null">
@@ -414,6 +433,83 @@
             </el-button>
           </el-form-item>
         </div>
+        <div
+          v-if="
+            form.config.bonus &&
+            form.config.bonus.length &&
+            (form.code == 'TIMED_REWARD_INSTANT_BONUS' ||
+              form.code == 'TIMED_REWARD_TURBO_BONUS' ||
+              form.code == 'TIMED_REWARD_MEGA_WHEEL')
+          "
+        >
+          <template v-for="(item, index) in form.config.bonus" :key="index">
+            <el-row class="w-full">
+              <el-col :span="6" v-if="item.max || type !== null">
+                <el-form-item
+                  :label="t('tableColumn.bonusAmount')"
+                  :prop="`config.bonus.${index}.bonusAmount`"
+                  :rules="rules['config.bonus.bonusAmount']"
+                >
+                  <el-input
+                    style="width: 100%"
+                    v-model="item.bonusAmount"
+                    autocomplete="off"
+                    @input="
+                      item.bonusAmount = item.bonusAmount.replace(
+                        /[^\d|\.]/g,
+                        ''
+                      )
+                    "
+                    @change="
+                      handleChange(
+                        item.bonusAmount,
+                        index,
+                        'v4',
+                        undefined,
+                        'bonusAmount'
+                      )
+                    "
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="9" v-if="item.weight || type !== null">
+                <el-form-item
+                  :label="t('tableColumn.weight')"
+                  :prop="`config.bonus.${index}.weight`"
+                  :rules="rules['config.bonus.weight']"
+                >
+                  <el-input
+                    style="width: 50%"
+                    v-model="item.weight"
+                    autocomplete="off"
+                    @input="item.weight = item.weight.replace(/[^\d|\.]/g, '')"
+                    @change="
+                      handleChange(
+                        item.weight,
+                        index,
+                        'v4',
+                        undefined,
+                        'weight'
+                      )
+                    "
+                  />
+                  <el-button
+                    style="margin-left: 20px"
+                    icon="delete"
+                    @click="delItem(index)"
+                  >
+                    {{ t("general.delete") }}
+                  </el-button>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </template>
+          <el-form-item>
+            <el-button type="primary" icon="plus" @click="addItem()">
+              {{ t("general.add") }}
+            </el-button>
+          </el-form-item>
+        </div>
 
         <el-form-item
           :label="t('tableColumn.status')"
@@ -444,7 +540,7 @@
 import {
   getActivityConfig,
   virtualItemDel,
-  editActivityConfig,
+  editOrNewActivityConfig,
   sendAnnouncement,
   getActivityCodes,
 } from "@/api/tack";
@@ -480,6 +576,7 @@ const tableDataShowGiftAmountMultiple = ref(false);
 const tableDataShowDepositAmount = ref(false);
 const tableDataShowGiftAmount = ref(false);
 const tableDataShowBonus = ref(false);
+const tableDataShowInterval = ref(false);
 
 const type = ref("");
 const rules = ref({
@@ -529,32 +626,54 @@ const handleSizeChange = (val) => {
 const switchStatus = async (row) => {
   if (row.config.bonus != null && row.config.bonus.length) {
     row.config.bonus.map((item, index) => {
-      item.min = item.min + "";
-      if (item.min.indexOf("B") !== -1) {
-        const newStr = item.min.replace("B", "");
-        item.min = Number(newStr) * 1000000000;
-      } else if (item.min.indexOf("M") !== -1) {
-        const newStr = item.min.replace("M", "");
-        item.min = Number(newStr) * 1000000;
-      } else if (item.min.indexOf("K") !== -1) {
-        const newStr = item.min.replace("K", "");
-        item.min = Number(newStr) * 1000;
-      } else {
-        item.min = Number(item.min);
+      if (row.code == "DAILY_WHOOSH") {
+        item.min = item.min + "";
+        if (item.min.indexOf("B") !== -1) {
+          const newStr = item.min.replace("B", "");
+          item.min = Number(newStr) * 1000000000;
+        } else if (item.min.indexOf("M") !== -1) {
+          const newStr = item.min.replace("M", "");
+          item.min = Number(newStr) * 1000000;
+        } else if (item.min.indexOf("K") !== -1) {
+          const newStr = item.min.replace("K", "");
+          item.min = Number(newStr) * 1000;
+        } else {
+          item.min = Number(item.min);
+        }
+        item.max = item.max + "";
+        if (item.max.indexOf("B") !== -1) {
+          const newStr = item.max.replace("B", "");
+          item.max = Number(newStr) * 1000000000;
+        } else if (item.max.indexOf("M") !== -1) {
+          const newStr = item.max.replace("M", "");
+          item.max = Number(newStr) * 1000000;
+        } else if (item.max.indexOf("K") !== -1) {
+          const newStr = item.max.replace("K", "");
+          item.max = Number(newStr) * 1000;
+        } else {
+          item.max = Number(item.max);
+        }
       }
-      item.max = item.max + "";
-      if (item.max.indexOf("B") !== -1) {
-        const newStr = item.max.replace("B", "");
-        item.max = Number(newStr) * 1000000000;
-      } else if (item.max.indexOf("M") !== -1) {
-        const newStr = item.max.replace("M", "");
-        item.max = Number(newStr) * 1000000;
-      } else if (item.max.indexOf("K") !== -1) {
-        const newStr = item.max.replace("K", "");
-        item.max = Number(newStr) * 1000;
-      } else {
-        item.max = Number(item.max);
+      if (
+        row.code == "TIMED_REWARD_INSTANT_BONUS" ||
+        row.code == "TIMED_REWARD_TURBO_BONUS" ||
+        row.code == "TIMED_REWARD_MEGA_WHEEL"
+      ) {
+        item.bonusAmount = item.bonusAmount + "";
+        if (item.bonusAmount.indexOf("B") !== -1) {
+          const newStr = item.bonusAmount.replace("B", "");
+          item.bonusAmount = Number(newStr) * 1000000000;
+        } else if (item.bonusAmount.indexOf("M") !== -1) {
+          const newStr = item.bonusAmount.replace("M", "");
+          item.bonusAmount = Number(newStr) * 1000000;
+        } else if (item.bonusAmount.indexOf("K") !== -1) {
+          const newStr = item.bonusAmount.replace("K", "");
+          item.bonusAmount = Number(newStr) * 1000;
+        } else {
+          item.bonusAmount = Number(item.bonusAmount);
+        }
       }
+
       item.weight = item.weight + "";
       if (item.weight.indexOf("B") !== -1) {
         const newStr = item.weight.replace("B", "");
@@ -570,7 +689,7 @@ const switchStatus = async (row) => {
       }
     });
   }
-  const res = await editActivityConfig(row);
+  const res = await editOrNewActivityConfig(row);
   if (res.code === 0) {
     ElMessage({
       type: "success",
@@ -623,8 +742,23 @@ const getTableData = async () => {
     tableData.value.map((item, index) => {
       if (item.config.bonus != null && item.config.bonus.length > 0) {
         item.config.bonus.map((item2, index2) => {
-          item2.min = handleChange(item2.min, index2, "v4", true, "min");
-          item2.max = handleChange(item2.max, index2, "v4", true, "max");
+          if (item.code == "DAILY_WHOOSH") {
+            item2.min = handleChange(item2.min, index2, "v4", true, "min");
+            item2.max = handleChange(item2.max, index2, "v4", true, "max");
+          } else if (
+            item.code == "TIMED_REWARD_INSTANT_BONUS" ||
+            item.code == "TIMED_REWARD_TURBO_BONUS" ||
+            item.code == "TIMED_REWARD_MEGA_WHEEL"
+          ) {
+            item2.bonusAmount = handleChange(
+              item2.bonusAmount,
+              index2,
+              "v4",
+              true,
+              "bonusAmount"
+            );
+          }
+
           item2.weight = handleChange(
             item2.weight,
             index2,
@@ -655,6 +789,11 @@ const getTableData = async () => {
     } else {
       tableDataShowGiftAmount.value = false;
     }
+    if (table.data.config.interval) {
+      tableDataShowInterval.value = true;
+    } else {
+      tableDataShowInterval.value = false;
+    }
     if (table.data.config.bonus) {
       tableDataShowBonus.value = true;
     } else {
@@ -684,6 +823,8 @@ init();
 const handleChange = (number, index, params, params2, params3) => {
   if (number) {
     number = Number(number);
+  } else {
+    return;
   }
   if (params == "v4") {
     if (number >= 1000000000) {
@@ -784,32 +925,54 @@ const enterDialog = async () => {
       }
       if (form.value.config.bonus != null && form.value.config.bonus.length) {
         form.value.config.bonus.map((item, index) => {
-          item.min = item.min + "";
-          if (item.min.indexOf("B") !== -1) {
-            const newStr = item.min.replace("B", "");
-            item.min = Number(newStr) * 1000000000;
-          } else if (item.min.indexOf("M") !== -1) {
-            const newStr = item.min.replace("M", "");
-            item.min = Number(newStr) * 1000000;
-          } else if (item.min.indexOf("K") !== -1) {
-            const newStr = item.min.replace("K", "");
-            item.min = Number(newStr) * 1000;
-          } else {
-            item.min = Number(item.min);
+          if (form.value.code == "DAILY_WHOOSH") {
+            item.min = item.min + "";
+            if (item.min.indexOf("B") !== -1) {
+              const newStr = item.min.replace("B", "");
+              item.min = Number(newStr) * 1000000000;
+            } else if (item.min.indexOf("M") !== -1) {
+              const newStr = item.min.replace("M", "");
+              item.min = Number(newStr) * 1000000;
+            } else if (item.min.indexOf("K") !== -1) {
+              const newStr = item.min.replace("K", "");
+              item.min = Number(newStr) * 1000;
+            } else {
+              item.min = Number(item.min);
+            }
+            item.max = item.max + "";
+            if (item.max.indexOf("B") !== -1) {
+              const newStr = item.max.replace("B", "");
+              item.max = Number(newStr) * 1000000000;
+            } else if (item.max.indexOf("M") !== -1) {
+              const newStr = item.max.replace("M", "");
+              item.max = Number(newStr) * 1000000;
+            } else if (item.max.indexOf("K") !== -1) {
+              const newStr = item.max.replace("K", "");
+              item.max = Number(newStr) * 1000;
+            } else {
+              item.max = Number(item.max);
+            }
           }
-          item.max = item.max + "";
-          if (item.max.indexOf("B") !== -1) {
-            const newStr = item.max.replace("B", "");
-            item.max = Number(newStr) * 1000000000;
-          } else if (item.max.indexOf("M") !== -1) {
-            const newStr = item.max.replace("M", "");
-            item.max = Number(newStr) * 1000000;
-          } else if (item.max.indexOf("K") !== -1) {
-            const newStr = item.max.replace("K", "");
-            item.max = Number(newStr) * 1000;
-          } else {
-            item.max = Number(item.max);
+          if (
+            form.value.code == "TIMED_REWARD_INSTANT_BONUS" ||
+            form.value.code == "TIMED_REWARD_TURBO_BONUS" ||
+            form.value.code == "TIMED_REWARD_MEGA_WHEEL"
+          ) {
+            item.bonusAmount = item.bonusAmount + "";
+            if (item.bonusAmount.indexOf("B") !== -1) {
+              const newStr = item.bonusAmount.replace("B", "");
+              item.bonusAmount = Number(newStr) * 1000000000;
+            } else if (item.bonusAmount.indexOf("M") !== -1) {
+              const newStr = item.bonusAmount.replace("M", "");
+              item.bonusAmount = Number(newStr) * 1000000;
+            } else if (item.bonusAmount.indexOf("K") !== -1) {
+              const newStr = item.bonusAmount.replace("K", "");
+              item.bonusAmount = Number(newStr) * 1000;
+            } else {
+              item.bonusAmount = Number(item.bonusAmount);
+            }
           }
+
           item.weight = item.weight + "";
           if (item.weight.indexOf("B") !== -1) {
             const newStr = item.weight.replace("B", "");
@@ -842,7 +1005,7 @@ const enterDialog = async () => {
           break;
         case "edit":
           {
-            const res = await editActivityConfig(form.value);
+            const res = await editOrNewActivityConfig(form.value);
             if (res.code === 0) {
               ElMessage({
                 type: "success",

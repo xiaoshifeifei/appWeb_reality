@@ -139,10 +139,18 @@ export const getActivityConfig = (params) => {
     params,
   });
 };
-// 活动配置修改
-export const editActivityConfig = (data) => {
+// 任务配置列表
+export const getMissionConfig = (params) => {
   return service({
-    url: "/setup/editActivityConfig",
+    url: "/setup/getMissionConfig",
+    method: "get",
+    params,
+  });
+};
+// 活动配置修改
+export const editOrNewActivityConfig = (data) => {
+  return service({
+    url: "/setup/editOrNewActivityConfig",
     method: "post",
     data,
   });
@@ -151,6 +159,14 @@ export const editActivityConfig = (data) => {
 export const getActivityCodes = (params) => {
   return service({
     url: "/setup/getActivityCodes",
+    method: "get",
+    params,
+  });
+};
+// 任务code获取
+export const getMissionCodes = (params) => {
+  return service({
+    url: "/setup/getMissionCodes",
     method: "get",
     params,
   });

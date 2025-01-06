@@ -186,6 +186,7 @@
   <script setup>
 import { getDayTimePeriodAccountNum } from "@/api/userInfo";
 import SingleTime from "@/components/DataTime/singleTime.vue";
+import { ElMessage, ElMessageBox } from "element-plus";
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
@@ -199,7 +200,7 @@ defineOptions({
 
 const page = ref(1);
 const total = ref(0);
-const pageSize = ref(1000);
+const pageSize = ref(100000);
 const tableData = ref([]);
 const searchInfo = ref({});
 const form = ref({});
@@ -258,9 +259,8 @@ const disabledDate = (time) => {
 
 const onSubmit = () => {
   page.value = 1;
-  pageSize.value = 1000;
+  pageSize.value = 100000;
   searchInfo.value.day = value2.value;
-
   getTableData();
 };
 
@@ -277,6 +277,11 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async () => {
+  if (!searchInfo.value.day || searchInfo.value.day == null) {
+    return ElMessage.warning(
+      t("tableColumn.placeholder") + t("tableColumn.time")
+    );
+  }
   const table = await getDayTimePeriodAccountNum({
     page: page.value,
     pageSize: pageSize.value,

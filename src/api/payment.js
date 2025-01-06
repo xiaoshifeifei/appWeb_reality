@@ -35,35 +35,69 @@ export const editPaymentChannel = (data) => {
   });
 };
 
-// 获取金额配置列表
-export const getPaymentRechargeAmounts = (params) => {
+// 获取充值配置列表
+export const getPaymentDepositRechargeAmounts = (params) => {
   return service({
-    url: "/setup/getPaymentRechargeAmounts",
+    url: "/setup/getPaymentDepositRechargeAmounts",
     method: "get",
     params,
   });
 };
-// 金额配置新增
-export const addPaymentRechargeAmount = (data) => {
+// 充值配置新增
+export const addPaymentDepositRechargeAmount = (data) => {
   return service({
-    url: "/setup/addPaymentRechargeAmount",
+    url: "/setup/addPaymentDepositRechargeAmount",
     method: "post",
     data,
   });
 };
-// 金额配置编辑
-export const editPaymentRechargeAmount = (data) => {
+// 充值配置编辑
+export const editPaymentDepositRechargeAmount = (data) => {
   return service({
-    url: "/setup/editPaymentRechargeAmount",
+    url: "/setup/editPaymentDepositRechargeAmount",
     method: "post",
     data,
   });
 };
 
-// 金额配置删除
-export const delPaymentRechargeAmount = (data) => {
+// 充值配置删除
+export const delPaymentDepositRechargeAmount = (data) => {
   return service({
-    url: "/setup/delPaymentRechargeAmount",
+    url: "/setup/delPaymentDepositRechargeAmount",
+    method: "post",
+    data,
+  });
+};
+
+// 获取取款配置列表
+export const getPaymentWithdrawRechargeAmounts = (params) => {
+  return service({
+    url: "/setup/getPaymentWithdrawRechargeAmounts",
+    method: "get",
+    params,
+  });
+};
+// 取款配置新增
+export const addPaymentWithdrawRechargeAmount = (data) => {
+  return service({
+    url: "/setup/addPaymentWithdrawRechargeAmount",
+    method: "post",
+    data,
+  });
+};
+// 取款配置编辑
+export const editPaymentWithdrawRechargeAmount = (data) => {
+  return service({
+    url: "/setup/editPaymentWithdrawRechargeAmount",
+    method: "post",
+    data,
+  });
+};
+
+// 取款配置删除
+export const delPaymentWithdrawRechargeAmount = (data) => {
+  return service({
+    url: "/setup/delPaymentWithdrawRechargeAmount",
     method: "post",
     data,
   });

@@ -76,17 +76,10 @@
 
         <el-table-column
           align="center"
-          :label="t('tableColumn.giftRatio')"
+          :label="t('tableColumn.fee') + ' (%)'"
           min-width="100"
-          prop="giftRatio"
+          prop="fee"
         />
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.rake')"
-          min-width="100"
-          prop="rake"
-        />
-
         <el-table-column
           align="center"
           :label="t('tableColumn.maxAmount')"
@@ -99,6 +92,36 @@
           :label="t('tableColumn.minAmount')"
           min-width="100"
           prop="min"
+        />
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.feeMin')"
+          min-width="150"
+          prop="feeMin"
+        />
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.firstMax')"
+          min-width="150"
+          prop="firstMax"
+        />
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.firstMin')"
+          min-width="150"
+          prop="firstMin"
+        />
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.noFeeRequired')"
+          min-width="120"
+          prop="noFeeRequired"
+        />
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.rake')"
+          min-width="100"
+          prop="rake"
         />
 
         <el-table-column
@@ -165,7 +188,7 @@
         ref="apiForm"
         :model="form"
         :rules="rules"
-        label-width="120px"
+        label-width="150px"
       >
         <el-col :span="18" v-if="type == 'edit'">
           <el-form-item :label="t('tableColumn.id')" prop="id">
@@ -189,16 +212,16 @@
           </el-form-item>
         </el-col>
         <el-col :span="18">
-          <el-form-item :label="t('tableColumn.giftRatio')" prop="giftRatio">
+          <el-form-item :label="t('tableColumn.fee') + ' (%)'" prop="fee">
             <el-input
-              v-model="form.giftRatio"
-              @input="form.giftRatio = form.giftRatio.replace(/[^\d|\.]/g, '')"
+              v-model="form.fee"
+              @input="form.fee = form.fee.replace(/[^\d|\.]/g, '')"
               autocomplete="off"
             />
           </el-form-item>
         </el-col>
         <el-col :span="18">
-          <el-form-item :label="t('tableColumn.rake')" prop="rake">
+          <el-form-item :label="t('tableColumn.rake') + ' (%)'" prop="rake">
             <el-input
               v-model="form.rake"
               @input="form.rake = form.rake.replace(/[^\d|\.]/g, '')"
@@ -226,6 +249,47 @@
             />
           </el-form-item>
         </el-col>
+        <el-col :span="18">
+          <el-form-item :label="t('tableColumn.feeMin')" prop="feeMin">
+            <el-input
+              v-model="form.feeMin"
+              @input="form.feeMin = form.feeMin.replace(/[^\d|\.]/g, '')"
+              autocomplete="off"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="18">
+          <el-form-item :label="t('tableColumn.firstMax')" prop="firstMax">
+            <el-input
+              v-model="form.firstMax"
+              @input="form.firstMax = form.firstMax.replace(/[^\d|\.]/g, '')"
+              autocomplete="off"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="18">
+          <el-form-item :label="t('tableColumn.firstMin')" prop="firstMin">
+            <el-input
+              v-model="form.firstMin"
+              @input="form.firstMin = form.firstMin.replace(/[^\d|\.]/g, '')"
+              autocomplete="off"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="18">
+          <el-form-item
+            :label="t('tableColumn.noFeeRequired')"
+            prop="noFeeRequired"
+          >
+            <el-input
+              v-model="form.noFeeRequired"
+              @input="
+                form.noFeeRequired = form.noFeeRequired.replace(/[^\d|\.]/g, '')
+              "
+              autocomplete="off"
+            />
+          </el-form-item>
+        </el-col>
       </el-form>
     </el-drawer>
   </div>
@@ -233,10 +297,10 @@
   
   <script setup>
 import {
-  getPaymentDepositRechargeAmounts,
-  addPaymentDepositRechargeAmount,
-  editPaymentDepositRechargeAmount,
-  delPaymentDepositRechargeAmount,
+  getPaymentWithdrawRechargeAmounts,
+  addPaymentWithdrawRechargeAmount,
+  editPaymentWithdrawRechargeAmount,
+  delPaymentWithdrawRechargeAmount,
 } from "@/api/payment";
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -345,7 +409,7 @@ const replaceEmptyStringsWithNull = (obj) => {
 // 查询
 const getTableData = async () => {
   searchInfo.value = replaceEmptyStringsWithNull(searchInfo.value);
-  const table = await getPaymentDepositRechargeAmounts({
+  const table = await getPaymentWithdrawRechargeAmounts({
     page: page.value,
     pageSize: pageSize.value,
     ...searchInfo.value,
@@ -444,10 +508,11 @@ const enterDialog = async () => {
           form.value.max = Number(form.value.max);
         }
       }
+
       switch (type.value) {
         case "add":
           {
-            const res = await addPaymentDepositRechargeAmount(form.value);
+            const res = await addPaymentWithdrawRechargeAmount(form.value);
             if (res.code === 0) {
               ElMessage({
                 type: "success",
@@ -461,7 +526,7 @@ const enterDialog = async () => {
           break;
         case "edit":
           {
-            const res = await editPaymentDepositRechargeAmount(form.value);
+            const res = await editPaymentWithdrawRechargeAmount(form.value);
             if (res.code === 0) {
               ElMessage({
                 type: "success",
@@ -493,7 +558,7 @@ const deleteTackFunc = async (row) => {
     cancelButtonText: t("general.cancel"),
     type: "warning",
   }).then(async () => {
-    const res = await delPaymentDepositRechargeAmount({ id: row.id });
+    const res = await delPaymentWithdrawRechargeAmount({ id: row.id });
     if (res.code === 0) {
       ElMessage({
         type: "success",

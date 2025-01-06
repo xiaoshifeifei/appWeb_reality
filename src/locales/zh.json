@@ -710,6 +710,9 @@
     "登录日志": "登录日志",
     "支付提现列表": "支付提现列表",
     "用户记录": "用户记录",
+    "充值配置": "充值配置",
+    "任务配置": "任务配置",
+    "取款配置": "取款配置",
     "Homepage": "首页"
   },
   "tableColumn": {
@@ -755,7 +758,7 @@
     "roomCode": "房间号",
     "mode": "模式",
     "initialize": "初始值",
-    "weight": "重量",
+    "weight": "权重",
     "game": "游戏",
     "num": "数量",
     "lang": "语言",
@@ -932,7 +935,7 @@
     "method": "支付提现方式",
     "transferNo": "第三方交易号",
     "activityCode": "活动Code",
-    "depositFirst": "首次充值",
+    "first": "首次充值",
     "depositTimes": "充值时间",
     "receivingPaymentId": "收款ID",
     "remark": "备注",
@@ -944,6 +947,15 @@
     "onlineNum": "在线人数",
     "loginNum": "登录人数",
     "hour": "时间",
+    "fee": "手续费",
+    "firstMin": "首次取款最小金额",
+    "firstMax": "首次取款最大金额",
+    "feeMin": "手续费最少金额",
+    "noFeeRequired": "免手续费值",
+    "requiredTimes": "所需时间",
+    "multiple": "倍数",
+    "requiredAmount": "所需金额",
+    "requiredWinAmount": "所需获胜金额",
     "female": "女性"
   }
 }

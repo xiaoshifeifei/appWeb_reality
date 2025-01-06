@@ -710,6 +710,9 @@
     "登录日志": "Login Log",
     "支付提现列表": "Payment Withdrawal List",
     "用户记录": "User Record",
+    "充值配置": "Recharge Configuration",
+    "任务配置": "Task Configuration",
+    "取款配置": "Withdrawal Configuration",
     "Homepage": "Homepage"
   },
   "tableColumn": {
@@ -932,7 +935,7 @@
     "method": "Method",
     "transferNo": "Transfer No",
     "activityCode": "Activity Code",
-    "depositFirst": "Deposit First",
+    "first": "First",
     "depositTimes": "Deposit Times",
     "receivingPaymentId": "Receiving PaymentId",
     "remark": "Remark",
@@ -944,6 +947,15 @@
     "onlineNum": "Online Num",
     "loginNum": "Login Num",
     "hour": "Hour",
+    "fee": "Fee",
+    "firstMin": "First Min",
+    "firstMax": "First Max",
+    "feeMin": "Fee Min",
+    "noFeeRequired": "No Fee Required",
+    "requiredTimes": "Required Times",
+    "multiple": "Multiple",
+    "requiredAmount": "Required Amount",
+    "requiredWinAmount": "Required Win Amount",
     "female": "Female"
   }
 }

@@ -45,6 +45,8 @@
   "/src/view/setting/notice/index.vue": "notice",
   "/src/view/setting/payment/index.vue": "payment",
   "/src/view/setting/rechargeAmount/index.vue": "channels",
+  "/src/view/setting/taskConfiguration/index.vue": "config",
+  "/src/view/setting/withdrawAmount/index.vue": "channels",
   "/src/view/statistics/itemOriginInOut/index.vue": "userInfo",
   "/src/view/statistics/mallDaySales/index.vue": "userInfo",
   "/src/view/statistics/userItemInOut/index.vue": "userInfo",

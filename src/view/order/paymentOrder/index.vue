@@ -106,9 +106,9 @@
         </el-table-column>
         <el-table-column
           align="center"
-          :label="t('tableColumn.depositFirst')"
+          :label="t('tableColumn.first')"
           min-width="150"
-          prop="depositFirst"
+          prop="first"
         >
         </el-table-column>
         <el-table-column
