@@ -72,56 +72,56 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.accountId')"
-          min-width="60"
+          min-width="100"
           prop="accountId"
         >
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.activityCode')"
-          min-width="100"
+          min-width="150"
           prop="activityCode"
         >
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.amount')"
-          min-width="100"
+          min-width="150"
           prop="amount"
         >
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.betRequiredMultiple')"
-          min-width="100"
+          min-width="150"
           prop="betRequiredMultiple"
         >
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.channelCode')"
-          min-width="100"
+          min-width="150"
           prop="channelCode"
         >
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.depositFirst')"
-          min-width="100"
+          min-width="150"
           prop="depositFirst"
         >
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.depositTimes')"
-          min-width="100"
+          min-width="150"
           prop="depositTimes"
         >
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.giftAmount')"
-          min-width="100"
+          min-width="150"
           prop="giftAmount"
         >
         </el-table-column>
@@ -135,28 +135,28 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.message')"
-          min-width="100"
+          min-width="200"
           prop="message"
         >
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.method')"
-          min-width="100"
+          min-width="120"
           prop="method"
         >
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.orderNo')"
-          min-width="100"
+          min-width="180"
           prop="orderNo"
         >
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.paymentCode')"
-          min-width="100"
+          min-width="140"
           prop="paymentCode"
         >
         </el-table-column>
@@ -170,7 +170,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.remark')"
-          min-width="100"
+          min-width="150"
           prop="remark"
         >
         </el-table-column>
@@ -181,7 +181,21 @@
           prop="status"
         >
           <template #default="scope">
-            {{ scope.row.status == 1 ? t("user.enable") : t("user.disable") }}
+            {{
+              scope.row.status == 1
+                ? "创建待审核"
+                : scope.row.status == 2
+                ? "审核待支付"
+                : scope.row.status == 3
+                ? "已支付"
+                : scope.row.status == 4
+                ? "支付失败"
+                : scope.row.status == 5
+                ? "已取消"
+                : scope.row.status == 6
+                ? "已退款"
+                : scope.row.status
+            }}
           </template>
         </el-table-column>
         <el-table-column
@@ -208,7 +222,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.transferNo')"
-          min-width="100"
+          min-width="200"
           prop="transferNo"
         >
         </el-table-column>
@@ -223,7 +237,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.created')"
-          min-width="120"
+          min-width="160"
           prop="createdAt"
         >
           <template #default="scope">
@@ -233,7 +247,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.finishedAt')"
-          min-width="120"
+          min-width="160"
           prop="finishedAt"
         >
           <template #default="scope">
@@ -243,7 +257,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.updatedAt')"
-          min-width="120"
+          min-width="160"
           prop="updatedAt"
         >
           <template #default="scope">
@@ -459,13 +473,17 @@ const tableData = ref([]);
 const searchInfo = ref({});
 
 const statusOption = ref([
-  { label: "enable", value: 1 },
-  { label: "disable", value: 2 },
+  { label: "createPendingReview", value: 1 },
+  { label: "reviewPendingPayment", value: 2 },
+  { label: "paid", value: 3 },
+  { label: "paymentFailed", value: 4 },
+  { label: "cancelled", value: 5 },
+  { label: "refunded", value: 6 },
 ]);
 
 const methodOption = ref([
-  { label: "充值", value: 1 },
-  { label: "提款", value: 2 },
+  { label: "recharge", value: 1 },
+  { label: "drawMoney", value: 2 },
 ]);
 methodOption;
 

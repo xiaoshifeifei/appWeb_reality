@@ -22,6 +22,10 @@
     </div>
 
     <div class="gva-table-box">
+      <div class="mes">
+        新增总人数：{{ sumDate.newAddNum || 0 }} ; 登录总人数:
+        {{ sumDate.loginNum || 0 }} ; 在线总人数: {{ sumDate.onlineNum || 0 }};
+      </div>
       <el-table
         border
         ref="multipleTable"
@@ -37,13 +41,14 @@
         <el-table-column
           align="center"
           min-width="90"
-          :label="t('tableColumn.SiteId')"
-          prop="siteId"
+          :label="t('tableColumn.hour')"
+          prop="hour"
         >
           <template #default="scope">
-            {{ scope.row.siteId === 0 ? "Total" : scope.row.siteId }}
+            <div>{{ dataGet(scope.row.hour) }}</div>
           </template>
         </el-table-column>
+
         <el-table-column
           align="center"
           min-width="120"
@@ -53,47 +58,16 @@
         </el-table-column>
         <el-table-column
           align="center"
-          :label="t('tableColumn.oneDay')"
           min-width="120"
-          prop="oneDay"
-        >
-        </el-table-column>
-
-        <el-table-column
-          align="center"
-          min-width="120"
-          :label="t('tableColumn.oneDayRatio')"
-          prop="oneDayRatio"
+          :label="t('tableColumn.loginNum')"
+          prop="loginNum"
         >
         </el-table-column>
         <el-table-column
           align="center"
-          :label="t('tableColumn.threeDay')"
+          :label="t('tableColumn.onlineNum')"
           min-width="120"
-          prop="threeDay"
-        >
-        </el-table-column>
-
-        <el-table-column
-          align="center"
-          min-width="120"
-          :label="t('tableColumn.threeDayRatio')"
-          prop="threeDayRatio"
-        >
-        </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.sevenDay')"
-          min-width="120"
-          prop="sevenDay"
-        >
-        </el-table-column>
-
-        <el-table-column
-          align="center"
-          min-width="120"
-          :label="t('tableColumn.sevenDayRatio')"
-          prop="sevenDayRatio"
+          prop="onlineNum"
         >
         </el-table-column>
       </el-table>
@@ -210,7 +184,7 @@
 </template>
   
   <script setup>
-import { getAccountRetained } from "@/api/userInfo";
+import { getDayTimePeriodAccountNum } from "@/api/userInfo";
 import SingleTime from "@/components/DataTime/singleTime.vue";
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
@@ -225,12 +199,13 @@ defineOptions({
 
 const page = ref(1);
 const total = ref(0);
-const pageSize = ref(10);
+const pageSize = ref(1000);
 const tableData = ref([]);
 const searchInfo = ref({});
 const form = ref({});
 const dialogFormVisible = ref(false);
 const value2 = ref("");
+const sumDate = ref({});
 const paramsValue = ref(false);
 const shortcuts = [
   {
@@ -283,7 +258,7 @@ const disabledDate = (time) => {
 
 const onSubmit = () => {
   page.value = 1;
-  pageSize.value = 10;
+  pageSize.value = 1000;
   searchInfo.value.day = value2.value;
 
   getTableData();
@@ -302,16 +277,17 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async () => {
-  const table = await getAccountRetained({
+  const table = await getDayTimePeriodAccountNum({
     page: page.value,
     pageSize: pageSize.value,
     ...searchInfo.value,
   });
   if (table.code === 0) {
-    tableData.value = table.data;
-    total.value = table.data.total;
-    page.value = table.data.page;
-    pageSize.value = table.data.pageSize;
+    tableData.value = table.data.list;
+    sumDate.value = table.data.sum;
+    // total.value = table.data.total;
+    // page.value = table.data.page;
+    // pageSize.value = table.data.pageSize;
   }
 };
 const timeVal = ref("");
@@ -389,6 +365,15 @@ const tableRowClassName = ({ row, rowIndex }) => {
 .pose {
   // margin-left: -50px;
   color: #666;
+}
+.mes {
+  width: calc(100% - 8px);
+  margin-bottom: 20px;
+  white-space: nowrap;
+  font-size: 14px;
+  color: #3b82f6;
+  text-align: right;
+  padding-right: 8px;
 }
 </style>
   

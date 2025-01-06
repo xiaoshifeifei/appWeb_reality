@@ -143,6 +143,14 @@ export const getAccountRetained = (params) => {
     params,
   });
 };
+//用户记录
+export const getDayTimePeriodAccountNum = (params) => {
+  return service({
+    url: "/statistics/getDayTimePeriodAccountNum",
+    method: "get",
+    params,
+  });
+};
 
 // 获取用户物品获得记录列表
 export const getVirtualItemInList = (params) => {

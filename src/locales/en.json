@@ -306,7 +306,14 @@
     "user": "User",
     "enterPhoneNoNote": "Please enter a valid mobile phone number?",
     "enterEmailNote": "please enter your vaild email?",
-    "": ""
+    "createPendingReview": "Create Pending Review",
+    "reviewPendingPayment": "Review Pending Payment",
+    "paid": "Paid",
+    "paymentFailed": "Payment Failed",
+    "recharge": "Recharge",
+    "drawMoney": "Draw Money",
+    "cancelled": "Cancelled",
+    "refunded": "Refunded"
   },
   "view": {
     "dashboard": {
@@ -701,6 +708,8 @@
     "风控": "Risk Set",
     "客服管理": "Customer Service",
     "登录日志": "Login Log",
+    "支付提现列表": "Payment Withdrawal List",
+    "用户记录": "User Record",
     "Homepage": "Homepage"
   },
   "tableColumn": {
@@ -920,6 +929,21 @@
     "ip": "IP",
     "loginAt": "LoginAt",
     "logoutAt": "LogoutAt",
+    "method": "Method",
+    "transferNo": "Transfer No",
+    "activityCode": "Activity Code",
+    "depositFirst": "Deposit First",
+    "depositTimes": "Deposit Times",
+    "receivingPaymentId": "Receiving PaymentId",
+    "remark": "Remark",
+    "totalAmount": "Total Amount",
+    "totalDeposit": "Total Deposit",
+    "totalWithdrawal": "Total Withdrawal",
+    "withdrawTimes": "Withdraw Times",
+    "finishedAt": "FinishedAt",
+    "onlineNum": "Online Num",
+    "loginNum": "Login Num",
+    "hour": "Hour",
     "female": "Female"
   }
 }

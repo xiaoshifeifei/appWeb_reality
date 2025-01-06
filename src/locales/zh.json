@@ -306,7 +306,14 @@
     "user": "用户",
     "enterPhoneNoNote": "请输入合法手机号",
     "enterEmailNote": "请输入正确的邮箱",
-    "": ""
+    "createPendingReview": "创建待审核",
+    "reviewPendingPayment": "审核待支付",
+    "paid": "已支付",
+    "paymentFailed": "支付失败",
+    "recharge": "充值",
+    "drawMoney": "提款",
+    "cancelled": "已取消",
+    "refunded": "已退款"
   },
   "view": {
     "dashboard": {
@@ -701,6 +708,8 @@
     "风控": "风控",
     "客服管理": "客服管理",
     "登录日志": "登录日志",
+    "支付提现列表": "支付提现列表",
+    "用户记录": "用户记录",
     "Homepage": "首页"
   },
   "tableColumn": {
@@ -920,6 +929,21 @@
     "ip": "IP",
     "loginAt": "登入时间",
     "logoutAt": "登出时间",
+    "method": "支付提现方式",
+    "transferNo": "第三方交易号",
+    "activityCode": "活动Code",
+    "depositFirst": "首次充值",
+    "depositTimes": "充值时间",
+    "receivingPaymentId": "收款ID",
+    "remark": "备注",
+    "totalAmount": "总金额",
+    "totalDeposit": "总充值",
+    "totalWithdrawal": "总提款",
+    "withdrawTimes": "提款时间",
+    "finishedAt": "完成时间",
+    "onlineNum": "在线人数",
+    "loginNum": "登录人数",
+    "hour": "时间",
     "female": "女性"
   }
 }
