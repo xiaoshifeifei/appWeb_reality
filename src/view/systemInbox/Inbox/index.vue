@@ -17,13 +17,28 @@
             collapse-tags
             v-model="searchInfo.receiver"
             :placeholder="t('tableColumn.receivers')"
-            style="width: 300px"
+            style="width: 200px"
           >
             <el-option
               v-for="item in selectData"
               :key="item.value"
               :label="item.label"
               :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="t('tableColumn.typeCode')">
+          <el-select
+            clearable
+            v-model="searchInfo.typeCode"
+            :placeholder="t('tableColumn.typeCode')"
+            style="width: 200px"
+          >
+            <el-option
+              v-for="item in typeCodeData"
+              :key="item"
+              :label="item"
+              :value="item"
             />
           </el-select>
         </el-form-item>
@@ -93,7 +108,12 @@
             {{ scope.row.receiver == 0 ? "" : scope.row.receiver }}
           </template>
         </el-table-column>
-
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.typeCode')"
+          min-width="140"
+          prop="typeCode"
+        />
         <el-table-column
           align="center"
           :label="t('tableColumn.title')"
@@ -365,6 +385,7 @@ import {
   sendMail,
   editMail,
   virtualItemGetList,
+  getMailTypeCodes,
 } from "@/api/tack";
 import { getAccountList } from "@/api/userInfo";
 import { ref } from "vue";
@@ -433,6 +454,8 @@ const statusOption = ref([
   { label: "disable", value: 2 },
 ]);
 const selectData = ref([]);
+const typeCodeData = ref([]);
+
 const formMail = ref({
   receivers: [],
   expiredAt: null,
@@ -605,6 +628,13 @@ const init = async () => {
         value: item.accountId,
       });
     });
+  }
+  const table1 = await getMailTypeCodes({
+    page: 1,
+    pageSize: 1000000,
+  });
+  if (table1.code === 0) {
+    typeCodeData.value = table1.data;
   }
 };
 

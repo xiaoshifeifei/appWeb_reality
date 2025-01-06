@@ -700,6 +700,7 @@
     "活动": "活动",
     "风控": "风控",
     "客服管理": "客服管理",
+    "登录日志": "登录日志",
     "Homepage": "首页"
   },
   "tableColumn": {
@@ -915,6 +916,10 @@
     "thirtyDayRetainedNum": "三十日留存数",
     "contact": "联系",
     "extra": "附加",
+    "typeCode": "类型编码",
+    "ip": "IP",
+    "loginAt": "登入时间",
+    "logoutAt": "登出时间",
     "female": "女性"
   }
 }

@@ -1,12 +1,18 @@
 <template>
   <div>
     <div class="gva-search-box">
-      <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <el-form-item :label="t('tableColumn.orderNo')">
+      <el-form
+        ref="searchForm"
+        :inline="true"
+        :model="searchInfo"
+        :label-width="100"
+      >
+        <el-form-item :label="t('tableColumn.username')">
           <el-input
             clearable
-            v-model="searchInfo.orderNo"
-            :placeholder="t('tableColumn.orderNo')"
+            v-model="searchInfo.username"
+            :placeholder="t('tableColumn.username')"
+            class="input_w"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.accountId')">
@@ -14,27 +20,34 @@
             clearable
             v-model="searchInfo.accountId"
             :placeholder="t('tableColumn.accountId')"
+            class="input_w"
           />
         </el-form-item>
-        <!-- <el-form-item
-          :label="t('tableColumn.placeholder') +  t('tableColumn.time')"
-        >
-          <el-date-picker
-            :style="{ width: '300px' }"
-            v-model="value2"
-            type="daterange"
-            unlink-panels
-            range-separator="To"
-            start-placeholder="Start date"
-            end-placeholder="End date"
-            :shortcuts="shortcuts"
+
+        <el-form-item :label="t('tableColumn.accountType')">
+          <el-select
+            clearable
+            v-model="searchInfo.accountType"
+            :placeholder="t('tableColumn.placeholder')"
+            class="input_w"
+          >
+            <el-option
+              v-for="item in accountTypeOption"
+              :key="item.value"
+              :label="t(`tableColumn.${item.label}`)"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="t('tableColumn.siteId')">
+          <el-input
+            clearable
+            v-model="searchInfo.siteId"
+            :placeholder="t('tableColumn.siteId')"
+            class="input_w"
           />
-        </el-form-item> -->
-        <DataTime
-          v-model="value2"
-          :paramsValue="paramsValue"
-          @close="paramsValue = false"
-        ></DataTime>
+        </el-form-item>
+
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -46,11 +59,6 @@
       </el-form>
     </div>
     <div class="gva-table-box">
-      <!-- <div class="gva-btn-list">
-        <el-button type="primary" icon="plus" @click="openDialog('add')">
-          {{ t("general.add") }}
-        </el-button>
-      </div> -->
       <el-table
         border
         :data="tableData"
@@ -63,145 +71,68 @@
         :row-class-name="tableRowClassName"
       >
         <el-table-column type="selection" align="center" width="60" />
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.orderNo')"
-          min-width="180"
-          prop="orderNo"
-        >
-          <template #default="scope">
-            <div>{{ scope.row.orderNo }}</div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.productId')"
-          min-width="90"
-          prop="productId"
-        >
+        <el-table-column align="center" :label="t('tableColumn.id')" prop="id">
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.accountId')"
-          min-width="90"
           prop="accountId"
-        />
+        >
+        </el-table-column>
         <el-table-column
           align="center"
-          :label="t('tableColumn.price')"
-          min-width="90"
-          prop="price"
+          :label="t('tableColumn.siteId')"
+          prop="siteId"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.username')"
+          prop="username"
         >
         </el-table-column>
 
         <el-table-column
           align="center"
-          :label="t('tableColumn.discount')"
-          min-width="90"
-          prop="discount"
-        />
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.status')"
-          min-width="120"
-          prop="status"
+          :label="t('tableColumn.accountType')"
+          prop="accountType"
         >
           <template #default="scope">
             <div>
               {{
-                scope.row.status === 0
-                  ? t("tableColumn.status0")
-                  : scope.row.status === 1
-                  ? t("tableColumn.status1")
-                  : scope.row.status === 2
-                  ? t("tableColumn.status2")
-                  : scope.row.status === 3
-                  ? t("tableColumn.status3")
-                  : scope.row.status === 4
-                  ? t("tableColumn.status4")
-                  : scope.row.status
+                scope.row.accountType === 1
+                  ? t("tableColumn.normal")
+                  : scope.row.accountType === 2
+                  ? t("tableColumn.visitor")
+                  : scope.row.accountType
               }}
             </div>
           </template>
         </el-table-column>
+        <el-table-column align="center" :label="t('tableColumn.ip')" prop="ip">
+        </el-table-column>
+
         <el-table-column
           align="center"
-          :label="t('tableColumn.origin')"
+          :label="t('tableColumn.loginAt')"
           min-width="120"
-          prop="origin"
+          prop="loginAt"
         >
           <template #default="scope">
-            <div>
-              {{
-                scope.row.origin === 1
-                  ? t("tableColumn.android")
-                  : scope.row.origin
-              }}
-            </div>
+            <div>{{ dataGet(scope.row.loginAt) }}</div>
           </template>
         </el-table-column>
         <el-table-column
           align="center"
-          :label="t('tableColumn.paid')"
-          min-width="150"
-          prop="paid"
-        />
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.payMethod')"
+          :label="t('tableColumn.logoutAt')"
           min-width="120"
-          prop="payMethod"
+          prop="logoutAt"
         >
           <template #default="scope">
-            <div>
-              {{
-                scope.row.payMethod === 1
-                  ? t("tableColumn.googlePay")
-                  : scope.row.payMethod
-              }}
-            </div>
+            <div>{{ dataGet(scope.row.logoutAt) }}</div>
           </template>
         </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.created')"
-          min-width="170"
-          prop="created"
-        >
-          <template #default="scope">
-            <div>{{ dataGet(scope.row.created) }}</div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.expired')"
-          min-width="170"
-          prop="expired"
-        >
-          <template #default="scope">
-            <div>{{ dataGet(scope.row.expired) }}</div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.finished')"
-          min-width="170"
-          prop="finished"
-        >
-          <template #default="scope">
-            <div>{{ dataGet(scope.row.finished) }}</div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.updated')"
-          min-width="170"
-          prop="updated"
-        >
-          <template #default="scope">
-            <div>{{ dataGet(scope.row.updated) }}</div>
-          </template>
-        </el-table-column>
+
         <!-- <el-table-column
           align="center"
           fixed="right"
@@ -363,7 +294,7 @@
   
   <script setup>
 import {
-  getMallOrderList,
+  getAccountLoginLogs,
   mallProductDel,
   mallProductEdit,
   mallProductAdd,
@@ -381,6 +312,7 @@ defineOptions({
   name: "goodsConfiguration",
 });
 const paramsValue = ref(false);
+const resetClose = ref(false);
 const apis = ref([]);
 const form = ref({
   id: null,
@@ -402,6 +334,11 @@ const rules = ref({
   "items.num": [{ required: true, message: "请选输入数量", trigger: "blur" }],
 });
 
+const accountTypeOption = ref([
+  { label: "normal", value: 1 },
+  { label: "visitor", value: 2 },
+]);
+
 const page = ref(1);
 const total = ref(0);
 const pageSize = ref(10);
@@ -411,6 +348,7 @@ const searchInfo = ref({});
 const onReset = () => {
   searchInfo.value = {};
   value2.value = [];
+  resetClose.value = true;
   paramsValue.value = true;
 };
 // 搜索
@@ -498,14 +436,17 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async () => {
-  if (value2.value && value2.value.length) {
-    searchInfo.value.start = value2.value[0];
-    searchInfo.value.end = value2.value[1];
-  } else {
-    searchInfo.value.start = null;
-    searchInfo.value.end = null;
+  if (searchInfo.value && searchInfo.value.accountId == "") {
+    searchInfo.value.accountId = null;
   }
-  const table = await getMallOrderList({
+  if (searchInfo.value && searchInfo.value.username == "") {
+    searchInfo.value.username = null;
+  }
+  if (searchInfo.value && searchInfo.value.siteId == "") {
+    searchInfo.value.siteId = null;
+  }
+
+  const table = await getAccountLoginLogs({
     page: page.value,
     pageSize: pageSize.value,
     ...searchInfo.value,
@@ -613,46 +554,6 @@ const switchStatus = async (row) => {
     getTableData();
   } else {
     getTableData();
-  }
-};
-const handleDateChange = (params, index) => {
-  if (index === 0) {
-    let date = new Date(params);
-    let formattedDate =
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0") +
-      " " +
-      "00" +
-      ":" +
-      "00" +
-      ":" +
-      "00";
-    const dataTime = new Date(formattedDate).getTime();
-    const myTime = new Date(dataTime);
-    const isoDate = dayjs(myTime).format("YYYY-MM-DDTHH:mm:ssZ");
-    searchInfo.value.start = isoDate;
-  } else if (index === 1) {
-    let date = new Date(params);
-    let formattedDate =
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "-" +
-      date.getDate().toString().padStart(2, "0") +
-      " " +
-      "23" +
-      ":" +
-      "59" +
-      ":" +
-      "59";
-    const dataTime = new Date(formattedDate).getTime();
-    const myTime = new Date(dataTime);
-
-    const isoDate = dayjs(myTime).format("YYYY-MM-DDTHH:mm:ssZ");
-    searchInfo.value.end = isoDate;
   }
 };
 
@@ -778,6 +679,9 @@ const tableRowClassName = ({ row, rowIndex }) => {
 }
 .el-input-number {
   width: 50%;
+}
+.input_w {
+  width: 200px !important;
 }
 </style>
   

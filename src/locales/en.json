@@ -700,6 +700,7 @@
     "活动": "Activity",
     "风控": "Risk Set",
     "客服管理": "Customer Service",
+    "登录日志": "Login Log",
     "Homepage": "Homepage"
   },
   "tableColumn": {
@@ -915,6 +916,10 @@
     "thirtyDayRetainedNum": "thirtyDay Retained Num",
     "contact": "Contact",
     "extra": "Extra",
+    "typeCode": "Type Code",
+    "ip": "IP",
+    "loginAt": "LoginAt",
+    "logoutAt": "LogoutAt",
     "female": "Female"
   }
 }

@@ -7,6 +7,15 @@ export const getTackList = (params) => {
     params,
   });
 };
+
+// 获取邮件查询条件
+export const getMailTypeCodes = (params) => {
+  return service({
+    url: "/setup/getMailTypeCodes",
+    method: "get",
+    params,
+  });
+};
 // 任务新增
 export const createTack = (data) => {
   return service({
@@ -361,6 +370,23 @@ export const InboxDel = (data) => {
 export const getSiteDayRetained = (params) => {
   return service({
     url: "/statistics/getSiteDayRetained",
+    method: "get",
+    params,
+  });
+};
+
+// 获取登录日志列表
+export const getAccountLoginLogs = (params) => {
+  return service({
+    url: "/account/getAccountLoginLogs",
+    method: "get",
+    params,
+  });
+};
+// 获取支付提现列表
+export const getPaymentOrders = (params) => {
+  return service({
+    url: "/payment/getPaymentOrders",
     method: "get",
     params,
   });
