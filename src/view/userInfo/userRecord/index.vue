@@ -322,18 +322,19 @@ const handleSelectionChange = (val) => {
 const multipleTable = ref(null);
 
 const tableRowClassName = ({ row, rowIndex }) => {
-  if (rowIndex == 0) {
-    return "warning-row";
-  }
   if (rowIndex % 2 == 0) {
-    return "warnBg";
-  } else {
     return "";
+  } else {
+    return "warnBg";
   }
 };
 </script>
 
 <style scoped lang="scss">
+:deep(.gva-table-box .el-table) {
+  height: 700px;
+  overflow: auto; /* 自动显示滚动条 */
+}
 .warning {
   color: #dc143c;
 }
