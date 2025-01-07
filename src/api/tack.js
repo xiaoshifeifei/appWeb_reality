@@ -147,7 +147,15 @@ export const getMissionConfig = (params) => {
     params,
   });
 };
-// 活动配置修改
+// 任务配置新增/修改
+export const editOrNewMissionConfig = (data) => {
+  return service({
+    url: "/setup/editOrNewMissionConfig",
+    method: "post",
+    data,
+  });
+};
+// 任务配置修改
 export const editOrNewActivityConfig = (data) => {
   return service({
     url: "/setup/editOrNewActivityConfig",

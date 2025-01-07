@@ -221,17 +221,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <!-- <div class="gva-pagination">
-        <el-pagination
-          :current-page="page"
-          :page-size="pageSize"
-          :page-sizes="[10, 30, 50, 100]"
-          :total="total"
-          layout="total, sizes, prev, pager, next, jumper"
-          @current-change="handleCurrentChange"
-          @size-change="handleSizeChange"
-        />
-      </div> -->
     </div>
 
     <el-drawer
@@ -264,12 +253,20 @@
       >
         <el-col :span="18">
           <el-form-item :label="t('tableColumn.code')" prop="code">
-            <el-input
-              disabled
+            <el-select
+              clearable
+              :disabled="type == 'edit'"
               v-model="form.code"
-              autocomplete="off"
-              :placeholder="t('tableColumn.code')"
-            />
+              :placeholder="t('tableColumn.placeholder')"
+              style="width: 50%"
+            >
+              <el-option
+                v-for="item in statusOption"
+                :key="item"
+                :label="item"
+                :value="item"
+              />
+            </el-select>
           </el-form-item>
         </el-col>
 
@@ -289,82 +286,194 @@
             />
           </el-form-item>
         </el-col>
-        <el-col :span="18" v-if="form.config.bonusAmount">
-          <el-form-item
-            :label="t('tableColumn.bonusAmount')"
-            prop="config.bonusAmount"
-          >
+        <el-col
+          :span="18"
+          v-if="form.config.min || form.code != 'SEVEN_DAY_LOGIN'"
+        >
+          <el-form-item :label="t('tableColumn.min')" prop="config">
             <el-input
-              v-model="form.config.bonusAmount"
+              v-model="form.config.min"
               autocomplete="off"
               @input="
-                form.config.bonusAmount = form.config.bonusAmount.replace(
+                form.config.min = form.config.min.replace(/[^\d|\.]/g, '')
+              "
+              @change="
+                handleChange(
+                  form.config.min,
+                  index,
+                  'v4',
+                  undefined,
+                  'min',
+                  true
+                )
+              "
+              :placeholder="t('tableColumn.min')"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :span="18"
+          v-if="form.config.max || form.code != 'SEVEN_DAY_LOGIN'"
+        >
+          <el-form-item :label="t('tableColumn.max')" prop="config">
+            <el-input
+              v-model="form.config.max"
+              autocomplete="off"
+              @input="
+                form.config.max = form.config.max.replace(/[^\d|\.]/g, '')
+              "
+              @change="
+                handleChange(
+                  form.config.max,
+                  index,
+                  'v4',
+                  undefined,
+                  'max',
+                  true
+                )
+              "
+              :placeholder="t('tableColumn.max')"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :span="18"
+          v-if="
+            form.config.requiredTimes ||
+            form.code == 'DAILY_SPIN_TIMES' ||
+            form.code == 'DAILY_MEGA_WIN_TIMES' ||
+            form.code == 'DAILY_BIG_WIN_TIMES' ||
+            form.code == 'DAILY_SINGLE_SPIN_WIN_TIMES'
+          "
+        >
+          <el-form-item :label="t('tableColumn.requiredTimes')" prop="config">
+            <el-input
+              v-model="form.config.requiredTimes"
+              autocomplete="off"
+              @input="
+                form.config.requiredTimes = form.config.requiredTimes.replace(
                   /[^\d|\.]/g,
                   ''
                 )
               "
-              :placeholder="t('tableColumn.bonusAmount')"
+              :placeholder="t('tableColumn.requiredTimes')"
             />
           </el-form-item>
         </el-col>
-        <el-col :span="18" v-if="form.config.giftAmountMultiple">
+        <el-col
+          :span="18"
+          v-if="
+            form.config.multiple ||
+            form.code == 'DAILY_MEGA_WIN_TIMES' ||
+            form.code == 'DAILY_BIG_WIN_TIMES'
+          "
+        >
           <el-form-item
-            :label="t('tableColumn.giftAmountMultiple')"
-            prop="config.giftAmountMultiple"
+            :label="t('tableColumn.multiple')"
+            prop="config.multiple"
           >
             <el-input
-              v-model="form.config.giftAmountMultiple"
+              v-model="form.config.multiple"
               autocomplete="off"
               @input="
-                form.config.giftAmountMultiple =
-                  form.config.giftAmountMultiple.replace(/[^\d|\.]/g, '')
-              "
-              :placeholder="t('tableColumn.giftAmountMultiple')"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="18" v-if="form.config.depositAmount">
-          <el-form-item
-            :label="t('tableColumn.depositAmount')"
-            prop="config.depositAmount"
-          >
-            <el-input
-              v-model="form.config.depositAmount"
-              autocomplete="off"
-              @input="
-                form.config.depositAmount = form.config.depositAmount.replace(
+                form.config.multiple = form.config.multiple.replace(
                   /[^\d|\.]/g,
                   ''
                 )
               "
-              :placeholder="t('tableColumn.depositAmount')"
+              :placeholder="t('tableColumn.multiple')"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :span="18"
+          v-if="
+            form.config.requiredAmount || form.code == 'DAILY_BET_AMOUNT_ADD'
+          "
+        >
+          <el-form-item
+            :label="t('tableColumn.requiredAmount')"
+            prop="config.requiredAmount"
+          >
+            <el-input
+              v-model="form.config.requiredAmount"
+              autocomplete="off"
+              @input="
+                form.config.requiredAmount = form.config.requiredAmount.replace(
+                  /[^\d|\.]/g,
+                  ''
+                )
+              "
+              @change="
+                handleChange(
+                  form.config.requiredAmount,
+                  index,
+                  'v4',
+                  undefined,
+                  'requiredAmount',
+                  true
+                )
+              "
+              :placeholder="t('tableColumn.requiredAmount')"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :span="18"
+          v-if="
+            form.config.requiredWinAmount ||
+            form.code == 'DAILY_SINGLE_SPIN_WIN_TIMES'
+          "
+        >
+          <el-form-item
+            :label="t('tableColumn.requiredWinAmount')"
+            prop="config.requiredWinAmount"
+          >
+            <el-input
+              v-model="form.config.requiredWinAmount"
+              autocomplete="off"
+              @input="
+                form.config.requiredWinAmount =
+                  form.config.requiredWinAmount.replace(/[^\d|\.]/g, '')
+              "
+              @change="
+                handleChange(
+                  form.config.requiredWinAmount,
+                  index,
+                  'v4',
+                  undefined,
+                  'requiredWinAmount',
+                  true
+                )
+              "
+              :placeholder="t('tableColumn.requiredWinAmount')"
             />
           </el-form-item>
         </el-col>
 
-        <div
-          v-if="
-            type == 'add' ||
-            (form.config.bonus &&
-              form.config.bonus.length &&
-              form.code == 'SEVEN_DAY_LOGIN')
-          "
-        >
+        <div v-if="form.code == 'SEVEN_DAY_LOGIN'">
           <template v-for="(item, index) in form.config.bonus" :key="index">
             <el-row class="w-full">
-              <el-col :span="6" v-if="item || type !== null">
+              <el-col :span="20" v-if="item || type !== null">
                 <el-form-item
                   :label="'num' + (index + 1)"
                   :prop="`config.bonus.${index}.num`"
                   :rules="rules['config.bonus.num']"
                 >
                   <el-input
-                    style="width: 100%"
-                    v-model="item.value"
+                    style="width: 50%"
+                    v-model="form.config.bonus[index]"
                     autocomplete="off"
                     @input="item = item.replace(/[^\d|\.]/g, '')"
                     @change="handleChange(item, index, 'v4', undefined, 'num')"
                   />
+                  <el-button
+                    style="margin-left: 20px"
+                    icon="delete"
+                    @click="delItem(index)"
+                  >
+                    {{ t("general.delete") }}
+                  </el-button>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -405,8 +514,7 @@
 import {
   getMissionConfig,
   virtualItemDel,
-  editOrNewActivityConfig,
-  sendAnnouncement,
+  editOrNewMissionConfig,
   getMissionCodes,
 } from "@/api/tack";
 import { ref } from "vue";
@@ -432,7 +540,7 @@ const form = ref({
     multiple: null,
     requiredAmount: null,
     requiredWinAmount: null,
-    // bonus: [{ num: null }],
+    bonus: [""],
   },
   status: null,
   expiredAt: null,
@@ -456,9 +564,7 @@ const rules = ref({
 });
 const showTimeBo = ref(false);
 const addItem = () => {
-  form.value.config.bonus.push({
-    num: null,
-  });
+  form.value.config.bonus.push("");
 };
 
 const page = ref(1);
@@ -492,70 +598,24 @@ const handleSizeChange = (val) => {
 const switchStatus = async (row) => {
   if (row.config.bonus != null && row.config.bonus.length) {
     row.config.bonus.map((item, index) => {
-      if (row.code == "DAILY_WHOOSH") {
-        item.min = item.min + "";
-        if (item.min.indexOf("B") !== -1) {
-          const newStr = item.min.replace("B", "");
-          item.min = Number(newStr) * 1000000000;
-        } else if (item.min.indexOf("M") !== -1) {
-          const newStr = item.min.replace("M", "");
-          item.min = Number(newStr) * 1000000;
-        } else if (item.min.indexOf("K") !== -1) {
-          const newStr = item.min.replace("K", "");
-          item.min = Number(newStr) * 1000;
+      if (row.code == "SEVEN_DAY_LOGIN") {
+        row.config.bonus[index] = row.config.bonus[index] + "";
+        if (row.config.bonus[index].indexOf("B") !== -1) {
+          const newStr = row.config.bonus[index].replace("B", "");
+          row.config.bonus[index] = String(Number(newStr) * 1000000000);
+        } else if (row.config.bonus[index].indexOf("M") !== -1) {
+          const newStr = row.config.bonus[index].replace("M", "");
+          row.config.bonus[index] = String(Number(newStr) * 1000000);
+        } else if (row.config.bonus[index].indexOf("K") !== -1) {
+          const newStr = row.config.bonus[index].replace("K", "");
+          row.config.bonus[index] = String(Number(newStr) * 1000);
         } else {
-          item.min = Number(item.min);
+          row.config.bonus[index] = String(Number(row.config.bonus[index]));
         }
-        item.max = item.max + "";
-        if (item.max.indexOf("B") !== -1) {
-          const newStr = item.max.replace("B", "");
-          item.max = Number(newStr) * 1000000000;
-        } else if (item.max.indexOf("M") !== -1) {
-          const newStr = item.max.replace("M", "");
-          item.max = Number(newStr) * 1000000;
-        } else if (item.max.indexOf("K") !== -1) {
-          const newStr = item.max.replace("K", "");
-          item.max = Number(newStr) * 1000;
-        } else {
-          item.max = Number(item.max);
-        }
-      }
-      if (
-        row.code == "TIMED_REWARD_INSTANT_BONUS" ||
-        row.code == "TIMED_REWARD_TURBO_BONUS" ||
-        row.code == "TIMED_REWARD_MEGA_WHEEL"
-      ) {
-        item.bonusAmount = item.bonusAmount + "";
-        if (item.bonusAmount.indexOf("B") !== -1) {
-          const newStr = item.bonusAmount.replace("B", "");
-          item.bonusAmount = Number(newStr) * 1000000000;
-        } else if (item.bonusAmount.indexOf("M") !== -1) {
-          const newStr = item.bonusAmount.replace("M", "");
-          item.bonusAmount = Number(newStr) * 1000000;
-        } else if (item.bonusAmount.indexOf("K") !== -1) {
-          const newStr = item.bonusAmount.replace("K", "");
-          item.bonusAmount = Number(newStr) * 1000;
-        } else {
-          item.bonusAmount = Number(item.bonusAmount);
-        }
-      }
-
-      item.weight = item.weight + "";
-      if (item.weight.indexOf("B") !== -1) {
-        const newStr = item.weight.replace("B", "");
-        item.weight = Number(newStr) * 1000000000;
-      } else if (item.weight.indexOf("M") !== -1) {
-        const newStr = item.weight.replace("M", "");
-        item.weight = Number(newStr) * 1000000;
-      } else if (item.weight.indexOf("K") !== -1) {
-        const newStr = item.weight.replace("K", "");
-        item.weight = Number(newStr) * 1000;
-      } else {
-        item.weight = Number(item.weight);
       }
     });
   }
-  const res = await editOrNewActivityConfig(row);
+  const res = await editOrNewMissionConfig(row);
   if (res.code === 0) {
     ElMessage({
       type: "success",
@@ -612,6 +672,46 @@ const getTableData = async () => {
             item2 = handleChange(item2, index2, "v4", true, "");
           }
         });
+      }
+      if (item.config && item.config.min) {
+        item.config.min = handleChange(
+          item.config.min,
+          0,
+          "v4",
+          true,
+          "min",
+          true
+        );
+      }
+      if (item.config && item.config.max) {
+        item.config.max = handleChange(
+          item.config.max,
+          0,
+          "v4",
+          true,
+          "max",
+          true
+        );
+      }
+      if (item.config && item.config.requiredAmount) {
+        item.config.requiredAmount = handleChange(
+          item.config.requiredAmount,
+          0,
+          "v4",
+          true,
+          "requiredAmount",
+          true
+        );
+      }
+      if (item.config && item.config.requiredWinAmount) {
+        item.config.requiredWinAmount = handleChange(
+          item.config.requiredWinAmount,
+          0,
+          "v4",
+          true,
+          "requiredWinAmount",
+          true
+        );
       }
     });
     if (table.data.config.max) {
@@ -670,36 +770,66 @@ const init = async () => {
 };
 
 init();
-const handleChange = (number, index, params, params2, params3) => {
+const handleChange = (number, index, params, params2, params3, params4) => {
   if (number) {
     number = Number(number);
   } else {
     return;
   }
-  if (params == "v4") {
-    if (number >= 1000000000) {
-      if (params2) {
-        return number / 1000000000 + "B";
+  if (params4) {
+    if (params == "v4") {
+      if (number >= 1000000000) {
+        if (params2) {
+          return number / 1000000000 + "B";
+        } else {
+          return (form.value.config[params3] = number / 1000000000 + "B");
+        }
+      } else if (number >= 1000000) {
+        if (params2) {
+          return number / 1000000 + "M";
+        } else {
+          return (form.value.config[params3] = number / 1000000 + "M");
+        }
+      } else if (number >= 1000) {
+        if (params2) {
+          return number / 1000 + "K";
+        } else {
+          return (form.value.config[params3] = number / 1000 + "K");
+        }
       } else {
-        return (form.value.config.bonus[index] = number / 1000000000 + "B");
+        if (params2) {
+          return number.toString();
+        } else {
+          return (form.value.config[params3] = number.toString());
+        }
       }
-    } else if (number >= 1000000) {
-      if (params2) {
-        return number / 1000000 + "M";
+    }
+  } else {
+    if (params == "v4") {
+      if (number >= 1000000000) {
+        if (params2) {
+          return number / 1000000000 + "B";
+        } else {
+          return (form.value.config.bonus[index] = number / 1000000000 + "B");
+        }
+      } else if (number >= 1000000) {
+        if (params2) {
+          return number / 1000000 + "M";
+        } else {
+          return (form.value.config.bonus[index] = number / 1000000 + "M");
+        }
+      } else if (number >= 1000) {
+        if (params2) {
+          return number / 1000 + "K";
+        } else {
+          return (form.value.config.bonus[index] = number / 1000 + "K");
+        }
       } else {
-        return (form.value.config.bonus[index] = number / 1000000 + "M");
-      }
-    } else if (number >= 1000) {
-      if (params2) {
-        return number / 1000 + "K";
-      } else {
-        return (form.value.config.bonus[index] = number / 1000 + "K");
-      }
-    } else {
-      if (params2) {
-        return number.toString();
-      } else {
-        return (form.value.config.bonus[index] = number.toString());
+        if (params2) {
+          return number.toString();
+        } else {
+          return (form.value.config.bonus[index] = number.toString());
+        }
       }
     }
   }
@@ -733,7 +863,7 @@ const initForm = () => {
       multiple: null,
       requiredAmount: null,
       requiredWinAmount: null,
-      bonus: [],
+      bonus: [""],
     },
     status: null,
     expiredAt: null,
@@ -773,75 +903,120 @@ const enterDialog = async () => {
       if (valueExpired.value) {
         form.value.expiredAt = valueExpired.value;
       }
-      if (form.value.config.bonus != null && form.value.config.bonus.length) {
-        form.value.config.bonus.map((item, index) => {
-          if (form.value.code == "DAILY_WHOOSH") {
-            item.min = item.min + "";
-            if (item.min.indexOf("B") !== -1) {
-              const newStr = item.min.replace("B", "");
-              item.min = Number(newStr) * 1000000000;
-            } else if (item.min.indexOf("M") !== -1) {
-              const newStr = item.min.replace("M", "");
-              item.min = Number(newStr) * 1000000;
-            } else if (item.min.indexOf("K") !== -1) {
-              const newStr = item.min.replace("K", "");
-              item.min = Number(newStr) * 1000;
-            } else {
-              item.min = Number(item.min);
-            }
-            item.max = item.max + "";
-            if (item.max.indexOf("B") !== -1) {
-              const newStr = item.max.replace("B", "");
-              item.max = Number(newStr) * 1000000000;
-            } else if (item.max.indexOf("M") !== -1) {
-              const newStr = item.max.replace("M", "");
-              item.max = Number(newStr) * 1000000;
-            } else if (item.max.indexOf("K") !== -1) {
-              const newStr = item.max.replace("K", "");
-              item.max = Number(newStr) * 1000;
-            } else {
-              item.max = Number(item.max);
-            }
-          }
-          if (
-            form.value.code == "TIMED_REWARD_INSTANT_BONUS" ||
-            form.value.code == "TIMED_REWARD_TURBO_BONUS" ||
-            form.value.code == "TIMED_REWARD_MEGA_WHEEL"
-          ) {
-            item.bonusAmount = item.bonusAmount + "";
-            if (item.bonusAmount.indexOf("B") !== -1) {
-              const newStr = item.bonusAmount.replace("B", "");
-              item.bonusAmount = Number(newStr) * 1000000000;
-            } else if (item.bonusAmount.indexOf("M") !== -1) {
-              const newStr = item.bonusAmount.replace("M", "");
-              item.bonusAmount = Number(newStr) * 1000000;
-            } else if (item.bonusAmount.indexOf("K") !== -1) {
-              const newStr = item.bonusAmount.replace("K", "");
-              item.bonusAmount = Number(newStr) * 1000;
-            } else {
-              item.bonusAmount = Number(item.bonusAmount);
-            }
-          }
+      if (form.value.config.requiredTimes) {
+        form.value.config.requiredTimes = Number(
+          form.value.config.requiredTimes
+        );
+      }
 
-          item.weight = item.weight + "";
-          if (item.weight.indexOf("B") !== -1) {
-            const newStr = item.weight.replace("B", "");
-            item.weight = Number(newStr) * 1000000000;
-          } else if (item.weight.indexOf("M") !== -1) {
-            const newStr = item.weight.replace("M", "");
-            item.weight = Number(newStr) * 1000000;
-          } else if (item.weight.indexOf("K") !== -1) {
-            const newStr = item.weight.replace("K", "");
-            item.weight = Number(newStr) * 1000;
-          } else {
-            item.weight = Number(item.weight);
+      if (
+        form.value.config.bonus != null &&
+        form.value.config.bonus.length &&
+        form.value.code == "SEVEN_DAY_LOGIN"
+      ) {
+        form.value.config.bonus.map((item, index) => {
+          if (form.value.code == "SEVEN_DAY_LOGIN") {
+            form.value.config.bonus[index] =
+              form.value.config.bonus[index] + "";
+            if (form.value.config.bonus[index].indexOf("B") !== -1) {
+              const newStr = form.value.config.bonus[index].replace("B", "");
+              form.value.config.bonus[index] = String(
+                Number(newStr) * 1000000000
+              );
+            } else if (form.value.config.bonus[index].indexOf("M") !== -1) {
+              const newStr = form.value.config.bonus[index].replace("M", "");
+              form.value.config.bonus[index] = String(Number(newStr) * 1000000);
+            } else if (form.value.config.bonus[index].indexOf("K") !== -1) {
+              const newStr = form.value.config.bonus[index].replace("K", "");
+              form.value.config.bonus[index] = String(Number(newStr) * 1000);
+            } else {
+              form.value.config.bonus[index] = String(
+                Number(form.value.config.bonus[index])
+              );
+            }
           }
         });
+      }
+      if (form.value.config && form.value.config.min) {
+        form.value.config.min = form.value.config.min + "";
+        if (form.value.config.min.indexOf("B") !== -1) {
+          const newStr = form.value.config.min.replace("B", "");
+          form.value.config.min = String(Number(newStr) * 1000000000);
+        } else if (form.value.config.min.indexOf("M") !== -1) {
+          const newStr = form.value.config.min.replace("M", "");
+          form.value.config.min = String(Number(newStr) * 1000000);
+        } else if (form.value.config.min.indexOf("K") !== -1) {
+          const newStr = form.value.config.min.replace("K", "");
+          form.value.config.min = String(Number(newStr) * 1000);
+        } else {
+          form.value.config.min = String(Number(form.value.config.min));
+        }
+      }
+      if (form.value.config && form.value.config.max) {
+        form.value.config.max = form.value.config.max + "";
+        if (form.value.config.max.indexOf("B") !== -1) {
+          const newStr = form.value.config.max.replace("B", "");
+          form.value.config.max = String(Number(newStr) * 1000000000);
+        } else if (form.value.config.max.indexOf("M") !== -1) {
+          const newStr = form.value.config.max.replace("M", "");
+          form.value.config.max = String(Number(newStr) * 1000000);
+        } else if (form.value.config.max.indexOf("K") !== -1) {
+          const newStr = form.value.config.max.replace("K", "");
+          form.value.config.max = String(Number(newStr) * 1000);
+        } else {
+          form.value.config.max = String(Number(form.value.config.max));
+        }
+      }
+      if (form.value.config && form.value.config.requiredAmount) {
+        form.value.config.requiredAmount =
+          form.value.config.requiredAmount + "";
+        if (form.value.config.requiredAmount.indexOf("B") !== -1) {
+          const newStr = form.value.config.requiredAmount.replace("B", "");
+          form.value.config.requiredAmount = String(
+            Number(newStr) * 1000000000
+          );
+        } else if (form.value.config.requiredAmount.indexOf("M") !== -1) {
+          const newStr = form.value.config.requiredAmount.replace("M", "");
+          form.value.config.requiredAmount = String(Number(newStr) * 1000000);
+        } else if (form.value.config.requiredAmount.indexOf("K") !== -1) {
+          const newStr = form.value.config.requiredAmount.replace("K", "");
+          form.value.config.requiredAmount = String(Number(newStr) * 1000);
+        } else {
+          form.value.config.requiredAmount = String(
+            Number(form.value.config.requiredAmount)
+          );
+        }
+      }
+      if (form.value.config && form.value.config.requiredWinAmount) {
+        form.value.config.requiredWinAmount =
+          form.value.config.requiredWinAmount + "";
+        if (form.value.config.requiredWinAmount.indexOf("B") !== -1) {
+          const newStr = form.value.config.requiredWinAmount.replace("B", "");
+          form.value.config.requiredWinAmount = String(
+            Number(newStr) * 1000000000
+          );
+        } else if (form.value.config.requiredWinAmount.indexOf("M") !== -1) {
+          const newStr = form.value.config.requiredWinAmount.replace("M", "");
+          form.value.config.requiredWinAmount = String(
+            Number(newStr) * 1000000
+          );
+        } else if (form.value.config.requiredWinAmount.indexOf("K") !== -1) {
+          const newStr = form.value.config.requiredWinAmount.replace("K", "");
+          form.value.config.requiredWinAmount = String(Number(newStr) * 1000);
+        } else {
+          form.value.config.requiredWinAmount = String(
+            Number(form.value.config.requiredWinAmount)
+          );
+        }
       }
       switch (type.value) {
         case "add":
           {
-            const res = await sendAnnouncement(form.value);
+            form.value.status = 1;
+            if (form.value.code != "SEVEN_DAY_LOGIN") {
+              form.value.config.bonus = null;
+            }
+            const res = await editOrNewMissionConfig(form.value);
             if (res.code === 0) {
               ElMessage({
                 type: "success",
@@ -855,7 +1030,7 @@ const enterDialog = async () => {
           break;
         case "edit":
           {
-            const res = await editOrNewActivityConfig(form.value);
+            const res = await editOrNewMissionConfig(form.value);
             if (res.code === 0) {
               ElMessage({
                 type: "success",
