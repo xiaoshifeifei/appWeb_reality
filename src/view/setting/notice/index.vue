@@ -8,6 +8,7 @@
             v-model="searchInfo.status"
             :placeholder="t('tableColumn.placeholder')"
             class="input_w"
+            @change="searchChange"
           >
             <el-option
               v-for="item in statusOption"
@@ -270,7 +271,12 @@ const searchInfo = ref({});
 
 const onReset = () => {
   searchInfo.value = {};
+  onSubmit();
 };
+const searchChange = () => {
+  onSubmit();
+};
+
 // 搜索
 const closeTime = (val) => {
   showTimeBo.value = val;

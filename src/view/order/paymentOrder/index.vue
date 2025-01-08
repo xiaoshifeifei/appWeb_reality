@@ -14,6 +14,7 @@
             v-model="searchInfo.accountId"
             :placeholder="t('tableColumn.accountId')"
             class="input_w"
+            @blur="searchChange($event, 'accountId')"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.status')">
@@ -22,6 +23,7 @@
             v-model="searchInfo.status"
             :placeholder="t('tableColumn.placeholder')"
             class="input_w"
+            @change="searchChange"
           >
             <el-option
               v-for="item in statusOption"
@@ -37,6 +39,7 @@
             v-model="searchInfo.method"
             :placeholder="t('tableColumn.placeholder')"
             class="input_w"
+            @change="searchChange"
           >
             <el-option
               v-for="item in methodOption"
@@ -486,12 +489,18 @@ const methodOption = ref([
   { label: "drawMoney", value: 2 },
 ]);
 methodOption;
-
+const searchChange = (e, params) => {
+  if (params && e.target.value == "") {
+    searchInfo.value[params] = null;
+  }
+  onSubmit();
+};
 const onReset = () => {
   searchInfo.value = {};
   value2.value = [];
   resetClose.value = true;
   paramsValue.value = true;
+  onSubmit();
 };
 // 搜索
 

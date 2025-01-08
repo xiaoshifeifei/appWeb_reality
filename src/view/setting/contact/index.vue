@@ -8,6 +8,7 @@
             v-model="searchInfo.code"
             :placeholder="t('tableColumn.placeholder')"
             class="input_w"
+            @change="searchChange"
           >
             <el-option
               v-for="item in codeOption"
@@ -249,8 +250,13 @@ const closeTime = (val) => {
   showTimeBo.value = val;
 };
 
+const searchChange = () => {
+  onSubmit();
+};
+
 const onReset = () => {
   searchInfo.value = {};
+  onSubmit();
 };
 const dataGet = (dateStr) => {
   let date = new Date(dateStr);

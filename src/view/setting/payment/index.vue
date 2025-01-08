@@ -13,6 +13,7 @@
             v-model="searchInfo.channelCode"
             :placeholder="t('tableColumn.channelCode')"
             class="input_w"
+            @blur="searchChange"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.transactionCode')">
@@ -21,28 +22,25 @@
             v-model="searchInfo.transactionCode"
             :placeholder="t('tableColumn.transactionCode')"
             class="input_w"
+            @blur="searchChange"
           />
         </el-form-item>
-        <el-form-item :label="t('tableColumn.paymentCode')">
+        <!-- <el-form-item :label="t('tableColumn.paymentCode')">
           <el-input
             clearable
             v-model="searchInfo.paymentCode"
             :placeholder="t('tableColumn.paymentCode')"
             class="input_w"
+            @blur="searchChange"
           />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item :label="t('tableColumn.transactionType')">
-          <!-- <el-input
-            clearable
-            v-model="searchInfo.transactionType"
-            :placeholder="t('tableColumn.transactionType')"
-            class="input_w"
-          /> -->
           <el-select
             clearable
             v-model="searchInfo.transactionType"
             :placeholder="t('tableColumn.placeholder')"
             class="input_w"
+            @change="searchChange"
           >
             <el-option
               v-for="item in transactionOption"
@@ -58,6 +56,7 @@
             v-model="searchInfo.type"
             :placeholder="t('tableColumn.placeholder')"
             class="input_w"
+            @change="searchChange"
           >
             <el-option
               v-for="item in accountTypeOption"
@@ -73,6 +72,7 @@
             v-model="searchInfo.status"
             :placeholder="t('tableColumn.placeholder')"
             class="input_w"
+            @change="searchChange"
           >
             <el-option
               v-for="item in statusOption"
@@ -389,6 +389,7 @@ const onReset = () => {
     type: null,
     status: null,
   };
+  onSubmit();
 };
 const dataGet = (dateStr) => {
   let date = new Date(dateStr);
@@ -414,7 +415,9 @@ const onSubmit = () => {
   pageSize.value = 10000;
   getTableData();
 };
-
+const searchChange = () => {
+  onSubmit();
+};
 // 分页
 const handleSizeChange = (val) => {
   pageSize.value = val;

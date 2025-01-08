@@ -8,6 +8,7 @@
             v-model="searchInfo.sender"
             :placeholder="t('tableColumn.senderName')"
             style="width: 200px"
+            @blur="searchChange($event, 'senderName')"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.receivers')">
@@ -18,6 +19,7 @@
             v-model="searchInfo.receiver"
             :placeholder="t('tableColumn.receivers')"
             style="width: 200px"
+            @change="searchChange"
           >
             <el-option
               v-for="item in selectData"
@@ -33,6 +35,7 @@
             v-model="searchInfo.typeCode"
             :placeholder="t('tableColumn.typeCode')"
             style="width: 200px"
+            @change="searchChange"
           >
             <el-option
               v-for="item in typeCodeData"
@@ -48,6 +51,7 @@
             v-model="searchInfo.status"
             :placeholder="t('tableColumn.placeholder')"
             class="input_w"
+            @change="searchChange"
           >
             <el-option
               v-for="item in statusOption"
@@ -688,11 +692,17 @@ const enterMail = async () => {
     }
   });
 };
-
+const searchChange = (e, params) => {
+  if (params && e.target.value == "") {
+    searchInfo.value[params] = null;
+  }
+  onSubmit();
+};
 const onReset = () => {
   searchInfo.value = {};
   value2.value = [];
   paramsValue.value = true;
+  onSubmit();
 };
 
 // 搜索

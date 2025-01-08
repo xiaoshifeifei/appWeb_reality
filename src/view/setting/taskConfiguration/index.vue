@@ -8,6 +8,7 @@
             v-model="searchInfo.code"
             :placeholder="t('tableColumn.placeholder')"
             style="width: 300px"
+            @change="searchChange"
           >
             <el-option
               v-for="item in statusOption"
@@ -567,6 +568,10 @@ const addItem = () => {
   form.value.config.bonus.push("");
 };
 
+const searchChange = () => {
+  onSubmit();
+};
+
 const page = ref(1);
 const total = ref(0);
 const pageSize = ref(10);
@@ -575,6 +580,10 @@ const searchInfo = ref({});
 
 const onReset = () => {
   searchInfo.value = {};
+  if (statusOption.value && statusOption.value.length) {
+    searchInfo.value.code = statusOption.value[0];
+  }
+  onSubmit();
 };
 // 搜索
 const closeTime = (val) => {

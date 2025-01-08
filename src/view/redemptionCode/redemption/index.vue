@@ -8,6 +8,7 @@
             v-model="searchInfo.code"
             :placeholder="t('tableColumn.code')"
             class="input_w"
+            @blur="searchChange($event, 'code')"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.type')">
@@ -16,6 +17,7 @@
             v-model="searchInfo.type"
             :placeholder="t('tableColumn.placeholder')"
             class="input_w"
+            @change="searchChange"
           >
             <el-option
               v-for="item in typeOption"
@@ -31,6 +33,7 @@
             v-model="searchInfo.status"
             :placeholder="t('tableColumn.placeholder')"
             class="input_w"
+            @change="searchChange"
           >
             <el-option
               v-for="item in statusOption"
@@ -358,12 +361,18 @@ const searchInfo = ref({});
 
 const onReset = () => {
   searchInfo.value = {};
+  onSubmit();
 };
 // 搜索
 const closeTime = (val) => {
   showTimeBo.value = val;
 };
-
+const searchChange = (e, params) => {
+  if (params && e.target.value == "") {
+    searchInfo.value[params] = null;
+  }
+  onSubmit();
+};
 const onSubmit = () => {
   page.value = 1;
   pageSize.value = 10;

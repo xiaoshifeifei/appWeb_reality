@@ -8,6 +8,7 @@
             v-model="searchInfo.id"
             :placeholder="t('tableColumn.id')"
             class="input_w"
+            @blur="searchChange"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.channelCode')">
@@ -16,6 +17,7 @@
             v-model="searchInfo.channelCode"
             :placeholder="t('tableColumn.channelCode')"
             class="input_w"
+            @blur="searchChange"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.paymentCode')">
@@ -24,6 +26,7 @@
             v-model="searchInfo.paymentCode"
             :placeholder="t('tableColumn.paymentCode')"
             class="input_w"
+            @blur="searchChange"
           />
         </el-form-item>
 
@@ -287,13 +290,16 @@ const searchInfo = ref({
 const closeTime = (val) => {
   showTimeBo.value = val;
 };
-
+const searchChange = () => {
+  onSubmit();
+};
 const onReset = () => {
   searchInfo.value = {
     id: null,
     channelCode: null,
     paymentCode: null,
   };
+  onSubmit();
 };
 const dataGet = (dateStr) => {
   let date = new Date(dateStr);

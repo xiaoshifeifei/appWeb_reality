@@ -13,6 +13,7 @@
             v-model="searchInfo.id"
             :placeholder="t('tableColumn.id')"
             class="input_w"
+            @blur="searchChange"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.code')">
@@ -21,6 +22,7 @@
             v-model="searchInfo.code"
             :placeholder="t('tableColumn.code')"
             class="input_w"
+            @blur="searchChange"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.status')">
@@ -29,6 +31,7 @@
             v-model="searchInfo.status"
             :placeholder="t('tableColumn.placeholder')"
             class="input_w"
+            @change="searchChange"
           >
             <el-option
               v-for="item in statusOption"
@@ -297,13 +300,16 @@ const searchInfo = ref({
 const closeTime = (val) => {
   showTimeBo.value = val;
 };
-
+const searchChange = () => {
+  onSubmit();
+};
 const onReset = () => {
   searchInfo.value = {
     id: null,
     code: null,
     status: null,
   };
+  onSubmit();
 };
 const dataGet = (dateStr) => {
   let date = new Date(dateStr);

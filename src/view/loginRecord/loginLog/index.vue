@@ -13,6 +13,7 @@
             v-model="searchInfo.username"
             :placeholder="t('tableColumn.username')"
             class="input_w"
+            @blur="searchChange($event, 'username')"
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.accountId')">
@@ -21,6 +22,7 @@
             v-model="searchInfo.accountId"
             :placeholder="t('tableColumn.accountId')"
             class="input_w"
+            @blur="searchChange($event, 'accountId')"
           />
         </el-form-item>
 
@@ -30,6 +32,7 @@
             v-model="searchInfo.accountType"
             :placeholder="t('tableColumn.placeholder')"
             class="input_w"
+            @change="searchChange"
           >
             <el-option
               v-for="item in accountTypeOption"
@@ -45,6 +48,7 @@
             v-model="searchInfo.siteId"
             :placeholder="t('tableColumn.siteId')"
             class="input_w"
+            @blur="searchChange($event, 'siteId')"
           />
         </el-form-item>
 
@@ -350,9 +354,15 @@ const onReset = () => {
   value2.value = [];
   resetClose.value = true;
   paramsValue.value = true;
+  onSubmit();
 };
 // 搜索
-
+const searchChange = (e, params) => {
+  if (params && e.target.value == "") {
+    searchInfo.value[params] = null;
+  }
+  onSubmit();
+};
 const onSubmit = () => {
   page.value = 1;
   pageSize.value = 10;
