@@ -413,15 +413,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-
-        <!-- <el-form-item :label="t('tableColumn.expired')" prop="expired">
-          <el-date-picker
-            v-model="form.expired"
-            type="datetime"
-          :placeholder="t('tableColumn.PleaseTime')"
-            @change="handleDateChange"
-          />
-        </el-form-item> -->
       </el-form>
     </el-drawer>
   </div>
@@ -434,7 +425,7 @@ import {
   mallProductEdit,
   mallProductAdd,
 } from "@/api/tack";
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
 import DataTime from "@/components/DataTime/index.vue";
@@ -500,7 +491,20 @@ const onReset = () => {
   value2.value = [];
   resetClose.value = true;
   paramsValue.value = true;
-  onSubmit();
+
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  const isoDate = now.toISOString();
+  const now2 = new Date();
+  now2.setHours(23, 59, 59, 999);
+  const isoDate2 = now2.toISOString();
+  const isoArr = [isoDate, isoDate2];
+  const timeData = isoArr.map((item) => {
+    return item;
+  });
+  value2.value = timeData;
+
+  // onSubmit();
 };
 // 搜索
 
@@ -587,11 +591,11 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async () => {
-  if (value2.value.length == 0 && resetClose.value == true) {
-    return ElMessage.warning(
-      t("tableColumn.placeholder") + t("tableColumn.time")
-    );
-  }
+  // if (value2.value.length == 0 && resetClose.value == true) {
+  //   return ElMessage.warning(
+  //     t("tableColumn.placeholder") + t("tableColumn.time")
+  //   );
+  // }
   if (value2.value && value2.value.length) {
     searchInfo.value.start = value2.value[0];
     searchInfo.value.end = value2.value[1];
@@ -866,6 +870,11 @@ const tableRowClassName = ({ row, rowIndex }) => {
     return "warnBg";
   }
 };
+watchEffect(() => {
+  if (value2.value) {
+    onSubmit();
+  }
+});
 </script>
 
 

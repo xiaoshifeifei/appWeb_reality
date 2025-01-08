@@ -181,6 +181,8 @@ watchEffect(() => {
     });
     value2.value = timeData;
     emits("update:modelValue", timeData);
+  } else {
+    emits("update:modelValue", "");
   }
 });
 const clear = (val) => {
@@ -188,7 +190,17 @@ const clear = (val) => {
 };
 watchEffect(() => {
   if (props.paramsValue) {
-    value2.value = "";
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    const isoDate = now.toISOString();
+    const now2 = new Date();
+    now2.setHours(23, 59, 59, 999);
+    const isoDate2 = now2.toISOString();
+    const isoArr = [isoDate, isoDate2];
+    const timeData = isoArr.map((item) => {
+      return item;
+    });
+    value2.value = timeData;
     emits("close");
   }
 });

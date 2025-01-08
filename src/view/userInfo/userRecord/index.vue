@@ -187,7 +187,7 @@
 import { getDayTimePeriodAccountNum } from "@/api/userInfo";
 import SingleTime from "@/components/DataTime/singleTime.vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useI18n } from "vue-i18n"; // added by mohamed hassan to support multilanguage
 const { t } = useI18n(); // added by mohamed hassan to support multilanguage
@@ -251,6 +251,7 @@ const onReset = () => {
   value2.value = null;
   searchInfo.value = {};
   paramsValue.value = true;
+  init();
 };
 // 搜索
 const disabledDate = (time) => {
@@ -328,6 +329,11 @@ const tableRowClassName = ({ row, rowIndex }) => {
     return "warnBg";
   }
 };
+watchEffect(() => {
+  if (value2.value) {
+    onSubmit();
+  }
+});
 </script>
 
 <style scoped lang="scss">
