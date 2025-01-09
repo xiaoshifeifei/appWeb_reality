@@ -956,6 +956,7 @@
     "multiple": "倍数",
     "requiredAmount": "所需金额",
     "requiredWinAmount": "所需获胜金额",
+    "minDepositAmount": "最小存款金额",
     "female": "女性"
   }
 }

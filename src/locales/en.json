@@ -956,6 +956,7 @@
     "multiple": "Multiple",
     "requiredAmount": "Required Amount",
     "requiredWinAmount": "Required Win Amount",
+    "minDepositAmount": "minDepositAmount",
     "female": "Female"
   }
 }

@@ -46,6 +46,70 @@
         :row-class-name="tableRowClassName"
       >
         <el-table-column
+          type="expand"
+          v-if="tableDataShowExpand"
+          min-width="80"
+          label="展开"
+        >
+          <template #default="props">
+            <el-table
+              :data="[props.row.config.megaWheel]"
+              :border="childBorder"
+              style="width: 1180px; margin-left: 90px"
+              :header-cell-style="{
+                backgroundColor: 'var(--el-tab-bgc-q)',
+                Color: '#FFF',
+              }"
+            >
+              <el-table-column
+                min-width="280"
+                align="center"
+                :label="t('tableColumn.code')"
+                prop="code"
+              />
+              <el-table-column
+                min-width="200"
+                align="center"
+                :label="t('tableColumn.betRequiredMultiple')"
+                prop="betRequiredMultiple"
+              />
+              <el-table-column
+                min-width="200"
+                align="center"
+                :label="t('tableColumn.requiredTimes')"
+                prop="requiredTimes"
+              />
+              <el-table-column
+                :label="t('tableColumn.bonus')"
+                align="center"
+                min-width="400"
+                prop="bonus"
+              >
+                <template #default="scope">
+                  <div v-for="(item, index) in scope.row.bonus" :key="index">
+                    <div
+                      v-for="(item1, key, index1) in item"
+                      :key="index1"
+                      class="spanCla"
+                    >
+                      <span>{{ t(`tableColumn.${key}`) }}: </span>
+                      <span class="span3">{{ item1 }}</span>
+                    </div>
+                    <span
+                      class="span4"
+                      v-if="
+                        scope.row.bonus.length > 1 &&
+                        scope.row.bonus.length - 1 > index
+                      "
+                    >
+                    </span>
+                  </div>
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+        </el-table-column>
+        <el-table-column
           align="center"
           :label="t('tableColumn.code')"
           min-width="280"
@@ -126,6 +190,19 @@
           <template #default="scope">
             <div v-if="scope.row.config.interval">
               {{ scope.row.config.interval }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-if="tableDataShowMinDepositAmount"
+          align="center"
+          :label="t('tableColumn.minDepositAmount')"
+          min-width="200"
+          prop="config"
+        >
+          <template #default="scope">
+            <div v-if="scope.row.config.minDepositAmount">
+              {{ scope.row.config.minDepositAmount }}
             </div>
           </template>
         </el-table-column>
@@ -283,7 +360,7 @@
             />
           </el-form-item>
         </el-col>
-        <el-col :span="18" v-if="form.config.bonusAmount">
+        <el-col :span="18" v-if="form.code == 'BIND_PHONE_NUMBER'">
           <el-form-item
             :label="t('tableColumn.bonusAmount')"
             prop="config.bonusAmount"
@@ -297,11 +374,20 @@
                   ''
                 )
               "
+              @change="
+                handleChange1(
+                  form.config.bonusAmount,
+                  0,
+                  'v4',
+                  undefined,
+                  'bonusAmount'
+                )
+              "
               :placeholder="t('tableColumn.bonusAmount')"
             />
           </el-form-item>
         </el-col>
-        <el-col :span="18" v-if="form.config.giftAmountMultiple">
+        <el-col :span="18" v-if="form.code == 'DAILY_DEPOSIT_FIRST'">
           <el-form-item
             :label="t('tableColumn.giftAmountMultiple')"
             prop="config.giftAmountMultiple"
@@ -317,7 +403,14 @@
             />
           </el-form-item>
         </el-col>
-        <el-col :span="18" v-if="form.config.depositAmount">
+        <el-col
+          :span="18"
+          v-if="
+            form.code == 'ONCE_DEPOSIT_FIRST' ||
+            form.code == 'ONCE_DEPOSIT_SECOND' ||
+            form.code == 'ONCE_DEPOSIT_THIRD'
+          "
+        >
           <el-form-item
             :label="t('tableColumn.depositAmount')"
             prop="config.depositAmount"
@@ -331,11 +424,27 @@
                   ''
                 )
               "
+              @change="
+                handleChange1(
+                  form.config.depositAmount,
+                  0,
+                  'v4',
+                  undefined,
+                  'depositAmount'
+                )
+              "
               :placeholder="t('tableColumn.depositAmount')"
             />
           </el-form-item>
         </el-col>
-        <el-col :span="18" v-if="form.config.giftAmount">
+        <el-col
+          :span="18"
+          v-if="
+            form.code == 'ONCE_DEPOSIT_FIRST' ||
+            form.code == 'ONCE_DEPOSIT_SECOND' ||
+            form.code == 'ONCE_DEPOSIT_THIRD'
+          "
+        >
           <el-form-item
             :label="t('tableColumn.giftAmount')"
             prop="config.giftAmount"
@@ -349,10 +458,69 @@
                   ''
                 )
               "
+              @change="
+                handleChange1(
+                  form.config.giftAmount,
+                  0,
+                  'v4',
+                  undefined,
+                  'giftAmount'
+                )
+              "
               :placeholder="t('tableColumn.giftAmount')"
             />
           </el-form-item>
         </el-col>
+        <el-col :span="18" v-if="form.code == 'DAILY_DEPOSIT_FIRST'">
+          <el-form-item
+            :label="t('tableColumn.minDepositAmount')"
+            prop="config.minDepositAmount"
+          >
+            <el-input
+              v-model="form.config.minDepositAmount"
+              autocomplete="off"
+              @input="
+                form.config.minDepositAmount =
+                  form.config.minDepositAmount.replace(/[^\d|\.]/g, '')
+              "
+              @change="
+                handleChange1(
+                  form.config.minDepositAmount,
+                  0,
+                  'v4',
+                  undefined,
+                  'minDepositAmount'
+                )
+              "
+              :placeholder="t('tableColumn.minDepositAmount')"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :span="18"
+          v-if="
+            form.code == 'TIMED_REWARD_INSTANT_BONUS' ||
+            form.code == 'TIMED_REWARD_TURBO_BONUS'
+          "
+        >
+          <el-form-item
+            :label="t('tableColumn.interval')"
+            prop="config.interval"
+          >
+            <el-input
+              v-model="form.config.interval"
+              autocomplete="off"
+              @input="
+                form.config.interval = form.config.interval.replace(
+                  /[^\d|\.]/g,
+                  ''
+                )
+              "
+              :placeholder="t('tableColumn.interval')"
+            />
+          </el-form-item>
+        </el-col>
+
         <div
           v-if="
             form.config.bonus &&
@@ -511,6 +679,128 @@
             </el-button>
           </el-form-item>
         </div>
+        <div v-if="form.code == 'TIMED_REWARD_TURBO_BONUS'">
+          <el-col :span="18">
+            <el-form-item :label="t('tableColumn.code')" prop="code">
+              <el-input
+                disabled
+                v-model="form.config.megaWheel.code"
+                autocomplete="off"
+                :placeholder="t('tableColumn.code')"
+              />
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="18">
+            <el-form-item
+              :label="t('tableColumn.betRequiredMultiple')"
+              prop="config.betRequiredMultiple"
+            >
+              <el-input
+                v-model="form.config.megaWheel.betRequiredMultiple"
+                autocomplete="off"
+                @input="
+                  form.config.megaWheel.betRequiredMultiple =
+                    form.config.megaWheel.betRequiredMultiple.replace(
+                      /[^\d|\.]/g,
+                      ''
+                    )
+                "
+                :placeholder="t('tableColumn.betRequiredMultiple')"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="18">
+            <el-form-item
+              :label="t('tableColumn.requiredTimes')"
+              prop="requiredTimes"
+            >
+              <el-input
+                v-model="form.config.megaWheel.requiredTimes"
+                autocomplete="off"
+                @input="
+                  form.config.megaWheel.requiredTimes =
+                    form.config.megaWheel.requiredTimes.replace(/[^\d|\.]/g, '')
+                "
+                :placeholder="t('tableColumn.requiredTimes')"
+              />
+            </el-form-item>
+          </el-col>
+          <div>
+            <template
+              v-for="(item, index) in form.config.megaWheel.bonus"
+              :key="index"
+            >
+              <el-row class="w-full">
+                <el-col :span="6" v-if="item.bonusAmount || type !== null">
+                  <el-form-item
+                    :label="t('tableColumn.bonusAmount')"
+                    :prop="`config.bonus.${index}.bonusAmount`"
+                    :rules="rules['config.bonus.bonusAmount']"
+                  >
+                    <el-input
+                      style="width: 100%"
+                      v-model="item.bonusAmount"
+                      autocomplete="off"
+                      @input="
+                        item.bonusAmount = item.bonusAmount.replace(
+                          /[^\d|\.]/g,
+                          ''
+                        )
+                      "
+                      @change="
+                        handleChange2(
+                          item.bonusAmount,
+                          index,
+                          'v4',
+                          undefined,
+                          'bonusAmount'
+                        )
+                      "
+                    />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="9" v-if="item.weight || type !== null">
+                  <el-form-item
+                    :label="t('tableColumn.weight')"
+                    :prop="`config.bonus.${index}.weight`"
+                    :rules="rules['config.bonus.weight']"
+                  >
+                    <el-input
+                      style="width: 50%"
+                      v-model="item.weight"
+                      autocomplete="off"
+                      @input="
+                        item.weight = item.weight.replace(/[^\d|\.]/g, '')
+                      "
+                      @change="
+                        handleChange2(
+                          item.weight,
+                          index,
+                          'v4',
+                          undefined,
+                          'weight'
+                        )
+                      "
+                    />
+                    <el-button
+                      style="margin-left: 20px"
+                      icon="delete"
+                      @click="delItemQ(index)"
+                    >
+                      {{ t("general.delete") }}
+                    </el-button>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </template>
+            <el-form-item>
+              <el-button type="primary" icon="plus" @click="addItemQ()">
+                {{ t("general.add") }}
+              </el-button>
+            </el-form-item>
+          </div>
+        </div>
 
         <el-form-item
           :label="t('tableColumn.status')"
@@ -558,6 +848,7 @@ defineOptions({
 });
 const valueExpired = ref("");
 const apis = ref([]);
+const childBorder = ref(true);
 const form = ref({
   code: null,
   config: {
@@ -566,7 +857,14 @@ const form = ref({
     giftAmountMultiple: null,
     giftAmount: null,
     depositAmount: null,
+    minDepositAmount: null,
     bonus: [],
+    megaWheel: {
+      requiredTimes: null,
+      bonus: [],
+      code: "TIMED_REWARD_TURBO_BONUS",
+      betRequiredMultiple: null,
+    },
   },
   status: null,
   expiredAt: null,
@@ -578,6 +876,8 @@ const tableDataShowDepositAmount = ref(false);
 const tableDataShowGiftAmount = ref(false);
 const tableDataShowBonus = ref(false);
 const tableDataShowInterval = ref(false);
+const tableDataShowExpand = ref(false);
+const tableDataShowMinDepositAmount = ref(false);
 
 const type = ref("");
 const rules = ref({
@@ -590,8 +890,13 @@ const rules = ref({
 const showTimeBo = ref(false);
 const addItem = () => {
   form.value.config.bonus.push({
-    min: null,
-    max: null,
+    bonusAmount: null,
+    weight: null,
+  });
+};
+const addItemQ = () => {
+  form.value.config.megaWheel.bonus.push({
+    bonusAmount: null,
     weight: null,
   });
 };
@@ -623,6 +928,9 @@ const onSubmit = () => {
 };
 const delItem = (index) => {
   form.value.config.bonus.splice(index, 1);
+};
+const delItemQ = (index) => {
+  form.value.config.megaWheel.bonus.splice(index, 1);
 };
 
 // 分页
@@ -695,6 +1003,50 @@ const switchStatus = async (row) => {
         item.weight = Number(item.weight);
       }
     });
+  }
+  if (
+    row.config.megaWheel &&
+    row.config.megaWheel.bonus != null &&
+    row.config.megaWheel.bonus.length
+  ) {
+    row.config.megaWheel.bonus.map((item, index) => {
+      item.bonusAmount = item.bonusAmount + "";
+      if (item.bonusAmount.indexOf("B") !== -1) {
+        const newStr = item.bonusAmount.replace("B", "");
+        item.bonusAmount = Number(newStr) * 1000000000;
+      } else if (item.bonusAmount.indexOf("M") !== -1) {
+        const newStr = item.bonusAmount.replace("M", "");
+        item.bonusAmount = Number(newStr) * 1000000;
+      } else if (item.bonusAmount.indexOf("K") !== -1) {
+        const newStr = item.bonusAmount.replace("K", "");
+        item.bonusAmount = Number(newStr) * 1000;
+      } else {
+        item.bonusAmount = Number(item.bonusAmount);
+      }
+
+      item.weight = item.weight + "";
+      if (item.weight.indexOf("B") !== -1) {
+        const newStr = item.weight.replace("B", "");
+        item.weight = Number(newStr) * 1000000000;
+      } else if (item.weight.indexOf("M") !== -1) {
+        const newStr = item.weight.replace("M", "");
+        item.weight = Number(newStr) * 1000000;
+      } else if (item.weight.indexOf("K") !== -1) {
+        const newStr = item.weight.replace("K", "");
+        item.weight = Number(newStr) * 1000;
+      } else {
+        item.weight = Number(item.weight);
+      }
+    });
+  }
+  if (row.config.minDepositAmount) {
+    row.config.minDepositAmount = countData(row.config.minDepositAmount);
+  }
+  if (row.config.depositAmount) {
+    row.config.depositAmount = countData(row.config.depositAmount);
+  }
+  if (row.config.giftAmount) {
+    row.config.giftAmount = countData(row.config.giftAmount);
   }
   const res = await editOrNewActivityConfig(row);
   if (res.code === 0) {
@@ -775,6 +1127,65 @@ const getTableData = async () => {
           );
         });
       }
+      if (
+        item.config.megaWheel &&
+        item.config.megaWheel.bonus != null &&
+        item.config.megaWheel.bonus.length > 0
+      ) {
+        item.config.megaWheel.bonus.map((item2, index2) => {
+          item2.bonusAmount = handleChange(
+            item2.bonusAmount,
+            index2,
+            "v4",
+            true,
+            "bonusAmount"
+          );
+
+          item2.weight = handleChange(
+            item2.weight,
+            index2,
+            "v4",
+            true,
+            "weight"
+          );
+        });
+      }
+      if (item.config.minDepositAmount) {
+        item.config.minDepositAmount = handleChange(
+          item.config.minDepositAmount,
+          index,
+          "v4",
+          true,
+          "minDepositAmount"
+        );
+      }
+      if (item.config.depositAmount) {
+        item.config.depositAmount = handleChange(
+          item.config.depositAmount,
+          index,
+          "v4",
+          true,
+          "depositAmount"
+        );
+      }
+      if (item.config.giftAmount) {
+        item.config.giftAmount = handleChange(
+          item.config.giftAmount,
+          index,
+          "v4",
+          true,
+          "giftAmount"
+        );
+      }
+      if (item.config.bonusAmount) {
+        item.config.bonusAmount = handleChange(
+          item.config.bonusAmount,
+          index,
+          "v4",
+          true,
+          "bonusAmount"
+        );
+      }
     });
     if (table.data.config.bonusAmount) {
       tableDataShowBonusAmount.value = true;
@@ -801,15 +1212,22 @@ const getTableData = async () => {
     } else {
       tableDataShowInterval.value = false;
     }
+    if (table.data.config.minDepositAmount) {
+      tableDataShowMinDepositAmount.value = true;
+    } else {
+      tableDataShowMinDepositAmount.value = false;
+    }
     if (table.data.config.bonus) {
       tableDataShowBonus.value = true;
     } else {
       tableDataShowBonus.value = false;
     }
 
-    // total.value = table.data.total;
-    // page.value = table.data.page;
-    // pageSize.value = table.data.pageSize;
+    if (table.data.code == "TIMED_REWARD_TURBO_BONUS") {
+      tableDataShowExpand.value = true;
+    } else {
+      tableDataShowExpand.value = false;
+    }
   }
 };
 const init = async () => {
@@ -859,6 +1277,78 @@ const handleChange = (number, index, params, params2, params3) => {
         return number.toString();
       } else {
         return (form.value.config.bonus[index][params3] = number.toString());
+      }
+    }
+  }
+};
+const handleChange1 = (number, index, params, params2, params3) => {
+  if (number) {
+    number = Number(number);
+  } else {
+    return;
+  }
+  if (params == "v4") {
+    if (number >= 1000000000) {
+      if (params2) {
+        return number / 1000000000 + "B";
+      } else {
+        return (form.value.config[params3] = number / 1000000000 + "B");
+      }
+    } else if (number >= 1000000) {
+      if (params2) {
+        return number / 1000000 + "M";
+      } else {
+        return (form.value.config[params3] = number / 1000000 + "M");
+      }
+    } else if (number >= 1000) {
+      if (params2) {
+        return number / 1000 + "K";
+      } else {
+        return (form.value.config[params3] = number / 1000 + "K");
+      }
+    } else {
+      if (params2) {
+        return number.toString();
+      } else {
+        return (form.value.config[params3] = number.toString());
+      }
+    }
+  }
+};
+const handleChange2 = (number, index, params, params2, params3) => {
+  if (number) {
+    number = Number(number);
+  } else {
+    return;
+  }
+  if (params == "v4") {
+    if (number >= 1000000000) {
+      if (params2) {
+        return number / 1000000000 + "B";
+      } else {
+        return (form.value.config.megaWheel.bonus[index][params3] =
+          number / 1000000000 + "B");
+      }
+    } else if (number >= 1000000) {
+      if (params2) {
+        return number / 1000000 + "M";
+      } else {
+        return (form.value.config.megaWheel.bonus[index][params3] =
+          number / 1000000 + "M");
+      }
+    } else if (number >= 1000) {
+      if (params2) {
+        return number / 1000 + "K";
+      } else {
+        return (form.value.config.megaWheel.bonus[index][params3] =
+          number / 1000 + "K");
+      }
+    } else {
+      if (params2) {
+        return number.toString();
+      } else {
+        return (form.value.config.megaWheel.bonus[index][params3] =
+          number.toString());
       }
     }
   }
@@ -923,12 +1413,83 @@ const editTackFunc = async (row) => {
   form.value = rows;
   openDialog("edit");
 };
+const countData = (num) => {
+  num = num + "";
+  if (num.indexOf("B") !== -1) {
+    const newStr = num.replace("B", "");
+    return (num = Number(newStr) * 1000000000);
+  } else if (num.indexOf("M") !== -1) {
+    const newStr = num.replace("M", "");
+    return (num = Number(newStr) * 1000000);
+  } else if (num.indexOf("K") !== -1) {
+    const newStr = num.replace("K", "");
+    return (num = Number(newStr) * 1000);
+  } else {
+    return (num = Number(num));
+  }
+};
 
 const enterDialog = async () => {
   apiForm.value.validate(async (valid) => {
     if (valid) {
       if (valueExpired.value) {
         form.value.expiredAt = valueExpired.value;
+      }
+      if (form.value.config.minDepositAmount) {
+        form.value.config.minDepositAmount = countData(
+          form.value.config.minDepositAmount
+        );
+      }
+      if (form.value.config.bonusAmount) {
+        form.value.config.bonusAmount = countData(
+          form.value.config.bonusAmount
+        );
+      }
+      if (form.value.config.depositAmount) {
+        form.value.config.depositAmount = countData(
+          form.value.config.depositAmount
+        );
+      }
+      if (form.value.config.giftAmount) {
+        form.value.config.giftAmount = countData(form.value.config.giftAmount);
+      }
+      if (form.value.config.interval) {
+        form.value.config.interval = Number(form.value.config.interval);
+      }
+      if (
+        form.value.config.megaWheel &&
+        form.value.config.megaWheel.bonus != null &&
+        form.value.config.megaWheel.bonus.length
+      ) {
+        form.value.config.megaWheel.bonus.map((item, index) => {
+          item.bonusAmount = item.bonusAmount + "";
+          if (item.bonusAmount.indexOf("B") !== -1) {
+            const newStr = item.bonusAmount.replace("B", "");
+            item.bonusAmount = Number(newStr) * 1000000000;
+          } else if (item.bonusAmount.indexOf("M") !== -1) {
+            const newStr = item.bonusAmount.replace("M", "");
+            item.bonusAmount = Number(newStr) * 1000000;
+          } else if (item.bonusAmount.indexOf("K") !== -1) {
+            const newStr = item.bonusAmount.replace("K", "");
+            item.bonusAmount = Number(newStr) * 1000;
+          } else {
+            item.bonusAmount = Number(item.bonusAmount);
+          }
+
+          item.weight = item.weight + "";
+          if (item.weight.indexOf("B") !== -1) {
+            const newStr = item.weight.replace("B", "");
+            item.weight = Number(newStr) * 1000000000;
+          } else if (item.weight.indexOf("M") !== -1) {
+            const newStr = item.weight.replace("M", "");
+            item.weight = Number(newStr) * 1000000;
+          } else if (item.weight.indexOf("K") !== -1) {
+            const newStr = item.weight.replace("K", "");
+            item.weight = Number(newStr) * 1000;
+          } else {
+            item.weight = Number(item.weight);
+          }
+        });
       }
       if (form.value.config.bonus != null && form.value.config.bonus.length) {
         form.value.config.bonus.map((item, index) => {
