@@ -12,9 +12,9 @@
           >
             <el-option
               v-for="item in statusOption"
-              :key="item"
-              :label="item"
-              :value="item"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
             />
           </el-select>
         </el-form-item>
@@ -115,6 +115,29 @@
           min-width="280"
           prop="code"
         >
+          <template #default="scope">
+            <div>
+              {{
+                scope.row.code == "DAILY_WHOOSH"
+                  ? "每日轮盘"
+                  : scope.row.code == "BIND_PHONE_NUMBER"
+                  ? "绑定手机号"
+                  : scope.row.code == "DAILY_DEPOSIT_FIRST"
+                  ? "每日首次充值"
+                  : scope.row.code == "ONCE_DEPOSIT_FIRST"
+                  ? "三挡充值1"
+                  : scope.row.code == "ONCE_DEPOSIT_SECOND"
+                  ? "三挡充值2"
+                  : scope.row.code == "ONCE_DEPOSIT_THIRD"
+                  ? "三挡充值3"
+                  : scope.row.code == "TIMED_REWARD_INSTANT_BONUS"
+                  ? "Instant Bonus定时领取"
+                  : scope.row.code == "TIMED_REWARD_TURBO_BONUS"
+                  ? "Turbo Bonus定时领取"
+                  : scope.row.code
+              }}
+            </div>
+          </template>
         </el-table-column>
         <el-table-column
           align="center"
@@ -360,7 +383,7 @@
             />
           </el-form-item>
         </el-col>
-        <el-col :span="18" v-if="form.code == 'BIND_PHONE_NUMBER'">
+        <el-col :span="18" v-if="form.code == '绑定手机号'">
           <el-form-item
             :label="t('tableColumn.bonusAmount')"
             prop="config.bonusAmount"
@@ -387,7 +410,7 @@
             />
           </el-form-item>
         </el-col>
-        <el-col :span="18" v-if="form.code == 'DAILY_DEPOSIT_FIRST'">
+        <el-col :span="18" v-if="form.code == '每日首次充值'">
           <el-form-item
             :label="t('tableColumn.giftAmountMultiple')"
             prop="config.giftAmountMultiple"
@@ -406,9 +429,9 @@
         <el-col
           :span="18"
           v-if="
-            form.code == 'ONCE_DEPOSIT_FIRST' ||
-            form.code == 'ONCE_DEPOSIT_SECOND' ||
-            form.code == 'ONCE_DEPOSIT_THIRD'
+            form.code == '三挡充值1' ||
+            form.code == '三挡充值2' ||
+            form.code == '三挡充值3'
           "
         >
           <el-form-item
@@ -440,9 +463,9 @@
         <el-col
           :span="18"
           v-if="
-            form.code == 'ONCE_DEPOSIT_FIRST' ||
-            form.code == 'ONCE_DEPOSIT_SECOND' ||
-            form.code == 'ONCE_DEPOSIT_THIRD'
+            form.code == '三挡充值1' ||
+            form.code == '三挡充值2' ||
+            form.code == '三挡充值3'
           "
         >
           <el-form-item
@@ -471,7 +494,7 @@
             />
           </el-form-item>
         </el-col>
-        <el-col :span="18" v-if="form.code == 'DAILY_DEPOSIT_FIRST'">
+        <el-col :span="18" v-if="form.code == '每日首次充值'">
           <el-form-item
             :label="t('tableColumn.minDepositAmount')"
             prop="config.minDepositAmount"
@@ -499,8 +522,8 @@
         <el-col
           :span="18"
           v-if="
-            form.code == 'TIMED_REWARD_INSTANT_BONUS' ||
-            form.code == 'TIMED_REWARD_TURBO_BONUS'
+            form.code == 'Instant Bonus定时领取' ||
+            form.code == 'Turbo Bonus定时领取'
           "
         >
           <el-form-item
@@ -525,7 +548,7 @@
           v-if="
             form.config.bonus &&
             form.config.bonus.length &&
-            form.code == 'DAILY_WHOOSH'
+            form.code == '每日轮盘'
           "
         >
           <template v-for="(item, index) in form.config.bonus" :key="index">
@@ -606,9 +629,8 @@
           v-if="
             form.config.bonus &&
             form.config.bonus.length &&
-            (form.code == 'TIMED_REWARD_INSTANT_BONUS' ||
-              form.code == 'TIMED_REWARD_TURBO_BONUS' ||
-              form.code == 'TIMED_REWARD_MEGA_WHEEL')
+            (form.code == 'Instant Bonus定时领取' ||
+              form.code == 'Turbo Bonus定时领取')
           "
         >
           <template v-for="(item, index) in form.config.bonus" :key="index">
@@ -679,7 +701,7 @@
             </el-button>
           </el-form-item>
         </div>
-        <div v-if="form.code == 'TIMED_REWARD_TURBO_BONUS'">
+        <div v-if="form.code == 'Turbo Bonus定时领取'">
           <el-col :span="18">
             <el-form-item :label="t('tableColumn.code')" prop="code">
               <el-input
@@ -1236,9 +1258,57 @@ const init = async () => {
     pageSize: 1000,
   });
   if (table.code === 0) {
-    statusOption.value = table.data;
+    // statusOption.value = table.data;
+    table.data.forEach((item) => {
+      if (item == "DAILY_WHOOSH") {
+        statusOption.value.push({
+          value: "DAILY_WHOOSH",
+          label: "每日轮盘",
+        });
+      } else if (item == "BIND_PHONE_NUMBER") {
+        statusOption.value.push({
+          value: "BIND_PHONE_NUMBER",
+          label: "绑定手机号",
+        });
+      } else if (item == "DAILY_DEPOSIT_FIRST") {
+        statusOption.value.push({
+          value: "DAILY_DEPOSIT_FIRST",
+          label: "每日首次充值",
+        });
+      } else if (item == "ONCE_DEPOSIT_FIRST") {
+        statusOption.value.push({
+          value: "ONCE_DEPOSIT_FIRST",
+          label: "三挡充值1",
+        });
+      } else if (item == "ONCE_DEPOSIT_SECOND") {
+        statusOption.value.push({
+          value: "ONCE_DEPOSIT_SECOND",
+          label: "三挡充值2",
+        });
+      } else if (item == "ONCE_DEPOSIT_THIRD") {
+        statusOption.value.push({
+          value: "ONCE_DEPOSIT_THIRD",
+          label: "三挡充值3",
+        });
+      } else if (item == "TIMED_REWARD_INSTANT_BONUS") {
+        statusOption.value.push({
+          value: "TIMED_REWARD_INSTANT_BONUS",
+          label: "Instant Bonus定时领取",
+        });
+      } else if (item == "TIMED_REWARD_TURBO_BONUS") {
+        statusOption.value.push({
+          value: "TIMED_REWARD_TURBO_BONUS",
+          label: "Turbo Bonus定时领取",
+        });
+      } else {
+        statusOption.value.push({
+          value: item,
+          label: item,
+        });
+      }
+    });
     if (statusOption.value && statusOption.value.length) {
-      searchInfo.value.code = table.data[0];
+      searchInfo.value.code = statusOption.value[0].value;
       getTableData();
     }
   }
@@ -1410,6 +1480,23 @@ const closeDialog = () => {
 
 const editTackFunc = async (row) => {
   let rows = JSON.parse(JSON.stringify(row));
+  if (rows.code == "DAILY_WHOOSH") {
+    rows.code = "每日轮盘";
+  } else if (rows.code == "BIND_PHONE_NUMBER") {
+    rows.code = "绑定手机号";
+  } else if (rows.code == "DAILY_DEPOSIT_FIRST") {
+    rows.code = "每日首次充值";
+  } else if (rows.code == "ONCE_DEPOSIT_FIRST") {
+    rows.code = "三挡充值1";
+  } else if (rows.code == "ONCE_DEPOSIT_SECOND") {
+    rows.code = "三挡充值2";
+  } else if (rows.code == "ONCE_DEPOSIT_THIRD") {
+    rows.code = "三挡充值3";
+  } else if (rows.code == "TIMED_REWARD_INSTANT_BONUS") {
+    rows.code = "Instant Bonus定时领取";
+  } else if (rows.code == "TIMED_REWARD_TURBO_BONUS") {
+    rows.code = "Turbo Bonus定时领取";
+  }
   form.value = rows;
   openDialog("edit");
 };
@@ -1432,6 +1519,25 @@ const countData = (num) => {
 const enterDialog = async () => {
   apiForm.value.validate(async (valid) => {
     if (valid) {
+      if (form.value.code) {
+        if (form.value.code == "每日轮盘") {
+          form.value.code = "DAILY_WHOOSH";
+        } else if (form.value.code == "绑定手机号") {
+          form.value.code = "BIND_PHONE_NUMBER";
+        } else if (form.value.code == "每日首次充值") {
+          form.value.code = "DAILY_DEPOSIT_FIRST";
+        } else if (form.value.code == "三挡充值1") {
+          form.value.code = "ONCE_DEPOSIT_FIRST";
+        } else if (form.value.code == "三挡充值2") {
+          form.value.code = "ONCE_DEPOSIT_SECOND";
+        } else if (form.value.code == "三挡充值3") {
+          form.value.code = "ONCE_DEPOSIT_THIRD";
+        } else if (form.value.code == "Instant Bonus定时领取") {
+          form.value.code = "TIMED_REWARD_INSTANT_BONUS";
+        } else if (form.value.code == "Turbo Bonus定时领取") {
+          form.value.code = "TIMED_REWARD_TURBO_BONUS";
+        }
+      }
       if (valueExpired.value) {
         form.value.expiredAt = valueExpired.value;
       }
