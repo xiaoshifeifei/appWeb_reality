@@ -223,7 +223,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <!-- <div class="gva-pagination">
+      <div class="gva-pagination">
         <el-pagination
           :current-page="page"
           :page-size="pageSize"
@@ -233,7 +233,7 @@
           @current-change="handleCurrentChange"
           @size-change="handleSizeChange"
         />
-      </div> -->
+      </div>
     </div>
     <el-drawer
       v-if="sendMailVisible"
@@ -282,13 +282,32 @@
             </el-form-item>
           </el-col>
           <el-col :span="18">
-            <el-form-item
-              :label="t('tableColumn.receivers')"
-              prop="receivers"
-              :rules="rules['content.receivers']"
-            >
+            <el-form-item :label="t('tableColumn.typeCode')" prop="typeCode">
               <el-select
                 clearable
+                v-model="formMail.typeCode"
+                :placeholder="t('tableColumn.typeCode')"
+              >
+                <el-option
+                  v-for="item in typeCodeData"
+                  :key="item"
+                  :label="item"
+                  :value="item"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-col
+            :span="18"
+            v-if="
+              formMail.typeCode == 'MAIL_NORMAL' && formMail.typeCode != null
+            "
+          >
+            <el-form-item :label="t('tableColumn.receivers')" prop="receivers">
+              <el-select
+                clearable
+                filterable
                 multiple
                 collapse-tags
                 v-model="formMail.receivers"
@@ -435,7 +454,7 @@ const sendMailVisible = ref(false);
 const codeOptions = ref([]);
 const page = ref(1);
 const total = ref(0);
-const pageSize = ref(10000);
+const pageSize = ref(10);
 const tableData = ref([]);
 const tableUser = ref([]);
 const searchInfo = ref({});
@@ -464,6 +483,7 @@ const formMail = ref({
   receivers: [],
   expiredAt: null,
   sender: null,
+  typeCode: null,
   content: {
     title: null,
     content: null,
@@ -575,6 +595,8 @@ const closeMail = () => {
 };
 const rulesMail = ref({
   sender: [{ required: true, message: "请输入发件人名称", trigger: "blur" }],
+  typeCode: [{ required: true, message: "请选择邮件类型", trigger: "change" }],
+  receivers: [{ required: true, message: "请选择收件人", trigger: "change" }],
   "content.title": [
     { required: true, message: "请输入title", trigger: "blur" },
   ],
@@ -649,6 +671,9 @@ const enterMail = async () => {
     if (valid) {
       if (valueExpired.value) {
         formMail.value.expiredAt = valueExpired.value;
+      }
+      if (formMail.value.content && formMail.value.content.amount) {
+        formMail.value.content.amount = Number(formMail.value.content.amount);
       }
       switch (type.value) {
         case "add":
@@ -742,6 +767,7 @@ const initMailForm = () => {
     receivers: [],
     expiredAt: null,
     sender: null,
+    typeCode: null,
     content: {
       title: null,
       content: null,
