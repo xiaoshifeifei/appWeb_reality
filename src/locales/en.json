@@ -958,6 +958,8 @@
     "requiredWinAmount": "Required Win Amount",
     "minDepositAmount": "minDepositAmount",
     "Ftype": "type",
+    "orderStatus": "Order Status",
+    "hdCode": "code",
     "female": "Female"
   }
 }

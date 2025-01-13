@@ -20,7 +20,7 @@
             @blur="searchChange"
           />
         </el-form-item>
-        <el-form-item :label="t('tableColumn.paymentCode')">
+        <!-- <el-form-item :label="t('tableColumn.paymentCode')">
           <el-input
             clearable
             v-model="searchInfo.paymentCode"
@@ -28,7 +28,7 @@
             class="input_w"
             @blur="searchChange"
           />
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
@@ -69,13 +69,13 @@
           min-width="110"
           prop="channelCode"
         />
-        <el-table-column
+        <!-- <el-table-column
           align="center"
           :label="t('tableColumn.paymentCode')"
           min-width="180"
           prop="paymentCode"
         >
-        </el-table-column>
+        </el-table-column> -->
 
         <el-table-column
           align="center"
@@ -183,14 +183,14 @@
             <el-input v-model="form.channelCode" autocomplete="off" />
           </el-form-item>
         </el-col>
-        <el-col :span="18">
+        <!-- <el-col :span="18">
           <el-form-item
             :label="t('tableColumn.paymentCode')"
             prop="paymentCode"
           >
             <el-input v-model="form.paymentCode" autocomplete="off" />
           </el-form-item>
-        </el-col>
+        </el-col> -->
         <el-col :span="18">
           <el-form-item :label="t('tableColumn.giftRatio')" prop="giftRatio">
             <el-input

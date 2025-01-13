@@ -2,7 +2,7 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <el-form-item :label="t('tableColumn.code')">
+        <el-form-item :label="t('tableColumn.hdCode')">
           <el-select
             clearable
             v-model="searchInfo.code"
@@ -64,7 +64,7 @@
               <el-table-column
                 min-width="280"
                 align="center"
-                :label="t('tableColumn.code')"
+                :label="t('tableColumn.hdCode')"
                 prop="code"
               />
               <el-table-column
@@ -111,7 +111,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          :label="t('tableColumn.code')"
+          :label="t('tableColumn.hdCode')"
           min-width="280"
           prop="code"
         >

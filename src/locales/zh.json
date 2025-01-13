@@ -926,13 +926,13 @@
     "threeDayRetainedNum": "三日留存数",
     "sevenDayRetainedNum": "七日留存数",
     "thirtyDayRetainedNum": "三十日留存数",
-    "contact": "联系",
-    "extra": "附加",
-    "typeCode": "类型编码",
+    "contact": "联系方式",
+    "extra": "附加信息",
+    "typeCode": "邮件类型",
     "ip": "IP",
     "loginAt": "登入时间",
     "logoutAt": "登出时间",
-    "method": "支付提现方式",
+    "method": "收付款类型",
     "transferNo": "第三方交易号",
     "activityCode": "活动Code",
     "first": "首次充值",
@@ -958,6 +958,8 @@
     "requiredWinAmount": "所需获胜金额",
     "minDepositAmount": "最小存款金额",
     "Ftype": "收付款类型",
+    "orderStatus": "订单状态",
+    "hdCode": "活动类型",
     "female": "女性"
   }
 }

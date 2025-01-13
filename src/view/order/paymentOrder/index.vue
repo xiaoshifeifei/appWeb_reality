@@ -17,7 +17,7 @@
             @blur="searchChange($event, 'accountId')"
           />
         </el-form-item>
-        <el-form-item :label="t('tableColumn.status')">
+        <el-form-item :label="t('tableColumn.orderStatus')">
           <el-select
             clearable
             v-model="searchInfo.status"
