@@ -515,7 +515,6 @@ const tableData = ref([]);
 const searchInfo = ref({});
 // 查询
 const getTableData = async () => {
-  console.log(123456798);
   const table = await getMenuList({
     page: page.value,
     pageSize: pageSize.value,

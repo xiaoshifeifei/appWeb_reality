@@ -494,7 +494,10 @@
             />
           </el-form-item>
         </el-col>
-        <el-col :span="18" v-if="form.code == '每日首次充值'">
+        <el-col
+          :span="18"
+          v-if="form.code == '每日首次充值' || form.code == '每日轮盘'"
+        >
           <el-form-item
             :label="t('tableColumn.minDepositAmount')"
             prop="config.minDepositAmount"
@@ -1486,13 +1489,14 @@ const closeDialog = () => {
 };
 
 const editTackFunc = async (row) => {
-  row.config.bonus.map((item) => {
-    console.log("item.weight", item.weight);
-    if (!item.weight) {
-      item.weight = "0";
-    }
-    return { min: item.min, max: item.max, weight: item.weight };
-  });
+  if (row.code == "DAILY_WHOOSH") {
+    row.config.bonus.map((item) => {
+      if (!item.weight) {
+        item.weight = "0";
+      }
+      return { min: item.min, max: item.max, weight: item.weight };
+    });
+  }
 
   let rows = JSON.parse(JSON.stringify(row));
   if (rows.code == "DAILY_WHOOSH") {
@@ -1677,7 +1681,7 @@ const enterDialog = async () => {
           }
         });
       }
-      console.log("form.value", form.value);
+
       switch (type.value) {
         case "add":
           {

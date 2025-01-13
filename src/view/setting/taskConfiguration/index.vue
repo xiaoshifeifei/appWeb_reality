@@ -1084,7 +1084,6 @@ const enterDialog = async () => {
         }
       }
       form.value.config = removeNullValues(form.value.config);
-      console.log("form.value", form.value);
       switch (type.value) {
         case "add":
           {

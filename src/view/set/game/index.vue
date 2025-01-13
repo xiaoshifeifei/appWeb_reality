@@ -267,7 +267,6 @@ const num = ref(6); //每行个数
 const apiForm = ref(null);
 
 const getTableData = async () => {
-  console.log(234679);
   searchInfo.value.code = value2.value.code;
   searchInfo.value.name = value2.value.name;
   indexVal.value = value2.value.index;

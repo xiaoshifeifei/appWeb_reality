@@ -676,7 +676,6 @@ const init = async () => {
     pageSize: 1000000,
   });
   if (table1.code === 0) {
-    console.log("table1.data", table1.data);
     // typeCodeData.value = table1.data;
     table1.data.forEach((item) => {
       if (item == "MAIL_NORMAL") {

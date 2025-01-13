@@ -54,7 +54,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          :label="t('tableColumn.content')"
+          :label="t('tableColumn.NoticeContent')"
           min-width="200"
           prop="content"
         />
