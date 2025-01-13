@@ -264,14 +264,14 @@
             />
           </el-form-item>
         </el-col>
-        <el-col :span="18">
+        <!-- <el-col :span="18">
           <el-form-item
             :label="t('tableColumn.paymentCode')"
             prop="paymentCode"
           >
             <el-input v-model="form.paymentCode" disabled autocomplete="off" />
           </el-form-item>
-        </el-col>
+        </el-col> -->
         <el-col :span="18">
           <el-form-item
             :label="t('tableColumn.transactionType')"
@@ -515,13 +515,22 @@ const closeDialog = () => {
 
 const editTackFunc = async (row) => {
   let rows = JSON.parse(JSON.stringify(row));
-
+  if (rows.type == 1) {
+    rows.type = t("tableColumn.recharge");
+  } else if (rows.type == 2) {
+    rows.type = t("tableColumn.drawMoney");
+  }
   form.value = rows;
   openDialog("edit");
 };
 
 const enterDialog = async () => {
   apiForm.value.validate(async (valid) => {
+    if (form.value.type == "充值" || form.value.type == "Recharge") {
+      form.value.type = 1;
+    } else if (form.value.type == "提款" || form.value.type == "Draw Money") {
+      form.value.type = 2;
+    }
     if (valid) {
       switch (type.value) {
         case "add":
