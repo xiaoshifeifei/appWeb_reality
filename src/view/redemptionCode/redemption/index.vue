@@ -2,16 +2,16 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <el-form-item :label="t('tableColumn.code')">
+        <el-form-item :label="t('tableColumn.redemptionCode')">
           <el-input
             clearable
             v-model="searchInfo.code"
-            :placeholder="t('tableColumn.code')"
+            :placeholder="t('tableColumn.redemptionCode')"
             class="input_w"
             @blur="searchChange($event, 'code')"
           />
         </el-form-item>
-        <el-form-item :label="t('tableColumn.type')">
+        <el-form-item :label="t('tableColumn.redemptionType')">
           <el-select
             clearable
             v-model="searchInfo.type"
@@ -72,13 +72,13 @@
       >
         <el-table-column
           align="center"
-          :label="t('tableColumn.code')"
+          :label="t('tableColumn.redemptionCode')"
           prop="code"
         >
         </el-table-column>
         <el-table-column
           align="center"
-          :label="t('tableColumn.type')"
+          :label="t('tableColumn.redemptionType')"
           prop="type"
         >
         </el-table-column>
@@ -215,7 +215,7 @@
         label-width="120px"
       >
         <el-col :span="18" v-if="type === 'edit'">
-          <el-form-item :label="t('tableColumn.code')" prop="code">
+          <el-form-item :label="t('tableColumn.redemptionCode')" prop="code">
             <el-input
               disabled
               v-model="form.code"
@@ -225,7 +225,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="18" v-if="type === 'add'">
-          <el-form-item :label="t('tableColumn.type')">
+          <el-form-item :label="t('tableColumn.redemptionType')" prop="type">
             <el-select
               clearable
               v-model="form.type"
@@ -331,11 +331,12 @@ defineOptions({
 const valueExpired = ref("");
 const apis = ref([]);
 const form = ref({
-  content: null,
-  loop: null,
-  loopInterval: null,
+  code: null,
+  type: null,
+  count: null,
+  betRequiredMultiple: null,
+  bonusAmount: null,
   status: null,
-  expiredAt: null,
 });
 const statusOption = ref([
   { label: "enable", value: 1 },
@@ -345,10 +346,11 @@ const typeOption = ref([]);
 
 const type = ref("");
 const rules = ref({
-  content: [{ required: true, message: "请输入content", trigger: "blur" }],
-  loop: [{ required: true, message: "请输入循环次数", trigger: "blur" }],
-  loopInterval: [
-    { required: true, message: "请输入循环间隔", trigger: "blur" },
+  count: [{ required: true, message: "请输入可兑换次数", trigger: "blur" }],
+  type: [{ required: true, message: "请选择兑换类型", trigger: "change" }],
+  bonusAmount: [{ required: true, message: "请输入奖金金额", trigger: "blur" }],
+  betRequiredMultiple: [
+    { required: true, message: "请输入流水倍数", trigger: "blur" },
   ],
 });
 const showTimeBo = ref(false);
@@ -464,11 +466,12 @@ const apiForm = ref(null);
 const initForm = () => {
   apiForm.value.resetFields();
   form.value = {
-    content: null,
-    loop: null,
-    loopInterval: null,
+    code: null,
+    type: null,
+    count: null,
+    betRequiredMultiple: null,
+    bonusAmount: null,
     status: null,
-    expiredAt: null,
   };
 };
 

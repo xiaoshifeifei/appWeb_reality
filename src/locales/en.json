@@ -965,6 +965,11 @@
     "TELEGRAM": "Telegram",
     "WHATSAPP": "WhatsApp",
     "TWITTER": "Twitter",
+    "redemptionCode": "Redemption Code",
+    "redemptionType": "Redemption Type",
+    "emailTitle": "Email Title",
+    "emailContent": "Email Content",
+    "amountNum": "Email Amount",
     "female": "Female"
   }
 }

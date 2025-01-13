@@ -39,9 +39,9 @@
           >
             <el-option
               v-for="item in typeCodeData"
-              :key="item"
-              :label="item"
-              :value="item"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
             />
           </el-select>
         </el-form-item>
@@ -117,10 +117,20 @@
           :label="t('tableColumn.typeCode')"
           min-width="140"
           prop="typeCode"
-        />
+        >
+          <template #default="scope">
+            {{
+              scope.row.typeCode == "MAIL_NORMAL"
+                ? "普通邮件"
+                : scope.row.typeCode == "MAIL_ALL"
+                ? "全服邮件"
+                : scope.row.typeCode
+            }}
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
-          :label="t('tableColumn.title')"
+          :label="t('tableColumn.emailTitle')"
           min-width="100"
           prop="content"
         >
@@ -130,7 +140,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          :label="t('tableColumn.content')"
+          :label="t('tableColumn.emailContent')"
           min-width="100"
           prop="content"
         >
@@ -150,8 +160,8 @@
         </el-table-column>
         <el-table-column
           align="center"
-          :label="t('tableColumn.amount')"
-          min-width="100"
+          :label="t('tableColumn.amountNum')"
+          min-width="120"
           prop="content"
         >
           <template #default="scope">
@@ -290,9 +300,9 @@
               >
                 <el-option
                   v-for="item in typeCodeData"
-                  :key="item"
-                  :label="item"
-                  :value="item"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
                 />
               </el-select>
             </el-form-item>
@@ -325,7 +335,10 @@
           </el-col>
         </el-row>
         <el-col :span="18">
-          <el-form-item :label="t('tableColumn.title')" prop="content.title">
+          <el-form-item
+            :label="t('tableColumn.emailTitle')"
+            prop="content.title"
+          >
             <el-input
               v-model="formMail.content.title"
               autocomplete="off"
@@ -335,7 +348,7 @@
         </el-col>
         <el-col :span="18">
           <el-form-item
-            :label="t('tableColumn.content')"
+            :label="t('tableColumn.emailContent')"
             prop="content.content"
           >
             <el-input
@@ -346,7 +359,10 @@
           </el-form-item>
         </el-col>
         <el-col :span="18">
-          <el-form-item :label="t('tableColumn.amount')" prop="content.amount">
+          <el-form-item
+            :label="t('tableColumn.amountNum')"
+            prop="content.amount"
+          >
             <el-input
               v-model="formMail.content.amount"
               autocomplete="off"
@@ -356,7 +372,7 @@
                   ''
                 )
               "
-              :placeholder="t('tableColumn.amount')"
+              :placeholder="t('tableColumn.amountNum')"
             />
           </el-form-item>
         </el-col>
@@ -660,7 +676,26 @@ const init = async () => {
     pageSize: 1000000,
   });
   if (table1.code === 0) {
-    typeCodeData.value = table1.data;
+    console.log("table1.data", table1.data);
+    // typeCodeData.value = table1.data;
+    table1.data.forEach((item) => {
+      if (item == "MAIL_NORMAL") {
+        typeCodeData.value.push({
+          label: "普通邮件",
+          value: "MAIL_NORMAL",
+        });
+      } else if (item == "MAIL_ALL") {
+        typeCodeData.value.push({
+          label: "全服邮件",
+          value: "MAIL_ALL",
+        });
+      } else {
+        typeCodeData.value.push({
+          label: item,
+          value: item,
+        });
+      }
+    });
   }
 };
 
@@ -851,6 +886,9 @@ const closeDialog = () => {
 };
 const formKey = ref("");
 const editTackFunc = async (row) => {
+  if (row.receiver && typeof row.receiver === "number") {
+    row.receivers = [row.receiver];
+  }
   formMail.value = row;
   sendMailVisible.value = true;
   type.value = "edit";

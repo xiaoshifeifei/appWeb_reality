@@ -965,6 +965,11 @@
     "TELEGRAM": "电报",
     "WHATSAPP": "智能手机",
     "TWITTER": "推特",
+    "redemptionCode": "兑换码",
+    "redemptionType": "兑换类型",
+    "emailTitle": "邮件标题",
+    "emailContent": "邮件内容",
+    "amountNum": "邮件发送金额",
     "female": "女性"
   }
 }
