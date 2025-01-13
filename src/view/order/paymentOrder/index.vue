@@ -479,7 +479,6 @@ const methodOption = ref([
   { label: "recharge", value: 1 },
   { label: "drawMoney", value: 2 },
 ]);
-methodOption;
 const searchChange = (e, params) => {
   if (params && e.target.value == "") {
     searchInfo.value[params] = null;

@@ -244,7 +244,7 @@
                 class="spanCla"
               >
                 <span>{{ t(`tableColumn.${key}`) }}: </span>
-                <span class="span3">{{ item1 }}</span>
+                <span class="span3">{{ item1 || "0" }}</span>
               </div>
               <span
                 class="span4"
@@ -696,7 +696,7 @@
             </el-row>
           </template>
           <el-form-item>
-            <el-button type="primary" icon="plus" @click="addItem()">
+            <el-button type="primary" icon="plus" @click="addItemQ()">
               {{ t("general.add") }}
             </el-button>
           </el-form-item>
@@ -880,7 +880,13 @@ const form = ref({
     giftAmount: null,
     depositAmount: null,
     minDepositAmount: null,
-    bonus: [],
+    bonus: [
+      {
+        min: 0,
+        max: 0,
+        weight: 0,
+      },
+    ],
     megaWheel: {
       requiredTimes: null,
       bonus: [],
@@ -912,7 +918,8 @@ const rules = ref({
 const showTimeBo = ref(false);
 const addItem = () => {
   form.value.config.bonus.push({
-    bonusAmount: null,
+    min: null,
+    max: null,
     weight: null,
   });
 };
@@ -1479,6 +1486,14 @@ const closeDialog = () => {
 };
 
 const editTackFunc = async (row) => {
+  row.config.bonus.map((item) => {
+    console.log("item.weight", item.weight);
+    if (!item.weight) {
+      item.weight = "0";
+    }
+    return { min: item.min, max: item.max, weight: item.weight };
+  });
+
   let rows = JSON.parse(JSON.stringify(row));
   if (rows.code == "DAILY_WHOOSH") {
     rows.code = "每日轮盘";
@@ -1662,6 +1677,7 @@ const enterDialog = async () => {
           }
         });
       }
+      console.log("form.value", form.value);
       switch (type.value) {
         case "add":
           {
