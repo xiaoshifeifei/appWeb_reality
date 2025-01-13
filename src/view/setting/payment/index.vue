@@ -50,7 +50,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item :label="t('tableColumn.type')">
+        <el-form-item :label="t('tableColumn.Ftype')">
           <el-select
             clearable
             v-model="searchInfo.type"
@@ -138,7 +138,7 @@
         />
         <el-table-column
           align="center"
-          :label="t('tableColumn.type')"
+          :label="t('tableColumn.Ftype')"
           min-width="150"
           prop="type"
         >
@@ -285,7 +285,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="18">
-          <el-form-item :label="t('tableColumn.type')" prop="type">
+          <el-form-item :label="t('tableColumn.Ftype')" prop="type">
             <el-input v-model="form.type" disabled autocomplete="off" />
           </el-form-item>
         </el-col>
@@ -515,6 +515,7 @@ const closeDialog = () => {
 
 const editTackFunc = async (row) => {
   let rows = JSON.parse(JSON.stringify(row));
+
   form.value = rows;
   openDialog("edit");
 };

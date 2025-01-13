@@ -957,6 +957,7 @@
     "requiredAmount": "所需金额",
     "requiredWinAmount": "所需获胜金额",
     "minDepositAmount": "最小存款金额",
+    "Ftype": "收付款类型",
     "female": "女性"
   }
 }

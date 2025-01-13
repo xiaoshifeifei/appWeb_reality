@@ -6,9 +6,9 @@
       height: sideHeight,
     }"
   >
-    <el-icon v-if="routerInfo.meta.icon">
+    <!-- <el-icon v-if="routerInfo.meta.icon">
       <component :is="routerInfo.meta.icon" />
-    </el-icon>
+    </el-icon> -->
     <template #title>
       <!-- {{ routerInfo.meta.title }} -->
       {{ t(`zhMenu.${routerInfo.meta.title}`) }}

@@ -905,6 +905,14 @@ const editTackFunc = async (row) => {
   form.value = rows;
   openDialog("edit");
 };
+const removeNullValues = (obj) => {
+  return Object.keys(obj).reduce((acc, key) => {
+    if (obj[key] !== null) {
+      acc[key] = obj[key];
+    }
+    return acc;
+  }, {});
+};
 
 const enterDialog = async () => {
   apiForm.value.validate(async (valid) => {
@@ -1018,6 +1026,8 @@ const enterDialog = async () => {
           );
         }
       }
+      form.value.config = removeNullValues(form.value.config);
+      console.log("form.value", form.value);
       switch (type.value) {
         case "add":
           {

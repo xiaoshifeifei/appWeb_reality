@@ -17,7 +17,10 @@
         class="border-r-0 w-full"
         @select="selectMenuItem"
       >
-        <template v-for="item in routerStore.asyncRouters[0].children">
+        <template
+          v-for="item in routerStore.asyncRouters[0].children"
+          :key="item.name"
+        >
           <aside-component
             v-if="!item.hidden"
             :key="item.name"

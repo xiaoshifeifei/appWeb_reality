@@ -5,24 +5,24 @@
     class="gva-sub-menu dark:text-slate-300 relative"
   >
     <template #title>
+      <!-- v-if="!isCollapse" -->
       <div
-        v-if="!isCollapse"
         class="flex items-center"
         :style="{
           height: sideHeight,
         }"
       >
-        <el-icon v-if="routerInfo.meta.icon">
+        <!-- <el-icon v-if="routerInfo.meta.icon">
           <component :is="routerInfo.meta.icon" />
-        </el-icon>
+        </el-icon> -->
         <span>{{ t(`zhMenu.${routerInfo.meta.title}`) }}</span>
       </div>
-      <template v-else>
+      <!-- <template v-else>
         <el-icon v-if="routerInfo.meta.icon">
           <component :is="routerInfo.meta.icon" />
         </el-icon>
         <span>{{ t(`zhMenu.${routerInfo.meta.title}`) }}</span>
-      </template>
+      </template> -->
     </template>
     <slot />
   </el-sub-menu>
