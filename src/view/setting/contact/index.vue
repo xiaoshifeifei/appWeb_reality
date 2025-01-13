@@ -2,7 +2,7 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <el-form-item :label="t('tableColumn.code')">
+        <el-form-item :label="t('tableColumn.phoneCode')">
           <el-select
             clearable
             v-model="searchInfo.code"
@@ -12,9 +12,9 @@
           >
             <el-option
               v-for="item in codeOption"
-              :key="item"
-              :label="item"
-              :value="item"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
             />
           </el-select>
         </el-form-item>
@@ -53,9 +53,26 @@
         />
         <el-table-column
           align="center"
-          :label="t('tableColumn.code')"
+          :label="t('tableColumn.phoneCode')"
           prop="code"
-        />
+        >
+          <template #default="scope">
+            <div>
+              {{
+                scope.row.code == "EMAIL"
+                  ? "电子邮件"
+                  : scope.row.code == "TELEGRAM"
+                  ? "电报"
+                  : scope.row.code == "WHATSAPP"
+                  ? "智能手机"
+                  : scope.row.code == "TWITTER"
+                  ? "推特"
+                  : scope.row.code
+              }}
+            </div>
+          </template>
+        </el-table-column>
+
         <el-table-column
           align="center"
           :label="t('tableColumn.contact')"
@@ -71,7 +88,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.created')"
-          min-width="180"
+          min-width="150"
           prop="createdAt"
         >
           <template #default="scope">
@@ -83,7 +100,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.updatedAt')"
-          min-width="180"
+          min-width="150"
           prop="updatedAt"
         >
           <template #default="scope">
@@ -165,29 +182,44 @@
           </el-form-item>
         </el-col>
         <el-col :span="18">
-          <el-form-item :label="t('tableColumn.code')" prop="code">
-            <!-- <el-input v-model="form.code" autocomplete="off" /> -->
+          <el-form-item :label="t('tableColumn.phoneCode')" prop="code">
             <el-select
               clearable
               v-model="form.code"
               :placeholder="t('tableColumn.placeholder')"
               class="input_w"
+              :disabled="type == 'edit'"
             >
               <el-option
                 v-for="item in codeOption"
-                :key="item"
-                :label="item"
-                :value="item"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
               />
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="18">
-          <el-form-item :label="t('tableColumn.contact')" prop="contact">
-            <el-input v-model="form.contact" autocomplete="off" />
+        <el-col :span="18" v-if="form.code == 'EMAIL'">
+          <el-form-item :label="t('tableColumn.email')" prop="email">
+            <el-input v-model="form.email" autocomplete="off" />
           </el-form-item>
         </el-col>
-        <el-col :span="18">
+        <el-col :span="18" v-if="form.code == 'TELEGRAM'">
+          <el-form-item :label="t('tableColumn.TELEGRAM')" prop="telegram">
+            <el-input v-model="form.telegram" autocomplete="off" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="18" v-if="form.code == 'WHATSAPP'">
+          <el-form-item :label="t('tableColumn.WHATSAPP')" prop="whatsApp">
+            <el-input v-model="form.whatsApp" autocomplete="off" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="18" v-if="form.code == 'TWITTER'">
+          <el-form-item :label="t('tableColumn.TWITTER')" prop="twitter">
+            <el-input v-model="form.twitter" autocomplete="off" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="18" style="margin-top: 20px">
           <el-form-item :label="t('tableColumn.extra')" prop="extra">
             <el-input
               v-model="form.extra"
@@ -236,9 +268,54 @@ const codeOption = ref([]);
 const type = ref("");
 const showTimeBo = ref(false);
 const rules = ref({
-  day: [{ required: true, message: "请输入天数", trigger: "blur" }],
-  "award.code": [{ required: true, message: "请输入code", trigger: "blur" }],
-  "award.num": [{ required: true, message: "请选输入数量", trigger: "blur" }],
+  code: [{ required: true, message: "请请选择联系方式", trigger: "change" }],
+  email: [
+    { required: true, message: "邮箱不能为空", trigger: "blur" },
+    {
+      pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      message: "请输入有效的邮箱地址",
+      trigger: "blur",
+    },
+  ],
+  whatsApp: [
+    { required: true, message: "手机号码不能为空", trigger: "blur" },
+    {
+      validator: (rule, value, callback) => {
+        const phoneRegex = /^1[3-9]\d{9}$/;
+        if (!phoneRegex.test(value)) {
+          callback(new Error("请输入正确的手机号码"));
+        }
+        callback();
+      },
+      trigger: "blur",
+    },
+  ],
+  telegram: [
+    {
+      required: true,
+      message: "电报用户名不能为空",
+      trigger: "blur",
+    },
+    {
+      pattern: /^@[a-zA-Z0-9_]{5,32}$/,
+      message:
+        "请输入有效的电报用户名（以@开头，长度为5到32个字符，只允许字母、数字和下划线）",
+      trigger: "blur",
+    },
+  ],
+  twitter: [
+    {
+      required: true,
+      message: "Twitter 用户名不能为空",
+      trigger: "blur",
+    },
+    {
+      pattern: /^@[a-zA-Z0-9_]{1,15}$/,
+      message:
+        "请输入有效的 Twitter 用户名（以@开头，长度为1到15个字符，只允许字母、数字和下划线）",
+      trigger: "blur",
+    },
+  ],
 });
 
 const page = ref(1);
@@ -306,13 +383,40 @@ const replaceEmptyStringsWithNull = (obj) => {
 };
 
 const getCodeS = async () => {
-  // searchInfo.value = replaceEmptyStringsWithNull(searchInfo.value);
   const table = await getContactCodes({
     page: page.value,
     pageSize: 10000,
   });
   if (table.code === 0) {
-    codeOption.value = table.data;
+    // codeOption.value = table.data;
+    table.data.forEach((item) => {
+      if (item == "EMAIL") {
+        codeOption.value.push({
+          value: "EMAIL",
+          label: "电子邮件",
+        });
+      } else if (item == "TELEGRAM") {
+        codeOption.value.push({
+          value: "TELEGRAM",
+          label: "电报",
+        });
+      } else if (item == "WHATSAPP") {
+        codeOption.value.push({
+          value: "WHATSAPP",
+          label: "智能手机",
+        });
+      } else if (item == "TWITTER") {
+        codeOption.value.push({
+          value: "TWITTER",
+          label: "推特",
+        });
+      } else {
+        codeOption.value.push({
+          value: item,
+          label: item,
+        });
+      }
+    });
   }
 };
 // 查询
@@ -374,6 +478,15 @@ const closeDialog = () => {
 
 const editTackFunc = async (row) => {
   let rows = JSON.parse(JSON.stringify(row));
+  if (rows.code == "EMAIL") {
+    rows.email = rows.contact;
+  } else if (rows.code == "TELEGRAM") {
+    rows.telegram = rows.contact;
+  } else if (rows.code == "WHATSAPP") {
+    rows.whatsApp = rows.contact;
+  } else if (rows.code == "TWITTER") {
+    rows.twitter = rows.contact;
+  }
   form.value = rows;
   openDialog("edit");
 };
@@ -381,10 +494,25 @@ const editTackFunc = async (row) => {
 const enterDialog = async () => {
   apiForm.value.validate(async (valid) => {
     if (valid) {
+      if (form.value.code == "EMAIL") {
+        form.value.contact = form.value.email;
+      } else if (form.value.code == "TELEGRAM") {
+        form.value.contact = form.value.telegram;
+      } else if (form.value.code == "WHATSAPP") {
+        form.value.contact = form.value.whatsApp;
+      } else if (form.value.code == "TWITTER") {
+        form.value.contact = form.value.twitter;
+      }
+
       switch (type.value) {
         case "add":
           {
-            const res = await addContact(form.value);
+            const dataBoj = {
+              code: form.value.code,
+              contact: form.value.contact,
+              extra: form.value.extra,
+            };
+            const res = await addContact(dataBoj);
             if (res.code === 0) {
               ElMessage({
                 type: "success",
@@ -398,7 +526,13 @@ const enterDialog = async () => {
           break;
         case "edit":
           {
-            const res = await editContact(form.value);
+            const dataBoj = {
+              id: form.value.id,
+              code: form.value.code,
+              contact: form.value.contact,
+              extra: form.value.extra,
+            };
+            const res = await editContact(dataBoj);
             if (res.code === 0) {
               ElMessage({
                 type: "success",

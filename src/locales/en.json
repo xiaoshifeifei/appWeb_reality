@@ -956,10 +956,15 @@
     "multiple": "Multiple",
     "requiredAmount": "Required Amount",
     "requiredWinAmount": "Required Win Amount",
-    "minDepositAmount": "minDepositAmount",
-    "Ftype": "type",
+    "minDepositAmount": "Min Deposit Amount",
+    "Ftype": "Type",
     "orderStatus": "Order Status",
-    "hdCode": "code",
+    "hdCode": "Code",
+    "taskCode": "Task Code",
+    "phoneCode": "Code",
+    "TELEGRAM": "Telegram",
+    "WHATSAPP": "WhatsApp",
+    "TWITTER": "Twitter",
     "female": "Female"
   }
 }

@@ -1,12 +1,7 @@
 <template>
   <div>
     <div class="gva-search-box">
-      <el-form
-        ref="searchForm"
-        :inline="true"
-        :model="searchInfo"
-        label-width="60"
-      >
+      <el-form ref="searchForm" :inline="true" :model="searchInfo">
         <el-form-item :label="t('tableColumn.id')">
           <el-input
             clearable
@@ -16,7 +11,7 @@
             @blur="searchChange"
           />
         </el-form-item>
-        <el-form-item :label="t('tableColumn.code')">
+        <el-form-item :label="t('tableColumn.channelCode')">
           <el-input
             clearable
             v-model="searchInfo.code"
@@ -90,7 +85,7 @@
 
         <el-table-column
           align="center"
-          :label="t('tableColumn.code')"
+          :label="t('tableColumn.channelCode')"
           min-width="200"
           prop="code"
         />

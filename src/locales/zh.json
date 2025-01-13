@@ -960,6 +960,11 @@
     "Ftype": "收付款类型",
     "orderStatus": "订单状态",
     "hdCode": "活动类型",
+    "taskCode": "任务类型",
+    "phoneCode": "客服联系方式",
+    "TELEGRAM": "电报",
+    "WHATSAPP": "智能手机",
+    "TWITTER": "推特",
     "female": "女性"
   }
 }

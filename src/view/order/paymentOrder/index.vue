@@ -156,13 +156,13 @@
           prop="orderNo"
         >
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           align="center"
           :label="t('tableColumn.paymentCode')"
           min-width="140"
           prop="paymentCode"
         >
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           align="center"
           :label="t('tableColumn.receivingPaymentId')"

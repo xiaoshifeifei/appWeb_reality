@@ -2,7 +2,7 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
-        <el-form-item :label="t('tableColumn.code')">
+        <el-form-item :label="t('tableColumn.taskCode')">
           <el-select
             clearable
             v-model="searchInfo.code"
@@ -12,9 +12,9 @@
           >
             <el-option
               v-for="item in statusOption"
-              :key="item"
-              :label="item"
-              :value="item"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
             />
           </el-select>
         </el-form-item>
@@ -47,10 +47,29 @@
       >
         <el-table-column
           align="center"
-          :label="t('tableColumn.code')"
+          :label="t('tableColumn.taskCode')"
           min-width="280"
           prop="code"
         >
+          <template #default="scope">
+            <div>
+              {{
+                scope.row.code == "SEVEN_DAY_LOGIN"
+                  ? "七日登录"
+                  : scope.row.code == "DAILY_SPIN_TIMES"
+                  ? "每日任务: spin times"
+                  : scope.row.code == "DAILY_MEGA_WIN_TIMES"
+                  ? "每日任务: mega win times"
+                  : scope.row.code == "DAILY_BIG_WIN_TIMES"
+                  ? "每日任务: big win times"
+                  : scope.row.code == "DAILY_BET_AMOUNT_ADD"
+                  ? "每日任务: bet amount add"
+                  : scope.row.code == "DAILY_SINGLE_SPIN_WIN_TIMES"
+                  ? "每日任务: single spin win times"
+                  : scope.row.code
+              }}
+            </div>
+          </template>
         </el-table-column>
         <el-table-column
           align="center"
@@ -253,7 +272,7 @@
         label-width="120px"
       >
         <el-col :span="18">
-          <el-form-item :label="t('tableColumn.code')" prop="code">
+          <el-form-item :label="t('tableColumn.taskCode')" prop="code">
             <el-select
               clearable
               :disabled="type == 'edit'"
@@ -263,9 +282,9 @@
             >
               <el-option
                 v-for="item in statusOption"
-                :key="item"
-                :label="item"
-                :value="item"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
               />
             </el-select>
           </el-form-item>
@@ -581,7 +600,7 @@ const searchInfo = ref({});
 const onReset = () => {
   searchInfo.value = {};
   if (statusOption.value && statusOption.value.length) {
-    searchInfo.value.code = statusOption.value[0];
+    searchInfo.value.code = statusOption.value[0].value;
   }
   onSubmit();
 };
@@ -770,9 +789,47 @@ const init = async () => {
     pageSize: 1000,
   });
   if (table.code === 0) {
-    statusOption.value = table.data;
+    // statusOption.value = table.data;
+    table.data.forEach((item) => {
+      if (item == "SEVEN_DAY_LOGIN") {
+        statusOption.value.push({
+          value: "SEVEN_DAY_LOGIN",
+          label: "七日登录",
+        });
+      } else if (item == "DAILY_SPIN_TIMES") {
+        statusOption.value.push({
+          value: "DAILY_SPIN_TIMES",
+          label: "每日任务: spin times",
+        });
+      } else if (item == "DAILY_MEGA_WIN_TIMES") {
+        statusOption.value.push({
+          value: "DAILY_MEGA_WIN_TIMES",
+          label: "每日任务: mega win times",
+        });
+      } else if (item == "DAILY_BIG_WIN_TIMES") {
+        statusOption.value.push({
+          value: "DAILY_BIG_WIN_TIMES",
+          label: "每日任务: big win times",
+        });
+      } else if (item == "DAILY_BET_AMOUNT_ADD") {
+        statusOption.value.push({
+          value: "DAILY_BET_AMOUNT_ADD",
+          label: "每日任务: bet amount add",
+        });
+      } else if (item == "DAILY_SINGLE_SPIN_WIN_TIMES") {
+        statusOption.value.push({
+          value: "DAILY_SINGLE_SPIN_WIN_TIMES",
+          label: "每日任务: single spin win times",
+        });
+      } else {
+        statusOption.value.push({
+          value: item,
+          label: item,
+        });
+      }
+    });
     if (statusOption.value && statusOption.value.length) {
-      searchInfo.value.code = table.data[0];
+      searchInfo.value.code = statusOption.value[0].value;
       getTableData();
     }
   }

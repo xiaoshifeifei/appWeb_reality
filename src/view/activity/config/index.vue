@@ -934,7 +934,7 @@ const searchChange = () => {
 const onReset = () => {
   searchInfo.value = {};
   if (statusOption.value && statusOption.value.length) {
-    searchInfo.value.code = statusOption.value[0];
+    searchInfo.value.code = statusOption.value[0].value;
   }
   onSubmit();
 };
