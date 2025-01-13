@@ -21,9 +21,9 @@
           >
             <el-option
               v-for="item in typeOption"
-              :key="item"
-              :label="item"
-              :value="item"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
             />
           </el-select>
         </el-form-item>
@@ -81,6 +81,11 @@
           :label="t('tableColumn.redemptionType')"
           prop="type"
         >
+          <template #default="scope">
+            <div>
+              {{ scope.row.type == "NORMAL" ? "普通礼品码" : scope.row.type }}
+            </div>
+          </template>
         </el-table-column>
         <el-table-column
           align="center"
@@ -234,9 +239,9 @@
             >
               <el-option
                 v-for="item in typeOption"
-                :key="item"
-                :label="item"
-                :value="item"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
               />
             </el-select>
           </el-form-item>
@@ -430,7 +435,20 @@ const getCode = async () => {
     pageSize: 10000,
   });
   if (table.code === 0) {
-    typeOption.value = table.data;
+    // typeOption.value = table.data;
+    table.data.forEach((item) => {
+      if (item == "NORMAL") {
+        typeOption.value.push({
+          label: "普通礼品码",
+          value: "NORMAL",
+        });
+      } else {
+        typeOption.value.push({
+          label: item,
+          value: item,
+        });
+      }
+    });
   }
 };
 getCode();
