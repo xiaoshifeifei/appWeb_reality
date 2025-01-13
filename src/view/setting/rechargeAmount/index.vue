@@ -92,14 +92,14 @@
 
         <el-table-column
           align="center"
-          :label="t('tableColumn.maxAmount')"
+          :label="t('tableColumn.maxAmountC')"
           min-width="100"
           prop="max"
         />
 
         <el-table-column
           align="center"
-          :label="t('tableColumn.minAmount')"
+          :label="t('tableColumn.minAmountC')"
           min-width="100"
           prop="min"
         />
@@ -168,7 +168,7 @@
         ref="apiForm"
         :model="form"
         :rules="rules"
-        label-width="120px"
+        label-width="135px"
       >
         <el-col :span="18" v-if="type == 'edit'">
           <el-form-item :label="t('tableColumn.id')" prop="id">
@@ -210,7 +210,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="18">
-          <el-form-item :label="t('tableColumn.maxAmount')" prop="max">
+          <el-form-item :label="t('tableColumn.maxAmountC')" prop="max">
             <el-input
               v-model="form.max"
               @input="form.max = form.max.replace(/[^\d|\.]/g, '')"
@@ -220,7 +220,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="18">
-          <el-form-item :label="t('tableColumn.minAmount')" prop="min">
+          <el-form-item :label="t('tableColumn.minAmountC')" prop="min">
             <el-input
               v-model="form.min"
               @input="form.min = form.min.replace(/[^\d|\.]/g, '')"

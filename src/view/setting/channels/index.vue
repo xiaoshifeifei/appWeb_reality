@@ -12,13 +12,26 @@
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.channelCode')">
-          <el-input
+          <!-- <el-input
             clearable
             v-model="searchInfo.code"
             :placeholder="t('tableColumn.code')"
             class="input_w"
             @blur="searchChange"
-          />
+          /> -->
+          <el-select
+            clearable
+            v-model="searchInfo.code"
+            @change="searchChange"
+            :placeholder="t('tableColumn.placeholder')"
+          >
+            <el-option
+              v-for="item in codeOption"
+              :key="item.value"
+              :label="item.labe"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item :label="t('tableColumn.status')">
           <el-select
@@ -259,6 +272,7 @@ const router = useRouter();
 defineOptions({
   name: "channels",
 });
+const codeOption = ref([]);
 const codeOptions = ref([]);
 const value2 = ref("");
 const apis = ref([]);
@@ -355,6 +369,7 @@ const replaceEmptyStringsWithNull = (obj) => {
 
 // 查询
 const getTableData = async () => {
+  codeOption.value = [];
   searchInfo.value = replaceEmptyStringsWithNull(searchInfo.value);
   const table = await getPaymentChannels({
     page: page.value,
@@ -362,6 +377,9 @@ const getTableData = async () => {
     ...searchInfo.value,
   });
   if (table.code === 0) {
+    table.data.list.forEach((item) => {
+      codeOption.value.push({ label: item.code, value: item.code });
+    });
     tableData.value = table.data.list;
     total.value = table.data.total;
     page.value = table.data.page;

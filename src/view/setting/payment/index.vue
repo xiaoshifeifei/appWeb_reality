@@ -8,13 +8,26 @@
         label-width="125"
       >
         <el-form-item :label="t('tableColumn.channelCode')">
-          <el-input
+          <!-- <el-input
             clearable
             v-model="searchInfo.channelCode"
             :placeholder="t('tableColumn.channelCode')"
             class="input_w"
             @blur="searchChange"
-          />
+          /> -->
+          <el-select
+            clearable
+            v-model="searchInfo.channelCode"
+            @change="searchChange"
+            :placeholder="t('tableColumn.placeholder')"
+          >
+            <el-option
+              v-for="item in codeOption"
+              :key="item.value"
+              :label="item.labe"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item :label="t('tableColumn.transactionCode')">
           <el-input
@@ -443,7 +456,6 @@ const replaceEmptyStringsWithNull = (obj) => {
 // 查询
 const getTableData = async () => {
   searchInfo.value = replaceEmptyStringsWithNull(searchInfo.value);
-
   const table = await getPaymentList({
     page: page.value,
     pageSize: pageSize.value,

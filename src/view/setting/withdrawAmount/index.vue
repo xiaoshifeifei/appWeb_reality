@@ -85,14 +85,14 @@
         />
         <el-table-column
           align="center"
-          :label="t('tableColumn.maxAmount')"
+          :label="t('tableColumn.maxAmountQ')"
           min-width="100"
           prop="max"
         />
 
         <el-table-column
           align="center"
-          :label="t('tableColumn.minAmount')"
+          :label="t('tableColumn.minAmountQ')"
           min-width="100"
           prop="min"
         />
@@ -233,7 +233,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="18">
-          <el-form-item :label="t('tableColumn.maxAmount')" prop="max">
+          <el-form-item :label="t('tableColumn.maxAmountQ')" prop="max">
             <el-input
               v-model="form.max"
               @input="form.max = form.max.replace(/[^\d|\.]/g, '')"
@@ -243,7 +243,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="18">
-          <el-form-item :label="t('tableColumn.minAmount')" prop="min">
+          <el-form-item :label="t('tableColumn.minAmountQ')" prop="min">
             <el-input
               v-model="form.min"
               @input="form.min = form.min.replace(/[^\d|\.]/g, '')"
