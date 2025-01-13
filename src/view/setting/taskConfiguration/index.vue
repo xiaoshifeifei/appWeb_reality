@@ -269,7 +269,7 @@
         ref="apiForm"
         :model="form"
         :rules="rules"
-        label-width="120px"
+        label-width="140px"
       >
         <el-col :span="18">
           <el-form-item :label="t('tableColumn.taskCode')" prop="code">
