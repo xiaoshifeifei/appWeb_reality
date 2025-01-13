@@ -12,13 +12,26 @@
           />
         </el-form-item>
         <el-form-item :label="t('tableColumn.channelCode')">
-          <el-input
+          <!-- <el-input
             clearable
             v-model="searchInfo.channelCode"
             :placeholder="t('tableColumn.channelCode')"
             class="input_w"
             @blur="searchChange"
-          />
+          /> -->
+          <el-select
+            clearable
+            v-model="searchInfo.channelCode"
+            @change="searchChange"
+            :placeholder="t('tableColumn.placeholder')"
+          >
+            <el-option
+              v-for="item in codeOption"
+              :key="item.value"
+              :label="item.labe"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
         <!-- <el-form-item :label="t('tableColumn.paymentCode')">
           <el-input
@@ -203,7 +216,19 @@
             :label="t('tableColumn.channelCode')"
             prop="channelCode"
           >
-            <el-input v-model="form.channelCode" autocomplete="off" />
+            <!-- <el-input v-model="form.channelCode" autocomplete="off" /> -->
+            <el-select
+              clearable
+              v-model="form.channelCode"
+              :placeholder="t('tableColumn.placeholder')"
+            >
+              <el-option
+                v-for="item in codeOption"
+                :key="item.value"
+                :label="item.labe"
+                :value="item.value"
+              />
+            </el-select>
           </el-form-item>
         </el-col>
         <!-- <el-col :span="18">
@@ -304,6 +329,7 @@ import {
   addPaymentWithdrawRechargeAmount,
   editPaymentWithdrawRechargeAmount,
   delPaymentWithdrawRechargeAmount,
+  getPaymentChannels,
 } from "@/api/payment";
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -341,7 +367,7 @@ const statusOption = ref([
   { label: "enable", value: 1 },
   { label: "disable", value: 0 },
 ]);
-
+const codeOption = ref([]);
 const page = ref(1);
 const total = ref(0);
 const pageSize = ref(100);
@@ -382,6 +408,20 @@ const dataGet = (dateStr) => {
   return formattedDate;
 };
 
+const init = async () => {
+  const table = await getPaymentChannels({
+    page: page.value,
+    pageSize: pageSize.value,
+    status: 1,
+  });
+  if (table.code === 0) {
+    console.log(1234679);
+    table.data.list.forEach((item) => {
+      codeOption.value.push({ label: item.code, value: item.code });
+    });
+  }
+};
+init();
 // 搜索
 
 const onSubmit = () => {
