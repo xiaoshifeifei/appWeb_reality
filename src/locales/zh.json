@@ -977,6 +977,13 @@
     "EWALLET": "电子钱包",
     "QRIS": "扫码支付",
     "VA": "银行转账",
+    "sumAccountNewAddNum": "总新增人数:",
+    "sumAccountOnlineNum": "总在线人数:",
+    "sumOneDayRetainedNum": "总次留数:",
+    "sumSevenDayRetainedNum": "总七日留存数:",
+    "sumThirtyDayRetainedNum": "总三十日留存数:",
+    "sumThreeDayRetainedNum": "总三日留存数:",
+    "sumLoginNum": "总登录人数:",
     "female": "女性"
   }
 }

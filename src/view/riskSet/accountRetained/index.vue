@@ -19,6 +19,20 @@
       </el-form>
     </div>
     <div class="gva-table-box">
+      <div class="mes">
+        {{ t("tableColumn.sumAccountNewAddNum") }}
+        <span>{{ sumDate.sumAccountNewAddNum || 0 }};</span>
+        {{ t("tableColumn.sumAccountOnlineNum") }}
+        <span>{{ sumDate.sumAccountOnlineNum || 0 }};</span>
+        {{ t("tableColumn.sumOneDayRetainedNum") }}
+        <span>{{ sumDate.sumOneDayRetainedNum || 0 }};</span>
+        {{ t("tableColumn.sumThreeDayRetainedNum") }}
+        <span>{{ sumDate.sumThreeDayRetainedNum || 0 }};</span>
+        {{ t("tableColumn.sumSevenDayRetainedNum") }}
+        <span>{{ sumDate.sumSevenDayRetainedNum || 0 }};</span>
+        {{ t("tableColumn.sumThirtyDayRetainedNum") }}
+        <span>{{ sumDate.sumThirtyDayRetainedNum || 0 }};</span>
+      </div>
       <el-table
         border
         :data="tableData"
@@ -288,6 +302,7 @@ const total = ref(0);
 const pageSize = ref(10);
 const tableData = ref([]);
 const searchInfo = ref({});
+const sumDate = ref({});
 
 const onReset = () => {
   searchInfo.value = {};
@@ -427,6 +442,7 @@ const getTableData = async () => {
       }
     });
     tableData.value = table.data.list;
+    sumDate.value = table.data.sum;
     total.value = table.data.total;
     page.value = table.data.page;
     pageSize.value = table.data.pageSize;
@@ -679,7 +695,7 @@ const tableRowClassName = ({ row, rowIndex }) => {
 };
 watchEffect(() => {
   if (value2.value) {
-    onSubmit();
+    getTableData();
   }
 });
 </script>
@@ -691,6 +707,20 @@ watchEffect(() => {
 }
 .el-input-number {
   width: 50%;
+}
+.mes {
+  width: calc(100% - 8px);
+  margin-bottom: 20px;
+  white-space: nowrap;
+  font-size: 14px;
+  color: #3b82f6;
+  text-align: right;
+  span {
+    color: #222222;
+    font-size: 16px;
+    font-weight: 700;
+    margin-right: 5px;
+  }
 }
 </style>
   

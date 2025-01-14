@@ -534,54 +534,6 @@ const dataGet = (dateStr) => {
     date.getSeconds().toString().padStart(2, "0");
   return formattedDate;
 };
-const shortcuts = [
-  {
-    text: "Today",
-    value: () => {
-      const end = new Date();
-      const start = new Date();
-      return [start, end];
-    },
-  },
-  {
-    text: "Yesterday",
-    value: () => {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24);
-      end.setTime(end.getTime() - 3600 * 1000 * 24);
-      return [start, end];
-    },
-  },
-
-  {
-    text: "Last week",
-    value: () => {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-      return [start, end];
-    },
-  },
-  {
-    text: "Last month",
-    value: () => {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-      return [start, end];
-    },
-  },
-  {
-    text: "Last 3 months",
-    value: () => {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-      return [start, end];
-    },
-  },
-];
 
 const handleCurrentChange = (val) => {
   page.value = val;
@@ -590,11 +542,6 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async () => {
-  // if (value2.value.length == 0 && resetClose.value == true) {
-  //   return ElMessage.warning(
-  //     t("tableColumn.placeholder") + t("tableColumn.time")
-  //   );
-  // }
   if (value2.value && value2.value.length) {
     searchInfo.value.start = value2.value[0];
     searchInfo.value.end = value2.value[1];
@@ -871,7 +818,7 @@ const tableRowClassName = ({ row, rowIndex }) => {
 };
 watchEffect(() => {
   if (value2.value) {
-    onSubmit();
+    getTableData();
   }
 });
 </script>

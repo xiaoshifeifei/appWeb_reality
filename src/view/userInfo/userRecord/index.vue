@@ -23,8 +23,12 @@
 
     <div class="gva-table-box">
       <div class="mes">
-        新增总人数：{{ sumDate.newAddNum || 0 }} ; 登录总人数:
-        {{ sumDate.loginNum || 0 }} ; 在线总人数: {{ sumDate.onlineNum || 0 }};
+        {{ t("tableColumn.sumAccountNewAddNum") }}
+        <span>{{ sumDate.newAddNum || 0 }};</span>
+        {{ t("tableColumn.sumLoginNum") }}
+        <span>{{ sumDate.loginNum || 0 }};</span>
+        {{ t("tableColumn.sumAccountOnlineNum") }}
+        <span>{{ sumDate.onlineNum || 0 }};</span>
       </div>
       <el-table
         border
@@ -385,7 +389,12 @@ watchEffect(() => {
   font-size: 14px;
   color: #3b82f6;
   text-align: right;
-  padding-right: 8px;
+  span {
+    color: #222222;
+    font-size: 16px;
+    font-weight: 700;
+    margin-right: 5px;
+  }
 }
 </style>
   
