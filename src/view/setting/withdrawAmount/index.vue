@@ -136,7 +136,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.rake')"
-          min-width="100"
+          min-width="120"
           prop="rake"
         />
 

@@ -974,6 +974,9 @@
     "emailTitle": "Email Title",
     "emailContent": "Email Content",
     "amountNum": "Email Amount",
+    "EWALLET": "EWALLET",
+    "QRIS": "QRIS",
+    "VA": "QRIS",
     "female": "Female"
   }
 }

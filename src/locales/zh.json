@@ -902,8 +902,8 @@
     "transactionType": "交易类型",
     "recharge": "充值",
     "drawMoney": "提款",
-    "giftRatio": "赠送充值金额比例",
-    "rake": "渠道抽成比例",
+    "giftRatio": "赠送充值金额比例（%）",
+    "rake": "渠道抽成比例（%）",
     "maxAmount": "最大金额",
     "maxAmountQ": "最大取款金额",
     "maxAmountC": "最大充值金额",
@@ -916,7 +916,7 @@
     "loop": "循环次数",
     "loopInterval": "循环间隔（秒）",
     "bonusAmount": "赠送金额",
-    "giftAmountMultiple": "赠送金额(充值倍数)",
+    "giftAmountMultiple": "赠送充值金额比例（%）",
     "depositAmount": "充值金额",
     "giftAmount": "赠送金额",
     "bonus": "奖励赠送金额",
@@ -965,7 +965,7 @@
     "orderStatus": "订单状态",
     "hdCode": "活动类型",
     "taskCode": "任务类型",
-    "phoneCode": "客服联系方式",
+    "phoneCode": "客服联系类型",
     "TELEGRAM": "电报",
     "WHATSAPP": "智能手机",
     "TWITTER": "推特",
@@ -974,6 +974,9 @@
     "emailTitle": "邮件标题",
     "emailContent": "邮件内容",
     "amountNum": "邮件发送金额",
+    "EWALLET": "电子钱包",
+    "QRIS": "扫码支付",
+    "VA": "银行转账",
     "female": "女性"
   }
 }

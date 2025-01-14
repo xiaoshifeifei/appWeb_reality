@@ -142,13 +142,28 @@
           :label="t('tableColumn.transactionCode')"
           min-width="150"
           prop="transactionCode"
-        />
+        >
+        </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.transactionType')"
           min-width="150"
           prop="transactionType"
-        />
+        >
+          <template #default="scope">
+            <div>
+              {{
+                scope.row.transactionType == "EWALLET"
+                  ? t("tableColumn.EWALLET")
+                  : scope.row.transactionType === "QRIS"
+                  ? t("tableColumn.QRIS")
+                  : scope.row.transactionType === "VA"
+                  ? t("tableColumn.VA")
+                  : scope.row.transactionType
+              }}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.Ftype')"
@@ -290,11 +305,25 @@
             :label="t('tableColumn.transactionType')"
             prop="transactionType"
           >
-            <el-input
+            <!-- <el-input
               v-model="form.transactionType"
               disabled
               autocomplete="off"
-            />
+            /> -->
+            <el-select
+              clearable
+              disabled
+              v-model="form.transactionType"
+              :placeholder="t('tableColumn.placeholder')"
+              @change="searchChange"
+            >
+              <el-option
+                v-for="item in transactionOption"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="18">
@@ -370,9 +399,9 @@ const accountTypeOption = ref([
   { label: "drawMoney", value: 2 },
 ]);
 const transactionOption = ref([
-  { label: "EWALLET", value: "EWALLET" },
-  { label: "QRIS", value: "QRIS" },
-  { label: "VA", value: "VA" },
+  { label: t("tableColumn.EWALLET"), value: "EWALLET" },
+  { label: t("tableColumn.QRIS"), value: "QRIS" },
+  { label: t("tableColumn.VA"), value: "VA" },
 ]);
 const statusOption = ref([
   { label: "enable", value: 1 },

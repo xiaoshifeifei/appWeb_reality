@@ -295,6 +295,7 @@
             <el-form-item :label="t('tableColumn.typeCode')" prop="typeCode">
               <el-select
                 clearable
+                disabled
                 v-model="formMail.typeCode"
                 :placeholder="t('tableColumn.typeCode')"
               >
@@ -709,6 +710,7 @@ const enterMail = async () => {
       if (formMail.value.content && formMail.value.content.amount) {
         formMail.value.content.amount = Number(formMail.value.content.amount);
       }
+
       switch (type.value) {
         case "add":
           {
