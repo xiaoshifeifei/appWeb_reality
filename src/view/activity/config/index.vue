@@ -72,8 +72,8 @@
                     scope.row.code == "TIMED_REWARD_MEGA_WHEEL"
                       ? "mega wheel定时奖励"
                       : scope.row.code
-                  }}</template
-                >
+                  }}
+                </template>
               </el-table-column>
               <el-table-column
                 min-width="200"
@@ -365,12 +365,12 @@
         label-width="120px"
       >
         <el-col :span="18">
-          <el-form-item :label="t('tableColumn.code')" prop="code">
+          <el-form-item :label="t('tableColumn.hdCode')" prop="code">
             <el-input
               disabled
               v-model="form.code"
               autocomplete="off"
-              :placeholder="t('tableColumn.code')"
+              :placeholder="t('tableColumn.hdCode')"
             />
           </el-form-item>
         </el-col>
@@ -714,12 +714,12 @@
         </div>
         <div v-if="form.code == 'Turbo Bonus定时领取'">
           <el-col :span="18">
-            <el-form-item :label="t('tableColumn.code')" prop="code">
+            <el-form-item :label="t('tableColumn.hdCode')" prop="code">
               <el-input
                 disabled
                 v-model="form.config.megaWheel.code"
                 autocomplete="off"
-                :placeholder="t('tableColumn.code')"
+                :placeholder="t('tableColumn.hdCode')"
               />
             </el-form-item>
           </el-col>
@@ -901,7 +901,8 @@ const form = ref({
     megaWheel: {
       requiredTimes: null,
       bonus: [],
-      code: "TIMED_REWARD_TURBO_BONUS",
+      code: "TIMED_REWARD_MEGA_WHEEL",
+      codes: "123456",
       betRequiredMultiple: null,
     },
   },
@@ -1524,6 +1525,12 @@ const editTackFunc = async (row) => {
   } else if (rows.code == "TIMED_REWARD_TURBO_BONUS") {
     rows.code = "Turbo Bonus定时领取";
   }
+  if (
+    rows.config.megaWheel &&
+    rows.config.megaWheel.code == "TIMED_REWARD_MEGA_WHEEL"
+  ) {
+    rows.config.megaWheel.code = "Mega Wheel定时领取";
+  }
   form.value = rows;
   openDialog("edit");
 };
@@ -1689,7 +1696,12 @@ const enterDialog = async () => {
           }
         });
       }
-
+      if (
+        form.value.config.megaWheel &&
+        form.value.config.megaWheel.code == "Mega Wheel定时领取"
+      ) {
+        form.value.config.megaWheel.code = "TIMED_REWARD_MEGA_WHEEL";
+      }
       switch (type.value) {
         case "add":
           {
