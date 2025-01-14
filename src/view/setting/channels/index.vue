@@ -92,7 +92,7 @@
         <el-table-column
           align="center"
           :label="t('tableColumn.apiKey')"
-          min-width="200"
+          min-width="220"
           prop="apiKey"
         />
 

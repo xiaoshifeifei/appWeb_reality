@@ -31,12 +31,12 @@
         :row-class-name="tableRowClassName"
       >
         <el-table-column type="selection" align="center" width="60" />
-        <el-table-column
+        <!-- <el-table-column
           align="center"
           :label="t('tableColumn.siteId')"
           prop="siteId"
         >
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           align="center"
           :label="t('tableColumn.newDay')"
