@@ -66,7 +66,15 @@
                 align="center"
                 :label="t('tableColumn.hdCode')"
                 prop="code"
-              />
+              >
+                <template #default="scope">
+                  {{
+                    scope.row.code == "TIMED_REWARD_MEGA_WHEEL"
+                      ? "mega wheel定时奖励"
+                      : scope.row.code
+                  }}</template
+                >
+              </el-table-column>
               <el-table-column
                 min-width="200"
                 align="center"
