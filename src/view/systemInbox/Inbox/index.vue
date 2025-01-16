@@ -295,7 +295,7 @@
             <el-form-item :label="t('tableColumn.typeCode')" prop="typeCode">
               <el-select
                 clearable
-                disabled
+                :disabled="type == 'edit'"
                 v-model="formMail.typeCode"
                 :placeholder="t('tableColumn.typeCode')"
               >
