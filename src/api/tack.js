@@ -415,3 +415,12 @@ export const getPaymentOrders = (params) => {
     params,
   });
 };
+
+// 获取支付提现首充列表
+export const getPaymentFirst = (params) => {
+  return service({
+    url: "/payment/getPaymentFirst",
+    method: "get",
+    params,
+  });
+};

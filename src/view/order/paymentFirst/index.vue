@@ -8,47 +8,6 @@
           :showTime="true"
           @close="paramsValue = false"
         ></DataTime>
-        <el-form-item :label="t('tableColumn.accountId')">
-          <el-input
-            clearable
-            v-model="searchInfo.accountId"
-            :placeholder="t('tableColumn.accountId')"
-            class="input_w"
-            @blur="searchChange($event, 'accountId')"
-          />
-        </el-form-item>
-        <el-form-item :label="t('tableColumn.orderStatus')">
-          <el-select
-            clearable
-            v-model="searchInfo.status"
-            :placeholder="t('tableColumn.placeholder')"
-            class="input_w"
-            @change="searchChange"
-          >
-            <el-option
-              v-for="item in statusOption"
-              :key="item.value"
-              :label="t(`user.${item.label}`)"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="t('tableColumn.method')">
-          <el-select
-            clearable
-            v-model="searchInfo.method"
-            :placeholder="t('tableColumn.placeholder')"
-            class="input_w"
-            @change="searchChange"
-          >
-            <el-option
-              v-for="item in methodOption"
-              :key="item.value"
-              :label="t(`user.${item.label}`)"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">
             {{ t("general.search") }}
@@ -60,6 +19,16 @@
       </el-form>
     </div>
     <div class="gva-table-box">
+      <div class="mes">
+        {{ t("tableColumn.totalAmount") }}
+        <span>{{ sumDate.totalAmount || 0 }};</span>
+        {{ t("tableColumn.newAndFirstNum") }}
+        <span>{{ sumDate.newAndFirstNum || 0 }};</span>
+        {{ t("tableColumn.firstNum") }}
+        <span>{{ sumDate.firstNum || 0 }};</span>
+        {{ t("tableColumn.firstAndWithdrawNum") }}
+        <span>{{ sumDate.firstAndWithdrawNum || 0 }};</span>
+      </div>
       <el-table
         border
         :data="tableData"
@@ -74,33 +43,31 @@
         <el-table-column type="selection" align="center" width="60" />
         <el-table-column
           align="center"
+          :label="t('tableColumn.id')"
+          min-width="60"
+          prop="id"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
+          :label="t('tableColumn.orderNo')"
+          min-width="150"
+          prop="orderNo"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
           :label="t('tableColumn.accountId')"
-          min-width="100"
+          min-width="150"
           prop="accountId"
         >
         </el-table-column>
         <el-table-column
           align="center"
-          :label="t('tableColumn.activityCode')"
+          :label="t('tableColumn.username')"
           min-width="150"
-          prop="activityCode"
+          prop="username"
         >
-        </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.method')"
-          min-width="120"
-          prop="method"
-        >
-          <template #default="scope">
-            {{
-              scope.row.method == 1
-                ? t("tableColumn.recharge")
-                : scope.row.method == 2
-                ? t("tableColumn.drawMoney")
-                : scope.row.status
-            }}
-          </template>
         </el-table-column>
         <el-table-column
           align="center"
@@ -111,167 +78,19 @@
         </el-table-column>
         <el-table-column
           align="center"
-          :label="t('tableColumn.betRequiredMultiple')"
+          :label="t('tableColumn.otherAmount')"
           min-width="150"
-          prop="betRequiredMultiple"
+          prop="otherAmount"
         >
-        </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.channelCode')"
-          min-width="150"
-          prop="channelCode"
-        >
-        </el-table-column>
-        <el-table-column
-          align="center"
-          :label="
-            tableData[0] && tableData[0].method == 1
-              ? t('tableColumn.first')
-              : t('tableColumn.firstTk')
-          "
-          min-width="150"
-          prop="first"
-        >
-        </el-table-column>
-        <el-table-column
-          align="center"
-          :label="
-            tableData[0] && tableData[0].method == 1
-              ? t('tableColumn.depositTimes')
-              : t('tableColumn.depositTimesTX')
-          "
-          min-width="150"
-          prop="depositTimes"
-        >
-        </el-table-column>
-        <!-- <el-table-column
-          align="center"
-          :label="t('tableColumn.depositTimes')"
-          min-width="150"
-          prop="depositTimes"
-        >
-        </el-table-column> -->
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.giftAmount')"
-          min-width="150"
-          prop="giftAmount"
-        >
-        </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.id')"
-          min-width="100"
-          prop="id"
-        >
-        </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.message')"
-          min-width="200"
-          prop="message"
-        >
-        </el-table-column>
-
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.orderNo')"
-          min-width="180"
-          prop="orderNo"
-        >
-        </el-table-column>
-        <!-- <el-table-column
-          align="center"
-          :label="t('tableColumn.paymentCode')"
-          min-width="140"
-          prop="paymentCode"
-        >
-        </el-table-column> -->
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.receivingPaymentId')"
-          min-width="100"
-          prop="receivingPaymentId"
-        >
-        </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.remark')"
-          min-width="150"
-          prop="remark"
-        >
-        </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.status')"
-          min-width="100"
-          prop="status"
-        >
-          <template #default="scope">
-            {{
-              scope.row.status == 1
-                ? "创建待审核"
-                : scope.row.status == 2
-                ? "审核待支付"
-                : scope.row.status == 3
-                ? "已支付"
-                : scope.row.status == 4
-                ? "支付失败"
-                : scope.row.status == 5
-                ? "已取消"
-                : scope.row.status == 6
-                ? "已退款"
-                : scope.row.status
-            }}
-          </template>
         </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.totalAmount')"
-          min-width="100"
+          min-width="150"
           prop="totalAmount"
         >
         </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.totalDeposit')"
-          min-width="100"
-          prop="totalDeposit"
-        >
-        </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.totalWithdrawal')"
-          min-width="100"
-          prop="totalWithdrawal"
-        >
-        </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.transferNo')"
-          min-width="200"
-          prop="transferNo"
-        >
-        </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.withdrawTimes')"
-          min-width="100"
-          prop="withdrawTimes"
-        >
-        </el-table-column>
 
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.created')"
-          min-width="160"
-          prop="createdAt"
-        >
-          <template #default="scope">
-            <div>{{ dataGet(scope.row.createdAt) }}</div>
-          </template>
-        </el-table-column>
         <el-table-column
           align="center"
           :label="t('tableColumn.finishedAt')"
@@ -282,41 +101,6 @@
             <div>{{ dataGet(scope.row.finishedAt) }}</div>
           </template>
         </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('tableColumn.updatedAt')"
-          min-width="160"
-          prop="updatedAt"
-        >
-          <template #default="scope">
-            <div>{{ dataGet(scope.row.updatedAt) }}</div>
-          </template>
-        </el-table-column>
-
-        <!-- <el-table-column
-          align="center"
-          fixed="right"
-          :label="t('general.operations')"
-          min-width="200"
-        >
-          <template #default="scope">
-            <el-button
-              type="primary"
-              size="small"
-              icon="edit"
-              @click="editTackFunc(scope.row)"
-            >
-              {{ t("general.edit") }}
-            </el-button>
-            <el-button
-              size="small"
-              icon="delete"
-              @click="deleteTackFunc(scope.row)"
-            >
-              {{ t("general.delete") }}
-            </el-button>
-          </template>
-        </el-table-column> -->
       </el-table>
       <div class="gva-pagination">
         <el-pagination
@@ -444,12 +228,7 @@
 </template>
   
   <script setup>
-import {
-  getPaymentOrders,
-  mallProductDel,
-  mallProductEdit,
-  mallProductAdd,
-} from "@/api/tack";
+import { getPaymentFirst, mallProductEdit, mallProductAdd } from "@/api/tack";
 import { ref, watchEffect } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
@@ -464,6 +243,7 @@ defineOptions({
 });
 const paramsValue = ref(false);
 const resetClose = ref(false);
+const sumDate = ref({});
 const apis = ref([]);
 const form = ref({
   id: null,
@@ -584,13 +364,14 @@ const getTableData = async () => {
   if (searchInfo.value && searchInfo.value.accountId == "") {
     searchInfo.value.accountId = null;
   }
-  const table = await getPaymentOrders({
+  const table = await getPaymentFirst({
     page: page.value,
     pageSize: pageSize.value,
     ...searchInfo.value,
   });
   if (table.code === 0) {
     tableData.value = table.data.list;
+    sumDate.value = table.data;
     total.value = table.data.total;
     page.value = table.data.page;
     pageSize.value = table.data.pageSize;
@@ -818,22 +599,6 @@ const enterDialog = async () => {
   });
 };
 
-const deleteTackFunc = async (row) => {
-  ElMessageBox.confirm(t("general.deleteConfirm"), t("general.hint"), {
-    confirmButtonText: t("general.confirm"),
-    cancelButtonText: t("general.cancel"),
-    type: "warning",
-  }).then(async () => {
-    const res = await mallProductDel({ id: row.id });
-    if (res.code === 0) {
-      ElMessage({
-        type: "success",
-        message: "删除成功!",
-      });
-      getTableData();
-    }
-  });
-};
 const tableRowClassName = ({ row, rowIndex }) => {
   if (rowIndex % 2 == 0) {
     return "";
@@ -858,6 +623,20 @@ watchEffect(() => {
 }
 .input_w {
   width: 200px !important;
+}
+.mes {
+  width: calc(100% - 8px);
+  margin-bottom: 20px;
+  white-space: nowrap;
+  font-size: 14px;
+  color: #3b82f6;
+  text-align: right;
+  span {
+    color: #222222;
+    font-size: 16px;
+    font-weight: 700;
+    margin-right: 5px;
+  }
 }
 </style>
   
