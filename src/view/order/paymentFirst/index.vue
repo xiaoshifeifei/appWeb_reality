@@ -71,7 +71,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          :label="t('tableColumn.amount')"
+          :label="t('tableColumn.amountCz')"
           min-width="150"
           prop="amount"
         >
