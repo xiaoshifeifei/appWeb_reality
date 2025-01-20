@@ -1,19 +1,18 @@
 
 
-$el-bg-font-color: #fff;
-$el-warn-bgc: #c7e4ea;
-$el-warn-bgc-hover: #6dc58b;
-$el-warn-bgc-current: #6dc58b;
+$el-bg-font-color: #7d5a00;
+$el-warn-bgc: #f9f9f9;
+$el-warn-bgc-hover:  rgba(212, 175, 55, 0.1);
+$el-warn-bgc-current:  rgba(212, 175, 55, 0.1);
 $el-font-cell-color: #000;
 html.light {
     /* 自定义浅色色背景颜色 */
     --el-bg-font-color: #fff;
-    --el-bg-font-color: #fff;
-    --el-warn-bgc: #c7e4ea !important;
-    --el-warn-bgc-hover: #6dc58b !important;
-    --el-warn-bgc-current: #6dc58b !important;
+    --el-warn-bgc: #f9f9f9 !important;
+    --el-warn-bgc-hover:  rgba(212, 175, 55, 0.1) !important;
+    --el-warn-bgc-current:  rgba(212, 175, 55, 0.1) !important;
     --el-bot-bgc: #f9f9f9 !important;
-    --el-tab-bgc: #217E8C!important;
+    --el-tab-bgc: #f7e9c8 !important;
     --el-tab-bgc-q: #739ea3 !important;
     --el-warn-row-bgc:#4ba8b6 !important;
     --border-color: #ebeef5;
@@ -31,9 +30,18 @@ html.light {
     }
     .el-table__body tr:hover > td {
         background-color: $el-warn-bgc-hover  !important;
+        z-index: 0;
     }
     .el-table__body tr.current-row > td {
         background-color:$el-warn-bgc-current !important;
     }
+    /* 当前页按钮 */
+    .gva-pagination .is-active {
+    background-color: #D4AF37 !important; /* 金色背景 */
+    color: #ffffff; /* 白色文字 */
+    border-color: #D4AF37; /* 边框也为金色 */
+  }
+
+
 }
 

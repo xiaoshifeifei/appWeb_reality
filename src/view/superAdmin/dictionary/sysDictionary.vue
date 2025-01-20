@@ -9,7 +9,7 @@
           <span class="text font-bold">{{
             t("view.dictionary.sysDictionary.listOfDictionaries")
           }}</span>
-          <el-button type="primary" @click="openDrawer">
+          <el-button type="warning" @click="openDrawer">
             {{ t("general.add") }}
           </el-button>
         </div>

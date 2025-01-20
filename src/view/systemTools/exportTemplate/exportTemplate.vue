@@ -58,7 +58,7 @@
           <el-input v-model="searchInfo.templateID" placeholder="搜索条件" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="search" @click="onSubmit"
+          <el-button type="warning" icon="search" @click="onSubmit"
             >查询</el-button
           >
           <el-button icon="refresh" @click="onReset">重置</el-button>

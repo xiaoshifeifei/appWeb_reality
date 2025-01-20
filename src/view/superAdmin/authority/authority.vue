@@ -44,7 +44,7 @@
             >
             <el-button
               icon="plus"
-              type="primary"
+              type="warning"
               size="small"
               @click="addAuthority(scope.row.authorityId)"
               >{{ t("general.add") }}</el-button

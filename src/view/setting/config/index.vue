@@ -18,7 +18,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="search" @click="onSubmit">
+          <el-button type="warning" icon="search" @click="onSubmit">
             {{ t("general.search") }}
           </el-button>
           <el-button icon="refresh" @click="onReset">
@@ -409,7 +409,7 @@
             </el-row>
           </template>
           <el-form-item>
-            <el-button type="primary" icon="plus" @click="addItem()">
+            <el-button type="warning" icon="plus" @click="addItem()">
               {{ t("general.add") }}
             </el-button>
           </el-form-item>

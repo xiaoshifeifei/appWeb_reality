@@ -11,7 +11,7 @@
           @closeTime="(paramsValue = false), (value2 = null)"
         ></SingleTime>
         <el-form-item>
-          <el-button type="primary" icon="search" @click="onSubmit">
+          <el-button type="warning" icon="search" @click="onSubmit">
             {{ t("general.search") }}
           </el-button>
           <el-button icon="refresh" @click="onReset">
@@ -387,10 +387,10 @@ watchEffect(() => {
   margin-bottom: 20px;
   white-space: nowrap;
   font-size: 14px;
-  color: #3b82f6;
+  color: #d4af37;
   text-align: right;
   span {
-    color: #222222;
+    color: #7d5a00;
     font-size: 16px;
     font-weight: 700;
     margin-right: 5px;

@@ -77,7 +77,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" icon="search" @click="onSubmit">
+          <el-button type="warning" icon="search" @click="onSubmit">
             {{ t("general.search") }}
           </el-button>
           <el-button icon="refresh" @click="onReset">
@@ -249,12 +249,13 @@
         <el-table-column
           align="center"
           min-width="135"
+          style="overflow: hidden"
           fixed="right"
           :label="t('tableColumn.changePassword')"
         >
           <template #default="scope">
             <el-button
-              type="primary"
+              type="warning"
               size="small"
               @click="resetFunc(scope.row)"
             >
@@ -270,7 +271,7 @@
         >
           <template #default="scope">
             <el-button
-              type="primary"
+              type="warning"
               size="small"
               @click="unbindFunc(scope.row)"
             >

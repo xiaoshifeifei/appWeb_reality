@@ -44,7 +44,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="search" @click="onSubmit">
+          <el-button type="warning" icon="search" @click="onSubmit">
             {{ t("general.search") }}
           </el-button>
           <el-button icon="refresh" @click="onReset">
@@ -55,7 +55,7 @@
     </div>
     <div class="gva-table-box">
       <div class="gva-btn-list">
-        <el-button type="primary" icon="plus" @click="openDialog('add')">
+        <el-button type="warning" icon="plus" @click="openDialog('add')">
           {{ t("general.add") }}
         </el-button>
       </div>
@@ -142,6 +142,10 @@
             <el-switch
               v-model="scope.row.status"
               inline-prompt
+              style="
+                --el-switch-on-color: #d4af37;
+                --el-switch-off-color: #ff4949;
+              "
               :active-value="1"
               :inactive-value="2"
               @change="
