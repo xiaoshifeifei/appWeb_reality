@@ -485,7 +485,7 @@ const initPage = async () => {
   getTableData();
 };
 
-initPage();
+// initPage();
 
 // 批量操作
 const handleSelectionChange = (val) => {
