@@ -424,3 +424,12 @@ export const getPaymentFirst = (params) => {
     params,
   });
 };
+
+// 基础数据列表
+export const getBase = (params) => {
+  return service({
+    url: "/statistics/getBase",
+    method: "get",
+    params,
+  });
+};

@@ -714,6 +714,7 @@
     "充值配置": "Recharge Configuration",
     "任务配置": "Task Configuration",
     "取款配置": "Withdrawal Configuration",
+    "基础数据": "Basic Data",
     "Homepage": "Homepage"
   },
   "tableColumn": {
@@ -988,8 +989,22 @@
     "sumLoginNum": "sumLoginNum:",
     "firstAndWithdrawNum": "firstAndWithdrawNum:",
     "firstNum": "firstNum:",
+    "firstNum1": "firstNum",
     "newAndFirstNum": "newAndFirstNum:",
     "otherAmount": "otherAmount",
+    "everyday": "Day",
+    "depositAvgAmount": "depositAvgAmount",
+    "depositNum": "depositNum",
+    "depositRatio": "depositRatio(%)",
+    "firstRatio": "firstRatio(%)",
+    "notPlayNum": "notPlayNum",
+    "notPlayRatio": "notPlayRatio(%)",
+    "repurchaseNum": "repurchaseNum",
+    "repurchaseRatio": "repurchaseRatio(%)",
+    "withdrawAmount": "withdrawAmount",
+    "withdrawAvgAmount": "withdrawAvgAmount",
+    "withdrawNum": "withdrawNum",
+    "withdrawRatio": "withdrawRatio(%)",
     "female": "Female"
   }
 }
