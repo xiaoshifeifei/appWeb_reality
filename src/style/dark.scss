@@ -30,7 +30,7 @@ html.dark {
     .el-table__row.warnBg .el-table__cell{
         width: 100%;
         height: 100%;
-        background-color:$el-warn-bgc !important;
+        background-color:$el-warn-bgc ;
         color: $el-font-cell-color;
     }
     .el-table__row:hover .el-table__cell {
