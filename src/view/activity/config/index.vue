@@ -847,6 +847,10 @@
           <el-switch
             v-model="form.status"
             inline-prompt
+            style="
+              --el-switch-on-color: #d4af37;
+              --el-switch-off-color: #ff4949;
+            "
             :active-value="1"
             :inactive-value="2"
           />
